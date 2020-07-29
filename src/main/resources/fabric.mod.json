@@ -1,29 +1,27 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "masa_gadget_mod",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Masa Gadget",
+  "description": "Masa Gadget.",
   "authors": [
-    "Me!"
+    "plusls"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://blog.plusls.com/",
+    "sources": "https://github.com/uestclug/MasaGadget"
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
-
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "io.github.plusls.MasaGadget.MasaGadgetMod"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "masa_gadget_mod.mixins.json"
   ],
 
   "depends": {
