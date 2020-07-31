@@ -30,9 +30,8 @@ public class BoundingBoxDeserializer {
     private static void deserializeStructureBox(PacketByteBuf buf, CompoundTag tag, boolean first) {
         if (!buf.isReadable(2) || buf.readChar() != 'S')
             return;
-        int bborId = buf.readInt();
-        String typeId = ParseBborPacket.bborIdToMinihudId(bborId);
-        // MasaGadgetMod.LOGGER.info(String.format("typeId: %d->%s", bborId, typeId));
+
+        String typeId = ParseBborPacket.bborIdToMinihudId(buf.readInt());
         if (typeId.equals("")) {
             return;
         }

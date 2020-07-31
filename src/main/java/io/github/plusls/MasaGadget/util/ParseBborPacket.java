@@ -18,7 +18,7 @@ import java.util.Locale;
 public class ParseBborPacket {
     private static final HashMap<Integer, String> BBOR_ID_TO_MINIHUD_ID = new HashMap<>();
     public static ListTag structuresCache = null;
-    public static long seedCache = 0;
+    public static Long seedCache = null;
     public static BlockPos spawnPos = null;
 
     static {
