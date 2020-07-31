@@ -1,7 +1,6 @@
 package io.github.plusls.MasaGadget.util;
 
 import fi.dy.masa.minihud.util.DataStorage;
-<<<<<<< HEAD
 import fi.dy.masa.minihud.util.StructureTypes;
 import io.github.plusls.MasaGadget.MasaGadgetMod;
 import net.minecraft.nbt.CompoundTag;
@@ -15,24 +14,10 @@ import net.minecraft.world.gen.feature.StructureFeature;
 
 import java.util.HashMap;
 import java.util.Locale;
-=======
-import fi.dy.masa.minihud.util.StructureType;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-
-import java.util.HashMap;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
->>>>>>> 1.16.x
 
 public class ParseBborPacket {
     private static final HashMap<Integer, String> BBOR_ID_TO_MINIHUD_ID = new HashMap<>();
     public static ListTag structuresCache = null;
-<<<<<<< HEAD
     public static long seedCache = 0;
     public static BlockPos spawnPos = null;
 
@@ -43,29 +28,11 @@ public class ParseBborPacket {
             StructureFeature<?> feature = (StructureFeature) Feature.STRUCTURES.get(structureName.toLowerCase(Locale.ROOT));
             if (feature != null) {
                 Identifier key = Registry.STRUCTURE_FEATURE.getId(feature);
-=======
-    public static Long seedCache = null;
-    public static BlockPos spawnPos = null;
-    public static final Lock lock = new ReentrantLock();
-
-    static {
-        for (StructureType type : StructureType.VALUES) {
-            String structureName = type.getStructureName();
-            if (type.getFeature() != null) {
-                Identifier key = Registry.STRUCTURE_FEATURE.getId(type.getFeature());
-
->>>>>>> 1.16.x
                 if (key != null) {
                     BBOR_ID_TO_MINIHUD_ID.put(structureName.hashCode(), key.toString());
                 }
             }
-<<<<<<< HEAD
         }
-=======
-
-        }
-
->>>>>>> 1.16.x
     }
 
     static public String bborIdToMinihudId(int bborId) {

@@ -3,11 +3,7 @@ package io.github.plusls.MasaGadget.util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
-<<<<<<< HEAD
 import net.minecraft.util.PacketByteBuf;
-=======
-import net.minecraft.network.PacketByteBuf;
->>>>>>> 1.16.x
 
 public class BoundingBoxDeserializer {
 
@@ -34,14 +30,8 @@ public class BoundingBoxDeserializer {
     private static void deserializeStructureBox(PacketByteBuf buf, CompoundTag tag, boolean first) {
         if (!buf.isReadable(2) || buf.readChar() != 'S')
             return;
-<<<<<<< HEAD
-        int bborId = buf.readInt();
-        String typeId = ParseBborPacket.bborIdToMinihudId(bborId);
-        // MasaGadgetMod.LOGGER.info(String.format("typeId: %d->%s", bborId, typeId));
-=======
 
         String typeId = ParseBborPacket.bborIdToMinihudId(buf.readInt());
->>>>>>> 1.16.x
         if (typeId.equals("")) {
             return;
         }
