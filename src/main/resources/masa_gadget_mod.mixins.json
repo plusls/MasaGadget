@@ -9,7 +9,8 @@
     "MixinWidgetListConfigOptions",
     "MixinCustomPayloadS2CPacket",
     "IMixinClientPlayNetworkHandler",
-    "MixinPlayerRespawnS2CPacket"
+    "MixinPlayerRespawnS2CPacket",
+    "MixinDataStorage"
   ],
   "injectors": {
     "defaultRequire": 1

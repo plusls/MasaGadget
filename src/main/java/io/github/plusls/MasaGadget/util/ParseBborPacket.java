@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 
 import java.util.HashMap;
@@ -13,6 +14,8 @@ import java.util.HashMap;
 public class ParseBborPacket {
     private static final HashMap<Integer, String> BBOR_ID_TO_MINIHUD_ID = new HashMap<>();
     public static ListTag structuresCache = null;
+    public static long seedCache = 0;
+    public static BlockPos spawnPos = null;
 
     static {
 
