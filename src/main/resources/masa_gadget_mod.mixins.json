@@ -6,7 +6,10 @@
   "mixins": [
   ],
   "client": [
-    "MixinWidgetListConfigOptions"
+    "MixinWidgetListConfigOptions",
+    "MixinCustomPayloadS2CPacket",
+    "IMixinClientPlayNetworkHandler",
+    "MixinPlayerRespawnS2CPacket"
   ],
   "injectors": {
     "defaultRequire": 1
