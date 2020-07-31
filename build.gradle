@@ -29,6 +29,7 @@ dependencies {
 	// You may need to force-disable transitiveness on them.
 
 	modCompile "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version}:${project.malilib_version}"
+	modCompile "fi.dy.masa.minihud:minihud-fabric-${project.minecraft_version}:${project.minihud_version}"
 
 }
 
