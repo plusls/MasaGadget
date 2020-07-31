@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = DataStorage.class, remap = false)
 public abstract class MixinDataStorage {
-    // 1.16 以前, reset 会发生在进入游戏以后, 所以需要在 reset 后重新加载种子和结构
+    // reset 会发生在进入游戏以后, 所以需要在 reset 后重新加载种子和结构
     @Inject(method = "reset(Z)V", at = @At(value = "RETURN"))
     private void postReset(boolean isLogout, CallbackInfo ci) {
         if (!isLogout) {

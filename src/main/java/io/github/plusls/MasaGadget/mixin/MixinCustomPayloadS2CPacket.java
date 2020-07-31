@@ -38,7 +38,7 @@ public abstract class MixinCustomPayloadS2CPacket implements Packet<ClientPlayPa
                             int spawnX = data.readInt();
                             int spawnZ = data.readInt();
                             // MasaGadgetMod.LOGGER.info(String.format("init seed: %d", seed));
-                            // 1.16 以前的版本需要记录 在 minhud reset 后重新加载种子和出生点
+                            // 提前记录, 随后在 minhud reset 后重新加载种子和出生点
                             ParseBborPacket.seedCache = seed;
                             ParseBborPacket.spawnPos = new BlockPos(spawnX, 0, spawnZ);
                             DataStorage.getInstance().setWorldSeed(ParseBborPacket.seedCache);
