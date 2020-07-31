@@ -6,10 +6,17 @@ import io.github.plusls.MasaGadget.util.ParseBborPacket;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.Packet;
+<<<<<<< HEAD
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.PacketByteBuf;
+=======
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
+import net.minecraft.util.Identifier;
+>>>>>>> 1.16.x
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -24,7 +31,11 @@ public abstract class MixinCustomPayloadS2CPacket implements Packet<ClientPlayPa
 
     @Inject(method = "apply(Lnet/minecraft/network/listener/ClientPlayPacketListener;)V",
             at = @At(value = "HEAD"), cancellable = true)
+<<<<<<< HEAD
     private void preApply(ClientPlayPacketListener clientPlayPacketListener, CallbackInfo info) {
+=======
+    private void onApply(ClientPlayPacketListener clientPlayPacketListener, CallbackInfo info) {
+>>>>>>> 1.16.x
         CustomPayloadS2CPacket packet = (CustomPayloadS2CPacket) (Object) this;
         String channelName = channel.toString();
         if (channelName.startsWith("bbor:")) {
@@ -33,6 +44,7 @@ public abstract class MixinCustomPayloadS2CPacket implements Packet<ClientPlayPa
                 data = packet.getData();
                 switch (channelName) {
                     case "bbor:initialize": {
+<<<<<<< HEAD
                         if (!MasaGadgetMod.bborCompat) {
                             long seed = data.readLong();
                             int spawnX = data.readInt();
@@ -46,6 +58,20 @@ public abstract class MixinCustomPayloadS2CPacket implements Packet<ClientPlayPa
                             ((ClientPlayNetworkHandler) clientPlayPacketListener).sendPacket(MasaGadgetMod.BBOR_SUBSCRIBE_PACKET);
                         }
                         ParseBborPacket.structuresCache = new ListTag();
+=======
+                        long seed = data.readLong();
+                        int spawnX = data.readInt();
+                        int spawnZ = data.readInt();
+                        ParseBborPacket.seedCache = seed;
+                        ParseBborPacket.spawnPos = new BlockPos(spawnX, 0, spawnZ);
+                        ParseBborPacket.structuresCache = new ListTag();
+                        DataStorage.getInstance().setWorldSeed(ParseBborPacket.seedCache);
+                        DataStorage.getInstance().setWorldSpawn(ParseBborPacket.spawnPos);
+                        MasaGadgetMod.LOGGER.info(String.format("init seed: %d", ParseBborPacket.seedCache));
+                        if (!MasaGadgetMod.bborCompat) {
+                            ((ClientPlayNetworkHandler) clientPlayPacketListener).sendPacket(MasaGadgetMod.BBOR_SUBSCRIBE_PACKET);
+                        }
+>>>>>>> 1.16.x
                         break;
                     }
                     case "bbor:add_bounding_box_v2": {
