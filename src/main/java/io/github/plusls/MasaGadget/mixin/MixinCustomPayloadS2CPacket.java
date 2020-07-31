@@ -33,19 +33,18 @@ public abstract class MixinCustomPayloadS2CPacket implements Packet<ClientPlayPa
                 data = packet.getData();
                 switch (channelName) {
                     case "bbor:initialize": {
+                        long seed = data.readLong();
+                        int spawnX = data.readInt();
+                        int spawnZ = data.readInt();
+                        ParseBborPacket.seedCache = seed;
+                        ParseBborPacket.spawnPos = new BlockPos(spawnX, 0, spawnZ);
+                        ParseBborPacket.structuresCache = new ListTag();
+                        DataStorage.getInstance().setWorldSeed(ParseBborPacket.seedCache);
+                        DataStorage.getInstance().setWorldSpawn(ParseBborPacket.spawnPos);
+                        MasaGadgetMod.LOGGER.info(String.format("init seed: %d", ParseBborPacket.seedCache));
                         if (!MasaGadgetMod.bborCompat) {
-                            long seed = data.readLong();
-                            int spawnX = data.readInt();
-                            int spawnZ = data.readInt();
-                            // MasaGadgetMod.LOGGER.info(String.format("init seed: %d", seed));
-                            DataStorage.getInstance().setWorldSpawn(new BlockPos(spawnX, 0, spawnZ));	                            // 1.16 以前的版本需要记录 在 minhud reset 后重新加载种子和出生点
-                            ParseBborPacket.seedCache = seed;
-                            ParseBborPacket.spawnPos = new BlockPos(spawnX, 0, spawnZ);
-                            DataStorage.getInstance().setWorldSeed(ParseBborPacket.seedCache);
-                            DataStorage.getInstance().setWorldSpawn(ParseBborPacket.spawnPos);
                             ((ClientPlayNetworkHandler) clientPlayPacketListener).sendPacket(MasaGadgetMod.BBOR_SUBSCRIBE_PACKET);
                         }
-                        ParseBborPacket.structuresCache = new ListTag();
                         break;
                     }
                     case "bbor:add_bounding_box_v2": {

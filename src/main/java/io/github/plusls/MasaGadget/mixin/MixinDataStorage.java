@@ -13,9 +13,16 @@ public abstract class MixinDataStorage {
     @Inject(method = "reset(Z)V", at = @At(value = "RETURN"))
     private void postReset(boolean isLogout, CallbackInfo ci) {
         if (!isLogout) {
-            DataStorage.getInstance().setWorldSeed(ParseBborPacket.seedCache);
-            DataStorage.getInstance().setWorldSpawn(ParseBborPacket.spawnPos);
-            DataStorage.getInstance().addOrUpdateStructuresFromServer(ParseBborPacket.structuresCache, 0x7fffffff - 0x1000, false);
+            if (ParseBborPacket.seedCache != null)
+                DataStorage.getInstance().setWorldSeed(ParseBborPacket.seedCache);
+            if (ParseBborPacket.spawnPos != null)
+                DataStorage.getInstance().setWorldSpawn(ParseBborPacket.spawnPos);
+            if (ParseBborPacket.structuresCache != null)
+                DataStorage.getInstance().addOrUpdateStructuresFromServer(ParseBborPacket.structuresCache, 0x7fffffff - 0x1000, false);
+        } else {
+            ParseBborPacket.seedCache = null;
+            ParseBborPacket.spawnPos = null;
+            ParseBborPacket.structuresCache = null;
         }
     }
 }

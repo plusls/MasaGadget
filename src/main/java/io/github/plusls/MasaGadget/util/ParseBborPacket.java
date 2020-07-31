@@ -10,15 +10,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 
 import java.util.HashMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ParseBborPacket {
     private static final HashMap<Integer, String> BBOR_ID_TO_MINIHUD_ID = new HashMap<>();
     public static ListTag structuresCache = null;
-    public static long seedCache = 0;
+    public static Long seedCache = null;
     public static BlockPos spawnPos = null;
+    public static final Lock lock = new ReentrantLock();
 
     static {
-
         for (StructureType type : StructureType.VALUES) {
             String structureName = type.getStructureName();
             if (type.getFeature() != null) {
