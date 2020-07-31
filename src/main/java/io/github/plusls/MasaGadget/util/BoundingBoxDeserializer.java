@@ -1,11 +1,9 @@
 package io.github.plusls.MasaGadget.util;
 
-import fi.dy.masa.malilib.util.IntBoundingBox;
-import io.github.plusls.MasaGadget.MasaGadgetMod;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.util.PacketByteBuf;
 
 public class BoundingBoxDeserializer {
 

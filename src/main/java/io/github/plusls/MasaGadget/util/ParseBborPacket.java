@@ -1,15 +1,12 @@
 package io.github.plusls.MasaGadget.util;
 
 import fi.dy.masa.minihud.util.DataStorage;
-import fi.dy.masa.minihud.util.StructureType;
-import io.github.plusls.MasaGadget.MasaGadgetMod;
+import fi.dy.masa.minihud.util.StructureTypes.StructureType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.World;
 
 import java.util.HashMap;
 
@@ -21,12 +18,10 @@ public class ParseBborPacket {
 
         for (StructureType type : StructureType.VALUES) {
             String structureName = type.getStructureName();
-            if (type.getFeature() != null)
-            {
+            if (type.getFeature() != null) {
                 Identifier key = Registry.STRUCTURE_FEATURE.getId(type.getFeature());
 
-                if (key != null)
-                {
+                if (key != null) {
                     BBOR_ID_TO_MINIHUD_ID.put(structureName.hashCode(), key.toString());
                 }
             }

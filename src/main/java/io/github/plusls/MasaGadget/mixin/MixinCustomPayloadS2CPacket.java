@@ -6,10 +6,10 @@ import io.github.plusls.MasaGadget.util.ParseBborPacket;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.Packet;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,7 +25,7 @@ public abstract class MixinCustomPayloadS2CPacket implements Packet<ClientPlayPa
     @Inject(method = "apply(Lnet/minecraft/network/listener/ClientPlayPacketListener;)V",
             at = @At(value = "HEAD"), cancellable = true)
     private void onApply(ClientPlayPacketListener clientPlayPacketListener, CallbackInfo info) {
-        CustomPayloadS2CPacket packet = (CustomPayloadS2CPacket) (Object)this;
+        CustomPayloadS2CPacket packet = (CustomPayloadS2CPacket) (Object) this;
         String channelName = channel.toString();
         if (channelName.startsWith("bbor:")) {
             PacketByteBuf data = null;
