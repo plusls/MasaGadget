@@ -7,5 +7,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(ClientPlayNetworkHandler.class)
 public interface IMixinClientPlayNetworkHandler {
-    @Accessor("client") MinecraftClient accessor$getClient();
+    @Accessor("client")
+    MinecraftClient accessor$getClient();
 }

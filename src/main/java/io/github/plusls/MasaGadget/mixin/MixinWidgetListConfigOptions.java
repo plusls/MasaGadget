@@ -24,12 +24,10 @@ public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptio
      * @reason allow search name and gui display name
      */
     @Overwrite(remap = false)
-    protected List<String> getEntryStringsForFilter(GuiConfigsBase.ConfigOptionWrapper entry)
-    {
+    protected List<String> getEntryStringsForFilter(GuiConfigsBase.ConfigOptionWrapper entry) {
         IConfigBase config = entry.getConfig();
 
-        if (config != null)
-        {
+        if (config != null) {
             return ImmutableList.of(getTranslatedGuiDisplayName(config).toLowerCase(), config.getName().toLowerCase());
         }
 
@@ -41,23 +39,20 @@ public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptio
      * @reason fix render width error
      */
     @Overwrite(remap = false)
-    protected void reCreateListEntryWidgets()
-    {
+    protected void reCreateListEntryWidgets() {
         this.maxLabelWidth = this.getMaxGuiDisplayNameLengthWrapped(this.listContents);
         super.reCreateListEntryWidgets();
     }
+
     static private String getTranslatedGuiDisplayName(IConfigBase config) {
         return StringUtils.translate(config.getConfigGuiDisplayName());
     }
 
-    private int getMaxGuiDisplayNameLengthWrapped(List<GuiConfigsBase.ConfigOptionWrapper> wrappers)
-    {
+    private int getMaxGuiDisplayNameLengthWrapped(List<GuiConfigsBase.ConfigOptionWrapper> wrappers) {
         int width = 0;
 
-        for (GuiConfigsBase.ConfigOptionWrapper wrapper : wrappers)
-        {
-            if (wrapper.getType() == GuiConfigsBase.ConfigOptionWrapper.Type.CONFIG)
-            {
+        for (GuiConfigsBase.ConfigOptionWrapper wrapper : wrappers) {
+            if (wrapper.getType() == GuiConfigsBase.ConfigOptionWrapper.Type.CONFIG) {
                 width = Math.max(width, this.getStringWidth(getTranslatedGuiDisplayName(wrapper.getConfig())));
             }
         }
@@ -66,18 +61,14 @@ public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptio
 
     // fix upper case when search Disable Hotkeys
     @Override
-    protected boolean matchesFilter(List<String> entryStrings, String filterText)
-    {
+    protected boolean matchesFilter(List<String> entryStrings, String filterText) {
         filterText = filterText.toLowerCase();
-        if (filterText.isEmpty())
-        {
+        if (filterText.isEmpty()) {
             return true;
         }
 
-        for (String str : entryStrings)
-        {
-            if (this.matchesFilter(str, filterText))
-            {
+        for (String str : entryStrings) {
+            if (this.matchesFilter(str, filterText)) {
                 return true;
             }
         }
