@@ -24,7 +24,7 @@ public abstract class MixinCustomPayloadS2CPacket implements Packet<ClientPlayPa
 
     @Inject(method = "apply(Lnet/minecraft/network/listener/ClientPlayPacketListener;)V",
             at = @At(value = "HEAD"), cancellable = true)
-    private void onApply(ClientPlayPacketListener clientPlayPacketListener, CallbackInfo info) {
+    private void preApply(ClientPlayPacketListener clientPlayPacketListener, CallbackInfo info) {
         CustomPayloadS2CPacket packet = (CustomPayloadS2CPacket) (Object) this;
         String channelName = channel.toString();
         if (channelName.startsWith("bbor:")) {
@@ -37,8 +37,12 @@ public abstract class MixinCustomPayloadS2CPacket implements Packet<ClientPlayPa
                             long seed = data.readLong();
                             int spawnX = data.readInt();
                             int spawnZ = data.readInt();
-                            DataStorage.getInstance().setWorldSeed(seed);
-                            DataStorage.getInstance().setWorldSpawn(new BlockPos(spawnX, 0, spawnZ));
+                            // MasaGadgetMod.LOGGER.info(String.format("init seed: %d", seed));
+                            // 1.16 以前的版本需要记录 在 minhud reset 后重新加载种子和出生点
+                            ParseBborPacket.seedCache = seed;
+                            ParseBborPacket.spawnPos = new BlockPos(spawnX, 0, spawnZ);
+                            DataStorage.getInstance().setWorldSeed(ParseBborPacket.seedCache);
+                            DataStorage.getInstance().setWorldSpawn(ParseBborPacket.spawnPos);
                             ((ClientPlayNetworkHandler) clientPlayPacketListener).sendPacket(MasaGadgetMod.BBOR_SUBSCRIBE_PACKET);
                         }
                         ParseBborPacket.structuresCache = new ListTag();
