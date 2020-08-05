@@ -2,7 +2,6 @@ package io.github.plusls.MasaGadget.mixin;
 
 import fi.dy.masa.minihud.util.DataStorage;
 import io.github.plusls.MasaGadget.util.ParseBborPacket;
-import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

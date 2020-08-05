@@ -2,7 +2,6 @@ package io.github.plusls.MasaGadget.mixin;
 
 import fi.dy.masa.minihud.util.DataStorage;
 import io.github.plusls.MasaGadget.util.ParseBborPacket;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.PlayerRespawnS2CPacket;
 import net.minecraft.world.dimension.DimensionType;
