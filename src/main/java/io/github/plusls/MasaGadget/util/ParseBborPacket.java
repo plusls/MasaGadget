@@ -20,6 +20,8 @@ public class ParseBborPacket {
     public static ListTag structuresCache = null;
     public static Long seedCache = null;
     public static BlockPos spawnPos = null;
+    public static boolean enable = false;
+    public static boolean carpetOrservux = false;
 
     static {
         StructureTypes.StructureType[] structures = StructureTypes.StructureType.values();
@@ -41,16 +43,17 @@ public class ParseBborPacket {
 
     static public void parse(PacketByteBuf buf) {
         Identifier dimensionId = buf.readIdentifier();
-        // MasaGadgetMod.LOGGER.info(dimensionId.toString());
+        MasaGadgetMod.LOGGER.debug("dimensionId = {}", dimensionId.toString());
 
-        CompoundTag tag = null;
-        tag = BoundingBoxDeserializer.deserializeStructure(buf);
+        CompoundTag tag = BoundingBoxDeserializer.deserializeStructure(buf);
 
         if (tag != null) {
             ListTag structures = new ListTag();
             structures.add(tag);
             structuresCache.add(tag);
-            DataStorage.getInstance().addOrUpdateStructuresFromServer(structures, 0x7fffffff - 0x1000, false);
+            if (enable) {
+                DataStorage.getInstance().addOrUpdateStructuresFromServer(structures, 0x7fffffff - 0x1000, false);
+            }
         }
     }
 }
