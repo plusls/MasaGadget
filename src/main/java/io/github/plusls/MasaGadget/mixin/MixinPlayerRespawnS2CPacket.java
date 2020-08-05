@@ -2,6 +2,7 @@ package io.github.plusls.MasaGadget.mixin;
 
 import fi.dy.masa.minihud.util.DataStorage;
 import io.github.plusls.MasaGadget.util.ParseBborPacket;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.PlayerRespawnS2CPacket;
 import net.minecraft.util.registry.RegistryKey;
@@ -19,7 +20,10 @@ public abstract class MixinPlayerRespawnS2CPacket {
         RegistryKey<World> oldDimension = ((IMixinClientPlayNetworkHandler) listener).accessor$getClient().player.world.getRegistryKey();
         RegistryKey<World> newDimension = packet.getDimension();
         listener.onPlayerRespawn(packet);
-        if (oldDimension != newDimension) {
+        if (!ParseBborPacket.enable) {
+            return;
+        }
+        if (oldDimension != newDimension && ParseBborPacket.structuresCache != null) {
             // reload minihud struct when dimension change
             DataStorage.getInstance().addOrUpdateStructuresFromServer(ParseBborPacket.structuresCache, 0x7fffffff - 0x1000, false);
         }

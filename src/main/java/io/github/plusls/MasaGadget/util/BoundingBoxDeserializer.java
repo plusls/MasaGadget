@@ -1,5 +1,6 @@
 package io.github.plusls.MasaGadget.util;
 
+import io.github.plusls.MasaGadget.MasaGadgetMod;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
@@ -49,6 +50,6 @@ public class BoundingBoxDeserializer {
         if (first) {
             tag.putString("id", typeId);
         }
-        // MasaGadgetMod.LOGGER.info(String.format("%s: (%d, %d, %d) (%d, %d, %d)", typeId, minX, minY, minZ, maxX, maxY, maxZ));
+        MasaGadgetMod.LOGGER.debug("deserializeresult: \"{}\" ({}, {}, {}) ({}, {}, {})", typeId, minX, minY, minZ, maxX, maxY, maxZ);
     }
 }
