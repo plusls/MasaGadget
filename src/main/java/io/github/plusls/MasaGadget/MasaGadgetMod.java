@@ -17,6 +17,7 @@ public class MasaGadgetMod implements ModInitializer {
     public static boolean bborCompat = false;
     public static CustomPayloadC2SPacket BBOR_SUBSCRIBE_PACKET = null;
     public static String level = "INFO";
+
     @Override
     public void onInitialize() {
         // This code runs as soon as Minecraft is in a mod-load-ready state.
