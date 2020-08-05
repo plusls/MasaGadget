@@ -5,15 +5,18 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
 import net.minecraft.util.Identifier;
+import org.apache.logging.log4j.Level;
 import net.minecraft.util.PacketByteBuf;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
 
 public class MasaGadgetMod implements ModInitializer {
     public static final String MODID = "masa_gadget_mod";
     public static final Logger LOGGER = LogManager.getLogger("MasaGadgetMod");
     public static boolean bborCompat = false;
     public static CustomPayloadC2SPacket BBOR_SUBSCRIBE_PACKET = null;
+    public static String level = "INFO";
 
     @Override
     public void onInitialize() {
@@ -29,6 +32,7 @@ public class MasaGadgetMod implements ModInitializer {
                     new Identifier("bbor", "subscribe"),
                     new PacketByteBuf(Unpooled.buffer()));
         }
+        Configurator.setLevel(LOGGER.getName(), Level.toLevel(MasaGadgetMod.level));
     }
 
     public static Identifier id(String id) {

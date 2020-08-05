@@ -18,7 +18,10 @@ public abstract class MixinPlayerRespawnS2CPacket {
         DimensionType oldDimension = ((IMixinClientPlayNetworkHandler) listener).accessor$getClient().player.dimension;
         DimensionType newDimension = packet.getDimension();
         listener.onPlayerRespawn(packet);
-        if (oldDimension != newDimension) {
+        if (!ParseBborPacket.enable) {
+            return;
+        }
+        if (oldDimension != newDimension && ParseBborPacket.structuresCache != null) {
             // reload minihud struct when dimension change
             DataStorage.getInstance().addOrUpdateStructuresFromServer(ParseBborPacket.structuresCache, 0x7fffffff - 0x1000, false);
         }

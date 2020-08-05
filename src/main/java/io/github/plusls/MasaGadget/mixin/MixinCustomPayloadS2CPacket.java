@@ -39,9 +39,12 @@ public abstract class MixinCustomPayloadS2CPacket implements Packet<ClientPlayPa
                         ParseBborPacket.seedCache = seed;
                         ParseBborPacket.spawnPos = new BlockPos(spawnX, 0, spawnZ);
                         ParseBborPacket.structuresCache = new ListTag();
-                        DataStorage.getInstance().setWorldSeed(ParseBborPacket.seedCache);
-                        DataStorage.getInstance().setWorldSpawn(ParseBborPacket.spawnPos);
-                        MasaGadgetMod.LOGGER.info(String.format("init seed: %d", ParseBborPacket.seedCache));
+                        if (!ParseBborPacket.carpetOrservux) {
+                            ParseBborPacket.enable = true;
+                            DataStorage.getInstance().setWorldSeed(ParseBborPacket.seedCache);
+                            DataStorage.getInstance().setWorldSpawn(ParseBborPacket.spawnPos);
+                            MasaGadgetMod.LOGGER.info("init seed: {}", ParseBborPacket.seedCache);
+                        }
                         if (!MasaGadgetMod.bborCompat) {
                             ((ClientPlayNetworkHandler) clientPlayPacketListener).sendPacket(MasaGadgetMod.BBOR_SUBSCRIBE_PACKET);
                         }
@@ -60,6 +63,12 @@ public abstract class MixinCustomPayloadS2CPacket implements Packet<ClientPlayPa
             if (!MasaGadgetMod.bborCompat) {
                 info.cancel();
             }
+        } else if (channelName.equals("carpet:structures")) {
+            ParseBborPacket.carpetOrservux = true;
+            ParseBborPacket.enable = false;
+        } else if (channelName.equals("servux:structures")) {
+            ParseBborPacket.carpetOrservux = true;
+            ParseBborPacket.enable = false;
         }
     }
 }
