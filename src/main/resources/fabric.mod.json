@@ -18,6 +18,9 @@
   "entrypoints": {
     "main": [
       "io.github.plusls.MasaGadget.MasaGadgetMod"
+    ],
+    "client": [
+      "io.github.plusls.MasaGadget.MasaGadgetMod"
     ]
   },
   "mixins": [

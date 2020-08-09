@@ -18,6 +18,10 @@ malilib 创建的配置界面没有考虑到汉化的情况，在加载汉化资
 
 minihud 的查看结构和史莱姆区块渲染需要服务端安装了 carpet 或者 servux 才能正常使用（史莱姆区块可以手动输入种子），在安装此 mod 后，若是服务器未安装上述 2个 mod 但是安装了 bbor， 该 mod 可以自动从服务器获取 bbor 的数据并导入 minihud，从而让 minihud 在多人游戏中也能渲染结构和史莱姆区块。 
 
+### 多人游戏容器预览
+
+tweakeroo 的容器预览功能在多人游戏中是不可用的，在安装此 mod 后可以让该功能在多人游戏中使用（需要服务端也安装 MasaGadget）
+
 ## 安装
 
 该 mod 依赖 malilib, minihud, fabric-api
