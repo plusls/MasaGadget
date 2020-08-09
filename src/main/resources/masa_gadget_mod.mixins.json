@@ -4,13 +4,22 @@
   "package": "io.github.plusls.MasaGadget.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "server.MixinPlayerManager",
+    "server.inventory.MixinShulkerBoxBlockEntity",
+    "server.inventory.MixinHopperBlockEntity",
+    "server.inventory.MixinAbstractFurnaceBlockEntity",
+    "server.inventory.MixinDispenserBlockEntity"
   ],
   "client": [
-    "MixinWidgetListConfigOptions",
-    "MixinCustomPayloadS2CPacket",
-    "IMixinClientPlayNetworkHandler",
-    "MixinPlayerRespawnS2CPacket",
-    "MixinDataStorage"
+    "client.malilib.MixinWidgetListConfigOptions",
+    "client.malilib.MixinDataStorage",
+    "client.malilib.MixinInventoryUtils",
+    "client.tweakeroo.MixinRenderHandler",
+    "client.IMixinClientPlayNetworkHandler",
+    "client.MixinCustomPayloadS2CPacket",
+    "client.MixinPlayerRespawnS2CPacket",
+    "client.MixinMinecraftClient",
+    "client.MixinClientPlayNetworkHandler"
   ],
   "injectors": {
     "defaultRequire": 1

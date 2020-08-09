@@ -30,6 +30,7 @@ dependencies {
 
 	modCompile "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version}:${project.malilib_version}"
 	modCompile "fi.dy.masa.minihud:minihud-fabric-${project.minecraft_version}:${project.minihud_version}"
+	modCompile "fi.dy.masa.tweakeroo:tweakeroo-fabric-${project.minecraft_version}:${project.tweakeroo_version}"
 }
 
 processResources {
