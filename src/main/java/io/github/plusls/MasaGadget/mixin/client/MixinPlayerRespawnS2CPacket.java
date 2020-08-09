@@ -1,4 +1,4 @@
-package io.github.plusls.MasaGadget.mixin;
+package io.github.plusls.MasaGadget.mixin.client;
 
 import fi.dy.masa.minihud.util.DataStorage;
 import io.github.plusls.MasaGadget.util.ParseBborPacket;

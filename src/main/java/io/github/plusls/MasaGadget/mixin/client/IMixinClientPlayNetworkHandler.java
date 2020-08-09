@@ -1,4 +1,4 @@
-package io.github.plusls.MasaGadget.mixin;
+package io.github.plusls.MasaGadget.mixin.client;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
