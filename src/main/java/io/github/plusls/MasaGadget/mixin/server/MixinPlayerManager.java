@@ -2,7 +2,6 @@ package io.github.plusls.MasaGadget.mixin.server;
 
 import io.github.plusls.MasaGadget.MasaGadgetMod;
 import io.github.plusls.MasaGadget.network.ClientNetworkHandler;
-import io.github.plusls.MasaGadget.network.ServerNetworkHandler;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.minecraft.network.ClientConnection;
@@ -16,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerManager.class)
 public abstract class MixinPlayerManager {
-
+    // 玩家上线后发送 hello 包，标明服务器存在 MasaGadget
     @Inject(method = "onPlayerConnect(Lnet/minecraft/network/ClientConnection;Lnet/minecraft/server/network/ServerPlayerEntity;)V",
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraft/network/packet/s2c/play/DifficultyS2CPacket;<init>(Lnet/minecraft/world/Difficulty;Z)V",

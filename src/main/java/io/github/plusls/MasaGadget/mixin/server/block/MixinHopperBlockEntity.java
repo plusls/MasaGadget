@@ -1,26 +1,24 @@
-package io.github.plusls.MasaGadget.mixin.server.inventory;
+package io.github.plusls.MasaGadget.mixin.server.block;
 
 import io.github.plusls.MasaGadget.MasaGadgetMod;
 import io.github.plusls.MasaGadget.network.ServerNetworkHandler;
-import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
-import net.minecraft.block.entity.LockableContainerBlockEntity;
-import net.minecraft.inventory.SidedInventory;
+import net.minecraft.block.entity.Hopper;
+import net.minecraft.block.entity.HopperBlockEntity;
+import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.recipe.RecipeInputProvider;
-import net.minecraft.recipe.RecipeUnlocker;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Tickable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(AbstractFurnaceBlockEntity.class)
-public abstract class MixinAbstractFurnaceBlockEntity extends LockableContainerBlockEntity implements SidedInventory, RecipeUnlocker, RecipeInputProvider, Tickable {
+@Mixin(HopperBlockEntity.class)
+public abstract class MixinHopperBlockEntity extends LootableContainerBlockEntity implements Hopper, Tickable {
 
     @Shadow
     public abstract CompoundTag toTag(CompoundTag tag);
 
-    public MixinAbstractFurnaceBlockEntity() {
+    public MixinHopperBlockEntity() {
         super(null);
     }
 
@@ -29,7 +27,7 @@ public abstract class MixinAbstractFurnaceBlockEntity extends LockableContainerB
         super.markDirty();
         if (ServerNetworkHandler.lastBlockPosMap.containsValue(this.pos)) {
             ((ServerWorld) this.getWorld()).getChunkManager().markForUpdate(this.getPos());
-            MasaGadgetMod.LOGGER.debug("update AbstractFurnaceBlockEntity: {}", this.pos);
+            MasaGadgetMod.LOGGER.debug("update HopperBlockEntity: {}", this.pos);
         }
     }
 

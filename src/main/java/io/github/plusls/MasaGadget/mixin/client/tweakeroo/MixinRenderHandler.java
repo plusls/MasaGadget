@@ -7,9 +7,8 @@ import io.github.plusls.MasaGadget.MasaGadgetMod;
 import io.github.plusls.MasaGadget.network.DataAccessor;
 import io.github.plusls.MasaGadget.network.ServerNetworkHandler;
 import io.netty.buffer.Unpooled;
-import net.minecraft.client.MinecraftClient;
+import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -24,13 +23,21 @@ public abstract class MixinRenderHandler implements IRenderer {
                     ordinal = 2))
     private boolean redirectIsKeyBindHeld(IKeybind iKeybind) {
         boolean ret = iKeybind.isKeybindHeld();
-
-        if (!ret && DataAccessor.lastBlockPos != null) {
-            DataAccessor.lastBlockPos = null;
-            MasaGadgetMod.LOGGER.debug("cancel requestBlockEntity");
-            PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-            buf.writeBoolean(false);
-            MinecraftClient.getInstance().getNetworkHandler().getConnection().send(new CustomPayloadC2SPacket(ServerNetworkHandler.REQUEST_BLOCK_ENTITY, buf));
+        if (!ret) {
+            if (DataAccessor.lastBlockPos != null) {
+                DataAccessor.lastBlockPos = null;
+                MasaGadgetMod.LOGGER.debug("cancel requestBlockEntity");
+                PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
+                buf.writeBoolean(false);
+                ClientSidePacketRegistry.INSTANCE.sendToServer(ServerNetworkHandler.REQUEST_BLOCK_ENTITY, buf);
+            }
+            if (DataAccessor.lastEntityId != -1) {
+                DataAccessor.lastEntityId = -1;
+                MasaGadgetMod.LOGGER.debug("cancel requestEntity");
+                PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
+                buf.writeBoolean(false);
+                ClientSidePacketRegistry.INSTANCE.sendToServer(ServerNetworkHandler.REQUEST_ENTITY, buf);
+            }
         }
         return ret;
     }
