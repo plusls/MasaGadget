@@ -1,24 +1,23 @@
-package io.github.plusls.MasaGadget.mixin.server.inventory;
+package io.github.plusls.MasaGadget.mixin.server.block;
 
 import io.github.plusls.MasaGadget.MasaGadgetMod;
 import io.github.plusls.MasaGadget.network.ServerNetworkHandler;
+import net.minecraft.block.entity.DispenserBlockEntity;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
-import net.minecraft.block.entity.ShulkerBoxBlockEntity;
-import net.minecraft.inventory.SidedInventory;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Tickable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(ShulkerBoxBlockEntity.class)
-public abstract class MixinShulkerBoxBlockEntity extends LootableContainerBlockEntity implements SidedInventory, Tickable {
+
+@Mixin(DispenserBlockEntity.class)
+public abstract class MixinDispenserBlockEntity extends LootableContainerBlockEntity {
 
     @Shadow
     public abstract CompoundTag toTag(CompoundTag tag);
 
-    public MixinShulkerBoxBlockEntity() {
+    public MixinDispenserBlockEntity() {
         super(null);
     }
 
@@ -27,7 +26,7 @@ public abstract class MixinShulkerBoxBlockEntity extends LootableContainerBlockE
         super.markDirty();
         if (ServerNetworkHandler.lastBlockPosMap.containsValue(this.pos)) {
             ((ServerWorld) this.getWorld()).getChunkManager().markForUpdate(this.getPos());
-            MasaGadgetMod.LOGGER.debug("update ShulkerBoxBlockEntity: {}", this.pos);
+            MasaGadgetMod.LOGGER.debug("update DispenserBlockEntity: {}", this.pos);
         }
     }
 
