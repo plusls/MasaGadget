@@ -3,7 +3,6 @@ package io.github.plusls.MasaGadget.mixin.client;
 import net.minecraft.entity.Npc;
 import net.minecraft.entity.passive.AbstractTraderEntity;
 import net.minecraft.entity.passive.PassiveEntity;
-import net.minecraft.inventory.InventoryChangedListener;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.village.Trader;
@@ -17,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractTraderEntity.class)
-public abstract class MixinAbstractTraderEntity extends PassiveEntity implements Npc, Trader, InventoryChangedListener {
+public abstract class MixinAbstractTraderEntity extends PassiveEntity implements Npc, Trader {
     @Final
     @Dynamic
     @Shadow
@@ -28,10 +27,7 @@ public abstract class MixinAbstractTraderEntity extends PassiveEntity implements
     }
 
     // mojang 的 SimpleInventory 实现的有问题，readTags 时不会清空原有数据需要手动清空
-    @Inject(method = "readCustomDataFromTag(Lnet/minecraft/nbt/CompoundTag;)V",
-            at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/inventory/SimpleInventory;readTags(Lnet/minecraft/nbt/ListTag;)V",
-                    ordinal = 0))
+    @Inject(method = "readCustomDataFromTag(Lnet/minecraft/nbt/CompoundTag;)V", at = @At(value = "HEAD"))
     private void preReadTags(CompoundTag tag, CallbackInfo info) {
         if (this.world.isClient()) {
             this.inventory.clear();
