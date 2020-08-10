@@ -5,21 +5,24 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "server.MixinPlayerManager",
-    "server.inventory.MixinShulkerBoxBlockEntity",
-    "server.inventory.MixinHopperBlockEntity",
-    "server.inventory.MixinAbstractFurnaceBlockEntity",
-    "server.inventory.MixinDispenserBlockEntity"
+    "server.MixinServerPlayNetworkHandler",
+    "server.entity.MixinAbstractTraderEntity",
+    "server.block.MixinShulkerBoxBlockEntity",
+    "server.block.MixinHopperBlockEntity",
+    "server.block.MixinAbstractFurnaceBlockEntity",
+    "server.block.MixinDispenserBlockEntity"
   ],
   "client": [
     "client.malilib.MixinWidgetListConfigOptions",
     "client.malilib.MixinDataStorage",
-    "client.malilib.MixinInventoryUtils",
     "client.tweakeroo.MixinRenderHandler",
+    "client.tweakeroo.MixinRenderUtils",
     "client.IMixinClientPlayNetworkHandler",
     "client.MixinCustomPayloadS2CPacket",
     "client.MixinPlayerRespawnS2CPacket",
     "client.MixinMinecraftClient",
-    "client.MixinClientPlayNetworkHandler"
+    "client.MixinClientPlayNetworkHandler",
+    "client.MixinAbstractTraderEntity"
   ],
   "injectors": {
     "defaultRequire": 1
