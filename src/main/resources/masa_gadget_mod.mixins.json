@@ -10,7 +10,10 @@
     "server.block.MixinShulkerBoxBlockEntity",
     "server.block.MixinHopperBlockEntity",
     "server.block.MixinAbstractFurnaceBlockEntity",
-    "server.block.MixinDispenserBlockEntity"
+    "server.block.MixinDispenserBlockEntity",
+    "server.block.MixinChestBlockEntity",
+    "server.block.MixinBarrelBlockEntity",
+    "server.block.MixinBrewingStandBlockEntity"
   ],
   "client": [
     "client.malilib.MixinWidgetListConfigOptions",
