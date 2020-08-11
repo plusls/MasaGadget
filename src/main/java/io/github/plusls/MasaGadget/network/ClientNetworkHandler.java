@@ -9,6 +9,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.crash.CrashException;
+import net.minecraft.util.crash.CrashReport;
 import net.minecraft.world.World;
 
 public class ClientNetworkHandler {
@@ -36,7 +38,11 @@ public class ClientNetworkHandler {
         Entity entity = world.getEntityById(entityId);
         if (entity != null) {
             MasaGadgetMod.LOGGER.debug("update entity!");
-            entity.fromTag(tag);
+            // 1.14 特有麻烦
+            try {
+                entity.fromTag(tag);
+            } catch (CrashException e) {
+            }
         }
     }
 }
