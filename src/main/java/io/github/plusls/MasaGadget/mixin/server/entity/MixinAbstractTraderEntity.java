@@ -57,7 +57,6 @@ public abstract class MixinAbstractTraderEntity extends PassiveEntity implements
                 buf.writeCompoundTag(this.toTag(new CompoundTag()));
                 ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, ClientNetworkHandler.RESPONSE_ENTITY, buf);
                 MasaGadgetMod.LOGGER.debug("update villager inventory: onInventoryChanged.");
-                return;
             }
         }
     }

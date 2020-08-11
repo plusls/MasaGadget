@@ -26,7 +26,10 @@ public abstract class MixinClientPlayNetworkHandler implements ClientPlayPacketL
                 blockEntity instanceof ShulkerBoxBlockEntity ||
                         blockEntity instanceof HopperBlockEntity ||
                         blockEntity instanceof AbstractFurnaceBlockEntity ||
-                        blockEntity instanceof DispenserBlockEntity // 包括了投掷器
+                        blockEntity instanceof DispenserBlockEntity || // 包括了投掷器
+                        blockEntity instanceof BarrelBlockEntity ||
+                        blockEntity instanceof BrewingStandBlockEntity ||
+                        blockEntity instanceof ChestBlockEntity // 包括了陷井箱
         )) {
             blockEntity.fromTag(this.client.world.getBlockState(blockEntity.getPos()), packet.getCompoundTag());
         }

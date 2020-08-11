@@ -25,8 +25,12 @@ public abstract class MixinHopperBlockEntity extends LootableContainerBlockEntit
     @Override
     public void markDirty() {
         super.markDirty();
+        // 在生成世界时可能会产生空指针
+        if (this.world == null) {
+            return;
+        }
         if (ServerNetworkHandler.lastBlockPosMap.containsValue(this.pos)) {
-            ((ServerWorld) this.getWorld()).getChunkManager().markForUpdate(this.getPos());
+            ((ServerWorld) this.world).getChunkManager().markForUpdate(this.getPos());
             MasaGadgetMod.LOGGER.debug("update HopperBlockEntity: {}", this.pos);
         }
     }
