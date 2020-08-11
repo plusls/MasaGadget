@@ -24,7 +24,10 @@ public abstract class MixinRenderUtils {
         if (blockEntity instanceof AbstractFurnaceBlockEntity ||
                 blockEntity instanceof DispenserBlockEntity ||
                 blockEntity instanceof HopperBlockEntity ||
-                blockEntity instanceof ShulkerBoxBlockEntity
+                blockEntity instanceof ShulkerBoxBlockEntity ||
+                blockEntity instanceof BarrelBlockEntity ||
+                blockEntity instanceof BrewingStandBlockEntity ||
+                blockEntity instanceof ChestBlockEntity
         ) {
             DataAccessor.requestBlockEntity(pos);
         }
