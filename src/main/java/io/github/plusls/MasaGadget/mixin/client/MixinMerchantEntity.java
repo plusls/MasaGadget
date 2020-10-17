@@ -1,11 +1,11 @@
 package io.github.plusls.MasaGadget.mixin.client;
 
 import net.minecraft.entity.Npc;
-import net.minecraft.entity.passive.AbstractTraderEntity;
+import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.village.Trader;
+import net.minecraft.village.Merchant;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Final;
@@ -15,14 +15,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(AbstractTraderEntity.class)
-public abstract class MixinAbstractTraderEntity extends PassiveEntity implements Npc, Trader {
+@Mixin(MerchantEntity.class)
+public abstract class MixinMerchantEntity extends PassiveEntity implements Npc, Merchant {
     @Final
     @Dynamic
     @Shadow
     private SimpleInventory inventory;
 
-    public MixinAbstractTraderEntity(World world) {
+    public MixinMerchantEntity(World world) {
         super(null, null);
     }
 

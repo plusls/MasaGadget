@@ -3,29 +3,31 @@
   "minVersion": "0.8",
   "package": "io.github.plusls.MasaGadget.mixin",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [
+  "server": [
     "server.MixinPlayerManager",
     "server.MixinServerPlayNetworkHandler",
-    "server.entity.MixinAbstractTraderEntity",
-    "server.block.MixinShulkerBoxBlockEntity",
-    "server.block.MixinHopperBlockEntity",
     "server.block.MixinAbstractFurnaceBlockEntity",
-    "server.block.MixinDispenserBlockEntity",
-    "server.block.MixinChestBlockEntity",
     "server.block.MixinBarrelBlockEntity",
-    "server.block.MixinBrewingStandBlockEntity"
+    "server.block.MixinBrewingStandBlockEntity",
+    "server.block.MixinChestBlockEntity",
+    "server.block.MixinDispenserBlockEntity",
+    "server.block.MixinHopperBlockEntity",
+    "server.block.MixinShulkerBoxBlockEntity",
+    "server.entity.MixinMerchantEntity",
+    "server.item.MixinItemStack",
+    "server.block.MixinBeehiveBlockEntity"
   ],
   "client": [
-    "client.malilib.MixinWidgetListConfigOptions",
-    "client.malilib.MixinDataStorage",
-    "client.tweakeroo.MixinRenderHandler",
-    "client.tweakeroo.MixinRenderUtils",
     "client.IMixinClientPlayNetworkHandler",
-    "client.MixinCustomPayloadS2CPacket",
-    "client.MixinPlayerRespawnS2CPacket",
-    "client.MixinMinecraftClient",
     "client.MixinClientPlayNetworkHandler",
-    "client.MixinAbstractTraderEntity"
+    "client.MixinCustomPayloadS2CPacket",
+    "client.MixinMerchantEntity",
+    "client.MixinMinecraftClient",
+    "client.MixinPlayerRespawnS2CPacket",
+    "client.malilib.MixinDataStorage",
+    "client.malilib.MixinWidgetListConfigOptions",
+    "client.tweakeroo.MixinRenderHandler",
+    "client.tweakeroo.MixinRenderUtils"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,5 +1,6 @@
 package io.github.plusls.MasaGadget.mixin.client;
 
+import io.github.plusls.MasaGadget.MasaGadgetMod;
 import net.minecraft.block.entity.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -29,8 +30,10 @@ public abstract class MixinClientPlayNetworkHandler implements ClientPlayPacketL
                         blockEntity instanceof DispenserBlockEntity || // 包括了投掷器
                         blockEntity instanceof BarrelBlockEntity ||
                         blockEntity instanceof BrewingStandBlockEntity ||
-                        blockEntity instanceof ChestBlockEntity // 包括了陷井箱
+                        blockEntity instanceof ChestBlockEntity || // 包括了陷井箱
+                        blockEntity instanceof BeehiveBlockEntity
         )) {
+            MasaGadgetMod.LOGGER.debug("recv BlockEntity at {}", packet.getPos());
             blockEntity.fromTag(this.client.world.getBlockState(blockEntity.getPos()), packet.getCompoundTag());
         }
     }

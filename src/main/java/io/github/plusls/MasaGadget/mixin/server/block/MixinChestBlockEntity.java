@@ -3,7 +3,6 @@ package io.github.plusls.MasaGadget.mixin.server.block;
 import io.github.plusls.MasaGadget.MasaGadgetMod;
 import io.github.plusls.MasaGadget.network.ServerNetworkHandler;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
@@ -38,8 +37,9 @@ public abstract class MixinChestBlockEntity extends LootableContainerBlockEntity
         if (ServerNetworkHandler.lastBlockPosMap.containsValue(this.pos)) {
             ((ServerWorld) this.world).getChunkManager().markForUpdate(this.getPos());
             MasaGadgetMod.LOGGER.debug("update ChestBlockEntity: {}", this.pos);
-        } else if (blockState.isOf(Blocks.CHEST) && blockState.get(ChestBlock.CHEST_TYPE) != ChestType.SINGLE) {
+        } else if (blockState.getBlock() instanceof ChestBlock && blockState.get(ChestBlock.CHEST_TYPE) != ChestType.SINGLE) {
             // 如果是一个大箱子需要特殊处理
+            // 上面不用 isOf 是为了考虑到陷阱箱的情况，陷阱箱继承自箱子
             BlockPos posAdj = pos.offset(ChestBlock.getFacing(blockState));
             if (ServerNetworkHandler.lastBlockPosMap.containsValue(posAdj)) {
                 ((ServerWorld) this.world).getChunkManager().markForUpdate(this.getPos());

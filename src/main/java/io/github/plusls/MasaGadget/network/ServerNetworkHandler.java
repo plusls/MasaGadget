@@ -6,7 +6,6 @@ import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.PacketContext;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.enums.ChestType;
 import net.minecraft.entity.Entity;
@@ -46,7 +45,7 @@ public class ServerNetworkHandler {
             // 大不了 op 直接拉黑
             world.getChunkManager().markForUpdate(pos);
             // 不是单个箱子则需要更新隔壁箱子
-            if (blockState.isOf(Blocks.CHEST) && blockState.get(ChestBlock.CHEST_TYPE) != ChestType.SINGLE) {
+            if (blockState.getBlock() instanceof ChestBlock && blockState.get(ChestBlock.CHEST_TYPE) != ChestType.SINGLE) {
                 BlockPos posAdj = pos.offset(ChestBlock.getFacing(blockState));
                 world.getChunkManager().markForUpdate(posAdj);
             }

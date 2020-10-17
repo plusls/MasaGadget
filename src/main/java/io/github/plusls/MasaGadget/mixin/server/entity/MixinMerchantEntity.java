@@ -7,7 +7,7 @@ import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Npc;
-import net.minecraft.entity.passive.AbstractTraderEntity;
+import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
@@ -16,8 +16,9 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.village.Trader;
+import net.minecraft.village.Merchant;
 import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -28,18 +29,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Map;
 import java.util.UUID;
 
-@Mixin(AbstractTraderEntity.class)
-public abstract class MixinAbstractTraderEntity extends PassiveEntity implements Npc, Trader, InventoryChangedListener {
+@Mixin(MerchantEntity.class)
+public abstract class MixinMerchantEntity extends PassiveEntity implements Npc, Merchant, InventoryChangedListener {
     @Final
+    @Dynamic
     @Shadow
     private SimpleInventory inventory;
 
-    public MixinAbstractTraderEntity(World world) {
+    public MixinMerchantEntity(World world) {
         super(null, null);
     }
 
     @Inject(method = "<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V", at = @At(value = "RETURN"))
-    private void postInit(EntityType<? extends AbstractTraderEntity> entityType, World world, CallbackInfo info) {
+    private void postInit(EntityType<? extends MerchantEntity> entityType, World world, CallbackInfo info) {
         if (this.world.isClient()) {
             return;
         }
