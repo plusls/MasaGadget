@@ -3,6 +3,8 @@ package io.github.plusls.MasaGadget.network;
 
 import io.github.plusls.MasaGadget.MasaGadgetMod;
 import io.netty.buffer.Unpooled;
+import net.earthcomputer.multiconnect.api.IIdentifierCustomPayloadListener;
+import net.earthcomputer.multiconnect.api.MultiConnectAPI;
 import net.fabricmc.fabric.api.network.PacketContext;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.minecraft.block.BlockState;
@@ -20,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class ServerNetworkHandler {
+public class ServerNetworkHandler implements IIdentifierCustomPayloadListener {
 
     public static final Identifier REQUEST_BLOCK_ENTITY = MasaGadgetMod.id("request_block_entity");
     public static final Identifier REQUEST_ENTITY = MasaGadgetMod.id("request_entity");
@@ -70,6 +72,28 @@ public class ServerNetworkHandler {
             lastEntityUuidMap.put(player.getUuid(), entityId);
         } else {
             lastEntityUuidMap.remove(player.getUuid());
+        }
+    }
+
+    @Override
+    public void onCustomPayload(int protocol, Identifier channel, PacketByteBuf data) {
+        while (true) {
+            try {
+                if (channel.equals(ServerNetworkHandler.REQUEST_BLOCK_ENTITY) || channel.equals(ServerNetworkHandler.REQUEST_ENTITY)) {
+                    MasaGadgetMod.LOGGER.debug("forceSendCustomPayload: masagadget");
+                    MultiConnectAPI.instance().forceSendCustomPayload(channel, data);
+                } else if (channel.equals(new Identifier("bbor:subscribe"))) {
+                    MasaGadgetMod.LOGGER.debug("forceSendCustomPayload: bbor");
+                    MultiConnectAPI.instance().forceSendCustomPayload(channel, data);
+                }
+            } catch (IllegalStateException e) {
+                // MinecraftClient.getInstance().getNetworkHandler() 在游戏刚连接时会返回 null
+                // 由于 multiconnect mixin 了 ClientPlayNetworkHandler.sendPacket
+                // 因此只能用死循环来缓解这个问题
+                // 不知道有没有优雅的解决方案
+                continue;
+            }
+            break;
         }
     }
 }

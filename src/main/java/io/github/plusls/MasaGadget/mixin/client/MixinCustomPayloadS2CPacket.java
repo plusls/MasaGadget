@@ -2,7 +2,10 @@ package io.github.plusls.MasaGadget.mixin.client;
 
 import fi.dy.masa.minihud.util.DataStorage;
 import io.github.plusls.MasaGadget.MasaGadgetMod;
+import io.github.plusls.MasaGadget.network.ClientNetworkHandler;
 import io.github.plusls.MasaGadget.util.ParseBborPacket;
+import net.fabricmc.fabric.api.network.PacketContext;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.Packet;
@@ -26,32 +29,24 @@ public abstract class MixinCustomPayloadS2CPacket implements Packet<ClientPlayPa
             at = @At(value = "HEAD"), cancellable = true)
     private void onApply(ClientPlayPacketListener clientPlayPacketListener, CallbackInfo info) {
         CustomPayloadS2CPacket packet = (CustomPayloadS2CPacket) (Object) this;
-        String channelName = channel.toString();
-        if (channelName.startsWith("bbor:")) {
+        if (channel.getNamespace().equals("bbor")) {
+            // 因为 mod 会吞掉包，因此需要手动 mixin 在 mod 处理包之前做处理
+
+            ClientPlayNetworkHandler handler = (ClientPlayNetworkHandler) clientPlayPacketListener;
+            // sb mojang 在 player 创建完成之前，MinecraftClient.getInstance().getNetworkHandler() 永远返回 null
+            // 可是连接实际上已经创建了，bbor 为了 bypass 这个机制，使用了这个 trick 来绕过
+            //((ClientPlayNetworkHandler) netHandlerPlayClient).sendPacket(SubscribeToServer.getPayload().build());
             PacketByteBuf data = null;
+            PacketContext context = (PacketContext) (Object) handler;
             try {
                 data = packet.getData();
-                switch (channelName) {
-                    case "bbor:initialize": {
-                        long seed = data.readLong();
-                        int spawnX = data.readInt();
-                        int spawnZ = data.readInt();
-                        ParseBborPacket.seedCache = seed;
-                        ParseBborPacket.spawnPos = new BlockPos(spawnX, 0, spawnZ);
-                        ParseBborPacket.structuresCache = new ListTag();
-                        if (!ParseBborPacket.carpetOrservux) {
-                            ParseBborPacket.enable = true;
-                            DataStorage.getInstance().setWorldSeed(ParseBborPacket.seedCache);
-                            DataStorage.getInstance().setWorldSpawn(ParseBborPacket.spawnPos);
-                            MasaGadgetMod.LOGGER.info("init seed: {}", ParseBborPacket.seedCache);
-                        }
-                        if (!MasaGadgetMod.bborCompat) {
-                            ((ClientPlayNetworkHandler) clientPlayPacketListener).sendPacket(MasaGadgetMod.BBOR_SUBSCRIBE_PACKET);
-                        }
+                switch (channel.getPath()) {
+                    case "initialize": {
+                        ClientNetworkHandler.bborInitializeHandler(context, data);
                         break;
                     }
-                    case "bbor:add_bounding_box_v2": {
-                        ParseBborPacket.parse(data);
+                    case "add_bounding_box_v2": {
+                        ClientNetworkHandler.bborAddBoundingBoxV2Handler(context, data);
                         break;
                     }
                 }
@@ -63,10 +58,10 @@ public abstract class MixinCustomPayloadS2CPacket implements Packet<ClientPlayPa
             if (!MasaGadgetMod.bborCompat) {
                 info.cancel();
             }
-        } else if (channelName.equals("carpet:structures")) {
+        } else if (channel.toString().equals("carpet:structures")) {
             ParseBborPacket.carpetOrservux = true;
             ParseBborPacket.enable = false;
-        } else if (channelName.equals("servux:structures")) {
+        } else if (channel.toString().equals("servux:structures")) {
             ParseBborPacket.carpetOrservux = true;
             ParseBborPacket.enable = false;
         }

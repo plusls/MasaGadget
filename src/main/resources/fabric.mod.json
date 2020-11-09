@@ -16,7 +16,7 @@
   "license": "CC0-1.0",
   "environment": "*",
   "entrypoints": {
-    "main": [
+    "server": [
       "io.github.plusls.MasaGadget.MasaGadgetMod"
     ],
     "client": [
@@ -30,7 +30,10 @@
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": "*",
-    "minecraft": "1.16.x"
+    "minecraft": "1.16.x",
+    "malilib": ">=0.10.0-dev.21",
+    "tweakeroo": ">=0.10.0-dev",
+    "minihud": ">=0.19.0-dev"
   },
   "suggests": {
     "flamingo": "*"

@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.4-SNAPSHOT'
+	id 'fabric-loom' version '0.5-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -13,6 +13,9 @@ group = project.maven_group
 repositories {
 	maven {
 		url 'https://masa.dy.fi/maven'
+	}
+	maven {
+		url 'https://dl.bintray.com/earthcomputer/mods'
 	}
 }
 
@@ -31,6 +34,8 @@ dependencies {
 	modCompile "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version}:${project.malilib_version}"
 	modCompile "fi.dy.masa.minihud:minihud-fabric-${project.minecraft_version}:${project.minihud_version}"
 	modCompile "fi.dy.masa.tweakeroo:tweakeroo-fabric-${project.minecraft_version}:${project.tweakeroo_version}"
+	modImplementation "net.earthcomputer:multiconnect:${project.multiconnect_version}:api"
+	include "net.earthcomputer:multiconnect:${project.multiconnect_version}:api"
 }
 
 processResources {

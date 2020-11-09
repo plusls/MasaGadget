@@ -3,8 +3,9 @@ package io.github.plusls.MasaGadget;
 import io.github.plusls.MasaGadget.network.ClientNetworkHandler;
 import io.github.plusls.MasaGadget.network.ServerNetworkHandler;
 import io.netty.buffer.Unpooled;
+import net.earthcomputer.multiconnect.api.MultiConnectAPI;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.api.ModInitializer;
+import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
@@ -14,7 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 
-public class MasaGadgetMod implements ModInitializer, ClientModInitializer {
+public class MasaGadgetMod implements DedicatedServerModInitializer, ClientModInitializer {
     public static final String MODID = "masa_gadget_mod";
     public static final Logger LOGGER = LogManager.getLogger("MasaGadgetMod");
     public static boolean bborCompat = false;
@@ -23,13 +24,8 @@ public class MasaGadgetMod implements ModInitializer, ClientModInitializer {
     public static boolean masaGagdetInServer = false;
 
     @Override
-    public void onInitialize() {
-        Configurator.setLevel(LOGGER.getName(), Level.toLevel(MasaGadgetMod.level));
-        ServerNetworkHandler.init();
-    }
-
-    @Override
     public void onInitializeClient() {
+        Configurator.setLevel(LOGGER.getName(), Level.toLevel(MasaGadgetMod.level));
         if (FabricLoader.getInstance().isModLoaded("bbor")) {
             LOGGER.info("BBOR detected.");
             bborCompat = true;
@@ -38,7 +34,17 @@ public class MasaGadgetMod implements ModInitializer, ClientModInitializer {
                     new Identifier("bbor", "subscribe"),
                     new PacketByteBuf(Unpooled.buffer()));
         }
+        // 不需要检查是否存在 Multiconnect，因为 MultiConnectAPI.instance() 是动态获取的
+        // 如果 multiconnect 不存在它会 new 一个新的，并且各个 api 的实现是空函数，因此不会有兼容性问题
+        MultiConnectAPI.instance().addServerboundIdentifierCustomPayloadListener(new ServerNetworkHandler());
+        MultiConnectAPI.instance().addIdentifierCustomPayloadListener(new ClientNetworkHandler());
         ClientNetworkHandler.init();
+    }
+
+    @Override
+    public void onInitializeServer() {
+        Configurator.setLevel(LOGGER.getName(), Level.toLevel(MasaGadgetMod.level));
+        ServerNetworkHandler.init();
     }
 
     public static Identifier id(String id) {

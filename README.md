@@ -42,6 +42,12 @@ MiniHUD 支持查看蜂箱内的蜜蜂数量，但是在多人游戏会失效。
 
 数量显示不是即时同步的，按一下同步一次
 
+### 兼容 multiconnect
+
+最新版本的 Masa Gadget 已经兼容了由 EarthComputer 编写的 multiconnect mod, Masa Gadget 支持跨版本使用，即从高版本客户端连接到低版本服务器
+
+出于维护方便的考虑不再更新 1.14，1.15 的 Masa Gadget
+
 ## 安装
 
 该 mod 依赖 malilib, minihud, fabric-api
@@ -53,8 +59,8 @@ MiniHUD 支持查看蜂箱内的蜜蜂数量，但是在多人游戏会失效。
 ```
 # 1.16.x
 malilib_version = 0.10.0-dev.21+arne.1
-minihud_version = 0.19.0-dev.20200928.220110
-tweakeroo_version = 0.10.0-dev.20201001.000406
+minihud_version = 0.19.0-dev.20201103.184029
+tweakeroo_version = 0.10.0-dev.20201103.184154
 
 # 1.15.x
 malilib_version = 0.10.0-dev.21+arne.1
