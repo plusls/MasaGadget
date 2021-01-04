@@ -1,4 +1,4 @@
-package io.github.plusls.MasaGadget.mixin.client.malilib;
+package com.plusls.MasaGadget.mixin.malilib;
 
 import com.google.common.collect.ImmutableList;
 import fi.dy.masa.malilib.config.IConfigBase;

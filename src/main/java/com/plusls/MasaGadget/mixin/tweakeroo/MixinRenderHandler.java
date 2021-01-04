@@ -1,9 +1,9 @@
-package io.github.plusls.MasaGadget.mixin.client.tweakeroo;
+package com.plusls.MasaGadget.mixin.tweakeroo;
 
+import com.plusls.MasaGadget.network.PcaSyncProtocol;
 import fi.dy.masa.malilib.hotkeys.IKeybind;
 import fi.dy.masa.malilib.interfaces.IRenderer;
 import fi.dy.masa.tweakeroo.event.RenderHandler;
-import io.github.plusls.MasaGadget.network.ServerNetworkHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -19,8 +19,8 @@ public abstract class MixinRenderHandler implements IRenderer {
     private boolean cancelPcaSync(IKeybind iKeybind) {
         boolean ret = iKeybind.isKeybindHeld();
         if (!ret) {
-            ServerNetworkHandler.cancelSyncBlockEntity();
-            ServerNetworkHandler.cancelSyncEntity();
+            PcaSyncProtocol.cancelSyncBlockEntity();
+            PcaSyncProtocol.cancelSyncEntity();
         }
         return ret;
     }

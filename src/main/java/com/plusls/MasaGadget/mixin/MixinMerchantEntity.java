@@ -1,4 +1,4 @@
-package io.github.plusls.MasaGadget.mixin.client;
+package com.plusls.MasaGadget.mixin;
 
 import net.minecraft.entity.Npc;
 import net.minecraft.entity.passive.MerchantEntity;

@@ -1,6 +1,7 @@
-package io.github.plusls.MasaGadget.util;
+package com.plusls.MasaGadget.util;
 
-import io.github.plusls.MasaGadget.MasaGadgetMod;
+import com.plusls.MasaGadget.MasaGadgetMod;
+import com.plusls.MasaGadget.network.BborProtocol;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
@@ -32,7 +33,7 @@ public class BoundingBoxDeserializer {
         if (!buf.isReadable(2) || buf.readChar() != 'S')
             return;
 
-        String typeId = ParseBborPacket.bborIdToMinihudId(buf.readInt());
+        String typeId = BborProtocol.bborIdToMinihudId(buf.readInt());
         if (typeId.equals("")) {
             return;
         }

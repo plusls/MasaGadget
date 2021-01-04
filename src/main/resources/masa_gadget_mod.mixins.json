@@ -1,17 +1,16 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "io.github.plusls.MasaGadget.mixin",
+  "package": "com.plusls.MasaGadget.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "client.MixinCustomPayloadS2CPacket",
-    "client.MixinMerchantEntity",
-    "client.MixinMinecraftClient",
-    "client.MixinPlayerRespawnS2CPacket",
-    "client.malilib.MixinDataStorage",
-    "client.malilib.MixinWidgetListConfigOptions",
-    "client.tweakeroo.MixinRenderHandler",
-    "client.tweakeroo.MixinRenderUtils"
+    "MixinCustomPayloadS2CPacket",
+    "MixinMerchantEntity",
+    "MixinPlayerRespawnS2CPacket",
+    "malilib.MixinDataStorage",
+    "malilib.MixinWidgetListConfigOptions",
+    "tweakeroo.MixinRenderHandler",
+    "tweakeroo.MixinRenderUtils"
   ],
   "injectors": {
     "defaultRequire": 1

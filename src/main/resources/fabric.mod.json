@@ -17,10 +17,10 @@
   "environment": "*",
   "entrypoints": {
     "server": [
-      "io.github.plusls.MasaGadget.MasaGadgetMod"
+      "com.plusls.MasaGadget.MasaGadgetMod"
     ],
     "client": [
-      "io.github.plusls.MasaGadget.MasaGadgetMod"
+      "com.plusls.MasaGadget.MasaGadgetMod"
     ]
   },
   "mixins": [

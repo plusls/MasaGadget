@@ -1,7 +1,7 @@
-package io.github.plusls.MasaGadget.mixin.client;
+package com.plusls.MasaGadget.mixin;
 
+import com.plusls.MasaGadget.network.BborProtocol;
 import fi.dy.masa.minihud.util.DataStorage;
-import io.github.plusls.MasaGadget.util.ParseBborPacket;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.PlayerRespawnS2CPacket;
@@ -22,12 +22,12 @@ public abstract class MixinPlayerRespawnS2CPacket {
         RegistryKey<World> oldDimension = MinecraftClient.getInstance().player.world.getRegistryKey();
         RegistryKey<World> newDimension = packet.getDimension();
         listener.onPlayerRespawn(packet);
-        if (!ParseBborPacket.enable) {
+        if (!BborProtocol.enable) {
             return;
         }
-        if (oldDimension != newDimension && ParseBborPacket.structuresCache != null) {
+        if (oldDimension != newDimension && BborProtocol.structuresCache != null) {
             // reload minihud struct when dimension change
-            DataStorage.getInstance().addOrUpdateStructuresFromServer(ParseBborPacket.structuresCache, 0x7fffffff - 0x1000, false);
+            DataStorage.getInstance().addOrUpdateStructuresFromServer(BborProtocol.structuresCache, 0x7fffffff - 0x1000, false);
         }
     }
 }

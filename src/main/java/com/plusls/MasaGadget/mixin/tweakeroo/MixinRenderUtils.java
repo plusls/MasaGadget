@@ -1,10 +1,10 @@
-package io.github.plusls.MasaGadget.mixin.client.tweakeroo;
+package com.plusls.MasaGadget.mixin.tweakeroo;
 
+import com.plusls.MasaGadget.MasaGadgetMod;
+import com.plusls.MasaGadget.network.PcaSyncProtocol;
 import fi.dy.masa.malilib.util.InventoryUtils;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.renderer.RenderUtils;
-import io.github.plusls.MasaGadget.MasaGadgetMod;
-import io.github.plusls.MasaGadget.network.ServerNetworkHandler;
 import net.minecraft.block.entity.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
@@ -12,7 +12,6 @@ import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -30,7 +29,7 @@ public abstract class MixinRenderUtils {
                     ordinal = 0, remap = false))
     private static Inventory redirectGetBlockInventory(World world, BlockPos pos) {
         BlockEntity blockEntity = world.getWorldChunk(pos).getBlockEntity(pos);
-        if (MasaGadgetMod.pcaSyncProtocol && (
+        if (PcaSyncProtocol.enable && (
                 blockEntity instanceof AbstractFurnaceBlockEntity ||
                         blockEntity instanceof DispenserBlockEntity ||
                         blockEntity instanceof HopperBlockEntity ||
@@ -40,7 +39,7 @@ public abstract class MixinRenderUtils {
                         blockEntity instanceof ChestBlockEntity ||
                         blockEntity instanceof BeehiveBlockEntity
         )) {
-            ServerNetworkHandler.syncBlockEntity(pos);
+            PcaSyncProtocol.syncBlockEntity(pos);
         }
         return InventoryUtils.getInventory(world, pos);
     }
@@ -51,9 +50,9 @@ public abstract class MixinRenderUtils {
                     ordinal = 0, remap = true))
     private static Entity redirectGetEntity(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        if (MasaGadgetMod.pcaSyncProtocol) {
+        if (PcaSyncProtocol.enable) {
             if (entity instanceof Inventory || entity instanceof VillagerEntity || entity instanceof HorseBaseEntity) {
-                ServerNetworkHandler.syncEntity(entity.getEntityId());
+                PcaSyncProtocol.syncEntity(entity.getEntityId());
             }
         }
         return entity;

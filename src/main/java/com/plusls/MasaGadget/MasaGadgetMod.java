@@ -1,6 +1,7 @@
-package io.github.plusls.MasaGadget;
+package com.plusls.MasaGadget;
 
-import io.github.plusls.MasaGadget.network.ClientNetworkHandler;
+import com.plusls.MasaGadget.network.BborProtocol;
+import com.plusls.MasaGadget.network.PcaSyncProtocol;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -16,9 +17,7 @@ public class MasaGadgetMod implements ClientModInitializer {
     public static final String MODID = "masa_gadget_mod";
     public static final Logger LOGGER = LogManager.getLogger("MasaGadgetMod");
     public static boolean bborCompat = false;
-    public static CustomPayloadC2SPacket BBOR_SUBSCRIBE_PACKET = null;
     public static String level = "INFO";
-    public static boolean pcaSyncProtocol = false;
 
     @Override
     public void onInitializeClient() {
@@ -26,16 +25,14 @@ public class MasaGadgetMod implements ClientModInitializer {
         if (FabricLoader.getInstance().isModLoaded("bbor")) {
             LOGGER.info("BBOR detected.");
             bborCompat = true;
-        } else {
-            BBOR_SUBSCRIBE_PACKET = new CustomPayloadC2SPacket(
-                    new Identifier("bbor", "subscribe"),
-                    new PacketByteBuf(Unpooled.buffer()));
         }
+
         // 不需要检查是否存在 Multiconnect，因为 MultiConnectAPI.instance() 是动态获取的
         // 如果 multiconnect 不存在它会 new 一个新的，并且各个 api 的实现是空函数，因此不会有兼容性问题
         // MultiConnectAPI.instance().addServerboundIdentifierCustomPayloadListener(new ServerNetworkHandler());
         // MultiConnectAPI.instance().addIdentifierCustomPayloadListener(new ClientNetworkHandler());
-        ClientNetworkHandler.init();
+        BborProtocol.init();
+        PcaSyncProtocol.init();
     }
 
     public static Identifier id(String id) {
