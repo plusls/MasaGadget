@@ -15,6 +15,6 @@ public abstract class MixinMinecraftClient {
             at = {@At("HEAD")}
     )
     private void onDisconnectPre(Screen screen, CallbackInfo ci) {
-        MasaGadgetMod.masaGagdetInServer = false;
+        MasaGadgetMod.pcaSyncProtocol = false;
     }
 }

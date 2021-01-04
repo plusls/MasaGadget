@@ -3,23 +3,7 @@
   "minVersion": "0.8",
   "package": "io.github.plusls.MasaGadget.mixin",
   "compatibilityLevel": "JAVA_8",
-  "server": [
-    "server.MixinPlayerManager",
-    "server.MixinServerPlayNetworkHandler",
-    "server.block.MixinAbstractFurnaceBlockEntity",
-    "server.block.MixinBarrelBlockEntity",
-    "server.block.MixinBrewingStandBlockEntity",
-    "server.block.MixinChestBlockEntity",
-    "server.block.MixinDispenserBlockEntity",
-    "server.block.MixinHopperBlockEntity",
-    "server.block.MixinShulkerBoxBlockEntity",
-    "server.entity.MixinMerchantEntity",
-    "server.item.MixinItemStack",
-    "server.block.MixinBeehiveBlockEntity"
-  ],
   "client": [
-    "client.IMixinClientPlayNetworkHandler",
-    "client.MixinClientPlayNetworkHandler",
     "client.MixinCustomPayloadS2CPacket",
     "client.MixinMerchantEntity",
     "client.MixinMinecraftClient",

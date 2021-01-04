@@ -1,19 +1,15 @@
 package io.github.plusls.MasaGadget.mixin.client;
 
-import fi.dy.masa.minihud.util.DataStorage;
 import io.github.plusls.MasaGadget.MasaGadgetMod;
 import io.github.plusls.MasaGadget.network.ClientNetworkHandler;
 import io.github.plusls.MasaGadget.util.ParseBborPacket;
-import net.fabricmc.fabric.api.network.PacketContext;
-import net.minecraft.client.MinecraftClient;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,16 +33,15 @@ public abstract class MixinCustomPayloadS2CPacket implements Packet<ClientPlayPa
             // 可是连接实际上已经创建了，bbor 为了 bypass 这个机制，使用了这个 trick 来绕过
             //((ClientPlayNetworkHandler) netHandlerPlayClient).sendPacket(SubscribeToServer.getPayload().build());
             PacketByteBuf data = null;
-            PacketContext context = (PacketContext) (Object) handler;
             try {
                 data = packet.getData();
                 switch (channel.getPath()) {
                     case "initialize": {
-                        ClientNetworkHandler.bborInitializeHandler(context, data);
+                        ClientNetworkHandler.bborInitializeHandler(data);
                         break;
                     }
                     case "add_bounding_box_v2": {
-                        ClientNetworkHandler.bborAddBoundingBoxV2Handler(context, data);
+                        ClientNetworkHandler.bborAddBoundingBoxV2Handler(data);
                         break;
                     }
                 }
