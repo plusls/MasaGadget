@@ -5,8 +5,10 @@ import com.plusls.MasaGadget.util.BoundingBoxDeserializer;
 import fi.dy.masa.minihud.util.DataStorage;
 import fi.dy.masa.minihud.util.StructureType;
 import io.netty.buffer.Unpooled;
+import net.earthcomputer.multiconnect.api.ICustomPayloadEvent;
+import net.earthcomputer.multiconnect.api.ICustomPayloadListener;
+import net.earthcomputer.multiconnect.api.MultiConnectAPI;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
@@ -20,9 +22,17 @@ import net.minecraft.util.registry.Registry;
 import java.util.HashMap;
 
 public class BborProtocol {
-    private static final Identifier BBOR_INITIALIZE = new Identifier("bbor:initialize");
-    private static final Identifier BBOR_ADD_BOUNDING_BOX_V2 = new Identifier("bbor:add_bounding_box_v2");
-    private static final Identifier BBOR_SUBSCRIBE = new Identifier("bbor:subscribe");
+    private static final String NAMESPACE = "bbor";
+    private static Identifier id(String path) {
+        return new Identifier(NAMESPACE, path);
+    }
+
+    // recv
+    private static final Identifier INITIALIZE = id("initialize");
+    private static final Identifier ADD_BOUNDING_BOX_V2 = id("add_bounding_box_v2");
+
+    // send
+    private static final Identifier SUBSCRIBE = id("subscribe");
 
     private static final HashMap<Integer, String> BBOR_ID_TO_MINIHUD_ID = new HashMap<>();
     public static ListTag structuresCache = null;
@@ -30,6 +40,11 @@ public class BborProtocol {
     public static BlockPos spawnPos = null;
     public static boolean enable = false;
     public static boolean carpetOrServux = false;
+
+    private static final ClientboundIdentifierCustomPayloadListener clientboundIdentifierCustomPayloadListener =
+            new ClientboundIdentifierCustomPayloadListener();
+    private static final ServerboundIdentifierCustomPayloadListener serverboundIdentifierCustomPayloadListener =
+            new ServerboundIdentifierCustomPayloadListener();
 
     static {
         for (StructureType type : StructureType.VALUES) {
@@ -45,18 +60,50 @@ public class BborProtocol {
 
     public static void init() {
         ClientPlayConnectionEvents.JOIN.register(BborProtocol::onJoinServer);
+        ClientPlayConnectionEvents.DISCONNECT.register(BborProtocol::onDisconnect);
+        MultiConnectAPI.instance().addClientboundIdentifierCustomPayloadListener(clientboundIdentifierCustomPayloadListener);
+        MultiConnectAPI.instance().addServerboundIdentifierCustomPayloadListener(serverboundIdentifierCustomPayloadListener);
+    }
+
+    private static class ServerboundIdentifierCustomPayloadListener implements ICustomPayloadListener<Identifier> {
+        @Override
+        public void onCustomPayload(ICustomPayloadEvent<Identifier> event) {
+            Identifier channel = event.getChannel();
+            if (channel.equals(SUBSCRIBE)) {
+                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
+            }
+        }
+    }
+
+    private static class ClientboundIdentifierCustomPayloadListener implements ICustomPayloadListener<Identifier> {
+        @Override
+        public void onCustomPayload(ICustomPayloadEvent<Identifier> event) {
+            Identifier channel = event.getChannel();
+            if (channel.equals(ADD_BOUNDING_BOX_V2)) {
+                bborAddBoundingBoxV2Handler(event.getData());
+            }
+        }
+    }
+
+
+    private static void onDisconnect(ClientPlayNetworkHandler clientPlayNetworkHandler, MinecraftClient minecraftClient) {
+        BborProtocol.seedCache = null;
+        BborProtocol.spawnPos = null;
+        BborProtocol.structuresCache = null;
+        BborProtocol.enable = false;
+        BborProtocol.carpetOrServux = false;
     }
 
     private static void onJoinServer(ClientPlayNetworkHandler handler, PacketSender sender, MinecraftClient client) {
         if (!MasaGadgetMod.bborCompat) {
-            sender.sendPacket(BBOR_SUBSCRIBE, new PacketByteBuf(Unpooled.buffer()));
+            sender.sendPacket(SUBSCRIBE, new PacketByteBuf(Unpooled.buffer()));
         }
     }
 
     public static void bborProtocolHandler(Identifier channel, PacketByteBuf data) {
-        if (channel.equals(BBOR_INITIALIZE)) {
+        if (channel.equals(INITIALIZE)) {
             bborInitializeHandler(data);
-        } else if (channel.equals(BBOR_ADD_BOUNDING_BOX_V2)) {
+        } else if (channel.equals(ADD_BOUNDING_BOX_V2)) {
             bborAddBoundingBoxV2Handler(data);
         }
     }

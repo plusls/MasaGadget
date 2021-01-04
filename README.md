@@ -37,9 +37,7 @@ MiniHUD 支持查看蜂箱内的蜜蜂数量，但是在多人游戏会失效。
 需要服务端安装 plusls-carpet-addition 并开启 pcaSyncProtocol
 
 
-### ~~兼容 multiconnect~~
-
-暂未兼容
+### 兼容 multiconnect
 
 最新版本的 Masa Gadget 已经兼容了由 EarthComputer 编写的 multiconnect mod, Masa Gadget 支持跨版本使用，即从高版本客户端连接到低版本服务器
 

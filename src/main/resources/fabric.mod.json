@@ -16,9 +16,6 @@
   "license": "CC0-1.0",
   "environment": "*",
   "entrypoints": {
-    "server": [
-      "com.plusls.MasaGadget.MasaGadgetMod"
-    ],
     "client": [
       "com.plusls.MasaGadget.MasaGadgetMod"
     ]

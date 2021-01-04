@@ -23,12 +23,6 @@ public abstract class MixinDataStorage {
                 DataStorage.getInstance().setWorldSpawn(BborProtocol.spawnPos);
             if (BborProtocol.structuresCache != null)
                 DataStorage.getInstance().addOrUpdateStructuresFromServer(BborProtocol.structuresCache, 0x7fffffff - 0x1000, false);
-        } else {
-            BborProtocol.seedCache = null;
-            BborProtocol.spawnPos = null;
-            BborProtocol.structuresCache = null;
-            BborProtocol.enable = false;
-            BborProtocol.carpetOrServux = false;
         }
     }
 }
