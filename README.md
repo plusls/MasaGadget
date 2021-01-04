@@ -22,7 +22,9 @@ minihud 的查看结构和史莱姆区块渲染需要服务端安装了 carpet �
 
 tweakeroo 的容器预览功能在多人游戏中是不可用的，在安装此 mod 后可以让该功能在多人游戏中使用
 
-需要服务端安装 plusls-carpet-addition 并开启 pcaSyncProtocol
+现已兼容箱子矿车，漏斗矿车
+
+需要服务端安装 [plusls-carpet-addition](https://github.com/plusls/plusls-carpet-addition) 并开启 pcaSyncProtocol
 
 ### 灵魂出窍支持容器预览
 
