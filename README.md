@@ -49,19 +49,11 @@ MiniHUD 支持查看蜂箱内的蜜蜂数量，但是在多人游戏会失效。
 
 若出现报错请前往 masa 官网 https://masa.dy.fi/mcmods/client_mods/ 下载最新的 minihud 和 maillib
 
-在以下版本测试通过：
+依赖版本：
 
 ```
-# 1.16.x
-malilib_version = 0.10.0-dev.21+arne.1
-minihud_version = 0.19.0-dev.20201103.184029
-tweakeroo_version = 0.10.0-dev.20201103.184154
-
-# 1.15.x
-malilib_version = 0.10.0-dev.21+arne.1
-minihud_version = 0.19.0-dev.20200508.032934
-
-# 1.14.x
-malilib_version = 0.10.0-dev.20+arne.1
-minihud_version = 0.19.0-dev.20200424.001737
+fabric-api >= 0.28
+malilib_version >= 0.10.0-dev.21+arne.2
+minihud_version >= 0.19.0-dev.20201103.184029
+tweakeroo_version >= 0.10.0-dev.20201103.184154
 ```
