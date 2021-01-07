@@ -43,16 +43,19 @@ MiniHUD 支持查看蜂箱内的蜜蜂数量，但是在多人游戏会失效。
 
 出于维护方便的考虑不再更新 1.14，1.15 的 Masa Gadget
 
+### 投影 mod 多人游戏轻松放置修复
+
+投影 mod 的轻松放置功能在多人游戏中存在 bug，无法正确识别部分物品的方向，现已修复
+
 ## 安装
 
-该 mod 依赖 malilib, minihud, fabric-api
+该 mod 依赖 fabric-api >= 0.28.0
 
 若出现报错请前往 masa 官网 https://masa.dy.fi/mcmods/client_mods/ 下载最新的 minihud 和 maillib
 
-依赖版本：
+已经测试的版本：
 
 ```
-fabric-api >= 0.28
 malilib_version >= 0.10.0-dev.21+arne.2
 minihud_version >= 0.19.0-dev.20201103.184029
 tweakeroo_version >= 0.10.0-dev.20201103.184154
