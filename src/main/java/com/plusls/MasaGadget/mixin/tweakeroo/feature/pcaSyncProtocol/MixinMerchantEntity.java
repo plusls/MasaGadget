@@ -1,4 +1,4 @@
-package com.plusls.MasaGadget.mixin;
+package com.plusls.MasaGadget.mixin.tweakeroo.feature.pcaSyncProtocol;
 
 import net.minecraft.entity.Npc;
 import net.minecraft.entity.passive.MerchantEntity;

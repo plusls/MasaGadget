@@ -1,7 +1,6 @@
-package com.plusls.MasaGadget.util;
+package com.plusls.MasaGadget.malilib.feature.compactBborProtocol.network;
 
 import com.plusls.MasaGadget.MasaGadgetMod;
-import com.plusls.MasaGadget.network.BborProtocol;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;

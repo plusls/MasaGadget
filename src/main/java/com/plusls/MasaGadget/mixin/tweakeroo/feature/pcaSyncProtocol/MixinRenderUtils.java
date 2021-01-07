@@ -1,7 +1,6 @@
-package com.plusls.MasaGadget.mixin.tweakeroo;
+package com.plusls.MasaGadget.mixin.tweakeroo.feature.pcaSyncProtocol;
 
-import com.plusls.MasaGadget.MasaGadgetMod;
-import com.plusls.MasaGadget.network.PcaSyncProtocol;
+import com.plusls.MasaGadget.tweakeroo.feature.pcaSyncProtocol.network.PcaSyncProtocol;
 import fi.dy.masa.malilib.util.InventoryUtils;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.renderer.RenderUtils;

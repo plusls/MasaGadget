@@ -3,16 +3,21 @@
   "minVersion": "0.8",
   "package": "com.plusls.MasaGadget.mixin",
   "compatibilityLevel": "JAVA_8",
+  "plugin": "com.plusls.MasaGadget.MasaGadgetMixinPlugin",
   "client": [
-    "MixinCustomPayloadS2CPacket",
-    "MixinMerchantEntity",
-    "MixinPlayerRespawnS2CPacket",
-    "malilib.MixinDataStorage",
-    "malilib.MixinWidgetListConfigOptions",
-    "tweakeroo.MixinRenderHandler",
-    "tweakeroo.MixinRenderUtils"
+    "minihud.feature.compactBborProtocol.MixinCustomPayloadS2CPacket",
+    "minihud.feature.compactBborProtocol.MixinDataStorage",
+    "minihud.feature.compactBborProtocol.MixinPlayerRespawnS2CPacket",
+    "tweakeroo.feature.pcaSyncProtocol.MixinMerchantEntity",
+    "tweakeroo.feature.pcaSyncProtocol.MixinRenderHandler",
+    "tweakeroo.feature.pcaSyncProtocol.MixinRenderUtils"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "litematica.fix.carpetAccurateProtocol.MixinWorldUtils",
+    "malilib.feature.optimizeConfigWidgetSearch.MixinWidgetListConfigOptions",
+    "malilib.fix.configWidgetWidth.MixinWidgetListConfigOptions"
+  ]
 }

@@ -1,6 +1,6 @@
-package com.plusls.MasaGadget.mixin;
+package com.plusls.MasaGadget.mixin.minihud.feature.compactBborProtocol;
 
-import com.plusls.MasaGadget.network.BborProtocol;
+import com.plusls.MasaGadget.malilib.feature.compactBborProtocol.network.BborProtocol;
 import fi.dy.masa.minihud.util.DataStorage;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.listener.ClientPlayPacketListener;

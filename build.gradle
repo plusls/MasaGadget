@@ -34,6 +34,7 @@ dependencies {
 	modImplementation "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version}:${project.malilib_version}"
 	modImplementation "fi.dy.masa.minihud:minihud-fabric-${project.minecraft_version}:${project.minihud_version}"
 	modImplementation "fi.dy.masa.tweakeroo:tweakeroo-fabric-${project.minecraft_version}:${project.tweakeroo_version}"
+	modImplementation "fi.dy.masa.tweakeroo:litematica-fabric-${project.minecraft_version}:${project.litematica_version}"
 	modImplementation "net.earthcomputer:multiconnect:${project.multiconnect_version}:api"
 	include "net.earthcomputer:multiconnect:${project.multiconnect_version}:api"
 }

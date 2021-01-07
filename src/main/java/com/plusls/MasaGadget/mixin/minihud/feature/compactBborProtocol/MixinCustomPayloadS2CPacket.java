@@ -1,8 +1,7 @@
-package com.plusls.MasaGadget.mixin;
+package com.plusls.MasaGadget.mixin.minihud.feature.compactBborProtocol;
 
-import com.plusls.MasaGadget.MasaGadgetMod;
-import com.plusls.MasaGadget.network.BborProtocol;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
+import com.plusls.MasaGadget.malilib.feature.compactBborProtocol.network.BborProtocol;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
@@ -27,7 +26,7 @@ public abstract class MixinCustomPayloadS2CPacket implements Packet<ClientPlayPa
             BborProtocol.bborProtocolHandler(channel, packet.getData());
 
             // 兼容 bbor
-            if (!MasaGadgetMod.bborCompat) {
+            if (!MasaGadgetMixinPlugin.isBborLoaded) {
                 info.cancel();
             }
         } else if (channel.toString().equals("carpet:structures")) {

@@ -1,4 +1,4 @@
-package com.plusls.MasaGadget.network;
+package com.plusls.MasaGadget.tweakeroo.feature.pcaSyncProtocol.network;
 
 import com.plusls.MasaGadget.MasaGadgetMod;
 import io.netty.buffer.Unpooled;
@@ -20,7 +20,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class PcaSyncProtocol {
-    private static final String NAMESPACE = "plusls_carpet_addition_mod";
+    private static final String NAMESPACE = "pca";
 
     private static Identifier id(String path) {
         return new Identifier(NAMESPACE, path);

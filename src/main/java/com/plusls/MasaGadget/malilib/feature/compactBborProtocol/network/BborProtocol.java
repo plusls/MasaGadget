@@ -1,7 +1,7 @@
-package com.plusls.MasaGadget.network;
+package com.plusls.MasaGadget.malilib.feature.compactBborProtocol.network;
 
+import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
 import com.plusls.MasaGadget.MasaGadgetMod;
-import com.plusls.MasaGadget.util.BoundingBoxDeserializer;
 import fi.dy.masa.minihud.util.DataStorage;
 import fi.dy.masa.minihud.util.StructureType;
 import io.netty.buffer.Unpooled;
@@ -23,6 +23,7 @@ import java.util.HashMap;
 
 public class BborProtocol {
     private static final String NAMESPACE = "bbor";
+
     private static Identifier id(String path) {
         return new Identifier(NAMESPACE, path);
     }
@@ -95,7 +96,7 @@ public class BborProtocol {
     }
 
     private static void onJoinServer(ClientPlayNetworkHandler handler, PacketSender sender, MinecraftClient client) {
-        if (!MasaGadgetMod.bborCompat) {
+        if (!MasaGadgetMixinPlugin.isBborLoaded) {
             sender.sendPacket(SUBSCRIBE, new PacketByteBuf(Unpooled.buffer()));
         }
     }
