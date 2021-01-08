@@ -16,8 +16,10 @@
     "defaultRequire": 1
   },
   "mixins": [
+    "litematica.feature.nudgeSelectionSupportFreeCamera.MixinInputHandler",
     "litematica.fix.carpetAccurateProtocol.MixinWorldUtils",
     "malilib.feature.optimizeConfigWidgetSearch.MixinWidgetListConfigOptions",
-    "malilib.fix.configWidgetWidth.MixinWidgetListConfigOptions"
+    "malilib.fix.configWidgetWidth.MixinWidgetListConfigOptions",
+    "tweakeroo.feature.inventoryPreviewSupportFreeCamera.MixinRenderUtils"
   ]
 }

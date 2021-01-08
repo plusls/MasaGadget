@@ -17,6 +17,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class PcaSyncProtocol {
@@ -92,6 +93,7 @@ public class PcaSyncProtocol {
 
 
     private static void onDisconnect(ClientPlayNetworkHandler clientPlayNetworkHandler, MinecraftClient minecraftClient) {
+        MasaGadgetMod.LOGGER.info("pcaSyncProtocol disable.");
         enable = false;
     }
 
@@ -122,9 +124,34 @@ public class PcaSyncProtocol {
         int entityId = buf.readInt();
         CompoundTag tag = buf.readCompoundTag();
         Entity entity = world.getEntityById(entityId);
+
         if (entity != null) {
             MasaGadgetMod.LOGGER.debug("update entity!");
+            Vec3d localPos = entity.getPos();
+            double prevX = entity.prevX;
+            double prevY = entity.prevY;
+            double prevZ = entity.prevZ;
+            float pitch = entity.pitch;
+            float horizontalSpeed = entity.horizontalSpeed;
+            float yaw = entity.yaw;
+            float prevPitch = entity.prevPitch;
+            float prevHorizontalSpeed = entity.prevHorizontalSpeed;
+            float prevYaw = entity.prevYaw;
+            Vec3d velocity = entity.getVelocity();
+
             entity.fromTag(tag);
+
+            entity.prevX = prevX;
+            entity.prevY = prevY;
+            entity.prevZ = prevZ;
+            entity.setPos(localPos.x, localPos.y, localPos.z);
+            entity.prevPitch = prevPitch;
+            entity.prevHorizontalSpeed = prevHorizontalSpeed;
+            entity.prevYaw = prevYaw;
+            entity.pitch = pitch;
+            entity.horizontalSpeed = horizontalSpeed;
+            entity.yaw = yaw;
+            entity.setVelocity(velocity);
         }
     }
 

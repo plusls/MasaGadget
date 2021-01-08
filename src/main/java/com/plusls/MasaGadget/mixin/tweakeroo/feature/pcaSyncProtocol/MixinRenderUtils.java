@@ -56,18 +56,4 @@ public abstract class MixinRenderUtils {
         }
         return entity;
     }
-
-
-    @Redirect(method = "renderInventoryOverlay",
-            at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/world/World;getPlayerByUuid(Ljava/util/UUID;)Lnet/minecraft/entity/player/PlayerEntity;",
-                    ordinal = 0, remap = true))
-    private static PlayerEntity redirectGetPlayerByUuid(World world, UUID uuid) {
-        // support free camera
-        if (FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue()) {
-            return (PlayerEntity) MinecraftClient.getInstance().getCameraEntity();
-        } else {
-            return world.getPlayerByUuid(uuid);
-        }
-    }
 }
