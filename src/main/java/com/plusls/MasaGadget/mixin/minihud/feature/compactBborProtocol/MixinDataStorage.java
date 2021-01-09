@@ -1,6 +1,6 @@
 package com.plusls.MasaGadget.mixin.minihud.feature.compactBborProtocol;
 
-import com.plusls.MasaGadget.malilib.feature.compactBborProtocol.network.BborProtocol;
+import com.plusls.MasaGadget.minihud.feature.compactBborProtocol.network.BborProtocol;
 import fi.dy.masa.minihud.util.DataStorage;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

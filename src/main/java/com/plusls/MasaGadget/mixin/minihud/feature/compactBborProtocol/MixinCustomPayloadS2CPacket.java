@@ -1,7 +1,8 @@
 package com.plusls.MasaGadget.mixin.minihud.feature.compactBborProtocol;
 
 import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
-import com.plusls.MasaGadget.malilib.feature.compactBborProtocol.network.BborProtocol;
+import com.plusls.MasaGadget.minihud.feature.compactBborProtocol.network.BborProtocol;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
@@ -20,6 +21,9 @@ public abstract class MixinCustomPayloadS2CPacket implements Packet<ClientPlayPa
     @Inject(method = "apply(Lnet/minecraft/network/listener/ClientPlayPacketListener;)V",
             at = @At(value = "HEAD"), cancellable = true)
     private void onApply(ClientPlayPacketListener clientPlayPacketListener, CallbackInfo info) {
+        if (MinecraftClient.getInstance().isIntegratedServerRunning()) {
+            return;
+        }
         CustomPayloadS2CPacket packet = (CustomPayloadS2CPacket) (Object) this;
         if (channel.getNamespace().equals("bbor")) {
             // 因为 mod 会吞掉包，因此需要手动 mixin 在 mod 处理包之前做处理

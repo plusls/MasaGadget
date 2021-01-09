@@ -1,7 +1,8 @@
-package com.plusls.MasaGadget.malilib.feature.compactBborProtocol.network;
+package com.plusls.MasaGadget.minihud.feature.compactBborProtocol.network;
 
 import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
 import com.plusls.MasaGadget.MasaGadgetMod;
+import com.plusls.MasaGadget.util.DisconnectEvent;
 import fi.dy.masa.minihud.util.DataStorage;
 import fi.dy.masa.minihud.util.StructureType;
 import io.netty.buffer.Unpooled;
@@ -61,7 +62,9 @@ public class BborProtocol {
 
     public static void init() {
         ClientPlayConnectionEvents.JOIN.register(BborProtocol::onJoinServer);
-        ClientPlayConnectionEvents.DISCONNECT.register(BborProtocol::onDisconnect);
+        // fabric-api 的实现有 bug 该事件仅会响应服务端主动断开连接的情况
+        // ClientPlayConnectionEvents.DISCONNECT.register(BborProtocol::onDisconnect);
+        DisconnectEvent.register(BborProtocol::onDisconnect);
         MultiConnectAPI.instance().addClientboundIdentifierCustomPayloadListener(clientboundIdentifierCustomPayloadListener);
         MultiConnectAPI.instance().addServerboundIdentifierCustomPayloadListener(serverboundIdentifierCustomPayloadListener);
     }
@@ -87,7 +90,8 @@ public class BborProtocol {
     }
 
 
-    private static void onDisconnect(ClientPlayNetworkHandler clientPlayNetworkHandler, MinecraftClient minecraftClient) {
+    private static void onDisconnect() {
+        MasaGadgetMod.LOGGER.info("BborProtocol onDisconnect");
         BborProtocol.seedCache = null;
         BborProtocol.spawnPos = null;
         BborProtocol.structuresCache = null;

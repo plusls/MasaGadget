@@ -3,6 +3,7 @@ package com.plusls.MasaGadget.mixin.malilib.feature.optimizeConfigWidgetSearch;
 import com.google.common.collect.ImmutableList;
 import com.plusls.MasaGadget.malilib.util.WidgetUtil;
 import fi.dy.masa.malilib.config.IConfigBase;
+import fi.dy.masa.malilib.config.IConfigResettable;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
@@ -26,9 +27,12 @@ public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptio
     @Overwrite(remap = false)
     protected List<String> getEntryStringsForFilter(GuiConfigsBase.ConfigOptionWrapper entry) {
         IConfigBase config = entry.getConfig();
-
         if (config != null) {
-            return ImmutableList.of(WidgetUtil.getTranslatedGuiDisplayName(config).toLowerCase(), config.getName().toLowerCase());
+            if (config instanceof IConfigResettable && ((IConfigResettable) config).isModified()) {
+                return ImmutableList.of(WidgetUtil.getTranslatedGuiDisplayName(config).toLowerCase(), config.getName().toLowerCase(), "modified");
+            } else {
+                return ImmutableList.of(WidgetUtil.getTranslatedGuiDisplayName(config).toLowerCase(), config.getName().toLowerCase());
+            }
         }
 
         return Collections.emptyList();

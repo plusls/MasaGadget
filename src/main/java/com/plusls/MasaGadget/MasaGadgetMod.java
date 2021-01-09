@@ -1,6 +1,6 @@
 package com.plusls.MasaGadget;
 
-import com.plusls.MasaGadget.malilib.feature.compactBborProtocol.network.BborProtocol;
+import com.plusls.MasaGadget.minihud.feature.compactBborProtocol.network.BborProtocol;
 import com.plusls.MasaGadget.tweakeroo.feature.pcaSyncProtocol.network.PcaSyncProtocol;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.util.Identifier;

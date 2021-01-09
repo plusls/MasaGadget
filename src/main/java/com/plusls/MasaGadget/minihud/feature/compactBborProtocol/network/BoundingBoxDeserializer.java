@@ -1,4 +1,4 @@
-package com.plusls.MasaGadget.malilib.feature.compactBborProtocol.network;
+package com.plusls.MasaGadget.minihud.feature.compactBborProtocol.network;
 
 import com.plusls.MasaGadget.MasaGadgetMod;
 import net.minecraft.nbt.CompoundTag;

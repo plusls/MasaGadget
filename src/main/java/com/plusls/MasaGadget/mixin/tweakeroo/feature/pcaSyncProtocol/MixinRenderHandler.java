@@ -18,6 +18,9 @@ public abstract class MixinRenderHandler implements IRenderer {
                     ordinal = 2))
     private boolean cancelPcaSync(IKeybind iKeybind) {
         boolean ret = iKeybind.isKeybindHeld();
+        if (!PcaSyncProtocol.enable) {
+            return ret;
+        }
         if (!ret) {
             PcaSyncProtocol.cancelSyncBlockEntity();
             PcaSyncProtocol.cancelSyncEntity();

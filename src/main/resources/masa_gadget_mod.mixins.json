@@ -20,6 +20,7 @@
     "litematica.fix.carpetAccurateProtocol.MixinWorldUtils",
     "malilib.feature.optimizeConfigWidgetSearch.MixinWidgetListConfigOptions",
     "malilib.fix.configWidgetWidth.MixinWidgetListConfigOptions",
-    "tweakeroo.feature.inventoryPreviewSupportFreeCamera.MixinRenderUtils"
+    "tweakeroo.feature.inventoryPreviewSupportFreeCamera.MixinRenderUtils",
+    "util.MixinMinecraftClient"
   ]
 }

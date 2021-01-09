@@ -1,6 +1,7 @@
 package com.plusls.MasaGadget.tweakeroo.feature.pcaSyncProtocol.network;
 
 import com.plusls.MasaGadget.MasaGadgetMod;
+import com.plusls.MasaGadget.util.DisconnectEvent;
 import io.netty.buffer.Unpooled;
 import net.earthcomputer.multiconnect.api.ICustomPayloadEvent;
 import net.earthcomputer.multiconnect.api.ICustomPayloadListener;
@@ -54,7 +55,9 @@ public class PcaSyncProtocol {
         ClientPlayNetworking.registerGlobalReceiver(DISABLE_PCA_SYNC_PROTOCOL, PcaSyncProtocol::disablePcaSyncProtocolHandle);
         ClientPlayNetworking.registerGlobalReceiver(UPDATE_ENTITY, PcaSyncProtocol::updateEntityHandler);
         ClientPlayNetworking.registerGlobalReceiver(UPDATE_BLOCK_ENTITY, PcaSyncProtocol::updateBlockEntityHandler);
-        ClientPlayConnectionEvents.DISCONNECT.register(PcaSyncProtocol::onDisconnect);
+        // 该事件仅在服务器主动断开客户端发生
+        // ClientPlayConnectionEvents.DISCONNECT.register(PcaSyncProtocol::onDisconnect);
+        DisconnectEvent.register(PcaSyncProtocol::onDisconnect);
         MultiConnectAPI.instance().addClientboundIdentifierCustomPayloadListener(clientboundIdentifierCustomPayloadListener);
         MultiConnectAPI.instance().addServerboundIdentifierCustomPayloadListener(serverboundIdentifierCustomPayloadListener);
     }
@@ -92,8 +95,8 @@ public class PcaSyncProtocol {
     }
 
 
-    private static void onDisconnect(ClientPlayNetworkHandler clientPlayNetworkHandler, MinecraftClient minecraftClient) {
-        MasaGadgetMod.LOGGER.info("pcaSyncProtocol disable.");
+    private static void onDisconnect() {
+        MasaGadgetMod.LOGGER.info("pcaSyncProtocol onDisconnect.");
         enable = false;
     }
 
