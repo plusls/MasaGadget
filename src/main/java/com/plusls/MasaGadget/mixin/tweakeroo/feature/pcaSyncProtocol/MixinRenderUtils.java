@@ -50,7 +50,8 @@ public abstract class MixinRenderUtils {
     private static Entity redirectGetEntity(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
         if (PcaSyncProtocol.enable) {
-            if (entity instanceof Inventory || entity instanceof VillagerEntity || entity instanceof HorseBaseEntity) {
+            if (entity instanceof Inventory || entity instanceof VillagerEntity || entity instanceof HorseBaseEntity
+                    || entity instanceof PlayerEntity) {
                 PcaSyncProtocol.syncEntity(entity.getEntityId());
             }
         }

@@ -14,7 +14,7 @@
   },
 
   "license": "CC0-1.0",
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "client": [
       "com.plusls.MasaGadget.MasaGadgetMod"
@@ -23,7 +23,7 @@
   "mixins": [
     "masa_gadget_mod.mixins.json"
   ],
-
+  "accessWidener": "masa_gadget_mod.accesswidener",
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": ">=0.28.0",
@@ -31,5 +31,8 @@
   },
   "suggests": {
     "flamingo": "*"
+  },
+  "custom": {
+    "modmenu:clientsideOnly": true
   }
 }

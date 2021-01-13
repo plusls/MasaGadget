@@ -6,7 +6,6 @@ import io.netty.buffer.Unpooled;
 import net.earthcomputer.multiconnect.api.ICustomPayloadEvent;
 import net.earthcomputer.multiconnect.api.ICustomPayloadListener;
 import net.earthcomputer.multiconnect.api.MultiConnectAPI;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.block.entity.BlockEntity;
@@ -14,11 +13,16 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.HorseBaseEntity;
+import net.minecraft.entity.passive.MerchantEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.vehicle.StorageMinecartEntity;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class PcaSyncProtocol {
@@ -130,31 +134,23 @@ public class PcaSyncProtocol {
 
         if (entity != null) {
             MasaGadgetMod.LOGGER.debug("update entity!");
-            Vec3d localPos = entity.getPos();
-            double prevX = entity.prevX;
-            double prevY = entity.prevY;
-            double prevZ = entity.prevZ;
-            float pitch = entity.pitch;
-            float horizontalSpeed = entity.horizontalSpeed;
-            float yaw = entity.yaw;
-            float prevPitch = entity.prevPitch;
-            float prevHorizontalSpeed = entity.prevHorizontalSpeed;
-            float prevYaw = entity.prevYaw;
-            Vec3d velocity = entity.getVelocity();
-
-            entity.fromTag(tag);
-
-            entity.prevX = prevX;
-            entity.prevY = prevY;
-            entity.prevZ = prevZ;
-            entity.setPos(localPos.x, localPos.y, localPos.z);
-            entity.prevPitch = prevPitch;
-            entity.prevHorizontalSpeed = prevHorizontalSpeed;
-            entity.prevYaw = prevYaw;
-            entity.pitch = pitch;
-            entity.horizontalSpeed = horizontalSpeed;
-            entity.yaw = yaw;
-            entity.setVelocity(velocity);
+            assert tag != null;
+            if (entity instanceof StorageMinecartEntity) {
+                ((StorageMinecartEntity) entity).inventory.clear();
+                Inventories.fromTag(tag, ((StorageMinecartEntity) entity).inventory);
+            } else if (entity instanceof MerchantEntity) {
+                ((MerchantEntity) entity).getInventory().clear();
+                ((MerchantEntity) entity).getInventory().readTags(tag.getList("Inventory", 10));
+            } else if (entity instanceof HorseBaseEntity) {
+                // TODO 写的更优雅一些
+                entity.fromTag(tag);
+            } else if (entity instanceof PlayerEntity) {
+                PlayerEntity playerEntity = (PlayerEntity) entity;
+                playerEntity.inventory.deserialize(tag.getList("Inventory", 10));
+                if (tag.contains("EnderItems", 9)) {
+                    playerEntity.getEnderChestInventory().readTags(tag.getList("EnderItems", 10));
+                }
+            }
         }
     }
 

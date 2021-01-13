@@ -8,7 +8,6 @@
     "minihud.feature.compactBborProtocol.MixinCustomPayloadS2CPacket",
     "minihud.feature.compactBborProtocol.MixinDataStorage",
     "minihud.feature.compactBborProtocol.MixinPlayerRespawnS2CPacket",
-    "tweakeroo.feature.pcaSyncProtocol.MixinMerchantEntity",
     "tweakeroo.feature.pcaSyncProtocol.MixinRenderHandler",
     "tweakeroo.feature.pcaSyncProtocol.MixinRenderUtils"
   ],
@@ -21,6 +20,7 @@
     "malilib.feature.optimizeConfigWidgetSearch.MixinWidgetListConfigOptions",
     "malilib.fix.configWidgetWidth.MixinWidgetListConfigOptions",
     "tweakeroo.feature.inventoryPreviewSupportFreeCamera.MixinRenderUtils",
+    "tweakeroo.feature.inventoryPreviewSupportPlayer.MixinRenderUtils",
     "util.MixinMinecraftClient"
   ]
 }

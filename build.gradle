@@ -19,6 +19,10 @@ repositories {
 	}
 }
 
+loom {
+	accessWidener "src/main/resources/masa_gadget_mod.accesswidener"
+}
+
 dependencies {
 	//to change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
