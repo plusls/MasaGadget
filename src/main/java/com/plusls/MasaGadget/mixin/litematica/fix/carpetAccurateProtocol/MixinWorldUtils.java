@@ -16,6 +16,7 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -28,7 +29,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(value = WorldUtils.class)
+@Mixin(value = WorldUtils.class, priority = 900)
 public class MixinWorldUtils {
     /**
      * @author plusls
@@ -159,18 +160,25 @@ public class MixinWorldUtils {
                     // TODO
                     Direction newSide = BlockUtils.getFirstPropertyFacingValue(stateSchematic);
                     float oldYaw = mc.player.yaw;
+                    if (newSide == null && stateSchematic.contains(Properties.AXIS)) {
+                        // 原木之类的
+                        newSide = Direction.from(stateSchematic.get(Properties.AXIS), Direction.AxisDirection.POSITIVE);
+
+                    }
                     if (newSide != null && !(stateSchematic.getBlock() instanceof SlabBlock)) {
+                        // fuck mojang
+                        // 有时候放的东西是反向的,需要特判
                         side = newSide;
                         mc.player.yaw = side.asRotation();
                         ItemStack itemStack = new ItemStack(stateSchematic.getBlock().asItem());
                         ItemPlacementContext itemPlacementContext = new ItemPlacementContext(mc.player, hand, itemStack, new BlockHitResult(hitPos, side, pos, false));
                         BlockState testState = stateSchematic.getBlock().getPlacementState(itemPlacementContext);
-                        assert (testState != null);
-                        Direction testDirection = BlockUtils.getFirstPropertyFacingValue(testState);
-                        assert (testDirection != null);
-                        if (testDirection != side) {
-                            side = side.getOpposite();
-                            mc.player.yaw = side.asRotation();
+                        if (testState != null) {
+                            Direction testDirection = BlockUtils.getFirstPropertyFacingValue(testState);
+                            if (testDirection != null && testDirection != side) {
+                                side = side.getOpposite();
+                                mc.player.yaw = side.asRotation();
+                            }
                         }
                         mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.LookOnly(mc.player.yaw, mc.player.pitch, mc.player.isOnGround()));
                     }

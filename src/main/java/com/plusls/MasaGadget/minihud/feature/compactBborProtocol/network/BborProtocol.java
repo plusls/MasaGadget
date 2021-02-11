@@ -21,6 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 
 import java.util.HashMap;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class BborProtocol {
     private static final String NAMESPACE = "bbor";
@@ -42,6 +43,7 @@ public class BborProtocol {
     public static BlockPos spawnPos = null;
     public static boolean enable = false;
     public static boolean carpetOrServux = false;
+    public static final ReentrantLock lock = new ReentrantLock(true);
 
     private static final ClientboundIdentifierCustomPayloadListener clientboundIdentifierCustomPayloadListener =
             new ClientboundIdentifierCustomPayloadListener();
@@ -97,6 +99,10 @@ public class BborProtocol {
         BborProtocol.structuresCache = null;
         BborProtocol.enable = false;
         BborProtocol.carpetOrServux = false;
+        // 为了鲁棒性考虑 断开连接时应该确保当前的锁已解开
+        while (BborProtocol.lock.isLocked()) {
+            BborProtocol.lock.unlock();
+        }
     }
 
     private static void onJoinServer(ClientPlayNetworkHandler handler, PacketSender sender, MinecraftClient client) {
@@ -120,6 +126,8 @@ public class BborProtocol {
         BborProtocol.seedCache = seed;
         BborProtocol.spawnPos = new BlockPos(spawnX, 0, spawnZ);
         BborProtocol.structuresCache = new ListTag();
+        // 若是未加载 MiniHUD，则不会去 mixin CustomPayloadS2CPacket，因此不会有机会调用该函数
+        // 因此无需对是否加载 MiniHUD 进行特判
         if (!BborProtocol.carpetOrServux) {
             BborProtocol.enable = true;
             DataStorage.getInstance().setWorldSeed(BborProtocol.seedCache);
@@ -147,7 +155,9 @@ public class BborProtocol {
             structures.add(tag);
             structuresCache.add(tag);
             if (enable) {
+                BborProtocol.lock.lock();
                 DataStorage.getInstance().addOrUpdateStructuresFromServer(structures, 0x7fffffff - 0x1000, false);
+                BborProtocol.lock.unlock();
             }
         }
     }

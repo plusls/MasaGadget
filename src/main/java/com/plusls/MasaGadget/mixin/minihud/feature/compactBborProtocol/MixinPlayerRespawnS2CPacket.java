@@ -26,7 +26,9 @@ public abstract class MixinPlayerRespawnS2CPacket {
         RegistryKey<World> newDimension = packet.getDimension();
         if (oldDimension != newDimension && BborProtocol.structuresCache != null) {
             // reload minihud struct when dimension change
+            BborProtocol.lock.lock();
             DataStorage.getInstance().addOrUpdateStructuresFromServer(BborProtocol.structuresCache, 0x7fffffff - 0x1000, false);
+            BborProtocol.lock.unlock();
         }
     }
 }

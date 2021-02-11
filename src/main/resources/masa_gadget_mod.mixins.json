@@ -9,12 +9,7 @@
     "minihud.feature.compactBborProtocol.MixinDataStorage",
     "minihud.feature.compactBborProtocol.MixinPlayerRespawnS2CPacket",
     "tweakeroo.feature.pcaSyncProtocol.MixinRenderHandler",
-    "tweakeroo.feature.pcaSyncProtocol.MixinRenderUtils"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  },
-  "mixins": [
+    "tweakeroo.feature.pcaSyncProtocol.MixinRenderUtils",
     "litematica.feature.nudgeSelectionSupportFreeCamera.MixinInputHandler",
     "litematica.fix.carpetAccurateProtocol.MixinWorldUtils",
     "malilib.feature.optimizeConfigWidgetSearch.MixinWidgetListConfigOptions",
@@ -22,5 +17,11 @@
     "tweakeroo.feature.inventoryPreviewSupportFreeCamera.MixinRenderUtils",
     "tweakeroo.feature.inventoryPreviewSupportPlayer.MixinRenderUtils",
     "util.MixinMinecraftClient"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+
   ]
 }

@@ -12,7 +12,6 @@
     "homepage": "https://blog.plusls.com/",
     "sources": "https://github.com/uestclug/MasaGadget"
   },
-
   "license": "CC0-1.0",
   "environment": "client",
   "entrypoints": {
@@ -31,8 +30,5 @@
   },
   "suggests": {
     "flamingo": "*"
-  },
-  "custom": {
-    "modmenu:clientsideOnly": true
   }
 }
