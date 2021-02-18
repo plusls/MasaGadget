@@ -10,6 +10,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
@@ -55,7 +58,7 @@ public abstract class MixinRenderUtils {
 
             fi.dy.masa.malilib.render.RenderUtils.color(colors[0], colors[1], colors[2], 1.0F);
             InventoryOverlay.renderInventoryBackground(type, x, y, 9, 27, MinecraftClient.getInstance());
-            InventoryOverlay.renderInventoryStacks(type, playerEntity.getEnderChestInventory(), x + slotOffsetX, y + slotOffsetY, 9, 9, 27, MinecraftClient.getInstance());
+            InventoryOverlay.renderInventoryStacks(type, playerEntity.getEnderChestInventory(), x + slotOffsetX, y + slotOffsetY, 9, 0, 27, MinecraftClient.getInstance());
             fi.dy.masa.malilib.render.RenderUtils.color(1.0F, 1.0F, 1.0F, 1.0F);
         }
         traceEntity = null;

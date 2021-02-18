@@ -57,9 +57,20 @@ public class BborProtocol {
                 Identifier key = Registry.STRUCTURE_FEATURE.getId(type.getFeature());
                 if (key != null) {
                     BBOR_ID_TO_MINIHUD_ID.put(structureName.hashCode(), key.toString());
+                    BBOR_ID_TO_MINIHUD_ID.put(lowVersionStructureName(structureName).hashCode(), key.toString());
+
                 }
             }
         }
+    }
+
+    public static String lowVersionStructureName(String name) {
+        String splitResult[] = name.split("_");
+        for (int i = 0; i < splitResult.length; ++i) {
+            splitResult[i] = splitResult[i].substring(0, 1).toUpperCase() + splitResult[i].substring(1);
+        }
+        String ret = String.join("_",splitResult);;
+        return ret;
     }
 
     public static void init() {
@@ -76,6 +87,7 @@ public class BborProtocol {
         public void onCustomPayload(ICustomPayloadEvent<Identifier> event) {
             Identifier channel = event.getChannel();
             if (channel.equals(SUBSCRIBE)) {
+                MasaGadgetMod.LOGGER.debug("Multiconnect send bbor:SUBSCRIBE");
                 MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
             }
         }
@@ -86,6 +98,7 @@ public class BborProtocol {
         public void onCustomPayload(ICustomPayloadEvent<Identifier> event) {
             Identifier channel = event.getChannel();
             if (channel.equals(ADD_BOUNDING_BOX_V2)) {
+                MasaGadgetMod.LOGGER.debug("Multiconnect recv bbor:ADD_BOUNDING_BOX_V2");
                 bborAddBoundingBoxV2Handler(event.getData());
             }
         }
@@ -107,6 +120,7 @@ public class BborProtocol {
 
     private static void onJoinServer(ClientPlayNetworkHandler handler, PacketSender sender, MinecraftClient client) {
         if (!MasaGadgetMixinPlugin.isBborLoaded) {
+            MasaGadgetMod.LOGGER.debug("SUBSCRIBE BBOR.");
             sender.sendPacket(SUBSCRIBE, new PacketByteBuf(Unpooled.buffer()));
         }
     }

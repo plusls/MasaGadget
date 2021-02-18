@@ -1,7 +1,9 @@
 package com.plusls.MasaGadget;
 
+import com.plusls.MasaGadget.malilib.util.InventoryOverlayRenderHandler;
 import com.plusls.MasaGadget.minihud.feature.compactBborProtocol.network.BborProtocol;
 import com.plusls.MasaGadget.tweakeroo.feature.pcaSyncProtocol.network.PcaSyncProtocol;
+import com.plusls.MasaGadget.tweakeroo.util.InputHandler;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.Level;
@@ -27,6 +29,8 @@ public class MasaGadgetMod implements ClientModInitializer {
         if (MasaGadgetMixinPlugin.isMinihudLoaded) {
             BborProtocol.init();
         }
+        InventoryOverlayRenderHandler.register();
+        InputHandler.register();
     }
 
     public static Identifier id(String id) {

@@ -26,6 +26,10 @@ public abstract class MixinRenderUtils {
             at = @At(value = "INVOKE",
                     target = "Lfi/dy/masa/malilib/util/InventoryUtils;getInventory(Lnet/minecraft/class_1937;Lnet/minecraft/class_2338;)Lnet/minecraft/class_1263;",
                     ordinal = 0, remap = false))
+//    @Redirect(method = "renderInventoryOverlay",
+//            at = @At(value = "INVOKE",
+//                    target = "Lfi/dy/masa/malilib/util/InventoryUtils;getInventory(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/inventory/Inventory;",
+//                    ordinal = 0))
     private static Inventory redirectGetBlockInventory(World world, BlockPos pos) {
         BlockEntity blockEntity = world.getWorldChunk(pos).getBlockEntity(pos);
         if (PcaSyncProtocol.enable && (
