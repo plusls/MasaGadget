@@ -10,7 +10,8 @@
   ],
   "contact": {
     "homepage": "https://blog.plusls.com/",
-    "sources": "https://github.com/uestclug/MasaGadget"
+    "sources": "https://github.com/plusls/MasaGadget",
+    "issues": "https://github.com/plusls/MasaGadget/issues"
   },
   "license": "CC0-1.0",
   "environment": "client",
@@ -26,9 +27,7 @@
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": ">=0.28.0",
-    "minecraft": "1.16.x"
-  },
-  "suggests": {
-    "flamingo": "*"
+    "minecraft": "1.16.x",
+    "malilib": ">=0.10.0-dev.21+arne.2"
   }
 }
