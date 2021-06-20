@@ -13,8 +13,8 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -38,7 +38,7 @@ public class BborProtocol {
     private static final Identifier SUBSCRIBE = id("subscribe");
 
     private static final HashMap<Integer, String> BBOR_ID_TO_MINIHUD_ID = new HashMap<>();
-    public static ListTag structuresCache = null;
+    public static NbtList structuresCache = null;
     public static Long seedCache = null;
     public static BlockPos spawnPos = null;
     public static boolean enable = false;
@@ -139,7 +139,7 @@ public class BborProtocol {
         int spawnZ = data.readInt();
         BborProtocol.seedCache = seed;
         BborProtocol.spawnPos = new BlockPos(spawnX, 0, spawnZ);
-        BborProtocol.structuresCache = new ListTag();
+        BborProtocol.structuresCache = new NbtList();
         // 若是未加载 MiniHUD，则不会去 mixin CustomPayloadS2CPacket，因此不会有机会调用该函数
         // 因此无需对是否加载 MiniHUD 进行特判
         if (!BborProtocol.carpetOrServux) {
@@ -162,10 +162,10 @@ public class BborProtocol {
         Identifier dimensionId = buf.readIdentifier();
         MasaGadgetMod.LOGGER.debug("dimensionId = {}", dimensionId.toString());
 
-        CompoundTag tag = BoundingBoxDeserializer.deserializeStructure(buf);
+        NbtCompound tag = BoundingBoxDeserializer.deserializeStructure(buf);
 
         if (tag != null) {
-            ListTag structures = new ListTag();
+            NbtList structures = new NbtList();
             structures.add(tag);
             structuresCache.add(tag);
             if (enable) {

@@ -1,25 +1,25 @@
 package com.plusls.MasaGadget.minihud.feature.compactBborProtocol.network;
 
 import com.plusls.MasaGadget.MasaGadgetMod;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.IntArrayTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtIntArray;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
 
 public class BoundingBoxDeserializer {
 
-    public static CompoundTag deserializeStructure(PacketByteBuf buf) {
-        CompoundTag tag = new CompoundTag();
+    public static NbtCompound deserializeStructure(PacketByteBuf buf) {
+        NbtCompound tag = new NbtCompound();
 
         deserializeStructureBox(buf, tag, true);
         if (!tag.contains("BB")) {
             return null;
         }
 
-        ListTag childrenTagList = new ListTag();
+        NbtList childrenTagList = new NbtList();
 
         while (buf.isReadable()) {
-            CompoundTag childrenTag = new CompoundTag();
+            NbtCompound childrenTag = new NbtCompound();
             deserializeStructureBox(buf, childrenTag, false);
             childrenTagList.add(childrenTag);
         }
@@ -28,7 +28,7 @@ public class BoundingBoxDeserializer {
         return tag;
     }
 
-    private static void deserializeStructureBox(PacketByteBuf buf, CompoundTag tag, boolean first) {
+    private static void deserializeStructureBox(PacketByteBuf buf, NbtCompound tag, boolean first) {
         if (!buf.isReadable(2) || buf.readChar() != 'S')
             return;
 
@@ -43,7 +43,7 @@ public class BoundingBoxDeserializer {
         int maxX = buf.readVarInt();
         int maxY = buf.readVarInt();
         int maxZ = buf.readVarInt();
-        IntArrayTag boundingBox = new IntArrayTag(new int[]{minX, minY, minZ, maxX, maxY, maxZ});
+        NbtIntArray boundingBox = new NbtIntArray(new int[]{minX, minY, minZ, maxX, maxY, maxZ});
 
         tag.put("BB", boundingBox);
 

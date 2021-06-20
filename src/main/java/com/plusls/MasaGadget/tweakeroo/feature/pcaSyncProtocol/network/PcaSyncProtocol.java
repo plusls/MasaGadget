@@ -18,8 +18,7 @@ import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.StorageMinecartEntity;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -129,7 +128,7 @@ public class PcaSyncProtocol {
             return;
         }
         int entityId = buf.readInt();
-        CompoundTag tag = buf.readCompoundTag();
+        NbtCompound tag = buf.readNbt();
         Entity entity = world.getEntityById(entityId);
 
         if (entity != null) {
@@ -137,18 +136,18 @@ public class PcaSyncProtocol {
             assert tag != null;
             if (entity instanceof StorageMinecartEntity) {
                 ((StorageMinecartEntity) entity).inventory.clear();
-                Inventories.fromTag(tag, ((StorageMinecartEntity) entity).inventory);
+                Inventories.readNbt(tag, ((StorageMinecartEntity) entity).inventory);
             } else if (entity instanceof MerchantEntity) {
                 ((MerchantEntity) entity).getInventory().clear();
-                ((MerchantEntity) entity).getInventory().readTags(tag.getList("Inventory", 10));
+                ((MerchantEntity) entity).getInventory().readNbtList(tag.getList("Inventory", 10));
             } else if (entity instanceof HorseBaseEntity) {
                 // TODO 写的更优雅一些
-                entity.fromTag(tag);
+                entity.readNbt(tag);
             } else if (entity instanceof PlayerEntity) {
                 PlayerEntity playerEntity = (PlayerEntity) entity;
-                playerEntity.inventory.deserialize(tag.getList("Inventory", 10));
+                playerEntity.inventory.readNbt(tag.getList("Inventory", 10));
                 if (tag.contains("EnderItems", 9)) {
-                    playerEntity.getEnderChestInventory().readTags(tag.getList("EnderItems", 10));
+                    playerEntity.getEnderChestInventory().readNbtList(tag.getList("EnderItems", 10));
                 }
             }
         }
@@ -165,7 +164,7 @@ public class PcaSyncProtocol {
             return;
         }
         BlockPos pos = buf.readBlockPos();
-        CompoundTag tag = buf.readCompoundTag();
+        NbtCompound tag = buf.readNbt();
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity != null) {
             MasaGadgetMod.LOGGER.debug("update blockEntity!");
