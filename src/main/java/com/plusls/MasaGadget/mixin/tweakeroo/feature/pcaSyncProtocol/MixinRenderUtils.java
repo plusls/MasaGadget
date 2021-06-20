@@ -56,7 +56,7 @@ public abstract class MixinRenderUtils {
         if (PcaSyncProtocol.enable) {
             if (entity instanceof Inventory || entity instanceof VillagerEntity || entity instanceof HorseBaseEntity
                     || entity instanceof PlayerEntity) {
-                PcaSyncProtocol.syncEntity(entity.getEntityId());
+                PcaSyncProtocol.syncEntity(entity.getId());
             }
         }
         return entity;

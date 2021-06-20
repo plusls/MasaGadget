@@ -46,7 +46,7 @@ public abstract class MixinRenderUtils {
         Inventory ret = inv;
         if (ret == null && traceEntity instanceof PlayerEntity) {
             PlayerEntity playerEntity = (PlayerEntity) traceEntity;
-            ret = playerEntity.inventory;
+            ret = playerEntity.getInventory();
 
             int x = GuiUtils.getScaledWindowWidth() / 2 - 88;
             int y = GuiUtils.getScaledWindowHeight() / 2 + 10;

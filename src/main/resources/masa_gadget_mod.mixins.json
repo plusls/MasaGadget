@@ -14,15 +14,14 @@
     "minihud.feature.compactBborProtocol.MixinCustomPayloadS2CPacket",
     "minihud.feature.compactBborProtocol.MixinDataStorage",
     "minihud.feature.compactBborProtocol.MixinPlayerRespawnS2CPacket",
+    "malilib.feature.renderStackToolTip.MixinInGameHud",
     "tweakeroo.feature.inventoryPreviewSupportFreeCamera.MixinRenderUtils",
     "tweakeroo.feature.inventoryPreviewSupportPlayer.MixinRenderUtils",
-    "tweakeroo.util.MixinRenderHandler",
     "tweakeroo.feature.pcaSyncProtocol.MixinRenderUtils",
+    "tweakeroo.util.MixinRenderHandler",
     "util.MixinMinecraftClient"
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-  ]
+  }
 }

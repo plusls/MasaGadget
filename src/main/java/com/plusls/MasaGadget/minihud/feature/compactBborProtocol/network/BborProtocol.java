@@ -168,11 +168,11 @@ public class BborProtocol {
             NbtList structures = new NbtList();
             structures.add(tag);
             structuresCache.add(tag);
+            BborProtocol.lock.lock();
             if (enable) {
-                BborProtocol.lock.lock();
                 DataStorage.getInstance().addOrUpdateStructuresFromServer(structures, 0x7fffffff - 0x1000, false);
-                BborProtocol.lock.unlock();
             }
+            BborProtocol.lock.unlock();
         }
     }
 }

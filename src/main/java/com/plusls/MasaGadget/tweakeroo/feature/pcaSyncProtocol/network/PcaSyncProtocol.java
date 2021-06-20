@@ -145,7 +145,7 @@ public class PcaSyncProtocol {
                 entity.readNbt(tag);
             } else if (entity instanceof PlayerEntity) {
                 PlayerEntity playerEntity = (PlayerEntity) entity;
-                playerEntity.inventory.readNbt(tag.getList("Inventory", 10));
+                playerEntity.getInventory().readNbt(tag.getList("Inventory", 10));
                 if (tag.contains("EnderItems", 9)) {
                     playerEntity.getEnderChestInventory().readNbtList(tag.getList("EnderItems", 10));
                 }
@@ -168,7 +168,7 @@ public class PcaSyncProtocol {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity != null) {
             MasaGadgetMod.LOGGER.debug("update blockEntity!");
-            blockEntity.fromTag(world.getBlockState(pos), tag);
+            blockEntity.readNbt(tag);
         }
     }
 

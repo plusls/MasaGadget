@@ -135,7 +135,7 @@ public class MixinWorldUtils {
                     Vec3d hitPos = trace.getPos();
                     Direction sideOrig = trace.getSide();
                     if (traceVanilla != null && traceVanilla.getType() == HitResult.Type.BLOCK) {
-                        BlockHitResult hitResult = (BlockHitResult) traceVanilla;
+                        BlockHitResult hitResult = (BlockHitResult)traceVanilla;
                         BlockPos posVanilla = hitResult.getBlockPos();
                         Direction sideVanilla = hitResult.getSide();
                         BlockState stateVanilla = mc.world.getBlockState(posVanilla);
@@ -159,7 +159,7 @@ public class MixinWorldUtils {
                     // 核心思路是修改玩家看的位置以及 side
                     // TODO
                     Direction newSide = BlockUtils.getFirstPropertyFacingValue(stateSchematic);
-                    float oldYaw = mc.player.yaw;
+                    float oldYaw = mc.player.getYaw();
                     if (newSide == null && stateSchematic.contains(Properties.AXIS)) {
                         // 原木之类的
                         newSide = Direction.from(stateSchematic.get(Properties.AXIS), Direction.AxisDirection.POSITIVE);
@@ -169,7 +169,7 @@ public class MixinWorldUtils {
                         // fuck mojang
                         // 有时候放的东西是反向的,需要特判
                         side = newSide;
-                        mc.player.yaw = side.asRotation();
+                        mc.player.setYaw(side.asRotation());
                         ItemStack itemStack = new ItemStack(stateSchematic.getBlock().asItem());
                         ItemPlacementContext itemPlacementContext = new ItemPlacementContext(mc.player, hand, itemStack, new BlockHitResult(hitPos, side, pos, false));
                         BlockState testState = stateSchematic.getBlock().getPlacementState(itemPlacementContext);
@@ -177,18 +177,19 @@ public class MixinWorldUtils {
                             Direction testDirection = BlockUtils.getFirstPropertyFacingValue(testState);
                             if (testDirection != null && testDirection != side) {
                                 side = side.getOpposite();
-                                mc.player.yaw = side.asRotation();
+                                mc.player.setYaw(side.asRotation());
                             }
                         }
-                        mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.LookOnly(mc.player.yaw, mc.player.pitch, mc.player.isOnGround()));
+                        mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.LookAndOnGround(mc.player.getYaw(), mc.player.getPitch(), mc.player.isOnGround()));
                     }
                     cacheEasyPlacePosition(pos);
                     BlockHitResult hitResult = new BlockHitResult(hitPos, side, pos, false);
+                    assert mc.interactionManager != null;
                     mc.interactionManager.interactBlock(mc.player, mc.world, hand, hitResult);
                     // 让玩家看回原来的位置
                     if (newSide != null) {
-                        mc.player.yaw = oldYaw;
-                        mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.LookOnly(mc.player.yaw, mc.player.pitch, mc.player.isOnGround()));
+                        mc.player.setYaw(oldYaw);
+                        mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.LookAndOnGround(mc.player.getYaw(), mc.player.getPitch(), mc.player.isOnGround()));
                     }
                     if (stateSchematic.getBlock() instanceof SlabBlock && stateSchematic.get(SlabBlock.TYPE) == SlabType.DOUBLE) {
                         stateClient = mc.world.getBlockState(pos);
