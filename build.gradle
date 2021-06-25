@@ -14,9 +14,6 @@ repositories {
 	maven {
 		url 'https://masa.dy.fi/maven'
 	}
-	maven {
-		url 'https://dl.bintray.com/earthcomputer/mods'
-	}
 }
 
 loom {

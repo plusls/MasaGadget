@@ -65,7 +65,7 @@ public class BborProtocol {
     }
 
     public static String lowVersionStructureName(String name) {
-        String splitResult[] = name.split("_");
+        String[] splitResult = name.split("_");
         for (int i = 0; i < splitResult.length; ++i) {
             splitResult[i] = splitResult[i].substring(0, 1).toUpperCase() + splitResult[i].substring(1);
         }
@@ -97,10 +97,7 @@ public class BborProtocol {
         @Override
         public void onCustomPayload(ICustomPayloadEvent<Identifier> event) {
             Identifier channel = event.getChannel();
-            if (channel.equals(ADD_BOUNDING_BOX_V2)) {
-                MasaGadgetMod.LOGGER.debug("Multiconnect recv bbor:ADD_BOUNDING_BOX_V2");
-                bborAddBoundingBoxV2Handler(event.getData());
-            }
+            bborProtocolHandler(channel, event.getData());
         }
     }
 
