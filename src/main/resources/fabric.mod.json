@@ -18,6 +18,9 @@
   "entrypoints": {
     "client": [
       "com.plusls.MasaGadget.MasaGadgetMod"
+    ],
+    "modmenu": [
+      "com.plusls.MasaGadget.compat.modmenu.ModMenuApiImpl"
     ]
   },
   "mixins": [

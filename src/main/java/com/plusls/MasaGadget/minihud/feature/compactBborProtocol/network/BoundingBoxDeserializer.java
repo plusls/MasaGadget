@@ -1,6 +1,7 @@
 package com.plusls.MasaGadget.minihud.feature.compactBborProtocol.network;
 
 import com.plusls.MasaGadget.MasaGadgetMod;
+import com.plusls.MasaGadget.ModInfo;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtIntArray;
 import net.minecraft.nbt.NbtList;
@@ -50,6 +51,6 @@ public class BoundingBoxDeserializer {
         if (first) {
             tag.putString("id", typeId);
         }
-        MasaGadgetMod.LOGGER.debug("deserializeresult: \"{}\" ({}, {}, {}) ({}, {}, {})", typeId, minX, minY, minZ, maxX, maxY, maxZ);
+        ModInfo.LOGGER.debug("deserializeresult: \"{}\" ({}, {}, {}) ({}, {}, {})", typeId, minX, minY, minZ, maxX, maxY, maxZ);
     }
 }

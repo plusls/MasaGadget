@@ -1,6 +1,7 @@
 package com.plusls.MasaGadget.tweakeroo.feature.pcaSyncProtocol.network;
 
 import com.plusls.MasaGadget.MasaGadgetMod;
+import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.util.DisconnectEvent;
 import io.netty.buffer.Unpooled;
 import net.earthcomputer.multiconnect.api.ICustomPayloadEvent;
@@ -99,20 +100,20 @@ public class PcaSyncProtocol {
 
 
     private static void onDisconnect() {
-        MasaGadgetMod.LOGGER.info("pcaSyncProtocol onDisconnect.");
+        ModInfo.LOGGER.info("pcaSyncProtocol onDisconnect.");
         enable = false;
     }
 
     private static void enablePcaSyncProtocolHandle(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
         if (!client.isIntegratedServerRunning()) {
-            MasaGadgetMod.LOGGER.info("pcaSyncProtocol enable.");
+            ModInfo.LOGGER.info("pcaSyncProtocol enable.");
             enable = true;
         }
     }
 
     private static void disablePcaSyncProtocolHandle(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
         if (!client.isIntegratedServerRunning()) {
-            MasaGadgetMod.LOGGER.info("pcaSyncProtocol disable.");
+            ModInfo.LOGGER.info("pcaSyncProtocol disable.");
             enable = false;
         }
     }
@@ -132,7 +133,7 @@ public class PcaSyncProtocol {
         Entity entity = world.getEntityById(entityId);
 
         if (entity != null) {
-            MasaGadgetMod.LOGGER.debug("update entity!");
+            ModInfo.LOGGER.debug("update entity!");
             assert tag != null;
             if (entity instanceof StorageMinecartEntity) {
                 ((StorageMinecartEntity) entity).inventory.clear();
@@ -167,7 +168,7 @@ public class PcaSyncProtocol {
         NbtCompound tag = buf.readNbt();
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (blockEntity != null) {
-            MasaGadgetMod.LOGGER.debug("update blockEntity!");
+            ModInfo.LOGGER.debug("update blockEntity!");
             blockEntity.readNbt(tag);
         }
     }
@@ -177,7 +178,7 @@ public class PcaSyncProtocol {
         if (lastBlockPos != null && lastBlockPos.equals(pos)) {
             return;
         }
-        MasaGadgetMod.LOGGER.debug("syncBlockEntity: {}", pos);
+        ModInfo.LOGGER.debug("syncBlockEntity: {}", pos);
         lastBlockPos = pos;
         lastEntityId = -1;
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
@@ -189,7 +190,7 @@ public class PcaSyncProtocol {
         if (lastEntityId != -1 && lastEntityId == entityId) {
             return;
         }
-        MasaGadgetMod.LOGGER.debug("syncEntity: {}", entityId);
+        ModInfo.LOGGER.debug("syncEntity: {}", entityId);
         lastEntityId = entityId;
         lastBlockPos = null;
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
@@ -202,7 +203,7 @@ public class PcaSyncProtocol {
             return;
         }
         lastBlockPos = null;
-        MasaGadgetMod.LOGGER.debug("cancelSyncBlockEntity.");
+        ModInfo.LOGGER.debug("cancelSyncBlockEntity.");
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
         ClientPlayNetworking.send(CANCEL_SYNC_REQUEST_BLOCK_ENTITY, buf);
     }
@@ -212,7 +213,7 @@ public class PcaSyncProtocol {
             return;
         }
         lastEntityId = -1;
-        MasaGadgetMod.LOGGER.debug("cancelSyncEntity.");
+        ModInfo.LOGGER.debug("cancelSyncEntity.");
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
         ClientPlayNetworking.send(CANCEL_SYNC_ENTITY, buf);
     }

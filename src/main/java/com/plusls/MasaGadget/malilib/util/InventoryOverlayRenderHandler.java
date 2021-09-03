@@ -3,6 +3,7 @@ package com.plusls.MasaGadget.malilib.util;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.plusls.MasaGadget.MasaGadgetMod;
+import com.plusls.MasaGadget.ModInfo;
 import fi.dy.masa.malilib.interfaces.IRenderer;
 import fi.dy.masa.malilib.render.RenderUtils;
 import fi.dy.masa.malilib.util.GuiUtils;
@@ -83,7 +84,7 @@ public class InventoryOverlayRenderHandler implements IRenderer {
                                             RenderSystem.applyModelViewMatrix();
 
                                         } else {
-                                            MasaGadgetMod.LOGGER.debug("InventoryOverlayRenderHandler sub wtf???");
+                                            ModInfo.LOGGER.debug("InventoryOverlayRenderHandler sub wtf???");
                                         }
                                     }
 
@@ -101,7 +102,7 @@ public class InventoryOverlayRenderHandler implements IRenderer {
                     }
 
                 } else {
-                    MasaGadgetMod.LOGGER.debug("InventoryOverlayRenderHandler wtf???");
+                    ModInfo.LOGGER.debug("InventoryOverlayRenderHandler wtf???");
                 }
             }
         }

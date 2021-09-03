@@ -2,6 +2,7 @@ package com.plusls.MasaGadget.minihud.feature.compactBborProtocol.network;
 
 import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
 import com.plusls.MasaGadget.MasaGadgetMod;
+import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.util.DisconnectEvent;
 import fi.dy.masa.minihud.util.DataStorage;
 import fi.dy.masa.minihud.util.StructureType;
@@ -87,7 +88,7 @@ public class BborProtocol {
         public void onCustomPayload(ICustomPayloadEvent<Identifier> event) {
             Identifier channel = event.getChannel();
             if (channel.equals(SUBSCRIBE)) {
-                MasaGadgetMod.LOGGER.debug("Multiconnect send bbor:SUBSCRIBE");
+                ModInfo.LOGGER.debug("Multiconnect send bbor:SUBSCRIBE");
                 MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
             }
         }
@@ -103,7 +104,7 @@ public class BborProtocol {
 
 
     private static void onDisconnect() {
-        MasaGadgetMod.LOGGER.info("BborProtocol onDisconnect");
+        ModInfo.LOGGER.info("BborProtocol onDisconnect");
         BborProtocol.seedCache = null;
         BborProtocol.spawnPos = null;
         BborProtocol.structuresCache = null;
@@ -117,7 +118,7 @@ public class BborProtocol {
 
     private static void onJoinServer(ClientPlayNetworkHandler handler, PacketSender sender, MinecraftClient client) {
         if (!MasaGadgetMixinPlugin.isBborLoaded) {
-            MasaGadgetMod.LOGGER.debug("SUBSCRIBE BBOR.");
+            ModInfo.LOGGER.debug("SUBSCRIBE BBOR.");
             sender.sendPacket(SUBSCRIBE, new PacketByteBuf(Unpooled.buffer()));
         }
     }
@@ -143,7 +144,7 @@ public class BborProtocol {
             BborProtocol.enable = true;
             DataStorage.getInstance().setWorldSeed(BborProtocol.seedCache);
             DataStorage.getInstance().setWorldSpawn(BborProtocol.spawnPos);
-            MasaGadgetMod.LOGGER.info("init seed: {}", BborProtocol.seedCache);
+            ModInfo.LOGGER.info("init seed: {}", BborProtocol.seedCache);
         }
     }
 
@@ -157,7 +158,7 @@ public class BborProtocol {
 
     static public void parse(PacketByteBuf buf) {
         Identifier dimensionId = buf.readIdentifier();
-        MasaGadgetMod.LOGGER.debug("dimensionId = {}", dimensionId.toString());
+        ModInfo.LOGGER.debug("dimensionId = {}", dimensionId.toString());
 
         NbtCompound tag = BoundingBoxDeserializer.deserializeStructure(buf);
 

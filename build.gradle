@@ -1,10 +1,10 @@
 plugins {
-	id 'fabric-loom' version '0.8-SNAPSHOT'
+	id 'fabric-loom' version '0.9-SNAPSHOT'
 	id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
 
 archivesBaseName = project.archives_base_name
 version = "${project.minecraft_version}-${project.mod_version}"
@@ -12,12 +12,15 @@ group = project.maven_group
 
 repositories {
 	maven {
-		url 'https://masa.dy.fi/maven'
+		url "https://www.cursemaven.com"
+	}
+	maven {
+		url 'https://api.modrinth.com/maven'
 	}
 }
 
 loom {
-	accessWidener "src/main/resources/masa_gadget_mod.accesswidener"
+	accessWidenerPath = file("src/main/resources/masa_gadget_mod.accesswidener")
 }
 
 dependencies {
@@ -32,12 +35,13 @@ dependencies {
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
 
-	modImplementation "fi.dy.masa.malilib:malilib-fabric-${project.minecraft_version}:${project.malilib_version}"
-	modImplementation "fi.dy.masa.minihud:minihud-fabric-${project.minecraft_version}:${project.minihud_version}"
-	modImplementation "fi.dy.masa.tweakeroo:tweakeroo-fabric-${project.minecraft_version}:${project.tweakeroo_version}"
-	modImplementation "fi.dy.masa.tweakeroo:litematica-fabric-${project.minecraft_version}:${project.litematica_version}"
+	modImplementation "curse.maven:malilib-303119:${project.malilib_version}"
+	modImplementation "curse.maven:minihud-244260:${project.minihud_version}"
+	modImplementation "curse.maven:tweakeroo-297344:${project.tweakeroo_version}"
+	modImplementation "curse.maven:litematica-308892:${project.litematica_version}"
 	modImplementation "net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}"
 	include "net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}"
+	modImplementation "maven.modrinth:modmenu:${project.mod_menu_version}"
 }
 
 processResources {
@@ -55,13 +59,8 @@ tasks.withType(JavaCompile).configureEach {
 	// If Javadoc is generated, this must be specified in that task too.
 	it.options.encoding = "UTF-8"
 
-	// The Minecraft launcher currently installs Java 8 for users, so your mod probably wants to target Java 8 too
-	// JDK 9 introduced a new way of specifying this that will make sure no newer classes or methods are used.
-	// We'll use that if it's available, but otherwise we'll use the older option.
-	def targetVersion = 8
-	if (JavaVersion.current().isJava9Compatible()) {
-		it.options.release = targetVersion
-	}
+	// Minecraft 1.17 (21w19a) upwards uses Java 16.
+	it.options.release = 16
 }
 
 java {
