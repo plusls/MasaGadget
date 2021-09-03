@@ -1,10 +1,10 @@
 package com.plusls.MasaGadget.mixin.litematica.fixCarpetAccurateProtocol;
 
+import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.mixin.Dependencies;
 import com.plusls.MasaGadget.mixin.Dependency;
 import com.plusls.MasaGadget.mixin.NeedObfuscate;
-import com.plusls.MasaGadget.mixin.litematica.LitematicaDependencyPredicate;
 import fi.dy.masa.litematica.materials.MaterialCache;
 import fi.dy.masa.litematica.util.EntityUtils;
 import fi.dy.masa.litematica.util.RayTraceUtils;
@@ -19,7 +19,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
@@ -28,15 +27,16 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.Objects;
 
@@ -86,7 +86,85 @@ public class MixinWorldUtils {
                 y = pos.getY();
             }
         }
+        ModInfo.LOGGER.debug("applyCarpetProtocolHitVec: {} -> {}", hitVecIn, new Vec3d(x, y, z).toString());
+        BlockState debugState = debug(block, pos, new Vec3d(x, y, z));
+        if (debugState != null)
+            ModInfo.LOGGER.debug("BlockState: {}", debugState.toString());
+
         cir.setReturnValue(new Vec3d(x, y, z));
+    }
+
+    private static BlockState debug(Block block, BlockPos pos, Vec3d hitVecIn) {
+        //actual alternative block placement code
+        //ItemPlacementContext context = new ItemPlacementContext(new ItemUsageContext(MinecraftClient.getInstance().player, Hand.MAIN_HAND, blockHitResult));
+
+        Direction facing;
+        Vec3d vec3d = hitVecIn;
+        float hitX = (float) vec3d.x - pos.getX();
+        if (hitX < 2) // vanilla
+            return null;
+        int code = (int) (hitX - 2) / 2;
+        //
+        // now it would be great if hitX was adjusted in context to original range from 0.0 to 1.0
+        // since its actually using it. Its private - maybe with Reflections?
+        //
+        PlayerEntity placer = MinecraftClient.getInstance().player;
+        World world = MinecraftClient.getInstance().world;
+
+        if (block instanceof GlazedTerracottaBlock) {
+            facing = Direction.byId(code);
+            if (facing == Direction.UP || facing == Direction.DOWN) {
+                facing = placer.getHorizontalFacing().getOpposite();
+            }
+            return block.getDefaultState().with(HorizontalFacingBlock.FACING, facing);
+        } else if (block instanceof ObserverBlock) {
+            return block.getDefaultState()
+                    .with(FacingBlock.FACING, Direction.byId(code))
+                    .with(ObserverBlock.POWERED, true);
+        } else if (block instanceof RepeaterBlock) {
+            facing = Direction.byId(code % 16);
+            if (facing == Direction.UP || facing == Direction.DOWN) {
+                facing = placer.getHorizontalFacing().getOpposite();
+            }
+            ModInfo.LOGGER.debug("RepeaterBlock facing: {} {} delay: {}", Direction.byId(code % 16), facing.toString(), MathHelper.clamp(code / 16, 1, 4));
+            return block.getDefaultState()
+                    .with(HorizontalFacingBlock.FACING, facing)
+                    .with(RepeaterBlock.DELAY, MathHelper.clamp(code / 16, 1, 4))
+                    .with(RepeaterBlock.LOCKED, Boolean.FALSE);
+        } else if (block instanceof TrapdoorBlock) {
+            facing = Direction.byId(code % 16);
+            if (facing == Direction.UP || facing == Direction.DOWN) {
+                facing = placer.getHorizontalFacing().getOpposite();
+            }
+            return block.getDefaultState()
+                    .with(TrapdoorBlock.FACING, facing)
+                    .with(TrapdoorBlock.OPEN, Boolean.FALSE)
+                    .with(TrapdoorBlock.HALF, (code >= 16) ? BlockHalf.TOP : BlockHalf.BOTTOM)
+                    .with(TrapdoorBlock.OPEN, world.isReceivingRedstonePower(pos));
+        } else if (block instanceof ComparatorBlock) {
+            facing = Direction.byId(code % 16);
+            if ((facing == Direction.UP) || (facing == Direction.DOWN)) {
+                facing = placer.getHorizontalFacing().getOpposite();
+            }
+            ComparatorMode m = (hitX >= 16) ? ComparatorMode.SUBTRACT : ComparatorMode.COMPARE;
+            return block.getDefaultState()
+                    .with(HorizontalFacingBlock.FACING, facing)
+                    .with(ComparatorBlock.POWERED, Boolean.FALSE)
+                    .with(ComparatorBlock.MODE, m);
+        } else if (block instanceof DispenserBlock) {
+            return block.getDefaultState()
+                    .with(DispenserBlock.FACING, Direction.byId(code))
+                    .with(DispenserBlock.TRIGGERED, Boolean.FALSE);
+        } else if (block instanceof PistonBlock) {
+            return block.getDefaultState()
+                    .with(FacingBlock.FACING, Direction.byId(code))
+                    .with(PistonBlock.EXTENDED, Boolean.FALSE);
+        } else if (block instanceof StairsBlock) {
+            return block.getDefaultState()//worldIn, pos, facing, hitX, hitY, hitZ, meta, placer)
+                    .with(StairsBlock.FACING, Direction.byId(code % 16))
+                    .with(StairsBlock.HALF, (hitX >= 16) ? BlockHalf.TOP : BlockHalf.BOTTOM);
+        }
+        return null;
     }
 
     @Shadow(remap = false)
@@ -232,19 +310,18 @@ public class MixinWorldUtils {
 
     // 修复 漏斗，原木放置问题
     // 核心思路是修改玩家看的位置以及 side
-    @Inject(method = "doEasyPlaceAction", at = @At(value = "INVOKE", target = "Lfi/dy/masa/litematica/util/WorldUtils;cacheEasyPlacePosition(Lnet/minecraft/util/math/BlockPos;)V", ordinal = 0))
-    private static void fixDoEasyPlaceAction0(MinecraftClient mc, CallbackInfoReturnable<ActionResult> cir) {
+    @Inject(method = "doEasyPlaceAction", at = @At(value = "INVOKE", target = "Lfi/dy/masa/litematica/util/WorldUtils;cacheEasyPlacePosition(Lnet/minecraft/util/math/BlockPos;)V", ordinal = 0),
+            locals = LocalCapture.CAPTURE_FAILHARD)
+    private static void fixDoEasyPlaceAction0(MinecraftClient mc, CallbackInfoReturnable<ActionResult> cir, RayTraceUtils.RayTraceWrapper traceWrapper) {
         if (!Configs.Litematica.FIX_ACCURATE_PROTOCOL.getBooleanValue()) {
             return;
         }
-        RayTraceUtils.RayTraceWrapper traceWrapper = RayTraceUtils.getGenericTrace(Objects.requireNonNull(mc.world),
-                Objects.requireNonNull(mc.player), 6.0D, true);
         BlockHitResult trace = Objects.requireNonNull(traceWrapper).getBlockHitResult();
         BlockPos pos = Objects.requireNonNull(trace).getBlockPos();
         World world = Objects.requireNonNull(SchematicWorldHandler.getSchematicWorld());
         BlockState stateSchematic = world.getBlockState(pos);
         ItemStack stack = MaterialCache.getInstance().getRequiredBuildItemForState(stateSchematic);
-        Hand hand = EntityUtils.getUsedHandForItem(mc.player, stack);
+        Hand hand = EntityUtils.getUsedHandForItem(Objects.requireNonNull(mc.player), stack);
         Vec3d hitPos = trace.getPos();
 
 
@@ -279,12 +356,18 @@ public class MixinWorldUtils {
             target = "Lnet/minecraft/util/hit/BlockHitResult;<init>(Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Direction;Lnet/minecraft/util/math/BlockPos;Z)V", ordinal = 0),
             index = 1)
     private static Direction modifySide(Direction side) {
-        return easyPlaceActionNewSide.get();
+        if (Configs.Litematica.FIX_ACCURATE_PROTOCOL.getBooleanValue() && easyPlaceActionNewSide.get() != null) {
+            side = easyPlaceActionNewSide.get();
+        }
+        return side;
     }
 
-    @Inject(method = "doEasyPlaceAction", at =@At(value = "INVOKE",
+    @Inject(method = "doEasyPlaceAction", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;interactBlock(Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;", ordinal = 0))
     private static void fixDoEasyPlaceAction1(MinecraftClient mc, CallbackInfoReturnable<ActionResult> cir) {
+        if (!Configs.Litematica.FIX_ACCURATE_PROTOCOL.getBooleanValue()) {
+            return;
+        }
         // 让玩家看回原来的位置
         if (easyPlaceActionOldYaw.get() != null) {
             Objects.requireNonNull(mc.player).setYaw(easyPlaceActionOldYaw.get());

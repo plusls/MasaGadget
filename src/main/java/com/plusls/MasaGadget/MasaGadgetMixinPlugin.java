@@ -21,6 +21,7 @@ import org.spongepowered.asm.service.MixinService;
 import org.spongepowered.asm.util.Annotations;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -160,16 +161,25 @@ public class MasaGadgetMixinPlugin implements IMixinConfigPlugin {
 
     private static void obfuscateAnnotation(AnnotationNode annotationNode, boolean defaultRemap) {
         boolean remap = getRemap(annotationNode, defaultRemap);
-        ModInfo.LOGGER.info("remap: {} defaultRemap: {} annotationNode: {}", remap, defaultRemap, annotationNode);
         for (int i = 0; i < annotationNode.values.size(); i += 2) {
             if (annotationNode.values.get(i + 1) instanceof AnnotationNode subAnnotationNode) {
                 obfuscateAnnotation(subAnnotationNode, remap);
+            } else if (annotationNode.values.get(i + 1) instanceof ArrayList list && list.size() > 0 && list.get(0) instanceof AnnotationNode) {
+                ArrayList<AnnotationNode> subAnnotationNodeList = list;
+                for (AnnotationNode subAnnotationNode : subAnnotationNodeList) {
+                    obfuscateAnnotation(subAnnotationNode, remap);
+                }
             } else if (!defaultRemap) {
                 String name = (String) annotationNode.values.get(i);
-                ModInfo.LOGGER.info("name: {} annotationNode: {}", name, annotationNode);
-                if (NAME_LIST.contains(name) && annotationNode.values.get(i + 1) instanceof String str) {
-                    ModInfo.LOGGER.info("str: {}", str);
-                    annotationNode.values.set(i + 1, YarnUtil.obfuscateString(str));
+                if (NAME_LIST.contains(name)) {
+                    if (annotationNode.values.get(i + 1) instanceof String str) {
+                        annotationNode.values.set(i + 1, YarnUtil.obfuscateString(str));
+                    } else if (annotationNode.values.get(i + 1) instanceof ArrayList list && list.size() > 0 && list.get(0) instanceof String) {
+                        ArrayList<String> strList = list;
+                        for (int j = 0; j < strList.size(); ++j) {
+                            strList.set(j, YarnUtil.obfuscateString(strList.get(j)));
+                        }
+                    }
                 }
             }
         }
