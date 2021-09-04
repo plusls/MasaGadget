@@ -1,6 +1,10 @@
-package com.plusls.MasaGadget.mixin.tweakeroo.util;
+package com.plusls.MasaGadget.mixin.tweakeroo.inventoryPreviewSupportSelect;
 
-import com.plusls.MasaGadget.malilib.util.InventoryOverlayRenderHandler;
+import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
+import com.plusls.MasaGadget.config.Configs;
+import com.plusls.MasaGadget.mixin.Dependencies;
+import com.plusls.MasaGadget.mixin.Dependency;
+import com.plusls.MasaGadget.tweakeroo.inventoryPreviewSupportSelect.InventoryOverlayRenderHandler;
 import com.plusls.MasaGadget.tweakeroo.pcaSyncProtocol.PcaSyncProtocol;
 import fi.dy.masa.malilib.hotkeys.IKeybind;
 import fi.dy.masa.malilib.interfaces.IRenderer;
@@ -9,7 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-
+@Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.TWEAKEROO_MOD_ID, version = "*"))
 @Mixin(value = RenderHandler.class, remap = false)
 public abstract class MixinRenderHandler implements IRenderer {
     @Redirect(method = "onRenderGameOverlayPost",
@@ -18,7 +22,7 @@ public abstract class MixinRenderHandler implements IRenderer {
                     ordinal = 2))
     private boolean checkInventoryPreviewPress(IKeybind iKeybind) {
         boolean ret = iKeybind.isKeybindHeld();
-        if (!ret) {
+        if (!ret && Configs.Tweakeroo.INVENTORY_PREVIEW_SUPPORT_SELECT.getBooleanValue()) {
             if (PcaSyncProtocol.enable) {
                 // 未按下按键时若是 lastBlockPos 不为空， 则告诉服务端不需要更新 block entity
                 PcaSyncProtocol.cancelSyncBlockEntity();

@@ -3,6 +3,7 @@ package com.plusls.MasaGadget;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.event.InputHandler;
 import com.plusls.MasaGadget.minihud.compactBborProtocol.BborProtocol;
+import com.plusls.MasaGadget.tweakeroo.inventoryPreviewSupportSelect.MouseScrollInputHandler;
 import com.plusls.MasaGadget.tweakeroo.pcaSyncProtocol.PcaSyncProtocol;
 import fi.dy.masa.malilib.config.ConfigManager;
 import fi.dy.masa.malilib.event.InputEventHandler;
@@ -22,7 +23,7 @@ public class MasaGadgetMod implements ClientModInitializer {
         if (MasaGadgetMixinPlugin.isMinihudLoaded) {
             BborProtocol.init();
         }
-        com.plusls.MasaGadget.tweakeroo.inventoryPreviewSupportSelect.InputHandler.register();
+        MouseScrollInputHandler.register();
         ConfigManager.getInstance().registerConfigHandler(ModInfo.MOD_ID, new Configs());
         InputEventHandler.getKeybindManager().registerKeybindProvider(InputHandler.getInstance());
     }
