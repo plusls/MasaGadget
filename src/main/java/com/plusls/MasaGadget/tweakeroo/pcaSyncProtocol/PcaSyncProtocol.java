@@ -1,7 +1,11 @@
 package com.plusls.MasaGadget.tweakeroo.pcaSyncProtocol;
 
 import com.plusls.MasaGadget.ModInfo;
+import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.event.DisconnectEvent;
+import com.plusls.MasaGadget.litematica.saveInventoryToSchematicInServer.PcaSyncUtil;
+import fi.dy.masa.malilib.gui.Message;
+import fi.dy.masa.malilib.util.InfoUtils;
 import io.netty.buffer.Unpooled;
 import net.earthcomputer.multiconnect.api.ICustomPayloadEvent;
 import net.earthcomputer.multiconnect.api.ICustomPayloadListener;
@@ -166,6 +170,9 @@ public class PcaSyncProtocol {
         BlockPos pos = buf.readBlockPos();
         NbtCompound tag = buf.readNbt();
         BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (Configs.Litematica.SAVE_INVENTORY_TO_SCHEMATIC_IN_SERVER.getBooleanValue() && pos.equals(PcaSyncUtil.lastUpdatePos)) {
+            InfoUtils.showGuiOrInGameMessage(Message.MessageType.SUCCESS, "masa_gadget_mod.message.loadInventoryToLocalSuccess");
+        }
         if (blockEntity != null) {
             ModInfo.LOGGER.debug("update blockEntity!");
             blockEntity.readNbt(tag);

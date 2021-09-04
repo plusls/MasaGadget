@@ -5,11 +5,11 @@
   "compatibilityLevel": "JAVA_8",
   "plugin": "com.plusls.MasaGadget.MasaGadgetMixinPlugin",
   "client": [
+    "event.disconnect.MixinMinecraftClient",
     "litematica.fixCarpetAccurateProtocol.MixinBlockItem",
     "litematica.fixCarpetAccurateProtocol.MixinWorldUtils",
     "litematica.nudgeSelectionSupportFreeCamera.MixinInputHandler",
-    "tweakeroo.inventoryPreviewSupportSelect.MixinInGameHud",
-    "tweakeroo.inventoryPreviewSupportSelect.MixinInventoryOverlay",
+    "litematica.saveInventoryToSchematicInServer.MixinSchematicUtils",
     "malilib.fixConfigWidgetWidth.MixinWidgetListConfigOptions",
     "malilib.fixGetInventoryType.MixinInventoryOverlay",
     "malilib.optimizeConfigWidgetSearch.MixinWidgetListConfigOptions",
@@ -18,9 +18,10 @@
     "minihud.compactBborProtocol.MixinPlayerRespawnS2CPacket",
     "tweakeroo.inventoryPreviewSupportFreeCamera.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportPlayer.MixinRenderUtils",
-    "tweakeroo.pcaSyncProtocol.MixinRenderUtils",
+    "tweakeroo.inventoryPreviewSupportSelect.MixinInGameHud",
+    "tweakeroo.inventoryPreviewSupportSelect.MixinInventoryOverlay",
     "tweakeroo.inventoryPreviewSupportSelect.MixinRenderHandler",
-    "event.disconnect.MixinMinecraftClient"
+    "tweakeroo.pcaSyncProtocol.MixinRenderUtils"
   ],
   "injectors": {
     "defaultRequire": 1
