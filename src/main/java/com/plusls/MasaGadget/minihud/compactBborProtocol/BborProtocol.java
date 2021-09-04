@@ -42,7 +42,6 @@ public class BborProtocol {
     public static Map<Identifier, NbtList> structuresCache = null;
     public static Long seedCache = null;
     public static BlockPos spawnPos = null;
-    public static boolean subscribed = false;
     public static boolean enable = false;
     public static boolean carpetOrServux = false;
     public static final ReentrantLock lock = new ReentrantLock(true);
@@ -91,20 +90,11 @@ public class BborProtocol {
         BborProtocol.seedCache = null;
         BborProtocol.spawnPos = null;
         BborProtocol.structuresCache = null;
-        BborProtocol.subscribed = false;
         BborProtocol.enable = false;
         BborProtocol.carpetOrServux = false;
         // 为了鲁棒性考虑 断开连接时应该确保当前的锁已解开
         while (BborProtocol.lock.isLocked()) {
             BborProtocol.lock.unlock();
-        }
-    }
-
-    private static void subscribeBbor(ClientPlayNetworkHandler clientPlayNetworkHandler) {
-        if (!MasaGadgetMixinPlugin.isBborLoaded && !BborProtocol.subscribed) {
-            BborProtocol.subscribed = true;
-            ModInfo.LOGGER.debug("SUBSCRIBE BBOR.");
-            clientPlayNetworkHandler.sendPacket(new CustomPayloadC2SPacket(SUBSCRIBE, new PacketByteBuf(Unpooled.buffer())));
         }
     }
 
@@ -131,9 +121,14 @@ public class BborProtocol {
         // 因此无需对是否加载 MiniHUD 进行特判
         if (!BborProtocol.carpetOrServux) {
             BborProtocol.enable = true;
-            initMetaData();
-            subscribeBbor(clientPlayNetworkHandler);
+            if (Configs.Minihud.COMPACT_BBOR_PROTOCOL.getBooleanValue()) {
+                initMetaData();
+            }
             ModInfo.LOGGER.info("init seed: {}", BborProtocol.seedCache);
+            if (!MasaGadgetMixinPlugin.isBborLoaded) {
+                ModInfo.LOGGER.debug("SUBSCRIBE BBOR.");
+                clientPlayNetworkHandler.sendPacket(new CustomPayloadC2SPacket(SUBSCRIBE, new PacketByteBuf(Unpooled.buffer())));
+            }
         }
     }
 
@@ -142,7 +137,6 @@ public class BborProtocol {
         if (player == null) {
             return;
         }
-        subscribeBbor(player.networkHandler);
         initMetaData();
         bborRefreshData(dimensionId);
     }
