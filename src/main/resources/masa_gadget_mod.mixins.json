@@ -16,11 +16,11 @@
     "minihud.compactBborProtocol.MixinCustomPayloadS2CPacket",
     "minihud.compactBborProtocol.MixinDataStorage",
     "minihud.compactBborProtocol.MixinPlayerRespawnS2CPacket",
-    "tweakeroo.feature.inventoryPreviewSupportFreeCamera.MixinRenderUtils",
-    "tweakeroo.feature.inventoryPreviewSupportPlayer.MixinRenderUtils",
-    "tweakeroo.feature.pcaSyncProtocol.MixinRenderUtils",
+    "tweakeroo.inventoryPreviewSupportFreeCamera.MixinRenderUtils",
+    "tweakeroo.inventoryPreviewSupportPlayer.MixinRenderUtils",
+    "tweakeroo.pcaSyncProtocol.MixinRenderUtils",
     "tweakeroo.util.MixinRenderHandler",
-    "util.MixinMinecraftClient"
+    "event.disconnect.MixinMinecraftClient"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -22,5 +22,13 @@
   "masa_gadget_mod.config.minihud.compactBborProtocol.name": "compactBborProtocol",
   "masa_gadget_mod.config.minihud.compactBborProtocol.comment": "Parse bbor protocol and send data to minihud",
   "masa_gadget_mod.config.minihud.pcaSyncProtocolSyncBeehive.name": "pcaSyncProtocolSyncBeehive",
-  "masa_gadget_mod.config.minihud.pcaSyncProtocolSyncBeehive.comment": "Press §6inventoryPreview§r hotkey to use PCA sync protocol to sync Beehive"
+  "masa_gadget_mod.config.minihud.pcaSyncProtocolSyncBeehive.comment": "Press §6inventoryPreview§r hotkey to use PCA sync protocol to sync Beehive",
+  "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportFreeCamera.name": "inventoryPreviewSupportFreeCamera",
+  "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportFreeCamera.comment": "Player can use inventory preview on free camera",
+  "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportPlayer.name": "inventoryPreviewSupportPlayer",
+  "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportPlayer.comment": "Player can use inventory preview to show the inventory of player and ender chest inventory",
+  "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportSelect.name": "inventoryPreviewSupportSelect",
+  "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportSelect.comment": "When player press the inventory preview hotkey, player can use the mouse wheel to select items (player can view the enchantment information), and when player select the shulker box in the chest, player can press the mouse scroll to preview the items in the box",
+  "masa_gadget_mod.config.tweakeroo.pcaSyncProtocol.name": "pcaSyncProtocol",
+  "masa_gadget_mod.config.tweakeroo.pcaSyncProtocol.comment": "Use pcaSyncProtocol to sync block entity data and entity data from server, such as chest, villager"
 }

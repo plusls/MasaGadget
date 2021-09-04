@@ -1,7 +1,7 @@
 package com.plusls.MasaGadget.mixin.tweakeroo.util;
 
 import com.plusls.MasaGadget.malilib.util.InventoryOverlayRenderHandler;
-import com.plusls.MasaGadget.tweakeroo.feature.pcaSyncProtocol.network.PcaSyncProtocol;
+import com.plusls.MasaGadget.tweakeroo.pcaSyncProtocol.PcaSyncProtocol;
 import fi.dy.masa.malilib.hotkeys.IKeybind;
 import fi.dy.masa.malilib.interfaces.IRenderer;
 import fi.dy.masa.tweakeroo.event.RenderHandler;

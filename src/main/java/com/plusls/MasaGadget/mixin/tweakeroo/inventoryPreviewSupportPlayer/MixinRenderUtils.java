@@ -1,5 +1,9 @@
-package com.plusls.MasaGadget.mixin.tweakeroo.feature.inventoryPreviewSupportPlayer;
+package com.plusls.MasaGadget.mixin.tweakeroo.inventoryPreviewSupportPlayer;
 
+import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
+import com.plusls.MasaGadget.config.Configs;
+import com.plusls.MasaGadget.mixin.Dependencies;
+import com.plusls.MasaGadget.mixin.Dependency;
 import fi.dy.masa.malilib.render.InventoryOverlay;
 import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.tweakeroo.renderer.RenderUtils;
@@ -20,6 +24,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+@Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.TWEAKEROO_MOD_ID, version = "*"))
 @Mixin(value = RenderUtils.class, remap = false)
 public abstract class MixinRenderUtils {
 
@@ -41,8 +46,7 @@ public abstract class MixinRenderUtils {
                     ordinal = 0, remap = false), ordinal = 0)
     private static Inventory modifyInv(Inventory inv) {
         Inventory ret = inv;
-        if (ret == null && traceEntity instanceof PlayerEntity) {
-            PlayerEntity playerEntity = (PlayerEntity) traceEntity;
+        if (Configs.Tweakeroo.INVENTORY_PREVIEW_SUPPORT_PLAYER.getBooleanValue() && ret == null && traceEntity instanceof PlayerEntity playerEntity) {
             ret = playerEntity.getInventory();
 
             int x = GuiUtils.getScaledWindowWidth() / 2 - 88;

@@ -1,4 +1,4 @@
-package com.plusls.MasaGadget.tweakeroo.feature.pcaSyncProtocol.network;
+package com.plusls.MasaGadget.tweakeroo.pcaSyncProtocol;
 
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.event.DisconnectEvent;
@@ -19,6 +19,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.StorageMinecartEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -139,15 +140,14 @@ public class PcaSyncProtocol {
                 Inventories.readNbt(tag, ((StorageMinecartEntity) entity).inventory);
             } else if (entity instanceof MerchantEntity) {
                 ((MerchantEntity) entity).getInventory().clear();
-                ((MerchantEntity) entity).getInventory().readNbtList(tag.getList("Inventory", 10));
+                ((MerchantEntity) entity).getInventory().readNbtList(tag.getList("Inventory", NbtElement.COMPOUND_TYPE));
             } else if (entity instanceof HorseBaseEntity) {
                 // TODO 写的更优雅一些
                 entity.readNbt(tag);
-            } else if (entity instanceof PlayerEntity) {
-                PlayerEntity playerEntity = (PlayerEntity) entity;
-                playerEntity.getInventory().readNbt(tag.getList("Inventory", 10));
-                if (tag.contains("EnderItems", 9)) {
-                    playerEntity.getEnderChestInventory().readNbtList(tag.getList("EnderItems", 10));
+            } else if (entity instanceof PlayerEntity playerEntity) {
+                playerEntity.getInventory().readNbt(tag.getList("Inventory", NbtElement.COMPOUND_TYPE));
+                if (tag.contains("EnderItems", NbtElement.LIST_TYPE)) {
+                    playerEntity.getEnderChestInventory().readNbtList(tag.getList("EnderItems", NbtElement.COMPOUND_TYPE));
                 }
             }
         }

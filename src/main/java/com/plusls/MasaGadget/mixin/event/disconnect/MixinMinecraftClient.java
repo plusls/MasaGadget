@@ -1,4 +1,4 @@
-package com.plusls.MasaGadget.mixin.util;
+package com.plusls.MasaGadget.mixin.event.disconnect;
 
 import com.plusls.MasaGadget.event.DisconnectEvent;
 import net.minecraft.client.MinecraftClient;

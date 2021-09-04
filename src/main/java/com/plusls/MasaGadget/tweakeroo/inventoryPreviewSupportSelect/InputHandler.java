@@ -1,4 +1,4 @@
-package com.plusls.MasaGadget.tweakeroo.feature.inventoryPreviewSupportSelect;
+package com.plusls.MasaGadget.tweakeroo.inventoryPreviewSupportSelect;
 
 import fi.dy.masa.malilib.event.InputEventHandler;
 import fi.dy.masa.malilib.hotkeys.IMouseInputHandler;
