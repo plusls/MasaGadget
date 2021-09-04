@@ -1,7 +1,10 @@
 package com.plusls.MasaGadget.mixin.litematica.fixCarpetAccurateProtocol;
 
+import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.litematica.fixCarpetAccurateProtocol.BlockPlacer;
+import com.plusls.MasaGadget.mixin.Dependencies;
+import com.plusls.MasaGadget.mixin.Dependency;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.BlockItem;
@@ -19,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 // carpet extra 是 1000
 // 可以保证第一个执行自己的函数
 @Mixin(value = BlockItem.class, priority = 980)
+@Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.LITEMATICA_MOD_ID, version = "*"))
 public abstract class MixinBlockItem {
 
     @Shadow

@@ -21,7 +21,6 @@ import org.spongepowered.asm.service.MixinService;
 import org.spongepowered.asm.util.Annotations;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -33,13 +32,11 @@ import java.util.*;
 
 public class MasaGadgetMixinPlugin implements IMixinConfigPlugin {
 
-    public static final String MALILIB_MOD_ID = "malilib";
     public static final String TWEAKEROO_MOD_ID = "tweakeroo";
     public static final String MINIHUD_MOD_ID = "minihud";
     public static final String LITEMATICA_MOD_ID = "litematica";
     public static final String BBOR_MOD_ID = "bbor";
 
-    public static boolean isMalilibLoaded = false;
     public static boolean isTweakerooLoaded = false;
     public static boolean isMinihudLoaded = false;
     public static boolean isLitematicaLoaded = false;
@@ -62,7 +59,6 @@ public class MasaGadgetMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void onLoad(String mixinPackage) {
-        isMalilibLoaded = FabricLoader.getInstance().isModLoaded(MALILIB_MOD_ID);
         isTweakerooLoaded = FabricLoader.getInstance().isModLoaded(TWEAKEROO_MOD_ID);
         isMinihudLoaded = FabricLoader.getInstance().isModLoaded(MINIHUD_MOD_ID);
         isLitematicaLoaded = FabricLoader.getInstance().isModLoaded(LITEMATICA_MOD_ID);

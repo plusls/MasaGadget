@@ -1,10 +1,7 @@
 package com.plusls.MasaGadget.tweakeroo.feature.inventoryPreviewSupportSelect;
 
-import com.plusls.MasaGadget.malilib.util.InventoryOverlayRenderHandler;
 import fi.dy.masa.malilib.event.InputEventHandler;
 import fi.dy.masa.malilib.hotkeys.IMouseInputHandler;
-import fi.dy.masa.tweakeroo.config.FeatureToggle;
-import fi.dy.masa.tweakeroo.config.Hotkeys;
 
 public class InputHandler implements IMouseInputHandler {
     public static void register() {

@@ -2,10 +2,8 @@ package com.plusls.MasaGadget.mixin.tweakeroo.feature.pcaSyncProtocol;
 
 import com.plusls.MasaGadget.tweakeroo.feature.pcaSyncProtocol.network.PcaSyncProtocol;
 import fi.dy.masa.malilib.util.InventoryUtils;
-import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.renderer.RenderUtils;
 import net.minecraft.block.entity.*;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.passive.VillagerEntity;
@@ -17,8 +15,6 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-
-import java.util.UUID;
 
 @Mixin(value = RenderUtils.class, remap = false)
 public abstract class MixinRenderUtils {

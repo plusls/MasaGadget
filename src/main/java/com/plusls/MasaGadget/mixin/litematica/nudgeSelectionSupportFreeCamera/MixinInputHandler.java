@@ -1,5 +1,6 @@
 package com.plusls.MasaGadget.mixin.litematica.nudgeSelectionSupportFreeCamera;
 
+import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.mixin.Dependencies;
 import com.plusls.MasaGadget.mixin.Dependency;
@@ -12,7 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-@Dependencies(dependencyList = @Dependency(modId = "litematica", version = LitematicaDependencyPredicate.NUDGE_SELECTION_SUPPORT_FREECAMERA_BREAK_VERSION,
+@Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.LITEMATICA_MOD_ID, version = LitematicaDependencyPredicate.NUDGE_SELECTION_SUPPORT_FREECAMERA_BREAK_VERSION,
         predicate = LitematicaDependencyPredicate.TweakerooPredicate.class))
 @Mixin(value = InputHandler.class, remap = false)
 public class MixinInputHandler {

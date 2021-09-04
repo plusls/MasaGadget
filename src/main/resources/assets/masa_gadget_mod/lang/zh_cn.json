@@ -18,5 +18,9 @@
   "masa_gadget_mod.config.malilib.fixGetInventoryType.name": "修复容器类型",
   "masa_gadget_mod.config.malilib.fixGetInventoryType.comment": "修复对烟熏炉之类的熔炉变种的容器类型的判断",
   "masa_gadget_mod.config.malilib.optimizeConfigWidgetSearch.name": "Masa 搜索优化",
-  "masa_gadget_mod.config.malilib.optimizeConfigWidgetSearch.comment": "在 Masa 家的搜索栏中可以使用中文搜索，还能使用 §6modified§r 来搜索修改过的配置项"
+  "masa_gadget_mod.config.malilib.optimizeConfigWidgetSearch.comment": "在 Masa 家的搜索栏中可以使用中文搜索，还能使用 §6modified§r 来搜索修改过的配置项",
+  "masa_gadget_mod.config.minihud.compactBborProtocol.name": "兼容 BBOR 协议",
+  "masa_gadget_mod.config.minihud.compactBborProtocol.comment": "解析 BBOR 的协议并将结构数据发送给 MiniHUD，可以在未安装",
+  "masa_gadget_mod.config.minihud.pcaSyncProtocolSyncBeehive.name": "PCA同步协议同步蜂巢数据",
+  "masa_gadget_mod.config.minihud.pcaSyncProtocolSyncBeehive.comment": "按下 §6容器预览§r 的快捷键将会使用 PCA 同步协议来 同步蜂巢，蜂箱数据"
 }

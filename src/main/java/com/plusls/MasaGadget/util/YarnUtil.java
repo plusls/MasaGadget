@@ -2,19 +2,16 @@ package com.plusls.MasaGadget.util;
 
 import com.google.common.collect.Maps;
 import com.plusls.MasaGadget.ModInfo;
-import com.terraformersmc.modmenu.util.mod.Mod;
 import net.fabricmc.mapping.reader.v2.MappingGetter;
 import net.fabricmc.mapping.reader.v2.TinyMetadata;
 import net.fabricmc.mapping.reader.v2.TinyV2Factory;
 import net.fabricmc.mapping.reader.v2.TinyVisitor;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Stack;
 

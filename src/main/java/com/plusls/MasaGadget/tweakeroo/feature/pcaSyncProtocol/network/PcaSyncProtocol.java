@@ -1,8 +1,7 @@
 package com.plusls.MasaGadget.tweakeroo.feature.pcaSyncProtocol.network;
 
-import com.plusls.MasaGadget.MasaGadgetMod;
 import com.plusls.MasaGadget.ModInfo;
-import com.plusls.MasaGadget.util.DisconnectEvent;
+import com.plusls.MasaGadget.event.DisconnectEvent;
 import io.netty.buffer.Unpooled;
 import net.earthcomputer.multiconnect.api.ICustomPayloadEvent;
 import net.earthcomputer.multiconnect.api.ICustomPayloadListener;

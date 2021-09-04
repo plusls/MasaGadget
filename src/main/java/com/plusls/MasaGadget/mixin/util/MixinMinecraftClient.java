@@ -1,6 +1,6 @@
 package com.plusls.MasaGadget.mixin.util;
 
-import com.plusls.MasaGadget.util.DisconnectEvent;
+import com.plusls.MasaGadget.event.DisconnectEvent;
 import net.minecraft.client.MinecraftClient;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

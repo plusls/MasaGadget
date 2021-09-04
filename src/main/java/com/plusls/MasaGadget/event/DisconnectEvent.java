@@ -1,4 +1,4 @@
-package com.plusls.MasaGadget.util;
+package com.plusls.MasaGadget.event;
 
 import java.util.ArrayList;
 import java.util.List;

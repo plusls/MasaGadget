@@ -1,6 +1,5 @@
-package com.plusls.MasaGadget.minihud.feature.compactBborProtocol.network;
+package com.plusls.MasaGadget.minihud.compactBborProtocol;
 
-import com.plusls.MasaGadget.MasaGadgetMod;
 import com.plusls.MasaGadget.ModInfo;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtIntArray;

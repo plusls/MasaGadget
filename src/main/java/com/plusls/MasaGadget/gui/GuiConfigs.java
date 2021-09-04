@@ -1,5 +1,6 @@
 package com.plusls.MasaGadget.gui;
 
+import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
 import fi.dy.masa.malilib.config.IConfigBase;
@@ -29,6 +30,13 @@ public class GuiConfigs extends GuiConfigsBase {
         int y = 26;
         int rows = 1;
         for (ConfigGuiTab tab : ConfigGuiTab.values()) {
+            if (!MasaGadgetMixinPlugin.isLitematicaLoaded && tab == ConfigGuiTab.LITEMATICA) {
+                continue;
+            } else if (!MasaGadgetMixinPlugin.isMinihudLoaded && tab == ConfigGuiTab.MINIHUD) {
+                continue;
+            } else if (!MasaGadgetMixinPlugin.isTweakerooLoaded && tab == ConfigGuiTab.TWEAKEROO) {
+                continue;
+            }
             int width = this.getStringWidth(tab.getDisplayName()) + 10;
             if (x >= this.width - width - 10) {
                 x = 10;
@@ -71,7 +79,7 @@ public class GuiConfigs extends GuiConfigsBase {
         } else if (tab == ConfigGuiTab.MALILIB) {
             configs = Configs.Malilib.OPTIONS;
         } else if (tab == ConfigGuiTab.MINIHUD) {
-            configs = Configs.Minihud.OPTIONS;
+            configs = Configs.Minihud.GUI_OPTIONS;
         } else if (tab == ConfigGuiTab.TWEAKEROO) {
             configs = Configs.Tweakeroo.OPTIONS;
         } else {

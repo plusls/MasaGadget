@@ -1,5 +1,6 @@
 package com.plusls.MasaGadget.mixin.litematica.fixCarpetAccurateProtocol;
 
+import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.mixin.Dependencies;
@@ -27,7 +28,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -41,7 +41,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import java.util.Objects;
 
 @NeedObfuscate(packageName = "com.plusls.MasaGadget.mixin")
-@Dependencies(dependencyList = @Dependency(modId = "litematica", version = "*"))
+@Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.LITEMATICA_MOD_ID, version = "*"))
 @Mixin(value = WorldUtils.class, priority = 900, remap = false)
 public class MixinWorldUtils {
 

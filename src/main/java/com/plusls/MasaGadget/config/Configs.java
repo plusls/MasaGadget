@@ -7,6 +7,7 @@ import com.google.gson.JsonPrimitive;
 import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.gui.GuiConfigs;
+import com.plusls.MasaGadget.minihud.compactBborProtocol.BborProtocol;
 import com.plusls.MasaGadget.mixin.litematica.LitematicaDependencyPredicate;
 import fi.dy.masa.malilib.config.ConfigUtils;
 import fi.dy.masa.malilib.config.IConfigBase;
@@ -16,12 +17,14 @@ import fi.dy.masa.malilib.config.options.ConfigHotkey;
 import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.util.FileUtils;
 import fi.dy.masa.malilib.util.JsonUtils;
+import net.minecraft.client.MinecraftClient;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class Configs implements IConfigHandler {
     private static final String CONFIG_FILE_NAME = ModInfo.MOD_ID + ".json";
@@ -96,9 +99,28 @@ public class Configs implements IConfigHandler {
     public static class Minihud {
         private static final String PREFIX = String.format("%s.config.minihud", ModInfo.MOD_ID);
         public static final ConfigBoolean COMPACT_BBOR_PROTOCOL = new TranslatableConfigBoolean(PREFIX, "compactBborProtocol", true);
+        public static final ConfigBoolean PCA_SYNC_PROTOCOL_SYNC_BEEHIVE = new TranslatableConfigBoolean(PREFIX, "pcaSyncProtocolSyncBeehive", true);
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
-                COMPACT_BBOR_PROTOCOL
+                COMPACT_BBOR_PROTOCOL,
+                PCA_SYNC_PROTOCOL_SYNC_BEEHIVE
         );
+
+        public static final List<IConfigBase> GUI_OPTIONS = new LinkedList<>(OPTIONS);
+
+        static {
+            GUI_OPTIONS.removeIf(iConfigBase -> {
+                if (iConfigBase == PCA_SYNC_PROTOCOL_SYNC_BEEHIVE && !MasaGadgetMixinPlugin.isTweakerooLoaded) {
+                    return true;
+                }
+                return false;
+            });
+            COMPACT_BBOR_PROTOCOL.setValueChangeCallback(config -> {
+                if (config.getBooleanValue()) {
+                    BborProtocol.bborInit(Objects.requireNonNull(MinecraftClient.getInstance().world).getRegistryKey().getValue());
+                }
+            });
+        }
+
     }
 
     public static class Tweakeroo {
