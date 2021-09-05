@@ -40,5 +40,5 @@ jobs:
         if: ${{ runner.os == 'Linux' && matrix.java == '16' }}
         uses: actions/upload-artifact@v2
         with:
-          name: Artifacts
+          name: MasaGadget-fabric-mc1.17-${{ steps.getid.outputs.commitID }}(Public Beta)
           path: build/libs/
