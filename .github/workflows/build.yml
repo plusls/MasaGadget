@@ -19,6 +19,18 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
+      - name: Get commit id
+        id: getid
+        run: |
+          echo "::set-output name=commitID::${GITHUB_SHA::7}"
+      - name: Display commit id
+        run: |
+          echo MasaGadget commit-${{ steps.getid.outputs.commitID }} \(Public Beta\)
+      - name: Set commit id in codes
+        run: |
+          sed -i "s/build.undefined/${{ steps.getid.outputs.commitID }}/g" gradle.properties
+          sed -i "s/build.undefined/${{ steps.getid.outputs.commitID }}/g" src/main/java/com/plusls/MasaGadget/ModInfo.java
+          sed -i "s/Version Exception/Public Beta/g" src/main/java/com/plusls/MasaGadget/ModInfo.java
       - name: make gradle wrapper executable
         if: ${{ runner.os != 'Windows' }}
         run: chmod +x ./gradlew
