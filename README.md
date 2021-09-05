@@ -1,74 +1,98 @@
 # Masa Gadget
+[![License](https://img.shields.io/github/license/plusls/MasaGadget?style=flat-square)](https://github.com/plusls/MasaGadget/blob/main/LICENSE)
+[![Issues](https://img.shields.io/github/issues/plusls/MasaGadget?style=flat-square)](https://github.com/plusls/MasaGadget/issues)
+[![Pull Requests](https://img.shields.io/github/issues-pr/plusls/MasaGadget?style=flat-square)](https://github.com/plusls/MasaGadget/pulls)
+[![Java CI with gradle](https://img.shields.io/github/workflow/status/plusls/MasaGadget/build?label=Build&style=flat-square)](https://github.com/plusls/MasaGadget/actions/workflows/build.yml)
+[![Publish Release](https://img.shields.io/github/workflow/status/plusls/MasaGadget/Publish%20Release?label=Publish%20Release&style=flat-square)](https://github.com/plusls/MasaGadget/actions/workflows/publish.yml)
+[![Release](https://img.shields.io/github/v/release/plusls/MasaGadget?include_prereleases&style=flat-square)](https://github.com/plusls/MasaGadget/releases)
+[![Github Release Downloads](https://img.shields.io/github/downloads/plusls/MasaGadget/total?label=Github%20Release%20Downloads&style=flat-square)](https://github.com/plusls/MasaGadget/releases)
 
-给 Masa 全家桶添加了一些 Feature
+[English](./README_EN.md)
 
-使用 G + C 打开设置界面
+为 Masa 系列模组添加了一些特性。
 
-## 功能
+默认使用 **G + C** 打开设置界面。
 
-功能如下
+## 依赖项
 
-### 优化搜索框
-
-如今 masa 全家桶比较方便的汉化方式为资源包汉化, malilib 创建的搜索框默认情况下不支持搜索汉化后的文本。安装此 mod 后 masa 全家桶可以搜索汉化后的文本。
-
-同时搜索时支持大小写混用，搜索 modified 可以搜索到修改过的配置项
-
-### 配置显示界面优化
-
-malilib 创建的配置界面没有考虑到汉化的情况，在加载汉化资源包后可能会出现对齐异常，文本显示不全的问题。安装 mod 后优化了对齐的代码，让文本能显示正常。
-
-### MiniHUD 支持 安装了 bbor 的服务端
-
-minihud 的查看结构和史莱姆区块渲染需要服务端安装了 carpet 或者 servux 才能正常使用（史莱姆区块可以手动输入种子），在安装此 mod 后，若是服务器未安装上述 2个 mod 但是安装了 bbor， 该 mod 可以自动从服务器获取 bbor 的数据并导入 minihud，从而让 minihud 在多人游戏中也能渲染结构和史莱姆区块。 
-
-### 多人游戏容器预览
-
-tweakeroo 的容器预览功能在多人游戏中是不可用的，在安装此 mod 后可以让该功能在多人游戏中使用
-
-现已兼容箱子矿车，漏斗矿车
-
-需要服务端安装 [plusls-carpet-addition](https://github.com/plusls/plusls-carpet-addition) 并开启 pcaSyncProtocol
-
-### 灵魂出窍支持容器预览
-
-tweakeroo 的灵魂出窍默认情况下是不支持容器预览的，在安装此 mod 后可以在灵魂出窍的情况下预览容器的内容
-
-### 容器预览支持玩家存储
-
-容器预览可以显示玩家背包和末影箱（服务器不一定可用）
-
-### 多人游戏蜜蜂数量预览
-
-MiniHUD 支持查看蜂箱内的蜜蜂数量，但是在多人游戏会失效。在安装此 mod 后，按下容器预览的快捷键即可同步蜜蜂数量
-
-需要服务端安装 plusls-carpet-addition 并开启 pcaSyncProtocol
+| 依赖                   | 类型 | 下载                                                                                                                                                |
+| ---------------------- | ---- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Fabric-API             | 必须 | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/fabric-api) &#124; [Github](https://github.com/FabricMC/fabric)                           |
+| Litematica             | 可选 | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/litematica) &#124; [Masa WebSite](https://masa.dy.fi/mcmods/client_mods/?mod=litematica)  |
+| MaliLib                | 必须 | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/malilib) &#124; [Masa WebSite](https://masa.dy.fi/mcmods/client_mods/?mod=malilib)        |
+| MiniHUD                | 可选 | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/minihud) &#124; [Masa WebSite](https://masa.dy.fi/mcmods/client_mods/?mod=minihud)        |
+| Plusls-Carpet-Addition | 可选 | [Github](https://github.com/plusls/plusls-carpet-addition)                                                                                          |
+| Tweakeroo              | 可选 | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/tweakeroo) &#124; [Masa WebSite](https://masa.dy.fi/mcmods/client_mods/?mod=tweakeroo)    |
 
 
-### 兼容 multiconnect
+## 特性
 
-最新版本的 Masa Gadget 已经兼容了由 EarthComputer 编写的 multiconnect mod, Masa Gadget 支持跨版本使用，即从高版本客户端连接到低版本服务器
+### 全局
 
-出于维护方便的考虑不再更新 1.14，1.15 的 Masa Gadget
+- 打开设置界面(openConfigGui)
 
-### 投影 mod 多人游戏轻松放置修复
+    - 打开设置界面的快捷键。
 
-投影 mod 的轻松放置功能在多人游戏中存在 bug，无法正确识别部分物品的方向，现已修复
+- 调试模式(debug)
 
-### 容器预览显示物品详细信息
+    - 开启后将会打印调试日志。
 
-现在可以使用鼠标滚轮来查看容器预览内的物品的详细信息
+### Litematica
 
-## 安装
+- 修复精准放置协议(fixAccurateProtocol)
 
-该 mod 依赖 fabric-api >= 0.28.0
+    - Litematica 本身的精准放置协议实现的有问题，修复后可以在服务器中使用轻松放置来摆放中继器，活塞，侦测器，楼梯等方块.
 
-若出现报错请前往 masa 官网 https://masa.dy.fi/mcmods/client_mods/ 下载最新的 minihud 和 maillib
+- 移动投影时支持灵魂出窍(nudgeSelectionSupportFreeCamera)
 
-已经测试的版本：
+    - 在开启 Free Camera 时，移动投影的方向会取决于 Camera 的方向。
 
-```
-malilib_version >= 0.10.0-dev.21+arne.2
-minihud_version >= 0.19.0-dev.20201103.184029
-tweakeroo_version >= 0.10.0-dev.20201103.184154
-```
+- 服务器中保存投影保留容器数据(saveInventoryToSchematicInServer)
+
+    - 保存投影时会使用 PCA 同步协议来同步容器中的数据到本地。
+
+### Malilib
+
+- 修复 Masa 配置文本的宽度(fixConfigWidgetWidth)
+
+    - 在使用汉化包后现在的界面会根据汉化后的文本长度自动调节。
+
+- 修复容器类型(fixGetInventoryType)
+
+    - 修复对烟熏炉之类的熔炉变种的容器类型的判断。
+
+- Masa 搜索优化(optimizeConfigWidgetSearch)
+
+    - 在 Masa 家的搜索栏中可以使用中文搜索，还能使用 **modified** 来搜索修改过的配置项
+
+### MiniHUD
+
+- 兼容 BBOR 协议(compactBborProtocol)
+
+    - 解析 BBOR 的协议并将结构数据发送给 MiniHUD，可以在未安装 servux 的服务器上使用 MiniHUD 的查看结构功能。
+
+- PCA同步协议同步蜂巢数据(pcaSyncProtocolSyncBeehive)
+
+    - 按下 **容器预览** 的快捷键将会使用 PCA 同步协议来 同步蜂巢，蜂箱数据。
+
+### Tweakeroo
+
+- 容器预览支持灵魂出窍(inventoryPreviewSupportFreeCamera)
+
+    - 玩家可以在开启灵魂出窍的情况下使用容器预览。
+
+- 容器预览支持预览玩家(inventoryPreviewSupportPlayer)
+
+    - 对着玩家使用容器预览时，会显示出玩家背包和末影箱的内容。
+
+- 容器预览支持选中格子(inventoryPreviewSupportSelect)
+
+    - 按下容器预览快捷键时可以使用鼠标滚轮来选中物品（可以查看附魔信息），在选中箱子中的潜影盒时可以按下鼠标中键来预览盒子内的物品。
+
+- PCA 同步协议(pcaSyncProtocol)
+
+    - 使用 PCA 同步协议来从服务器同步方块实体信息和实体信息，比如箱子内的物品，村民背包。
+
+## 许可
+
+此项目在 CC0许可证 下可用。 从中学习，并将其融入到您自己的项目中。
