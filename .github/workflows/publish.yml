@@ -1,0 +1,40 @@
+name: Publish Release
+on:
+  release:
+    types:
+      - published
+jobs:
+  build:
+    strategy:
+      matrix:
+        java: [ 16 ]
+        os: [ ubuntu-20.04 ]
+        branch: [ 1.16.x, 1.17.x ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ matrix.branch }}
+      - name: validate gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+      - name: setup jdk ${{ matrix.java }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+      - name: make gradle wrapper executable
+        if: ${{ runner.os != 'Windows' }}
+        run: chmod +x ./gradlew
+      - name: build
+        run: ./gradlew build
+      - name: Find correct JAR
+        id: findjar
+        run: |
+          output="$(find build/libs/ ! -name "*-dev.jar" ! -name "*-sources.jar" -type f -printf "%f\n")"
+          echo "::set-output name=jarname::$output"
+      - name: Upload assets to GitHub
+        uses: AButler/upload-release-assets@v2.0
+        if: ${{ runner.os == 'Linux' && matrix.java == '16' }}
+        with:
+          files: build/libs/${{ steps.findjar.outputs.jarname }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
