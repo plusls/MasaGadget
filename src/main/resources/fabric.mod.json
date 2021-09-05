@@ -2,7 +2,6 @@
   "schemaVersion": 1,
   "id": "masa_gadget_mod",
   "version": "${version}",
-
   "name": "Masa Gadget",
   "description": "Masa Gadget.",
   "authors": [
@@ -18,6 +17,9 @@
   "entrypoints": {
     "client": [
       "com.plusls.MasaGadget.MasaGadgetMod"
+    ],
+    "modmenu": [
+      "com.plusls.MasaGadget.compat.modmenu.ModMenuApiImpl"
     ]
   },
   "mixins": [

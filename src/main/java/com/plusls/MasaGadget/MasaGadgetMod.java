@@ -1,26 +1,20 @@
 package com.plusls.MasaGadget;
 
-import com.plusls.MasaGadget.malilib.util.InventoryOverlayRenderHandler;
-import com.plusls.MasaGadget.minihud.feature.compactBborProtocol.network.BborProtocol;
-import com.plusls.MasaGadget.tweakeroo.feature.pcaSyncProtocol.network.PcaSyncProtocol;
-import com.plusls.MasaGadget.tweakeroo.util.InputHandler;
+import com.plusls.MasaGadget.config.Configs;
+import com.plusls.MasaGadget.event.InputHandler;
+import com.plusls.MasaGadget.minihud.compactBborProtocol.BborProtocol;
+import com.plusls.MasaGadget.tweakeroo.inventoryPreviewSupportSelect.MouseScrollInputHandler;
+import com.plusls.MasaGadget.tweakeroo.pcaSyncProtocol.PcaSyncProtocol;
+import fi.dy.masa.malilib.config.ConfigManager;
+import fi.dy.masa.malilib.event.InputEventHandler;
 import net.fabricmc.api.ClientModInitializer;
-import net.minecraft.util.Identifier;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.config.Configurator;
 
 public class MasaGadgetMod implements ClientModInitializer {
-    public static final String MODID = "masa_gadget_mod";
-    public static final Logger LOGGER = LogManager.getLogger("MasaGadgetMod");
-    public static String level = "INFO";
 
     @Override
     public void onInitializeClient() {
-        Configurator.setLevel(LOGGER.getName(), Level.toLevel(MasaGadgetMod.level));
         if (MasaGadgetMixinPlugin.isBborLoaded) {
-            LOGGER.info("BBOR detected.");
+            ModInfo.LOGGER.info("BBOR detected.");
         }
 
         if (MasaGadgetMixinPlugin.isTweakerooLoaded) {
@@ -29,11 +23,8 @@ public class MasaGadgetMod implements ClientModInitializer {
         if (MasaGadgetMixinPlugin.isMinihudLoaded) {
             BborProtocol.init();
         }
-        InventoryOverlayRenderHandler.register();
-        InputHandler.register();
-    }
-
-    public static Identifier id(String id) {
-        return new Identifier(MODID, id);
+        MouseScrollInputHandler.register();
+        ConfigManager.getInstance().registerConfigHandler(ModInfo.MOD_ID, new Configs());
+        InputEventHandler.getKeybindManager().registerKeybindProvider(InputHandler.getInstance());
     }
 }

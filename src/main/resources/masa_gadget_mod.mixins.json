@@ -5,24 +5,27 @@
   "compatibilityLevel": "JAVA_8",
   "plugin": "com.plusls.MasaGadget.MasaGadgetMixinPlugin",
   "client": [
-    "litematica.feature.nudgeSelectionSupportFreeCamera.MixinInputHandler",
-    "litematica.fix.carpetAccurateProtocol.MixinWorldUtils",
-    "malilib.feature.optimizeConfigWidgetSearch.MixinWidgetListConfigOptions",
-    "malilib.feature.renderStackToolTip.MixinInventoryOverlay",
-    "malilib.fix.configWidgetWidth.MixinWidgetListConfigOptions",
-    "malilib.fix.getInventoryType.MixinInventoryOverlay",
-    "minihud.feature.compactBborProtocol.MixinCustomPayloadS2CPacket",
-    "minihud.feature.compactBborProtocol.MixinDataStorage",
-    "minihud.feature.compactBborProtocol.MixinPlayerRespawnS2CPacket",
-    "tweakeroo.feature.inventoryPreviewSupportFreeCamera.MixinRenderUtils",
-    "tweakeroo.feature.inventoryPreviewSupportPlayer.MixinRenderUtils",
-    "tweakeroo.util.MixinRenderHandler",
-    "tweakeroo.feature.pcaSyncProtocol.MixinRenderUtils",
-    "util.MixinMinecraftClient"
+    "event.disconnect.MixinMinecraftClient",
+    "litematica.fixCarpetAccurateProtocol.MixinBlockItem",
+    "litematica.fixCarpetAccurateProtocol.MixinWorldUtils",
+    "litematica.nudgeSelectionSupportFreeCamera.MixinInputHandler",
+    "malilib.fixConfigWidgetWidth.MixinWidgetListConfigOptions",
+    "malilib.fixGetInventoryType.MixinInventoryOverlay",
+    "malilib.optimizeConfigWidgetSearch.MixinWidgetListConfigOptions",
+    "minihud.compactBborProtocol.MixinCustomPayloadS2CPacket",
+    "minihud.compactBborProtocol.MixinDataStorage",
+    "minihud.compactBborProtocol.MixinPlayerRespawnS2CPacket",
+    "tweakeroo.inventoryPreviewSupportFreeCamera.MixinRenderUtils",
+    "tweakeroo.inventoryPreviewSupportPlayer.MixinRenderUtils",
+    "tweakeroo.inventoryPreviewSupportSelect.MixinInGameHud",
+    "tweakeroo.inventoryPreviewSupportSelect.MixinInventoryOverlay",
+    "tweakeroo.inventoryPreviewSupportSelect.MixinRenderHandler",
+    "tweakeroo.pcaSyncProtocol.MixinRenderUtils"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "mixins": [
+    "litematica.saveInventoryToSchematicInServer.MixinSchematicUtils"
   ]
 }
