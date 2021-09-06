@@ -31,6 +31,16 @@ jobs:
           sed -i "s/build.undefined/${{ steps.getid.outputs.commitID }}/g" gradle.properties
           sed -i "s/build.undefined/${{ steps.getid.outputs.commitID }}/g" src/main/java/com/plusls/MasaGadget/ModInfo.java
           sed -i "s/Version Exception/Public Beta/g" src/main/java/com/plusls/MasaGadget/ModInfo.java
+      - name: Read relevant fields from gradle.properties
+        id: properties
+        run: |
+          path='./gradle.properties'
+          for property in minecraft_version_out mod_version_detail archives_base_name
+          do
+            result=$(sed -n "/^[[:space:]]*$property[[:space:]]*=[[:space:]]*/s/^[[:space:]]*$property[[:space:]]*=[[:space:]]*//p" "$path")
+            echo "$property: $result"
+            echo ::set-output name=$property::"$result"
+          done
       - name: make gradle wrapper executable
         if: ${{ runner.os != 'Windows' }}
         run: chmod +x ./gradlew
@@ -40,5 +50,5 @@ jobs:
         if: ${{ runner.os == 'Linux' && matrix.java == '16' }}
         uses: actions/upload-artifact@v2
         with:
-          name: MasaGadget-fabric-mc1.17-${{ steps.getid.outputs.commitID }}(Public Beta)
+          name: ${{ steps.properties.outputs.archives_base_name }}-mc${{ steps.properties.outputs.minecraft_version_out }}-${{ steps.properties.outputs.mod_version_detail }}(Public Beta)
           path: build/libs/
