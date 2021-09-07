@@ -92,7 +92,3 @@ The default hotkey to open the in-game config GUI is **G + C**.
 - pcaSyncProtocol
 
   - Use pcaSyncProtocol to sync block entity data and entity data from server, such as chest, villager.
-  
-## License
-
-This project is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
