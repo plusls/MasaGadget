@@ -1,5 +1,5 @@
 {
-  "masa_gadget_mod.gui.title.configs": "MasaGadget 设置 - 版本: %s (%s)",
+  "masa_gadget_mod.gui.title.configs": "MasaGadget 设置 - 版本: %s",
   "masa_gadget_mod.gui.button.configGui.generic": "通用",
   "masa_gadget_mod.gui.button.configGui.litematica": "Litematica",
   "masa_gadget_mod.gui.button.configGui.malilib": "Malilib",
@@ -33,8 +33,5 @@
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportSelect.name": "容器预览支持选中格子",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportSelect.comment": "按下容器预览快捷键时可以使用鼠标滚轮来选中物品（可以查看附魔信息），在选中箱子中的潜影盒时可以按下鼠标中键来预览盒子内的物品",
   "masa_gadget_mod.config.tweakeroo.pcaSyncProtocol.name": "PCA 同步协议",
-  "masa_gadget_mod.config.tweakeroo.pcaSyncProtocol.comment": "使用 PCA 同步协议来从服务器同步方块实体信息和实体信息，比如箱子内的物品，村民背包",
-  "masa_gadget_mod.misc.versionType.Public Beta": "公共测试版",
-  "masa_gadget_mod.misc.versionType.Public Release": "公共发行版",
-  "masa_gadget_mod.misc.versionType.Version Exception": "版本异常"
+  "masa_gadget_mod.config.tweakeroo.pcaSyncProtocol.comment": "使用 PCA 同步协议来从服务器同步方块实体信息和实体信息，比如箱子内的物品，村民背包"
 }

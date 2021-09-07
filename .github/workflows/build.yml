@@ -23,19 +23,14 @@ jobs:
         id: getid
         run: |
           echo "::set-output name=commitID::${GITHUB_SHA::7}"
-      - name: Display commit id
-        run: |
-          echo MasaGadget commit-${{ steps.getid.outputs.commitID }} \(Public Beta\)
       - name: Set commit id in codes
         run: |
-          sed -i "s/build.undefined/${{ steps.getid.outputs.commitID }}/g" gradle.properties
-          sed -i "s/build.undefined/${{ steps.getid.outputs.commitID }}/g" src/main/java/com/plusls/MasaGadget/ModInfo.java
-          sed -i "s/Version Exception/Public Beta/g" src/main/java/com/plusls/MasaGadget/ModInfo.java
+          sed -i "s/alpha.114514/beta.${{ steps.getid.outputs.commitID }}/g" gradle.properties
       - name: Read relevant fields from gradle.properties
         id: properties
         run: |
           path='./gradle.properties'
-          for property in minecraft_version_out mod_version_detail archives_base_name
+          for property in minecraft_version mod_version archives_base_name
           do
             result=$(sed -n "/^[[:space:]]*$property[[:space:]]*=[[:space:]]*/s/^[[:space:]]*$property[[:space:]]*=[[:space:]]*//p" "$path")
             echo "$property: $result"
@@ -50,5 +45,5 @@ jobs:
         if: ${{ runner.os == 'Linux' && matrix.java == '16' }}
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ steps.properties.outputs.archives_base_name }}-mc${{ steps.properties.outputs.minecraft_version_out }}-${{ steps.properties.outputs.mod_version_detail }}(Public Beta)
+          name: ${{ steps.properties.outputs.archives_base_name }}-${{ steps.properties.outputs.minecraft_version }}-${{ steps.properties.outputs.mod_version }}
           path: build/libs/
