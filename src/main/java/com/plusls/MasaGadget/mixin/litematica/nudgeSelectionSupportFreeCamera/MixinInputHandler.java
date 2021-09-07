@@ -4,7 +4,7 @@ import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.mixin.Dependencies;
 import com.plusls.MasaGadget.mixin.Dependency;
-import com.plusls.MasaGadget.mixin.litematica.LitematicaDependencyPredicate;
+import com.plusls.MasaGadget.mixin.litematica.LitematicaDependencyUtil;
 import fi.dy.masa.litematica.event.InputHandler;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import net.minecraft.client.MinecraftClient;
@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-@Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.LITEMATICA_MOD_ID, version = LitematicaDependencyPredicate.NUDGE_SELECTION_SUPPORT_FREECAMERA_BREAK_VERSION,
-        predicate = LitematicaDependencyPredicate.TweakerooPredicate.class))
+@Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.LITEMATICA_MOD_ID, version = "<" + LitematicaDependencyUtil.NUDGE_SELECTION_SUPPORT_FREECAMERA_BREAK_VERSION,
+        predicate = LitematicaDependencyUtil.TweakerooPredicate.class))
 @Mixin(value = InputHandler.class, remap = false)
 public class MixinInputHandler {
     @ModifyVariable(method = "nudgeSelection", at = @At(value = "HEAD"), ordinal = 0)

@@ -8,7 +8,8 @@ import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.gui.GuiConfigs;
 import com.plusls.MasaGadget.minihud.compactBborProtocol.BborProtocol;
-import com.plusls.MasaGadget.mixin.litematica.LitematicaDependencyPredicate;
+import com.plusls.MasaGadget.mixin.litematica.LitematicaDependencyUtil;
+import com.plusls.MasaGadget.mixin.tweakeroo.TweakerooDependencyUtil;
 import fi.dy.masa.malilib.config.ConfigUtils;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigHandler;
@@ -76,8 +77,8 @@ public class Configs implements IConfigHandler {
         static {
             GUI_OPTIONS.removeIf(iConfigBase -> {
                 if (iConfigBase == NUDGE_SELECTION_SUPPORT_FREE_CAMERA &&
-                        (!MasaGadgetMixinPlugin.checkDependency(MasaGadgetMixinPlugin.LITEMATICA_MOD_ID,
-                                LitematicaDependencyPredicate.NUDGE_SELECTION_SUPPORT_FREECAMERA_BREAK_VERSION) ||
+                        (MasaGadgetMixinPlugin.checkDependency(MasaGadgetMixinPlugin.LITEMATICA_MOD_ID,
+                                ">=" + LitematicaDependencyUtil.NUDGE_SELECTION_SUPPORT_FREECAMERA_BREAK_VERSION) ||
                                 !MasaGadgetMixinPlugin.isTweakerooLoaded)) {
                     return true;
                 }
@@ -138,6 +139,19 @@ public class Configs implements IConfigHandler {
                 INVENTORY_PREVIEW_SUPPORT_SELECT,
                 PCA_SYNC_PROTOCOL
         );
+
+        public static final List<IConfigBase> GUI_OPTIONS = new LinkedList<>(OPTIONS);
+
+        static {
+            GUI_OPTIONS.removeIf(iConfigBase -> {
+                if (iConfigBase == INVENTORY_PREVIEW_SUPPORT_FREE_CAMERA &&
+                        MasaGadgetMixinPlugin.checkDependency(MasaGadgetMixinPlugin.TWEAKEROO_MOD_ID,
+                                ">=" + TweakerooDependencyUtil.INVENTORY_PREVIEW_SUPPORT_FREE_CAMERA_BREAK_VERSION)) {
+                    return true;
+                }
+                return false;
+            });
+        }
     }
 
     public static void loadFromFile() {

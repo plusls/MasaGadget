@@ -34,7 +34,6 @@
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportSelect.comment": "When player press the inventory preview hotkey, player can use the mouse wheel to select items (player can view the enchantment information), and when player select the shulker box in the chest, player can press the mouse scroll to preview the items in the box",
   "masa_gadget_mod.config.tweakeroo.pcaSyncProtocol.name": "pcaSyncProtocol",
   "masa_gadget_mod.config.tweakeroo.pcaSyncProtocol.comment": "Use pcaSyncProtocol to sync block entity data and entity data from server, such as chest, villager",
-
   "masa_gadget_mod.misc.versionType.Public Beta": "Public Beta",
   "masa_gadget_mod.misc.versionType.Public Release": "Public Release",
   "masa_gadget_mod.misc.versionType.Version Exception": "Version Exception"

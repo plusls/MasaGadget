@@ -82,7 +82,7 @@ public class GuiConfigs extends GuiConfigsBase {
         } else if (tab == ConfigGuiTab.MINIHUD) {
             configs = Configs.Minihud.GUI_OPTIONS;
         } else if (tab == ConfigGuiTab.TWEAKEROO) {
-            configs = Configs.Tweakeroo.OPTIONS;
+            configs = Configs.Tweakeroo.GUI_OPTIONS;
         } else {
             return Collections.emptyList();
         }
