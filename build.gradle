@@ -75,7 +75,8 @@ task publishModrinth (type: TaskModrinthUpload){
 	versionNumber = version
 	// On fabric, use 'remapJar' instead of 'jar'
 	uploadFile = remapJar
-	addGameVersion(project.minecraft_version)
+	// addGameVersion(project.minecraft_version)
+	addGameVersion("1.17.1")
 	addLoader('fabric')
 }
 
