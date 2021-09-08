@@ -43,6 +43,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload to Curseforge
         uses: itsmeow/curseforge-upload@v3
+        if: ${{ runner.os == 'Linux' && matrix.java == '16' }}
         with:
           token: ${{ secrets.CF_API_TOKEN }}
           project_id: 525510
@@ -53,3 +54,9 @@ jobs:
           # 1.16.5:8203, 1.17:8516, fabric:7499
           game_versions: ${{ fromJson('{"1.16.x":"8203","1.17.x":"8516"}')[matrix.branch] }}, 7499
           release_type: release
+      - name: Upload to Modrinth
+        if: ${{ runner.os == 'Linux' && matrix.java == '16' }}
+        run: |
+          ./gradlew publishModrinth
+        env:
+          MODRINTH: ${{ secrets.MODRINTH }}

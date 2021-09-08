@@ -65,11 +65,13 @@ public class Configs implements IConfigHandler {
         public static final ConfigBoolean FIX_ACCURATE_PROTOCOL = new TranslatableConfigBoolean(PREFIX, "fixAccurateProtocol", true);
         public static final ConfigBoolean NUDGE_SELECTION_SUPPORT_FREE_CAMERA = new TranslatableConfigBoolean(PREFIX, "nudgeSelectionSupportFreeCamera", true);
         public static final ConfigBoolean SAVE_INVENTORY_TO_SCHEMATIC_IN_SERVER = new TranslatableConfigBoolean(PREFIX, "saveInventoryToSchematicInServer", false);
+        public static final ConfigBoolean USE_RELATIVE_PATH = new TranslatableConfigBoolean(PREFIX, "useRelativePath", false);
 
         public static final List<IConfigBase> OPTIONS = ImmutableList.of(
                 FIX_ACCURATE_PROTOCOL,
                 NUDGE_SELECTION_SUPPORT_FREE_CAMERA,
-                SAVE_INVENTORY_TO_SCHEMATIC_IN_SERVER
+                SAVE_INVENTORY_TO_SCHEMATIC_IN_SERVER,
+                USE_RELATIVE_PATH
         );
 
         public static final List<IConfigBase> GUI_OPTIONS = new LinkedList<>(OPTIONS);

@@ -1,5 +1,6 @@
 plugins {
 	id 'fabric-loom' version '0.9-SNAPSHOT'
+	id "com.modrinth.minotaur" version "1.2.1"
 	id 'maven-publish'
 }
 
@@ -62,6 +63,22 @@ tasks.withType(JavaCompile).configureEach {
 	// Minecraft 1.17 (21w19a) upwards uses Java 16.
 	it.options.release = 16
 }
+
+import com.modrinth.minotaur.TaskModrinthUpload
+task publishModrinth (type: TaskModrinthUpload){
+	onlyIf {
+		System.getenv("MODRINTH") // Only attempt to run this task if the MODRINTH variable is set, otherwise SKIP it
+	}
+
+	token = System.getenv("MODRINTH")
+	projectId = 'SFO4Ca80'
+	versionNumber = version
+	// On fabric, use 'remapJar' instead of 'jar'
+	uploadFile = remapJar
+	addGameVersion(project.minecraft_version)
+	addLoader('fabric')
+}
+
 
 java {
 	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task

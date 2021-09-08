@@ -25,5 +25,8 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "litematica.useRelativePath.MixinSchematicPlacement"
+  ]
 }

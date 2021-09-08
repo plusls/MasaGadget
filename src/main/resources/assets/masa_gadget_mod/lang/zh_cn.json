@@ -16,6 +16,8 @@
   "masa_gadget_mod.config.litematica.nudgeSelectionSupportFreeCamera.comment": "在开启 Free Camera 时，移动投影的方向会取决于 Camera 的方向",
   "masa_gadget_mod.config.litematica.saveInventoryToSchematicInServer.name": "服务器中保存投影保留容器数据",
   "masa_gadget_mod.config.litematica.saveInventoryToSchematicInServer.comment": "保存投影时会使用 PCA 同步协议来同步容器中的数据到本地",
+  "masa_gadget_mod.config.litematica.useRelativePath.name": "使用相对路径",
+  "masa_gadget_mod.config.litematica.useRelativePath.comment": "加载和保存投影时使用相对路径",
   "masa_gadget_mod.config.malilib.fixConfigWidgetWidth.name": "修复 Masa 配置文本的宽度",
   "masa_gadget_mod.config.malilib.fixConfigWidgetWidth.comment": "在使用汉化包后现在的界面会根据汉化后的文本长度自动调节",
   "masa_gadget_mod.config.malilib.fixGetInventoryType.name": "修复容器类型",
