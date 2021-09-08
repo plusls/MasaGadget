@@ -9,7 +9,7 @@ jobs:
       matrix:
         java: [ 16 ]
         os: [ ubuntu-20.04 ]
-        branch: [ 1.16.x, 1.17.x ]
+        branch: [ 1.16.x, 1.17.x, 1.18.x]
     runs-on: ${{ matrix.os }}
     steps:
       - name: checkout repository

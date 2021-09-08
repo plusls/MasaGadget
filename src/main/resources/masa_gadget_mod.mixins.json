@@ -10,6 +10,7 @@
     "litematica.fixCarpetAccurateProtocol.MixinWorldUtils",
     "litematica.nudgeSelectionSupportFreeCamera.MixinInputHandler",
     "litematica.saveInventoryToSchematicInServer.MixinSchematicUtils",
+    "litematica.useRelativePath.MixinSchematicPlacement",
     "malilib.fixConfigWidgetWidth.MixinWidgetListConfigOptions",
     "malilib.fixGetInventoryType.MixinInventoryOverlay",
     "malilib.optimizeConfigWidgetSearch.MixinWidgetListConfigOptions",
@@ -25,8 +26,5 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "litematica.useRelativePath.MixinSchematicPlacement"
-  ]
+  }
 }
