@@ -21,6 +21,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Surrogate;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
@@ -36,6 +37,13 @@ public abstract class MixinRenderUtils {
                     ordinal = 0, remap = true), locals = LocalCapture.CAPTURE_FAILHARD)
     private static void getTraceEntity(MinecraftClient mc, MatrixStack matrixStack, CallbackInfo ci,
                                        World world, PlayerEntity player, HitResult trace, Inventory inv, ShulkerBoxBlock block,
+                                       LivingEntity entityLivingBase, Entity entity) {
+        traceEntity = entity;
+    }
+
+    @Surrogate
+    private static void getTraceEntity(MinecraftClient mc, MatrixStack matrixStack, CallbackInfo ci,
+                                       World world, Entity cameraEntity, HitResult trace, Inventory inv, ShulkerBoxBlock block,
                                        LivingEntity entityLivingBase, Entity entity) {
         traceEntity = entity;
     }

@@ -19,7 +19,7 @@ public class GuiConfigs extends GuiConfigsBase {
     public static ConfigGuiTab tab = ConfigGuiTab.GENERIC;
 
     public GuiConfigs() {
-        super(10, 50, ModInfo.MOD_ID, null, StringUtils.translate(String.format("%s.gui.title.configs", ModInfo.MOD_ID), ModInfo.MOD_VERSION, StringUtils.translate(String.format("%s.misc.versionType.%s", ModInfo.MOD_ID, ModInfo.MOD_VERSION_TYPE))));
+        super(10, 50, ModInfo.MOD_ID, null, StringUtils.translate(String.format("%s.gui.title.configs", ModInfo.MOD_ID), ModInfo.MOD_VERSION));
     }
 
     @Override
@@ -82,7 +82,7 @@ public class GuiConfigs extends GuiConfigsBase {
         } else if (tab == ConfigGuiTab.MINIHUD) {
             configs = Configs.Minihud.GUI_OPTIONS;
         } else if (tab == ConfigGuiTab.TWEAKEROO) {
-            configs = Configs.Tweakeroo.OPTIONS;
+            configs = Configs.Tweakeroo.GUI_OPTIONS;
         } else {
             return Collections.emptyList();
         }
