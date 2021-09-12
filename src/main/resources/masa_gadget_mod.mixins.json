@@ -17,18 +17,19 @@
     "minihud.compactBborProtocol.MixinCustomPayloadS2CPacket",
     "minihud.compactBborProtocol.MixinDataStorage",
     "minihud.compactBborProtocol.MixinPlayerRespawnS2CPacket",
+    "tweakeroo.autoSyncTradeOfferList.MixinVillagerEntity",
     "tweakeroo.inventoryPreviewSupportFreeCamera.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportPlayer.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportSelect.MixinInGameHud",
     "tweakeroo.inventoryPreviewSupportSelect.MixinInventoryOverlay",
     "tweakeroo.inventoryPreviewSupportSelect.MixinRenderHandler",
     "tweakeroo.inventoryPreviewSupportTradeOfferList.MixinRenderUtils",
-    "tweakeroo.pcaSyncProtocol.MixinRenderUtils"
+    "tweakeroo.pcaSyncProtocol.MixinRenderUtils",
+    "tweakeroo.renderTradeEnchantedBook.MixinLivingEntityRenderer"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "mixins": [
-    "tweakeroo.autoSyncTradeOfferList.MixinVillagerEntity"
   ]
 }

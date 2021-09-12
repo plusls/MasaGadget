@@ -136,6 +136,7 @@ public class Configs implements IConfigHandler {
         public static final ConfigBoolean INVENTORY_PREVIEW_SUPPORT_SELECT = new TranslatableConfigBoolean(PREFIX, "inventoryPreviewSupportSelect", true);
         public static final ConfigBoolean INVENTORY_PREVIEW_SUPPORT_TRADE_OFFER_LIST = new TranslatableConfigBoolean(PREFIX, "inventoryPreviewSupportTradeOfferList", true);
         public static final ConfigBoolean PCA_SYNC_PROTOCOL = new TranslatableConfigBoolean(PREFIX, "pcaSyncProtocol", true);
+        public static final ConfigBoolean RENDER_TRADE_ENCHANTED_BOOK = new TranslatableConfigBoolean(PREFIX, "renderTradeEnchantedBook", false);
 
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
                 AUTO_SYNC_TRADE_OFFER_LIST,
@@ -143,7 +144,8 @@ public class Configs implements IConfigHandler {
                 INVENTORY_PREVIEW_SUPPORT_PLAYER,
                 INVENTORY_PREVIEW_SUPPORT_SELECT,
                 INVENTORY_PREVIEW_SUPPORT_TRADE_OFFER_LIST,
-                PCA_SYNC_PROTOCOL
+                PCA_SYNC_PROTOCOL,
+                RENDER_TRADE_ENCHANTED_BOOK
         );
 
         public static final List<IConfigBase> GUI_OPTIONS = new LinkedList<>(OPTIONS);

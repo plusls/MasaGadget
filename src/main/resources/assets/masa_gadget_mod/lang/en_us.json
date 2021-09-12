@@ -39,5 +39,7 @@
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportTradeOfferList.name": "inventoryPreviewSupportTradeOfferList",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportTradeOfferList.comment": "Inventory preview will preview the trade offer list of merchant",
   "masa_gadget_mod.config.tweakeroo.pcaSyncProtocol.name": "pcaSyncProtocol",
-  "masa_gadget_mod.config.tweakeroo.pcaSyncProtocol.comment": "Use pcaSyncProtocol to sync block entity data and entity data from server, such as chest, villager"
+  "masa_gadget_mod.config.tweakeroo.pcaSyncProtocol.comment": "Use pcaSyncProtocol to sync block entity data and entity data from server, such as chest, villager",
+  "masa_gadget_mod.config.tweakeroo.renderTradeEnchantedBook.name": "renderTradeEnchantedBook",
+  "masa_gadget_mod.config.tweakeroo.renderTradeEnchantedBook.comment": "Render trade enchanted book text on villager."
 }

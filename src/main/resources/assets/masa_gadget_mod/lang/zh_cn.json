@@ -39,5 +39,7 @@
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportTradeOfferList.name": "容器预览显示交易列表",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportTradeOfferList.comment": "容器预览村民时会显示出当前的交易列表",
   "masa_gadget_mod.config.tweakeroo.pcaSyncProtocol.name": "PCA 同步协议",
-  "masa_gadget_mod.config.tweakeroo.pcaSyncProtocol.comment": "使用 PCA 同步协议来从服务器同步方块实体信息和实体信息，比如箱子内的物品，村民背包"
+  "masa_gadget_mod.config.tweakeroo.pcaSyncProtocol.comment": "使用 PCA 同步协议来从服务器同步方块实体信息和实体信息，比如箱子内的物品，村民背包",
+  "masa_gadget_mod.config.tweakeroo.renderTradeEnchantedBook.name": "渲染村民交易的第一本附魔书",
+  "masa_gadget_mod.config.tweakeroo.renderTradeEnchantedBook.comment": "渲染村民交易的第一本附魔书，如果是满级附魔则会显示金色文本"
 }
