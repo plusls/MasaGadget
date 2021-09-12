@@ -27,6 +27,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.village.TradeOfferList;
 import net.minecraft.world.World;
 
 public class PcaSyncProtocol {
@@ -145,6 +146,7 @@ public class PcaSyncProtocol {
             } else if (entity instanceof MerchantEntity) {
                 ((MerchantEntity) entity).getInventory().clear();
                 ((MerchantEntity) entity).getInventory().readNbtList(tag.getList("Inventory", NbtElement.COMPOUND_TYPE));
+                ((MerchantEntity) entity).offers = new TradeOfferList(tag.getCompound("Offers"));
             } else if (entity instanceof HorseBaseEntity) {
                 // TODO 写的更优雅一些
                 entity.readNbt(tag);
