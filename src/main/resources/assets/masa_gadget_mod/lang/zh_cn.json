@@ -28,12 +28,16 @@
   "masa_gadget_mod.config.minihud.compactBborProtocol.comment": "解析 BBOR 的协议并将结构数据发送给 MiniHUD，可以在未安装 servux 的服务器上使用 MiniHUD 的查看结构功能",
   "masa_gadget_mod.config.minihud.pcaSyncProtocolSyncBeehive.name": "PCA同步协议同步蜂巢数据",
   "masa_gadget_mod.config.minihud.pcaSyncProtocolSyncBeehive.comment": "按下 §6容器预览§r 的快捷键将会使用 PCA 同步协议来 同步蜂巢，蜂箱数据",
+  "masa_gadget_mod.config.tweakeroo.autoSyncTradeOfferList.name": "自动同步村民的交易列表",
+  "masa_gadget_mod.config.tweakeroo.autoSyncTradeOfferList.comment": "自动使用 PCA 同步协议来同步村民的交易列表",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportFreeCamera.name": "容器预览支持 Free Camera",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportFreeCamera.comment": "玩家可以在开启 Free Camera 的情况下使用容器预览",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportPlayer.name": "容器预览支持预览玩家",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportPlayer.comment": "对着玩家使用容器预览时，会显示出玩家背包和末影箱的内容",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportSelect.name": "容器预览支持选中格子",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportSelect.comment": "按下容器预览快捷键时可以使用鼠标滚轮来选中物品（可以查看附魔信息），在选中箱子中的潜影盒时可以按下鼠标中键来预览盒子内的物品",
+  "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportTradeOfferList.name": "容器预览显示交易列表",
+  "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportTradeOfferList.comment": "容器预览村民时会显示出当前的交易列表",
   "masa_gadget_mod.config.tweakeroo.pcaSyncProtocol.name": "PCA 同步协议",
   "masa_gadget_mod.config.tweakeroo.pcaSyncProtocol.comment": "使用 PCA 同步协议来从服务器同步方块实体信息和实体信息，比如箱子内的物品，村民背包"
 }

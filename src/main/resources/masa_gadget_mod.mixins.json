@@ -22,9 +22,13 @@
     "tweakeroo.inventoryPreviewSupportSelect.MixinInGameHud",
     "tweakeroo.inventoryPreviewSupportSelect.MixinInventoryOverlay",
     "tweakeroo.inventoryPreviewSupportSelect.MixinRenderHandler",
+    "tweakeroo.inventoryPreviewSupportTradeOfferList.MixinRenderUtils",
     "tweakeroo.pcaSyncProtocol.MixinRenderUtils"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "tweakeroo.autoSyncTradeOfferList.MixinVillagerEntity"
+  ]
 }
