@@ -18,7 +18,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.Matrix4f;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class InventoryOverlayRenderHandler implements IRenderer {
     final private static int UN_SELECTED = 114514;

@@ -161,7 +161,7 @@ public class MasaGadgetMixinPlugin implements IMixinConfigPlugin {
             if (annotationNode.values.get(i + 1) instanceof AnnotationNode) {
                 AnnotationNode node = (AnnotationNode) annotationNode.values.get(i + 1);
                 obfuscateAnnotation(node, remap);
-            } else if (annotationNode.values.get(i + 1) instanceof ArrayList && ((ArrayList)annotationNode.values.get(i + 1)).size() > 0 && ((ArrayList)annotationNode.values.get(i + 1)).get(0) instanceof AnnotationNode) {
+            } else if (annotationNode.values.get(i + 1) instanceof ArrayList && ((ArrayList) annotationNode.values.get(i + 1)).size() > 0 && ((ArrayList) annotationNode.values.get(i + 1)).get(0) instanceof AnnotationNode) {
                 ArrayList arrayList = (ArrayList) annotationNode.values.get(i + 1);
                 ArrayList<AnnotationNode> subAnnotationNodeList = arrayList;
                 for (AnnotationNode subAnnotationNode : subAnnotationNodeList) {

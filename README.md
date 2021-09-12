@@ -51,6 +51,10 @@
 
     - 保存投影时会使用 PCA 同步协议来同步容器中的数据到本地。
 
+- 使用相对路径(useRelativePath)
+
+    - 加载和保存投影时使用相对路径
+
 ### Malilib
 
 - 修复 Masa 配置文本的宽度(fixConfigWidgetWidth)
@@ -77,6 +81,10 @@
 
 ### Tweakeroo
 
+- 自动同步村民的交易列表(autoSyncTradeOfferList)
+  
+    - 自动使用 PCA 同步协议来同步村民的交易列表
+
 - 容器预览支持灵魂出窍(inventoryPreviewSupportFreeCamera)
 
     - 玩家可以在开启灵魂出窍的情况下使用容器预览。
@@ -89,6 +97,14 @@
 
     - 按下容器预览快捷键时可以使用鼠标滚轮来选中物品（可以查看附魔信息），在选中箱子中的潜影盒时可以按下鼠标中键来预览盒子内的物品。
 
+- 容器预览显示交易列表(inventoryPreviewSupportTradeOfferList)
+
+  - 容器预览村民时会显示出当前的交易列表
+
 - PCA 同步协议(pcaSyncProtocol)
 
     - 使用 PCA 同步协议来从服务器同步方块实体信息和实体信息，比如箱子内的物品，村民背包。
+
+- 渲染村民交易的第一本附魔书(renderTradeEnchantedBook)
+
+  - 渲染村民交易的第一本附魔书，如果是满级附魔则会显示金色文本

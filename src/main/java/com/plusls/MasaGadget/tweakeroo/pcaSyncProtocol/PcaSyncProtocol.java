@@ -23,10 +23,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.StorageMinecartEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.village.TradeOfferList;
 import net.minecraft.world.World;
 
 public class PcaSyncProtocol {
@@ -145,6 +145,7 @@ public class PcaSyncProtocol {
             } else if (entity instanceof MerchantEntity) {
                 ((MerchantEntity) entity).getInventory().clear();
                 ((MerchantEntity) entity).getInventory().readNbtList(tag.getList("Inventory", 10));
+                ((MerchantEntity) entity).offers = new TradeOfferList(tag.getCompound("Offers"));
             } else if (entity instanceof HorseBaseEntity) {
                 // TODO 写的更优雅一些
                 entity.readNbt(tag);
