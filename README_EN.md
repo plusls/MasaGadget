@@ -51,6 +51,10 @@ The default hotkey to open the in-game config GUI is **G + C**.
 
   - Use pcaSyncProtocol to sync inventory data to local and save to schematic.
 
+- useRelativePath
+
+  - Save and load schematic use relative path
+
 ### Malilib
 
 - fixConfigWidgetWidth
@@ -77,6 +81,10 @@ The default hotkey to open the in-game config GUI is **G + C**.
 
 ### Tweakeroo
 
+- autoSyncTradeOfferList
+
+  - Auto sync the trade offer list of villager
+
 - inventoryPreviewSupportFreeCamera
 
   - Player can use inventory preview on free camera.
@@ -89,6 +97,14 @@ The default hotkey to open the in-game config GUI is **G + C**.
 
   - When player press the inventory preview hotkey, player can use the mouse wheel to select items (player can view the enchantment information), and when player select the shulker box in the chest, player can press the mouse scroll to preview the items in the box.
 
+- inventoryPreviewSupportTradeOfferList
+
+  - Inventory preview will preview the trade offer list of merchant
+
 - pcaSyncProtocol
 
   - Use pcaSyncProtocol to sync block entity data and entity data from server, such as chest, villager.
+
+- renderTradeEnchantedBook
+
+  - Render trade enchanted book text on villager.
