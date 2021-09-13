@@ -15,7 +15,7 @@ import java.io.File;
 @Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.LITEMATICA_MOD_ID, version = "*"))
 @Mixin(value = SchematicPlacement.class, remap = false)
 public class MixinSchematicPlacement {
-    @Redirect(method = "toJson", at=@At(value = "INVOKE", target = "Ljava/io/File;getAbsolutePath()Ljava/lang/String;", ordinal = 0))
+    @Redirect(method = "toJson", at = @At(value = "INVOKE", target = "Ljava/io/File;getAbsolutePath()Ljava/lang/String;", ordinal = 0))
     private String toRelativePath(File file) {
         if (!Configs.Litematica.USE_RELATIVE_PATH.getBooleanValue()) {
             return file.getAbsolutePath();

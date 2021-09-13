@@ -37,7 +37,7 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
     }
 
     // from entityRenderer
-    @Inject(method = "render", at=@At(value = "RETURN"))
+    @Inject(method = "render", at = @At(value = "RETURN"))
     private void postRenderEntity(T livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light, CallbackInfo ci) {
         if (!(livingEntity instanceof VillagerEntity) || !Configs.Tweakeroo.RENDER_TRADE_ENCHANTED_BOOK.getBooleanValue()) {
             return;
@@ -48,20 +48,20 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
             return;
         }
 
-        VillagerEntity villagerEntity = (VillagerEntity)world.getEntityById(livingEntity.getId());
+        VillagerEntity villagerEntity = (VillagerEntity) world.getEntityById(livingEntity.getId());
         if (villagerEntity == null) {
             return;
         }
         Text text = null;
-        for (TradeOffer tradeOffer: villagerEntity.getOffers()) {
+        for (TradeOffer tradeOffer : villagerEntity.getOffers()) {
             ItemStack sellItem = tradeOffer.getSellItem();
             if (sellItem.isOf(Items.ENCHANTED_BOOK)) {
                 Map<Enchantment, Integer> enchantmentData = EnchantmentHelper.get(sellItem);
-                for (Map.Entry<Enchantment, Integer> entry: enchantmentData.entrySet()) {
+                for (Map.Entry<Enchantment, Integer> entry : enchantmentData.entrySet()) {
                     if (entry.getValue() == entry.getKey().getMaxLevel()) {
-                        text = ((MutableText)entry.getKey().getName(entry.getValue())).formatted(Formatting.GOLD);
+                        text = ((MutableText) entry.getKey().getName(entry.getValue())).formatted(Formatting.GOLD);
                     } else {
-                        text = ((MutableText)entry.getKey().getName(entry.getValue())).formatted(Formatting.WHITE);
+                        text = ((MutableText) entry.getKey().getName(entry.getValue())).formatted(Formatting.WHITE);
                     }
                 }
             }
@@ -83,7 +83,7 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
             matrixStack.translate(0, 0, -25);
             Matrix4f lv = matrixStack.peek().getModel();
             float g = client.options.getTextBackgroundOpacity(0.25F);
-            int k = (int)(g * 255.0F) << 24;
+            int k = (int) (g * 255.0F) << 24;
             TextRenderer lv2 = this.getTextRenderer();
             float h = (float) (-lv2.getWidth(text) / 2);
             lv2.draw(text, h, 0, 553648127, false, lv, vertexConsumerProvider, false, k, light);
