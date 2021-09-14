@@ -1,4 +1,5 @@
 # Masa Gadget
+
 [![License](https://img.shields.io/github/license/plusls/MasaGadget?style=flat-square)](https://github.com/plusls/MasaGadget/blob/main/LICENSE)
 [![Issues](https://img.shields.io/github/issues/plusls/MasaGadget?style=flat-square)](https://github.com/plusls/MasaGadget/issues)
 [![Pull Requests](https://img.shields.io/github/issues-pr/plusls/MasaGadget?style=flat-square)](https://github.com/plusls/MasaGadget/pulls)
@@ -24,87 +25,88 @@ The default hotkey to open the in-game config GUI is **G + C**.
 | Plusls-Carpet-Addition | Optional | [Github](https://github.com/plusls/plusls-carpet-addition)                                                                                          |
 | Tweakeroo              | Optional | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/tweakeroo) &#124; [Masa WebSite](https://masa.dy.fi/mcmods/client_mods/?mod=tweakeroo)    |
 
-
 ## Feature
 
 ### Generic
 
 - openConfigGui
 
-  - A hotkey to open the in-game Config GUI.
-  
+    - A hotkey to open the in-game Config GUI.
+
 - debug
 
-  - Display debug message. 
+    - Display debug message.
 
 ### Litematica
 
 - fixAccurateProtocol
 
-  - Fix accurate protocol support.
+    - Fix accurate protocol support.
 
 - nudgeSelectionSupportFreeCamera
 
-  - Nudge Selection Support Free Camera.
+    - Nudge Selection Support Free Camera.
 
 - saveInventoryToSchematicInServer
 
-  - Use pcaSyncProtocol to sync inventory data to local and save to schematic.
+    - Use pcaSyncProtocol to sync inventory data to local and save to schematic.
 
 - useRelativePath
 
-  - Save and load schematic use relative path
+    - Save and load schematic use relative path
 
 ### Malilib
 
 - fixConfigWidgetWidth
 
-  - Use the length of getTranslatedGuiDisplayName as widget width.
+    - Use the length of getTranslatedGuiDisplayName as widget width.
 
 - fixGetInventoryType
 
-  - Fix AbstractFurnaceBlock inventory type.
+    - Fix AbstractFurnaceBlock inventory type.
 
 - optimizeConfigWidgetSearch
 
-  - Make search support uppercase, translate text, and can use **modified** to search modified config.
+    - Make search support uppercase, translate text, and can use **modified** to search modified config.
 
 ### MiniHUD
 
 - compactBborProtocol
 
-  - Parse bbor protocol and send data to minihud.
+    - Parse bbor protocol and send data to minihud.
 
 - pcaSyncProtocolSyncBeehive
 
-  - Press **inventoryPreview** hotkey to use PCA sync protocol to sync Beehive.
+    - Press **inventoryPreview** hotkey to use PCA sync protocol to sync Beehive.
 
 ### Tweakeroo
 
 - autoSyncTradeOfferList
 
-  - Auto sync the trade offer list of villager
+    - Auto sync the trade offer list of villager
 
 - inventoryPreviewSupportFreeCamera
 
-  - Player can use inventory preview on free camera.
+    - Player can use inventory preview on free camera.
 
 - inventoryPreviewSupportPlayer
 
-  - Player can use inventory preview to show the inventory of player and ender chest inventory.
+    - Player can use inventory preview to show the inventory of player and ender chest inventory.
 
 - inventoryPreviewSupportSelect
 
-  - When player press the inventory preview hotkey, player can use the mouse wheel to select items (player can view the enchantment information), and when player select the shulker box in the chest, player can press the mouse scroll to preview the items in the box.
+    - When player press the inventory preview hotkey, player can use the mouse wheel to select items (player can view
+      the enchantment information), and when player select the shulker box in the chest, player can press the mouse
+      scroll to preview the items in the box.
 
 - inventoryPreviewSupportTradeOfferList
 
-  - Inventory preview will preview the trade offer list of merchant
+    - Inventory preview will preview the trade offer list of merchant
 
 - pcaSyncProtocol
 
-  - Use pcaSyncProtocol to sync block entity data and entity data from server, such as chest, villager.
+    - Use pcaSyncProtocol to sync block entity data and entity data from server, such as chest, villager.
 
 - renderTradeEnchantedBook
 
-  - Render trade enchanted book text on villager.
+    - Render trade enchanted book text on villager.
