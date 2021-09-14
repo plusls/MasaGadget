@@ -28,7 +28,7 @@ public abstract class MixinVillagerEntity extends MerchantEntity {
         if (!Configs.Tweakeroo.AUTO_SYNC_TRADE_OFFER_LIST.getDefaultBooleanValue() || MinecraftClient.getInstance().isIntegratedServerRunning() || !PcaSyncProtocol.enable) {
             return;
         }
-        VillagerProfession currentVillagerProfession = ((VillagerEntity)(Object) this).getVillagerData().getProfession();
+        VillagerProfession currentVillagerProfession = ((VillagerEntity) (Object) this).getVillagerData().getProfession();
         if (oldVillagerProfession != currentVillagerProfession) {
             PcaSyncProtocol.syncEntity(this.getId());
             PcaSyncProtocol.cancelSyncEntity();

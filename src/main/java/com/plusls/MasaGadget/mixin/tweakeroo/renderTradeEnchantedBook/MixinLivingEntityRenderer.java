@@ -17,6 +17,7 @@ import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -37,7 +38,7 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
     }
 
     // from entityRenderer
-    @Inject(method = "render", at=@At(value = "RETURN"))
+    @Inject(method = "render", at = @At(value = "RETURN"))
     private void postRenderEntity(T livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light, CallbackInfo ci) {
         if (!(livingEntity instanceof VillagerEntity) || !Configs.Tweakeroo.RENDER_TRADE_ENCHANTED_BOOK.getBooleanValue()) {
             return;
@@ -48,20 +49,40 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
             return;
         }
 
-        VillagerEntity villagerEntity = (VillagerEntity)world.getEntityById(livingEntity.getId());
+        VillagerEntity villagerEntity = (VillagerEntity) world.getEntityById(livingEntity.getId());
         if (villagerEntity == null) {
             return;
         }
         Text text = null;
-        for (TradeOffer tradeOffer: villagerEntity.getOffers()) {
+        Text price = null;
+
+        for (TradeOffer tradeOffer : villagerEntity.getOffers()) {
             ItemStack sellItem = tradeOffer.getSellItem();
             if (sellItem.isOf(Items.ENCHANTED_BOOK)) {
                 Map<Enchantment, Integer> enchantmentData = EnchantmentHelper.get(sellItem);
-                for (Map.Entry<Enchantment, Integer> entry: enchantmentData.entrySet()) {
-                    if (entry.getValue() == entry.getKey().getMaxLevel()) {
-                        text = ((MutableText)entry.getKey().getName(entry.getValue())).formatted(Formatting.GOLD);
+                for (Map.Entry<Enchantment, Integer> entry : enchantmentData.entrySet()) {
+                    int level = entry.getValue();
+                    int cost = tradeOffer.getOriginalFirstBuyItem().getCount();
+                    int minCost = 2 + 3*level;
+                    int maxCost = minCost + 4 + level*10;
+                    if (entry.getKey().isTreasure()) {
+                        minCost *= 2;
+                        maxCost *= 2;
+                    }
+                    Formatting color;
+                    if (cost <= (maxCost - minCost)/3 + minCost) {
+                        color = Formatting.GREEN;
+                    } else if (cost <= (maxCost - minCost)/3*2 + minCost) {
+                        color = Formatting.WHITE;
                     } else {
-                        text = ((MutableText)entry.getKey().getName(entry.getValue())).formatted(Formatting.WHITE);
+                        color = Formatting.RED;
+                    }
+                    price = new LiteralText(String.format("%d(%d-%d)",  cost, minCost, maxCost)).formatted(color);
+
+                    if (level == entry.getKey().getMaxLevel()) {
+                        text = ((MutableText) entry.getKey().getName(entry.getValue())).formatted(Formatting.GOLD);
+                    } else {
+                        text = ((MutableText) entry.getKey().getName(entry.getValue())).formatted(Formatting.WHITE);
                     }
                 }
             }
@@ -74,20 +95,22 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
         }
         double d = this.dispatcher.getSquaredDistanceToCamera(livingEntity);
         if (!(d > 4096.0D)) {
-            boolean bl = !livingEntity.isSneaky();
-            float f = livingEntity.getHeight() / 4 * 3;
+            float f = livingEntity.getHeight() / 8 * 7;
             matrixStack.push();
             matrixStack.translate(0, f, 0);
             matrixStack.multiply(this.dispatcher.getRotation());
-            matrixStack.scale(-0.025F, -0.025F, 0.025F);
-            matrixStack.translate(0, 0, -25);
+            matrixStack.scale(-0.018F, -0.018F, 0.018F);
+            matrixStack.translate(0, 0, -33);
             Matrix4f lv = matrixStack.peek().getModel();
             float g = client.options.getTextBackgroundOpacity(0.25F);
-            int k = (int)(g * 255.0F) << 24;
+            int k = (int) (g * 255.0F) << 24;
             TextRenderer lv2 = this.getTextRenderer();
             float h = (float) (-lv2.getWidth(text) / 2);
             lv2.draw(text, h, 0, 553648127, false, lv, vertexConsumerProvider, false, k, light);
             lv2.draw(text, h, 0, -1, false, lv, vertexConsumerProvider, false, 0, light);
+            h = (float) (-lv2.getWidth(price) / 2);
+            lv2.draw(price, h, 11, 553648127, false, lv, vertexConsumerProvider, false, k, light);
+            lv2.draw(price, h, 11, -1, false, lv, vertexConsumerProvider, false, 0, light);
             matrixStack.pop();
         }
     }
