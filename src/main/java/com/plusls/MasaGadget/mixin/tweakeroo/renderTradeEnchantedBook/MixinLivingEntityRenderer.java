@@ -77,7 +77,7 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
                     } else {
                         color = Formatting.RED;
                     }
-                    price = new LiteralText(String.format("%d (%d-%d)",  cost, minCost, maxCost)).formatted(color);
+                    price = new LiteralText(String.format("%d(%d-%d)",  cost, minCost, maxCost)).formatted(color);
 
                     if (level == entry.getKey().getMaxLevel()) {
                         text = ((MutableText) entry.getKey().getName(entry.getValue())).formatted(Formatting.GOLD);
@@ -99,8 +99,8 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
             matrixStack.push();
             matrixStack.translate(0, f, 0);
             matrixStack.multiply(this.dispatcher.getRotation());
-            matrixStack.scale(-0.025F, -0.025F, 0.025F);
-            matrixStack.translate(0, 0, -25);
+            matrixStack.scale(-0.018F, -0.018F, 0.018F);
+            matrixStack.translate(0, 0, -33);
             Matrix4f lv = matrixStack.peek().getModel();
             float g = client.options.getTextBackgroundOpacity(0.25F);
             int k = (int) (g * 255.0F) << 24;
@@ -109,8 +109,8 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
             lv2.draw(text, h, 0, 553648127, false, lv, vertexConsumerProvider, false, k, light);
             lv2.draw(text, h, 0, -1, false, lv, vertexConsumerProvider, false, 0, light);
             h = (float) (-lv2.getWidth(price) / 2);
-            lv2.draw(price, h, 11, -1, false, lv, vertexConsumerProvider, false, 0, light);
             lv2.draw(price, h, 11, 553648127, false, lv, vertexConsumerProvider, false, k, light);
+            lv2.draw(price, h, 11, -1, false, lv, vertexConsumerProvider, false, 0, light);
             matrixStack.pop();
         }
     }
