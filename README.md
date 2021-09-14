@@ -1,4 +1,5 @@
 # Masa Gadget
+
 [![License](https://img.shields.io/github/license/plusls/MasaGadget?style=flat-square)](https://github.com/plusls/MasaGadget/blob/main/LICENSE)
 [![Issues](https://img.shields.io/github/issues/plusls/MasaGadget?style=flat-square)](https://github.com/plusls/MasaGadget/issues)
 [![Pull Requests](https://img.shields.io/github/issues-pr/plusls/MasaGadget?style=flat-square)](https://github.com/plusls/MasaGadget/pulls)
@@ -23,7 +24,6 @@
 | MiniHUD                | 可选 | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/minihud) &#124; [Masa WebSite](https://masa.dy.fi/mcmods/client_mods/?mod=minihud)        |
 | Plusls-Carpet-Addition | 可选 | [Github](https://github.com/plusls/plusls-carpet-addition)                                                                                          |
 | Tweakeroo              | 可选 | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/tweakeroo) &#124; [Masa WebSite](https://masa.dy.fi/mcmods/client_mods/?mod=tweakeroo)    |
-
 
 ## 特性
 
@@ -82,7 +82,7 @@
 ### Tweakeroo
 
 - 自动同步村民的交易列表(autoSyncTradeOfferList)
-  
+
     - 自动使用 PCA 同步协议来同步村民的交易列表
 
 - 容器预览支持灵魂出窍(inventoryPreviewSupportFreeCamera)
@@ -99,7 +99,7 @@
 
 - 容器预览显示交易列表(inventoryPreviewSupportTradeOfferList)
 
-  - 容器预览村民时会显示出当前的交易列表
+    - 容器预览村民时会显示出当前的交易列表
 
 - PCA 同步协议(pcaSyncProtocol)
 
@@ -107,4 +107,4 @@
 
 - 渲染村民交易的第一本附魔书(renderTradeEnchantedBook)
 
-  - 渲染村民交易的第一本附魔书，如果是满级附魔则会显示金色文本，同时还会显示出价格，绿色表示良商，白色表示中商，红色表示奸商
+    - 渲染村民交易的第一本附魔书，如果是满级附魔则会显示金色文本，同时还会显示出价格，绿色表示良商，白色表示中商，红色表示奸商

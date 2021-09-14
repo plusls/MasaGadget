@@ -11,10 +11,8 @@ import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.VillagerEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.LiteralText;
@@ -63,21 +61,21 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
                 for (Map.Entry<Enchantment, Integer> entry : enchantmentData.entrySet()) {
                     int level = entry.getValue();
                     int cost = tradeOffer.getOriginalFirstBuyItem().getCount();
-                    int minCost = 2 + 3*level;
-                    int maxCost = minCost + 4 + level*10;
+                    int minCost = 2 + 3 * level;
+                    int maxCost = minCost + 4 + level * 10;
                     if (entry.getKey().isTreasure()) {
                         minCost *= 2;
                         maxCost *= 2;
                     }
                     Formatting color;
-                    if (cost <= (maxCost - minCost)/3 + minCost) {
+                    if (cost <= (maxCost - minCost) / 3 + minCost) {
                         color = Formatting.GREEN;
-                    } else if (cost <= (maxCost - minCost)/3*2 + minCost) {
+                    } else if (cost <= (maxCost - minCost) / 3 * 2 + minCost) {
                         color = Formatting.WHITE;
                     } else {
                         color = Formatting.RED;
                     }
-                    price = new LiteralText(String.format("%d(%d-%d)",  cost, minCost, maxCost)).formatted(color);
+                    price = new LiteralText(String.format("%d(%d-%d)", cost, minCost, maxCost)).formatted(color);
 
                     if (level == entry.getKey().getMaxLevel()) {
                         text = ((MutableText) entry.getKey().getName(entry.getValue())).formatted(Formatting.GOLD);
