@@ -110,3 +110,9 @@ The default hotkey to open the in-game config GUI is **G + C**.
 - renderTradeEnchantedBook
 
     - Render trade enchanted book text on villager.
+    - good trader：
+    - ![good trader](./docs/img/good_trader.png)
+    - mid trader：
+    - ![mid trader](./docs/img/mid_trader.png)
+    - bad trader：
+    - ![bad trader](./docs/img/bad_trader.png)

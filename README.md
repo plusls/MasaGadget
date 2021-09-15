@@ -108,3 +108,9 @@
 - 渲染村民交易的第一本附魔书(renderTradeEnchantedBook)
 
     - 渲染村民交易的第一本附魔书，如果是满级附魔则会显示金色文本，同时还会显示出价格，绿色表示良商，白色表示中商，红色表示奸商
+    - 良商：
+    - ![good trader](./docs/img/good_trader.png)
+    - 中商：
+    - ![mid trader](./docs/img/mid_trader.png)
+    - 奸商：
+    - ![bad trader](./docs/img/bad_trader.png)
