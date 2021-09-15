@@ -73,11 +73,9 @@ public class InventoryOverlayRenderHandler implements IRenderer {
                                         if (subItemStack != null) {
                                             RenderSystem.pushMatrix();
                                             RenderSystem.translated(0, 0, 400);
-                                            // RenderSystem.applyModelViewMatrix(); TODO
                                             renderSelectedRect(matrixStack, subRenderX, subRenderY);
                                             renderOrderedTooltip(matrixStack, subItemStack, subRenderX, subRenderY + 8);
-                                            RenderSystem.pushMatrix();
-                                            // RenderSystem.applyModelViewMatrix(); TODO
+                                            RenderSystem.popMatrix();
 
                                         } else {
                                             ModInfo.LOGGER.debug("InventoryOverlayRenderHandler sub wtf???");
