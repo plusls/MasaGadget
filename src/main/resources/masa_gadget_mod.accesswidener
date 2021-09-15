@@ -1,4 +1,3 @@
 accessWidener v1 named
 accessible field net/minecraft/entity/vehicle/StorageMinecartEntity inventory Lnet/minecraft/util/DefaultedList;
 accessible field net/minecraft/entity/passive/AbstractTraderEntity offers Lnet/minecraft/village/TraderOfferList;
-accessible method net/minecraft/inventory/BasicInventory addToNewSlot (Lnet/minecraft/item/ItemStack;)V

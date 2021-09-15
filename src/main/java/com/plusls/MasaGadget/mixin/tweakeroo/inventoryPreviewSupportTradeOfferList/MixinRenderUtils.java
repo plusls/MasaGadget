@@ -16,6 +16,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.AbstractTraderEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.BasicInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -55,7 +56,13 @@ public class MixinRenderUtils {
         }
         BasicInventory simpleInventory = new BasicInventory(MAX_TRADE_OFFER_SIZE);
         for (TradeOffer tradeOffer : ((AbstractTraderEntity) entity).getOffers()) {
-            simpleInventory.addToNewSlot(tradeOffer.getSellItem());
+            for(int i = 0; i < simpleInventory.getInvSize(); ++i) {
+                ItemStack itemStack = simpleInventory.getInvStack(i);
+                if (itemStack.isEmpty()) {
+                    simpleInventory.setInvStack(i, tradeOffer.getSellItem().copy());
+                    break;
+                }
+            }
         }
         int x = GuiUtils.getScaledWindowWidth() / 2 - 88;
         int y = GuiUtils.getScaledWindowHeight() / 2 - 5;
