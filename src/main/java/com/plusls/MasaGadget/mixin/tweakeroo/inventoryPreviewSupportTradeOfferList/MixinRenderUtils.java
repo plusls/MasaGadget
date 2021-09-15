@@ -9,12 +9,13 @@ import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.malilib.util.WorldUtils;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.renderer.RenderUtils;
+import fi.dy.masa.tweakeroo.util.CameraEntity;
 import fi.dy.masa.tweakeroo.util.RayTraceUtils;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.passive.MerchantEntity;
-import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.entity.passive.AbstractTraderEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.BasicInventory;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -32,22 +33,29 @@ public class MixinRenderUtils {
     private static final int MAX_TRADE_OFFER_SIZE = 9;
 
     @Inject(method = "renderInventoryOverlay", at = @At(value = "RETURN"))
-    private static void renderTradeOfferList(MinecraftClient mc, MatrixStack matrixStack, CallbackInfo ci) {
+    private static void renderTradeOfferList(MinecraftClient mc, CallbackInfo ci) {
         World world = WorldUtils.getBestWorld(mc);
-        if (!Configs.Tweakeroo.INVENTORY_PREVIEW_SUPPORT_TRADE_OFFER_LIST.getBooleanValue() || world == null || mc.getCameraEntity() == null || mc.player == null) {
+        if (!Configs.Tweakeroo.INVENTORY_PREVIEW_SUPPORT_TRADE_OFFER_LIST.getBooleanValue() || world == null || mc.player == null) {
             return;
         }
-        HitResult trace = RayTraceUtils.getRayTraceFromEntity(world, FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue() ? mc.getCameraEntity() : mc.player, false);
+        PlayerEntity cameraEntity = CameraEntity.getCamera();
+        if (!FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue() || cameraEntity == null) {
+            cameraEntity = world.getPlayerByUuid(mc.player.getUuid());
+        }
+        if (cameraEntity == null) {
+            cameraEntity = mc.player;
+        }
+        HitResult trace = RayTraceUtils.getRayTraceFromEntity(world, cameraEntity, false);
         if (trace.getType() != HitResult.Type.ENTITY) {
             return;
         }
         Entity entity = ((EntityHitResult) trace).getEntity();
-        if (!(entity instanceof MerchantEntity)) {
+        if (!(entity instanceof AbstractTraderEntity)) {
             return;
         }
-        SimpleInventory simpleInventory = new SimpleInventory(MAX_TRADE_OFFER_SIZE);
-        for (TradeOffer tradeOffer : ((MerchantEntity) entity).getOffers()) {
-            simpleInventory.addStack(tradeOffer.getSellItem());
+        BasicInventory simpleInventory = new BasicInventory(MAX_TRADE_OFFER_SIZE);
+        for (TradeOffer tradeOffer : ((AbstractTraderEntity) entity).getOffers()) {
+            simpleInventory.addToNewSlot(tradeOffer.getSellItem());
         }
         int x = GuiUtils.getScaledWindowWidth() / 2 - 88;
         int y = GuiUtils.getScaledWindowHeight() / 2 - 5;

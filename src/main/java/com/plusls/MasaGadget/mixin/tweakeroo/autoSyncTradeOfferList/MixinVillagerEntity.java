@@ -4,7 +4,7 @@ import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.tweakeroo.pcaSyncProtocol.PcaSyncProtocol;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.MerchantEntity;
+import net.minecraft.entity.passive.AbstractTraderEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.village.VillagerProfession;
 import net.minecraft.world.World;
@@ -14,11 +14,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(VillagerEntity.class)
-public abstract class MixinVillagerEntity extends MerchantEntity {
+public abstract class MixinVillagerEntity extends AbstractTraderEntity {
 
     private VillagerProfession oldVillagerProfession;
 
-    public MixinVillagerEntity(EntityType<? extends MerchantEntity> entityType, World world) {
+    public MixinVillagerEntity(EntityType<? extends AbstractTraderEntity> entityType, World world) {
         super(entityType, world);
     }
 

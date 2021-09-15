@@ -7,9 +7,6 @@ import com.plusls.MasaGadget.litematica.saveInventoryToSchematicInServer.PcaSync
 import fi.dy.masa.malilib.gui.Message;
 import fi.dy.masa.malilib.util.InfoUtils;
 import io.netty.buffer.Unpooled;
-import net.earthcomputer.multiconnect.api.ICustomPayloadEvent;
-import net.earthcomputer.multiconnect.api.ICustomPayloadListener;
-import net.earthcomputer.multiconnect.api.MultiConnectAPI;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.block.entity.BlockEntity;
@@ -17,17 +14,22 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.AbstractTraderEntity;
 import net.minecraft.entity.passive.HorseBaseEntity;
-import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.StorageMinecartEntity;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.village.TradeOfferList;
+import net.minecraft.village.TraderOfferList;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
+
+import java.util.Objects;
 
 public class PcaSyncProtocol {
     private static final String NAMESPACE = "pca";
@@ -52,12 +54,6 @@ public class PcaSyncProtocol {
     private static int lastEntityId = -1;
     public static boolean enable = false;
 
-    private static final ClientboundIdentifierCustomPayloadListener clientboundIdentifierCustomPayloadListener =
-            new ClientboundIdentifierCustomPayloadListener();
-    private static final ServerboundIdentifierCustomPayloadListener serverboundIdentifierCustomPayloadListener =
-            new ServerboundIdentifierCustomPayloadListener();
-
-
     public static void init() {
         ClientPlayNetworking.registerGlobalReceiver(ENABLE_PCA_SYNC_PROTOCOL, PcaSyncProtocol::enablePcaSyncProtocolHandle);
         ClientPlayNetworking.registerGlobalReceiver(DISABLE_PCA_SYNC_PROTOCOL, PcaSyncProtocol::disablePcaSyncProtocolHandle);
@@ -66,40 +62,6 @@ public class PcaSyncProtocol {
         // 该事件仅在服务器主动断开客户端发生
         // ClientPlayConnectionEvents.DISCONNECT.register(PcaSyncProtocol::onDisconnect);
         DisconnectEvent.register(PcaSyncProtocol::onDisconnect);
-        MultiConnectAPI.instance().addClientboundIdentifierCustomPayloadListener(clientboundIdentifierCustomPayloadListener);
-        MultiConnectAPI.instance().addServerboundIdentifierCustomPayloadListener(serverboundIdentifierCustomPayloadListener);
-    }
-
-    private static class ServerboundIdentifierCustomPayloadListener implements ICustomPayloadListener<Identifier> {
-        @Override
-        public void onCustomPayload(ICustomPayloadEvent<Identifier> event) {
-            Identifier channel = event.getChannel();
-            if (channel.equals(SYNC_BLOCK_ENTITY)) {
-                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
-            } else if (channel.equals(SYNC_ENTITY)) {
-                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
-            } else if (channel.equals(CANCEL_SYNC_REQUEST_BLOCK_ENTITY)) {
-                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
-            } else if (channel.equals(CANCEL_SYNC_ENTITY)) {
-                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
-            }
-        }
-    }
-
-    private static class ClientboundIdentifierCustomPayloadListener implements ICustomPayloadListener<Identifier> {
-        @Override
-        public void onCustomPayload(ICustomPayloadEvent<Identifier> event) {
-            Identifier channel = event.getChannel();
-            if (channel.equals(ENABLE_PCA_SYNC_PROTOCOL)) {
-                enablePcaSyncProtocolHandle(MinecraftClient.getInstance(), null, event.getData(), null);
-            } else if (channel.equals(DISABLE_PCA_SYNC_PROTOCOL)) {
-                disablePcaSyncProtocolHandle(MinecraftClient.getInstance(), null, event.getData(), null);
-            } else if (channel.equals(UPDATE_ENTITY)) {
-                updateEntityHandler(MinecraftClient.getInstance(), null, event.getData(), null);
-            } else if (channel.equals(UPDATE_BLOCK_ENTITY)) {
-                updateBlockEntityHandler(MinecraftClient.getInstance(), null, event.getData(), null);
-            }
-        }
     }
 
 
@@ -129,11 +91,11 @@ public class PcaSyncProtocol {
             return;
         }
         World world = player.world;
-        if (!world.getRegistryKey().getValue().equals(buf.readIdentifier())) {
+        if (!Objects.equals(DimensionType.getId(world.getDimension().getType()), buf.readIdentifier())) {
             return;
         }
         int entityId = buf.readInt();
-        NbtCompound tag = buf.readNbt();
+        CompoundTag tag = buf.readCompoundTag();
         Entity entity = world.getEntityById(entityId);
 
         if (entity != null) {
@@ -141,19 +103,25 @@ public class PcaSyncProtocol {
             assert tag != null;
             if (entity instanceof StorageMinecartEntity) {
                 ((StorageMinecartEntity) entity).inventory.clear();
-                Inventories.readNbt(tag, ((StorageMinecartEntity) entity).inventory);
-            } else if (entity instanceof MerchantEntity) {
-                ((MerchantEntity) entity).getInventory().clear();
-                ((MerchantEntity) entity).getInventory().readNbtList(tag.getList("Inventory", 10));
-                ((MerchantEntity) entity).offers = new TradeOfferList(tag.getCompound("Offers"));
+                Inventories.fromTag(tag, ((StorageMinecartEntity) entity).inventory);
+            } else if (entity instanceof AbstractTraderEntity) {
+                ((AbstractTraderEntity) entity).getInventory().clear();
+                ListTag listTag = tag.getList("Inventory", 10);
+                for(int i = 0; i < listTag.size(); ++i) {
+                    ItemStack itemStack = ItemStack.fromTag(listTag.getCompound(i));
+                    if (!itemStack.isEmpty()) {
+                        ((AbstractTraderEntity) entity).getInventory().add(itemStack);
+                    }
+                }
+                ((AbstractTraderEntity) entity).offers = new TraderOfferList(tag.getCompound("Offers"));
             } else if (entity instanceof HorseBaseEntity) {
                 // TODO 写的更优雅一些
-                entity.readNbt(tag);
+                entity.fromTag(tag);
             } else if (entity instanceof PlayerEntity) {
                 PlayerEntity playerEntity = (PlayerEntity) entity;
-                playerEntity.inventory.readNbt(tag.getList("Inventory", 10));
+                playerEntity.inventory.deserialize(tag.getList("Inventory", 10));
                 if (tag.contains("EnderItems", 9)) {
-                    playerEntity.getEnderChestInventory().readNbtList(tag.getList("EnderItems", 10));
+                    playerEntity.getEnderChestInventory().readTags(tag.getList("EnderItems", 10));
                 }
             }
         }
@@ -166,18 +134,18 @@ public class PcaSyncProtocol {
             return;
         }
         World world = player.world;
-        if (!world.getRegistryKey().getValue().equals(buf.readIdentifier())) {
+        if (!Objects.equals(DimensionType.getId(world.getDimension().getType()), buf.readIdentifier())) {
             return;
         }
         BlockPos pos = buf.readBlockPos();
-        NbtCompound tag = buf.readNbt();
+        CompoundTag tag = buf.readCompoundTag();
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (Configs.Litematica.SAVE_INVENTORY_TO_SCHEMATIC_IN_SERVER.getBooleanValue() && pos.equals(PcaSyncUtil.lastUpdatePos)) {
             InfoUtils.showGuiOrInGameMessage(Message.MessageType.SUCCESS, "masa_gadget_mod.message.loadInventoryToLocalSuccess");
         }
         if (blockEntity != null) {
             ModInfo.LOGGER.debug("update blockEntity!");
-            blockEntity.fromTag(world.getBlockState(pos), tag);
+            blockEntity.fromTag(tag);
         }
     }
 

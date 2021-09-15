@@ -5,21 +5,21 @@ import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.event.DisconnectEvent;
 import fi.dy.masa.minihud.util.DataStorage;
-import fi.dy.masa.minihud.util.StructureType;
+import fi.dy.masa.minihud.util.StructureTypes;
 import io.netty.buffer.Unpooled;
-import net.earthcomputer.multiconnect.api.MultiConnectAPI;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
@@ -39,7 +39,7 @@ public class BborProtocol {
     private static final Identifier SUBSCRIBE = id("subscribe");
 
     private static final HashMap<Integer, String> BBOR_ID_TO_MINIHUD_ID = new HashMap<>();
-    public static Map<Identifier, NbtList> structuresCache = null;
+    public static Map<Identifier, ListTag> structuresCache = null;
     public static Long seedCache = null;
     public static BlockPos spawnPos = null;
     public static boolean enable = false;
@@ -47,15 +47,11 @@ public class BborProtocol {
     public static final ReentrantLock lock = new ReentrantLock(true);
 
     static {
-        for (StructureType type : StructureType.VALUES) {
+        for (StructureTypes.StructureType type : StructureTypes.StructureType.values()) {
             String structureName = type.getStructureName();
-            if (type.getFeature() != null) {
-                Identifier key = Registry.STRUCTURE_FEATURE.getId(type.getFeature());
-                if (key != null) {
-                    BBOR_ID_TO_MINIHUD_ID.put(structureName.hashCode(), key.toString());
-                    BBOR_ID_TO_MINIHUD_ID.put(lowVersionStructureName(structureName).hashCode(), key.toString());
-                }
-            }
+            Identifier key = new Identifier(structureName.toLowerCase(Locale.ROOT));
+            BBOR_ID_TO_MINIHUD_ID.put(structureName.hashCode(), key.toString());
+            BBOR_ID_TO_MINIHUD_ID.put(lowVersionStructureName(structureName).hashCode(), key.toString());
         }
     }
 
@@ -71,17 +67,6 @@ public class BborProtocol {
         // fabric-api 的实现有 bug 该事件仅会响应服务端主动断开连接的情况
         // ClientPlayConnectionEvents.DISCONNECT.register(BborProtocol::onDisconnect);
         DisconnectEvent.register(BborProtocol::onDisconnect);
-        MultiConnectAPI.instance().addClientboundIdentifierCustomPayloadListener(event -> {
-            Identifier channel = event.getChannel();
-            bborProtocolHandler(event.getNetworkHandler(), channel, event.getData());
-        });
-        MultiConnectAPI.instance().addServerboundIdentifierCustomPayloadListener(event -> {
-            Identifier channel = event.getChannel();
-            if (channel.equals(SUBSCRIBE)) {
-                ModInfo.LOGGER.debug("Multiconnect send bbor:SUBSCRIBE");
-                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
-            }
-        });
     }
 
 
@@ -152,7 +137,7 @@ public class BborProtocol {
 
     public static void bborRefreshData(Identifier dimensionId) {
         if (!structuresCache.containsKey(dimensionId)) {
-            structuresCache.put(dimensionId, new NbtList());
+            structuresCache.put(dimensionId, new ListTag());
         }
         if (BborProtocol.structuresCache != null) {
             BborProtocol.lock.lock();
@@ -173,9 +158,9 @@ public class BborProtocol {
         Identifier dimensionId = buf.readIdentifier();
         ModInfo.LOGGER.debug("dimensionId = {}", dimensionId.toString());
 
-        NbtCompound tag = BoundingBoxDeserializer.deserializeStructure(buf);
+        CompoundTag tag = BoundingBoxDeserializer.deserializeStructure(buf);
         if (!structuresCache.containsKey(dimensionId)) {
-            structuresCache.put(dimensionId, new NbtList());
+            structuresCache.put(dimensionId, new ListTag());
         }
         if (tag != null) {
             structuresCache.get(dimensionId).add(tag);

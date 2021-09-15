@@ -19,6 +19,7 @@ import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.util.FileUtils;
 import fi.dy.masa.malilib.util.JsonUtils;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.world.dimension.DimensionType;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 
@@ -121,7 +122,7 @@ public class Configs implements IConfigHandler {
             });
             COMPACT_BBOR_PROTOCOL.setValueChangeCallback(config -> {
                 if (config.getBooleanValue()) {
-                    BborProtocol.bborInit(Objects.requireNonNull(MinecraftClient.getInstance().world).getRegistryKey().getValue());
+                    BborProtocol.bborInit(DimensionType.getId(Objects.requireNonNull(MinecraftClient.getInstance().world).getDimension().getType()));
                 }
             });
         }

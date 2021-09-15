@@ -5,17 +5,12 @@ import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.minihud.compactBborProtocol.BborProtocol;
 import com.plusls.MasaGadget.mixin.Dependencies;
 import com.plusls.MasaGadget.mixin.Dependency;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.PlayerRespawnS2CPacket;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.Objects;
 
 @Mixin(PlayerRespawnS2CPacket.class)
 @Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.MINIHUD_MOD_ID, version = "*"))
@@ -30,11 +25,11 @@ public abstract class MixinPlayerRespawnS2CPacket {
         if (!BborProtocol.enable) {
             return;
         }
-        RegistryKey<World> oldDimension = Objects.requireNonNull(MinecraftClient.getInstance().player).world.getRegistryKey();
-        RegistryKey<World> newDimension = packet.getDimension();
-        if (oldDimension != newDimension && BborProtocol.structuresCache != null) {
-            // reload minihud struct when dimension change
-            //BborProtocol.bborRefreshData();
-        }
+//        RegistryKey<World> oldDimension = Objects.requireNonNull(MinecraftClient.getInstance().player).world.getRegistryKey();
+//        RegistryKey<World> newDimension = packet.getDimension();
+//        if (oldDimension != newDimension && BborProtocol.structuresCache != null) {
+//            // reload minihud struct when dimension change
+//            //BborProtocol.bborRefreshData();
+//        }
     }
 }

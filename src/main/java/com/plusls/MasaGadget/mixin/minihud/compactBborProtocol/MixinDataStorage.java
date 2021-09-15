@@ -8,6 +8,7 @@ import com.plusls.MasaGadget.mixin.Dependency;
 import fi.dy.masa.minihud.util.DataStorage;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -29,7 +30,7 @@ public abstract class MixinDataStorage {
             }
             World world = MinecraftClient.getInstance().world;
             if (world != null) {
-                BborProtocol.bborRefreshData(world.getRegistryKey().getValue());
+                BborProtocol.bborRefreshData(DimensionType.getId(world.getDimension().getType()));
             }
         }
     }

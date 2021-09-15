@@ -9,14 +9,17 @@ import fi.dy.masa.malilib.util.GuiUtils;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.client.render.*;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.util.math.Matrix4f;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.Matrix4f;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class InventoryOverlayRenderHandler implements IRenderer {
@@ -38,7 +41,7 @@ public class InventoryOverlayRenderHandler implements IRenderer {
 
     final public static InventoryOverlayRenderHandler instance = new InventoryOverlayRenderHandler();
 
-    public void render(MatrixStack matrixStack) {
+    public void render() {
         if (currentIdx == 0) {
             return;
         }
@@ -54,7 +57,7 @@ public class InventoryOverlayRenderHandler implements IRenderer {
                     if (selectInventory) {
                         if (itemStack.getItem() instanceof BlockItem &&
                                 ((BlockItem) itemStack.getItem()).getBlock() instanceof ShulkerBoxBlock) {
-                            renderSelectedRect(matrixStack, renderX, renderY);
+                            renderSelectedRect(renderX, renderY);
                             // 盒子预览
                             renderingSubInventory = true;
                             RenderUtils.renderShulkerBoxPreview(itemStack,
@@ -73,12 +76,9 @@ public class InventoryOverlayRenderHandler implements IRenderer {
                                         if (subItemStack != null) {
                                             RenderSystem.pushMatrix();
                                             RenderSystem.translated(0, 0, 400);
-                                            // RenderSystem.applyModelViewMatrix(); TODO
-                                            renderSelectedRect(matrixStack, subRenderX, subRenderY);
-                                            renderOrderedTooltip(matrixStack, subItemStack, subRenderX, subRenderY + 8);
-                                            RenderSystem.pushMatrix();
-                                            // RenderSystem.applyModelViewMatrix(); TODO
-
+                                            renderSelectedRect(subRenderX, subRenderY);
+                                            renderOrderedTooltip(subItemStack, subRenderX, subRenderY + 8);
+                                            RenderSystem.popMatrix();
                                         } else {
                                             ModInfo.LOGGER.debug("InventoryOverlayRenderHandler sub wtf???");
                                         }
@@ -93,8 +93,8 @@ public class InventoryOverlayRenderHandler implements IRenderer {
                         }
                     }
                     if (!selectInventory) {
-                        renderSelectedRect(matrixStack, renderX, renderY);
-                        renderOrderedTooltip(matrixStack, itemStack, renderX, renderY + 8);
+                        renderSelectedRect(renderX, renderY);
+                        renderOrderedTooltip(itemStack, renderX, renderY + 8);
                     }
 
                 } else {
@@ -157,111 +157,110 @@ public class InventoryOverlayRenderHandler implements IRenderer {
         }
     }
 
-    public void renderSelectedRect(MatrixStack matrices, int x, int y) {
+    public static void renderSelectedRect(int x, int y) {
         // 选中框
         RenderSystem.disableDepthTest();
         RenderSystem.colorMask(true, true, true, false);
-        fillGradient(matrices, x, y, x + 16, y + 16, -2130706433, -2130706433);
+        fillGradient(x, y, x + 16, y + 16, -2130706433, -2130706433);
         RenderSystem.colorMask(true, true, true, true);
         RenderSystem.enableDepthTest();
     }
 
-    public void renderOrderedTooltip(MatrixStack matrices, ItemStack stack, int x, int y) {
+    public static void renderOrderedTooltip(ItemStack stack, int x, int y) {
         MinecraftClient mc = MinecraftClient.getInstance();
-        List<OrderedText> lines = Lists.transform(stack.getTooltip(mc.player, mc.options.advancedItemTooltips ? TooltipContext.Default.ADVANCED : TooltipContext.Default.NORMAL), Text::asOrderedText);
-        if (lines.isEmpty())
+        List<Text> list = stack.getTooltip(mc.player, mc.options.advancedItemTooltips ? TooltipContext.Default.ADVANCED : TooltipContext.Default.NORMAL);
+        List<String> text = Lists.newArrayList();
+        for (Text t : list) {
+            text.add(t.asFormattedString());
+        }
+        if (text.isEmpty())
             return;
-        int k = 0;
-        for (OrderedText lv : lines) {
-            int l = mc.textRenderer.getWidth(lv);
-            if (l > k)
-                k = l;
+        RenderSystem.disableRescaleNormal();
+        RenderSystem.disableDepthTest();
+        int i = 0;
+
+        for (String string : text) {
+            int j = mc.textRenderer.getStringWidth(string);
+            if (j > i) {
+                i = j;
+            }
         }
-        int m = x + 12;
-        int n = y - 12;
-        int o = k;
-        int p = 8;
-        if (lines.size() > 1)
-            p += 2 + (lines.size() - 1) * 10;
-        if (m + k > GuiUtils.getScaledWindowWidth())
-            m -= 28 + k;
-        if (n + p + 6 > GuiUtils.getScaledWindowHeight())
-            n = GuiUtils.getScaledWindowHeight() - p - 6;
-        matrices.push();
-        int q = -267386864;
-        int r = 1347420415;
-        int s = 1344798847;
-        int t = 400;
-        Tessellator lv2 = Tessellator.getInstance();
-        BufferBuilder lv3 = lv2.getBuffer();
-        lv3.begin(7, VertexFormats.POSITION_COLOR);
-        Matrix4f lv4 = matrices.peek().getModel();
-        fillGradient(lv4, lv3, m - 3, n - 4, m + o + 3, n - 3, 400, -267386864, -267386864);
-        fillGradient(lv4, lv3, m - 3, n + p + 3, m + o + 3, n + p + 4, 400, -267386864, -267386864);
-        fillGradient(lv4, lv3, m - 3, n - 3, m + o + 3, n + p + 3, 400, -267386864, -267386864);
-        fillGradient(lv4, lv3, m - 4, n - 3, m - 3, n + p + 3, 400, -267386864, -267386864);
-        fillGradient(lv4, lv3, m + o + 3, n - 3, m + o + 4, n + p + 3, 400, -267386864, -267386864);
-        fillGradient(lv4, lv3, m - 3, n - 3 + 1, m - 3 + 1, n + p + 3 - 1, 400, 1347420415, 1344798847);
-        fillGradient(lv4, lv3, m + o + 2, n - 3 + 1, m + o + 3, n + p + 3 - 1, 400, 1347420415, 1344798847);
-        fillGradient(lv4, lv3, m - 3, n - 3, m + o + 3, n - 3 + 1, 400, 1347420415, 1347420415);
-        fillGradient(lv4, lv3, m - 3, n + p + 2, m + o + 3, n + p + 3, 400, 1344798847, 1344798847);
+
+        int k = x + 12;
+        int l = y - 12;
+        int n = 8;
+        if (text.size() > 1) {
+            n += 2 + (text.size() - 1) * 10;
+        }
+
+        if (k + i > GuiUtils.getScaledWindowWidth()) {
+            k -= 28 + i;
+        }
+
+        if (l + n + 6 > GuiUtils.getScaledWindowHeight()) {
+            l = GuiUtils.getScaledWindowHeight() - n - 6;
+        }
+
+        int o = -267386864;
+        fillGradient(k - 3, l - 4, k + i + 3, l - 3, -267386864, -267386864);
+        fillGradient(k - 3, l + n + 3, k + i + 3, l + n + 4, -267386864, -267386864);
+        fillGradient(k - 3, l - 3, k + i + 3, l + n + 3, -267386864, -267386864);
+        fillGradient(k - 4, l - 3, k - 3, l + n + 3, -267386864, -267386864);
+        fillGradient(k + i + 3, l - 3, k + i + 4, l + n + 3, -267386864, -267386864);
+        int p = 1347420415;
+        int q = 1344798847;
+        fillGradient(k - 3, l - 3 + 1, k - 3 + 1, l + n + 3 - 1, 1347420415, 1344798847);
+        fillGradient(k + i + 2, l - 3 + 1, k + i + 3, l + n + 3 - 1, 1347420415, 1344798847);
+        fillGradient(k - 3, l - 3, k + i + 3, l - 3 + 1, 1347420415, 1347420415);
+        fillGradient(k - 3, l + n + 2, k + i + 3, l + n + 3, 1344798847, 1344798847);
+        MatrixStack matrixStack = new MatrixStack();
+        VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
+        matrixStack.translate(0.0D, 0.0D, 300);
+        Matrix4f matrix4f = matrixStack.peek().getModel();
+
+        for (int r = 0; r < text.size(); ++r) {
+            String string2 = (String) text.get(r);
+            if (string2 != null) {
+                mc.textRenderer.draw(string2, (float) k, (float) l, -1, true, matrix4f, immediate, false, 0, 15728880);
+            }
+
+            if (r == 0) {
+                l += 2;
+            }
+
+            l += 10;
+        }
+
+        immediate.draw();
         RenderSystem.enableDepthTest();
-        RenderSystem.disableTexture();
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.shadeModel(7425);
-        lv3.end();
-        BufferRenderer.draw(lv3);
-        RenderSystem.shadeModel(7424);
-        RenderSystem.disableBlend();
-        RenderSystem.enableTexture();
-        VertexConsumerProvider.Immediate lv5 = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
-        matrices.translate(0.0D, 0.0D, 400.0D);
-        for (int u = 0; u < lines.size(); u++) {
-            OrderedText lv6 = lines.get(u);
-            if (lv6 != null)
-                mc.textRenderer.draw(lv6, m, n, -1, true, lv4, (VertexConsumerProvider) lv5, false, 0, 15728880);
-            if (u == 0)
-                n += 2;
-            n += 10;
-        }
-        lv5.draw();
-        matrices.pop();
+        RenderSystem.enableRescaleNormal();
     }
-
-    protected void fillGradient(MatrixStack matrices, int startX, int startY, int endX, int endY, int colorStart, int colorEnd) {
-        fillGradient(matrices, startX, startY, endX, endY, colorStart, colorEnd, 0);
-    }
-
-    protected static void fillGradient(MatrixStack matrices, int startX, int startY, int endX, int endY, int colorStart, int colorEnd, int z) {
+    protected static void fillGradient(int top, int left, int right, int bottom, int color1, int color2) {
+        float f = (float)(color1 >> 24 & 255) / 255.0F;
+        float g = (float)(color1 >> 16 & 255) / 255.0F;
+        float h = (float)(color1 >> 8 & 255) / 255.0F;
+        float i = (float)(color1 & 255) / 255.0F;
+        float j = (float)(color2 >> 24 & 255) / 255.0F;
+        float k = (float)(color2 >> 16 & 255) / 255.0F;
+        float l = (float)(color2 >> 8 & 255) / 255.0F;
+        float m = (float)(color2 & 255) / 255.0F;
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         RenderSystem.disableAlphaTest();
         RenderSystem.defaultBlendFunc();
         RenderSystem.shadeModel(7425);
-        Tessellator lv = Tessellator.getInstance();
-        BufferBuilder lv2 = lv.getBuffer();
-        lv2.begin(7, VertexFormats.POSITION_COLOR);
-        fillGradient(matrices.peek().getModel(), lv2, startX, startY, endX, endY, 0, colorStart, colorEnd);
-        lv.draw();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
+        bufferBuilder.begin(7, VertexFormats.POSITION_COLOR);
+        bufferBuilder.vertex(right, left, 300).color(g, h, i, f).next();
+        bufferBuilder.vertex(top, left, 300).color(g, h, i, f).next();
+        bufferBuilder.vertex(top, bottom, 300).color(k, l, m, j).next();
+        bufferBuilder.vertex(right, bottom, 300).color(k, l, m, j).next();
+        tessellator.draw();
         RenderSystem.shadeModel(7424);
         RenderSystem.disableBlend();
         RenderSystem.enableAlphaTest();
         RenderSystem.enableTexture();
     }
 
-    protected static void fillGradient(Matrix4f matrix, BufferBuilder arg2, int startX, int startY, int endX, int endY, int z, int colorStart, int colorEnd) {
-        float f = (colorStart >> 24 & 0xFF) / 255.0F;
-        float g = (colorStart >> 16 & 0xFF) / 255.0F;
-        float h = (colorStart >> 8 & 0xFF) / 255.0F;
-        float p = (colorStart & 0xFF) / 255.0F;
-        float q = (colorEnd >> 24 & 0xFF) / 255.0F;
-        float r = (colorEnd >> 16 & 0xFF) / 255.0F;
-        float s = (colorEnd >> 8 & 0xFF) / 255.0F;
-        float t = (colorEnd & 0xFF) / 255.0F;
-        arg2.vertex(matrix, endX, startY, z).color(g, h, p, f).next();
-        arg2.vertex(matrix, startX, startY, z).color(g, h, p, f).next();
-        arg2.vertex(matrix, startX, endY, z).color(r, s, t, q).next();
-        arg2.vertex(matrix, endX, endY, z).color(r, s, t, q).next();
-    }
 }

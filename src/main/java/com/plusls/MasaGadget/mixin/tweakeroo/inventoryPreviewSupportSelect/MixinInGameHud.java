@@ -19,9 +19,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MixinInGameHud extends DrawableHelper {
 
     @Inject(method = "render", at = @At("RETURN"))
-    private void onGameOverlayPost(MatrixStack matrixStack, float partialTicks, CallbackInfo ci) {
+    private void onGameOverlayPost(float tickDelta, CallbackInfo ci) {
         if (Configs.Tweakeroo.INVENTORY_PREVIEW_SUPPORT_SELECT.getBooleanValue()) {
-            InventoryOverlayRenderHandler.instance.render(matrixStack);
+            InventoryOverlayRenderHandler.instance.render();
         }
     }
 }

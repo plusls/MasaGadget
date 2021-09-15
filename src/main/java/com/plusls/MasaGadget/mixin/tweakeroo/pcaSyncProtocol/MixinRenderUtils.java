@@ -10,8 +10,8 @@ import fi.dy.masa.malilib.util.InventoryUtils;
 import fi.dy.masa.tweakeroo.renderer.RenderUtils;
 import net.minecraft.block.entity.*;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.AbstractTraderEntity;
 import net.minecraft.entity.passive.HorseBaseEntity;
-import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.util.hit.EntityHitResult;
@@ -54,7 +54,7 @@ public abstract class MixinRenderUtils {
     private static Entity redirectGetEntity(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
         if (Configs.Tweakeroo.PCA_SYNC_PROTOCOL.getBooleanValue() && PcaSyncProtocol.enable) {
-            if (entity instanceof Inventory || entity instanceof MerchantEntity || entity instanceof HorseBaseEntity
+            if (entity instanceof Inventory || entity instanceof AbstractTraderEntity || entity instanceof HorseBaseEntity
                     || entity instanceof PlayerEntity) {
                 PcaSyncProtocol.syncEntity(entity.getEntityId());
             }

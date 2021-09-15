@@ -7,6 +7,7 @@ import com.plusls.MasaGadget.mixin.Dependency;
 import com.plusls.MasaGadget.mixin.tweakeroo.TweakerooDependencyUtil;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.renderer.RenderUtils;
+import fi.dy.masa.tweakeroo.util.CameraEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
@@ -26,7 +27,7 @@ public abstract class MixinRenderUtils {
     private static PlayerEntity redirectGetPlayerByUuid(World world, UUID uuid) {
         PlayerEntity ret = world.getPlayerByUuid(uuid);
         if (Configs.Tweakeroo.INVENTORY_PREVIEW_SUPPORT_FREE_CAMERA.getBooleanValue() && FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue()) {
-            ret = (PlayerEntity) MinecraftClient.getInstance().getCameraEntity();
+            ret = CameraEntity.getCamera();
         }
         return ret;
     }

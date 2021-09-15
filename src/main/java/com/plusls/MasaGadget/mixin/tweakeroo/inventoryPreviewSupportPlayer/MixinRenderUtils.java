@@ -35,9 +35,7 @@ public abstract class MixinRenderUtils {
             at = @At(value = "INVOKE_ASSIGN",
                     target = "Lnet/minecraft/util/hit/EntityHitResult;getEntity()Lnet/minecraft/entity/Entity;",
                     ordinal = 0, remap = true), locals = LocalCapture.CAPTURE_FAILHARD)
-    private static void getTraceEntity(MinecraftClient mc, MatrixStack matrixStack, CallbackInfo ci,
-                                       World world, PlayerEntity player, HitResult trace, Inventory inv, ShulkerBoxBlock block,
-                                       LivingEntity entityLivingBase, Entity entity) {
+    private static void getTraceEntity(MinecraftClient mc, CallbackInfo ci, World world, PlayerEntity player, HitResult trace, Inventory inv, ShulkerBoxBlock block, LivingEntity entityLivingBase, Entity entity) {
         traceEntity = entity;
     }
 
