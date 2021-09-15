@@ -8,7 +8,6 @@ import com.plusls.MasaGadget.mixin.tweakeroo.TweakerooDependencyUtil;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.renderer.RenderUtils;
 import fi.dy.masa.tweakeroo.util.CameraEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;

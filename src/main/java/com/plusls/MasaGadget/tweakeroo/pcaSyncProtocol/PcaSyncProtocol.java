@@ -107,7 +107,7 @@ public class PcaSyncProtocol {
             } else if (entity instanceof AbstractTraderEntity) {
                 ((AbstractTraderEntity) entity).getInventory().clear();
                 ListTag listTag = tag.getList("Inventory", 10);
-                for(int i = 0; i < listTag.size(); ++i) {
+                for (int i = 0; i < listTag.size(); ++i) {
                     ItemStack itemStack = ItemStack.fromTag(listTag.getCompound(i));
                     if (!itemStack.isEmpty()) {
                         ((AbstractTraderEntity) entity).getInventory().add(itemStack);

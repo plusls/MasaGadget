@@ -19,7 +19,6 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class InventoryOverlayRenderHandler implements IRenderer {
@@ -235,15 +234,16 @@ public class InventoryOverlayRenderHandler implements IRenderer {
         RenderSystem.enableDepthTest();
         RenderSystem.enableRescaleNormal();
     }
+
     protected static void fillGradient(int top, int left, int right, int bottom, int color1, int color2) {
-        float f = (float)(color1 >> 24 & 255) / 255.0F;
-        float g = (float)(color1 >> 16 & 255) / 255.0F;
-        float h = (float)(color1 >> 8 & 255) / 255.0F;
-        float i = (float)(color1 & 255) / 255.0F;
-        float j = (float)(color2 >> 24 & 255) / 255.0F;
-        float k = (float)(color2 >> 16 & 255) / 255.0F;
-        float l = (float)(color2 >> 8 & 255) / 255.0F;
-        float m = (float)(color2 & 255) / 255.0F;
+        float f = (float) (color1 >> 24 & 255) / 255.0F;
+        float g = (float) (color1 >> 16 & 255) / 255.0F;
+        float h = (float) (color1 >> 8 & 255) / 255.0F;
+        float i = (float) (color1 & 255) / 255.0F;
+        float j = (float) (color2 >> 24 & 255) / 255.0F;
+        float k = (float) (color2 >> 16 & 255) / 255.0F;
+        float l = (float) (color2 >> 8 & 255) / 255.0F;
+        float m = (float) (color2 & 255) / 255.0F;
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         RenderSystem.disableAlphaTest();
