@@ -14,7 +14,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.MerchantEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -37,7 +39,11 @@ public class MixinRenderUtils {
         if (!Configs.Tweakeroo.INVENTORY_PREVIEW_SUPPORT_TRADE_OFFER_LIST.getBooleanValue() || world == null || mc.getCameraEntity() == null || mc.player == null) {
             return;
         }
-        HitResult trace = RayTraceUtils.getRayTraceFromEntity(world, FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue() ? mc.getCameraEntity() : mc.player, false);
+        PlayerEntity player = world.getPlayerByUuid(mc.player.getUuid());
+        if (player == null) {
+            player = mc.player;
+        }
+        HitResult trace = RayTraceUtils.getRayTraceFromEntity(world, FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue() ? mc.getCameraEntity() : player, false);
         if (trace.getType() != HitResult.Type.ENTITY) {
             return;
         }
@@ -47,7 +53,13 @@ public class MixinRenderUtils {
         }
         SimpleInventory simpleInventory = new SimpleInventory(MAX_TRADE_OFFER_SIZE);
         for (TradeOffer tradeOffer : ((MerchantEntity) entity).getOffers()) {
-            simpleInventory.addStack(tradeOffer.getSellItem());
+            for(int i = 0; i < simpleInventory.size(); ++i) {
+                ItemStack itemStack = simpleInventory.getStack(i);
+                if (itemStack.isEmpty()) {
+                    simpleInventory.setStack(i, tradeOffer.getSellItem().copy());
+                    break;
+                }
+            }
         }
         int x = GuiUtils.getScaledWindowWidth() / 2 - 88;
         int y = GuiUtils.getScaledWindowHeight() / 2 - 5;

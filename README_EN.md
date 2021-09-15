@@ -25,6 +25,7 @@ The default hotkey to open the in-game config GUI is **G + C**.
 | Plusls-Carpet-Addition | Optional | [Github](https://github.com/plusls/plusls-carpet-addition)                                                                                          |
 | Tweakeroo              | Optional | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/tweakeroo) &#124; [Masa WebSite](https://masa.dy.fi/mcmods/client_mods/?mod=tweakeroo)    |
 
+
 ## Feature
 
 ### Generic
@@ -110,3 +111,9 @@ The default hotkey to open the in-game config GUI is **G + C**.
 - renderTradeEnchantedBook
 
     - Render trade enchanted book text on villager.
+    - good trader：
+    - ![good trader](./docs/img/good_trader.png)
+    - mid trader：
+    - ![mid trader](./docs/img/mid_trader.png)
+    - bad trader：
+    - ![bad trader](./docs/img/bad_trader.png)
