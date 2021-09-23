@@ -11,6 +11,7 @@ import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.item.ItemStack;
@@ -42,16 +43,28 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
         if (!(livingEntity instanceof VillagerEntity) || !Configs.Tweakeroo.RENDER_TRADE_ENCHANTED_BOOK.getBooleanValue()) {
             return;
         }
+
+        VillagerEntity villagerEntity = (VillagerEntity) livingEntity;
         MinecraftClient client = MinecraftClient.getInstance();
-        World world = WorldUtils.getBestWorld(client);
+        World world = livingEntity.getEntityWorld();
+
+        // Only try to fetch the corresponding server world if the entity is in the actual client world.
+        // Otherwise the entity may be for example in Litematica's schematic world.
+        if (world == client.world) {
+            world = WorldUtils.getBestWorld(client);
+
+            if (world != null && world != client.world) {
+                Entity entity = world.getEntityById(livingEntity.getEntityId());
+                if (entity instanceof VillagerEntity) {
+                    villagerEntity = (VillagerEntity) entity;
+                }
+            }
+        }
+
         if (world == null) {
             return;
         }
 
-        VillagerEntity villagerEntity = (VillagerEntity) world.getEntityById(livingEntity.getEntityId());
-        if (villagerEntity == null) {
-            return;
-        }
         Text text = null;
         Text price = null;
         for (TradeOffer tradeOffer : villagerEntity.getOffers()) {
