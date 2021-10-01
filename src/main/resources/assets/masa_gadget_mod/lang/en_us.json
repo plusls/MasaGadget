@@ -43,5 +43,7 @@
   "masa_gadget_mod.config.tweakeroo.renderNextRestockTime.name": "renderNextRestockTime",
   "masa_gadget_mod.config.tweakeroo.renderNextRestockTime.comment": "Render next restock time on villager.",
   "masa_gadget_mod.config.tweakeroo.renderTradeEnchantedBook.name": "renderTradeEnchantedBook",
-  "masa_gadget_mod.config.tweakeroo.renderTradeEnchantedBook.comment": "Render trade enchanted book text on villager."
+  "masa_gadget_mod.config.tweakeroo.renderTradeEnchantedBook.comment": "Render trade enchanted book text on villager.",
+  "masa_gadget_mod.config.tweakeroo.renderZombieVillagerConvertTime.name": "renderZombieVillagerConvertTime",
+  "masa_gadget_mod.config.tweakeroo.renderZombieVillagerConvertTime.comment": "Render zombie villager convert time on zombie villager."
 }

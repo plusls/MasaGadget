@@ -120,3 +120,7 @@ The default hotkey to open the in-game config GUI is **G + C**.
     - ![mid trader](./docs/img/mid_trader.png)
     - bad trader：
     - ![bad trader](./docs/img/bad_trader.png)
+
+- renderZombieVillagerConvertTime
+
+  - Render zombie villager convert time on zombie villager.

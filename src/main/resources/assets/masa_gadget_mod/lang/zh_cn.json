@@ -43,5 +43,7 @@
   "masa_gadget_mod.config.tweakeroo.renderNextRestockTime.name": "渲染村民交易补货冷却",
   "masa_gadget_mod.config.tweakeroo.renderNextRestockTime.comment": "渲染距离村民下一次补货还需要多长时间",
   "masa_gadget_mod.config.tweakeroo.renderTradeEnchantedBook.name": "渲染村民交易的第一本附魔书",
-  "masa_gadget_mod.config.tweakeroo.renderTradeEnchantedBook.comment": "渲染村民交易的第一本附魔书，如果是满级附魔则会显示金色文本，同时还会显示出价格，绿色表示良商，白色表示中商，红色表示奸商"
+  "masa_gadget_mod.config.tweakeroo.renderTradeEnchantedBook.comment": "渲染村民交易的第一本附魔书，如果是满级附魔则会显示金色文本，同时还会显示出价格，绿色表示良商，白色表示中商，红色表示奸商",
+  "masa_gadget_mod.config.tweakeroo.renderZombieVillagerConvertTime.name": "渲染僵尸村民转换时间",
+  "masa_gadget_mod.config.tweakeroo.renderZombieVillagerConvertTime.comment": "渲染距离僵尸村民转换完成还需要多长时间"
 }

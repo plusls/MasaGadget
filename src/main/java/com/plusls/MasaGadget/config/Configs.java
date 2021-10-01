@@ -138,6 +138,7 @@ public class Configs implements IConfigHandler {
         public static final ConfigBoolean PCA_SYNC_PROTOCOL = new TranslatableConfigBoolean(PREFIX, "pcaSyncProtocol", true);
         public static final ConfigBoolean RENDER_NEXT_RESTOCK_TIME = new TranslatableConfigBoolean(PREFIX, "renderNextRestockTime", false);
         public static final ConfigBoolean RENDER_TRADE_ENCHANTED_BOOK = new TranslatableConfigBoolean(PREFIX, "renderTradeEnchantedBook", false);
+        public static final ConfigBoolean RENDER_ZOMBIE_VILLAGER_CONVERT_TIME = new TranslatableConfigBoolean(PREFIX, "renderZombieVillagerConvertTime", false);
 
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
                 AUTO_SYNC_TRADE_OFFER_LIST,
@@ -147,7 +148,8 @@ public class Configs implements IConfigHandler {
                 INVENTORY_PREVIEW_SUPPORT_TRADE_OFFER_LIST,
                 PCA_SYNC_PROTOCOL,
                 RENDER_NEXT_RESTOCK_TIME,
-                RENDER_TRADE_ENCHANTED_BOOK
+                RENDER_TRADE_ENCHANTED_BOOK,
+                RENDER_ZOMBIE_VILLAGER_CONVERT_TIME
         );
 
         public static final List<IConfigBase> GUI_OPTIONS = new LinkedList<>(OPTIONS);
