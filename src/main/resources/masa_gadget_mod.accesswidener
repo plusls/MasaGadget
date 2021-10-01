@@ -1,3 +1,8 @@
 accessWidener v1 named
 accessible field net/minecraft/entity/vehicle/StorageMinecartEntity inventory Lnet/minecraft/util/collection/DefaultedList;
 accessible field net/minecraft/entity/passive/MerchantEntity offers Lnet/minecraft/village/TradeOfferList;
+accessible field net/minecraft/entity/passive/VillagerEntity restocksToday I
+accessible field net/minecraft/entity/passive/VillagerEntity lastRestockTime J
+accessible method net/minecraft/entity/passive/VillagerEntity needsRestock ()Z
+accessible method net/minecraft/entity/mob/ZombieVillagerEntity setConverting (Ljava/util/UUID;I)V
+accessible field net/minecraft/entity/mob/ZombieVillagerEntity conversionTimer I

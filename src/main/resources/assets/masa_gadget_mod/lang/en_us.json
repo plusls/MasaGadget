@@ -40,6 +40,10 @@
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportTradeOfferList.comment": "Inventory preview will preview the trade offer list of merchant",
   "masa_gadget_mod.config.tweakeroo.pcaSyncProtocol.name": "pcaSyncProtocol",
   "masa_gadget_mod.config.tweakeroo.pcaSyncProtocol.comment": "Use pcaSyncProtocol to sync block entity data and entity data from server, such as chest, villager",
+  "masa_gadget_mod.config.tweakeroo.renderNextRestockTime.name": "renderNextRestockTime",
+  "masa_gadget_mod.config.tweakeroo.renderNextRestockTime.comment": "Render next restock time on villager.",
   "masa_gadget_mod.config.tweakeroo.renderTradeEnchantedBook.name": "renderTradeEnchantedBook",
-  "masa_gadget_mod.config.tweakeroo.renderTradeEnchantedBook.comment": "Render trade enchanted book text on villager."
+  "masa_gadget_mod.config.tweakeroo.renderTradeEnchantedBook.comment": "Render trade enchanted book text on villager.",
+  "masa_gadget_mod.config.tweakeroo.renderZombieVillagerConvertTime.name": "renderZombieVillagerConvertTime",
+  "masa_gadget_mod.config.tweakeroo.renderZombieVillagerConvertTime.comment": "Render zombie villager convert time on zombie villager."
 }
