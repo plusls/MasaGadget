@@ -14,8 +14,10 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.mob.ZombieVillagerEntity;
 import net.minecraft.entity.passive.AbstractTraderEntity;
 import net.minecraft.entity.passive.HorseBaseEntity;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.StorageMinecartEntity;
 import net.minecraft.inventory.Inventories;
@@ -114,6 +116,10 @@ public class PcaSyncProtocol {
                     }
                 }
                 ((AbstractTraderEntity) entity).offers = new TraderOfferList(tag.getCompound("Offers"));
+                if (entity instanceof VillagerEntity) {
+                    ((VillagerEntity) entity).restocksToday = tag.getInt("RestocksToday");
+                    ((VillagerEntity) entity).lastRestockTime = tag.getLong("LastRestock");
+                }
             } else if (entity instanceof HorseBaseEntity) {
                 // TODO 写的更优雅一些
                 entity.fromTag(tag);
@@ -122,6 +128,10 @@ public class PcaSyncProtocol {
                 playerEntity.inventory.deserialize(tag.getList("Inventory", 10));
                 if (tag.contains("EnderItems", 9)) {
                     playerEntity.getEnderChestInventory().readTags(tag.getList("EnderItems", 10));
+                }
+            } else if (entity instanceof ZombieVillagerEntity) {
+                if (tag.contains("ConversionTime", 99) && tag.getInt("ConversionTime") > -1) {
+                    ((ZombieVillagerEntity) entity).setConverting(tag.containsUuid("ConversionPlayer") ? tag.getUuid("ConversionPlayer") : null, tag.getInt("ConversionTime"));
                 }
             }
         }

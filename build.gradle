@@ -16,7 +16,7 @@ repositories {
         url "https://www.cursemaven.com"
     }
     maven {
-        url 'https://api.modrinth.com/maven'
+        url 'https://maven.terraformersmc.com/releases'
     }
 }
 
@@ -40,7 +40,7 @@ dependencies {
     modImplementation "curse.maven:minihud-244260:${project.minihud_version}"
     modImplementation "curse.maven:tweakeroo-297344:${project.tweakeroo_version}"
     modImplementation "curse.maven:litematica-308892:${project.litematica_version}"
-    modImplementation "maven.modrinth:modmenu:${project.mod_menu_version}"
+    modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
 }
 
 compileJava {
