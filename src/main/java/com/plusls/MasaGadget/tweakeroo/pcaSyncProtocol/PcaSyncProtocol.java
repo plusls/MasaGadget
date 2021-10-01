@@ -17,8 +17,10 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.mob.ZombieVillagerEntity;
 import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.passive.MerchantEntity;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.vehicle.StorageMinecartEntity;
 import net.minecraft.inventory.Inventories;
@@ -146,6 +148,10 @@ public class PcaSyncProtocol {
                 ((MerchantEntity) entity).getInventory().clear();
                 ((MerchantEntity) entity).getInventory().readNbtList(tag.getList("Inventory", 10));
                 ((MerchantEntity) entity).offers = new TradeOfferList(tag.getCompound("Offers"));
+                if (entity instanceof VillagerEntity) {
+                    ((VillagerEntity) entity).restocksToday = tag.getInt("RestocksToday");
+                    ((VillagerEntity) entity).lastRestockTime = tag.getLong("LastRestock");
+                }
             } else if (entity instanceof HorseBaseEntity) {
                 // TODO 写的更优雅一些
                 entity.readNbt(tag);
@@ -154,6 +160,10 @@ public class PcaSyncProtocol {
                 playerEntity.inventory.readNbt(tag.getList("Inventory", 10));
                 if (tag.contains("EnderItems", 9)) {
                     playerEntity.getEnderChestInventory().readNbtList(tag.getList("EnderItems", 10));
+                }
+            } else if (entity instanceof ZombieVillagerEntity) {
+                if (tag.contains("ConversionTime", 99) && tag.getInt("ConversionTime") > -1) {
+                    ((ZombieVillagerEntity) entity).setConverting(tag.containsUuid("ConversionPlayer") ? tag.getUuid("ConversionPlayer") : null, tag.getInt("ConversionTime"));
                 }
             }
         }

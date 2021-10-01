@@ -34,4 +34,17 @@ public abstract class MixinVillagerEntity extends MerchantEntity {
             oldVillagerProfession = currentVillagerProfession;
         }
     }
+
+    @Inject(method = "handleStatus", at = @At(value = "RETURN"))
+    private void syncVillagerData(byte status, CallbackInfo ci) {
+        if (!Configs.Tweakeroo.AUTO_SYNC_TRADE_OFFER_LIST.getDefaultBooleanValue() || MinecraftClient.getInstance().isIntegratedServerRunning() || !PcaSyncProtocol.enable) {
+            return;
+        }
+        if (status == 14) {
+            PcaSyncProtocol.syncEntity(this.getEntityId());
+            PcaSyncProtocol.cancelSyncEntity();
+        }
+    }
+
+
 }
