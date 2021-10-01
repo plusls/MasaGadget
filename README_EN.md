@@ -107,6 +107,10 @@ The default hotkey to open the in-game config GUI is **G + C**.
 
     - Use pcaSyncProtocol to sync block entity data and entity data from server, such as chest, villager.
 
+- renderNextRestockTime
+
+  - Render next restock time on villager.
+
 - renderTradeEnchantedBook
 
     - Render trade enchanted book text on villager.

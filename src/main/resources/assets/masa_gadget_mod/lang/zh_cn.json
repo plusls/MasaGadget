@@ -40,6 +40,8 @@
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportTradeOfferList.comment": "容器预览村民时会显示出当前的交易列表",
   "masa_gadget_mod.config.tweakeroo.pcaSyncProtocol.name": "PCA 同步协议",
   "masa_gadget_mod.config.tweakeroo.pcaSyncProtocol.comment": "使用 PCA 同步协议来从服务器同步方块实体信息和实体信息，比如箱子内的物品，村民背包",
+  "masa_gadget_mod.config.tweakeroo.renderNextRestockTime.name": "渲染村民交易补货冷却",
+  "masa_gadget_mod.config.tweakeroo.renderNextRestockTime.comment": "渲染距离村民下一次补货还需要多长时间",
   "masa_gadget_mod.config.tweakeroo.renderTradeEnchantedBook.name": "渲染村民交易的第一本附魔书",
   "masa_gadget_mod.config.tweakeroo.renderTradeEnchantedBook.comment": "渲染村民交易的第一本附魔书，如果是满级附魔则会显示金色文本，同时还会显示出价格，绿色表示良商，白色表示中商，红色表示奸商"
 }

@@ -17,6 +17,7 @@
     "minihud.compactBborProtocol.MixinCustomPayloadS2CPacket",
     "minihud.compactBborProtocol.MixinDataStorage",
     "minihud.compactBborProtocol.MixinPlayerRespawnS2CPacket",
+    "tweakeroo.autoSyncTradeOfferList.MixinClientPlayNetworkHandler",
     "tweakeroo.autoSyncTradeOfferList.MixinVillagerEntity",
     "tweakeroo.inventoryPreviewSupportFreeCamera.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportPlayer.MixinRenderUtils",

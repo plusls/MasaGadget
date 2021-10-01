@@ -1,5 +1,6 @@
 package com.plusls.MasaGadget.mixin.tweakeroo.renderNextRestockTime;
 
+import com.plusls.MasaGadget.config.Configs;
 import fi.dy.masa.malilib.util.WorldUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -13,7 +14,9 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Matrix4f;
+import net.minecraft.village.TradeOffer;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,7 +32,7 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
     // from entityRenderer
     @Inject(method = "render", at = @At(value = "RETURN"))
     private void postRenderEntity(T livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light, CallbackInfo ci) {
-        if (!(livingEntity instanceof VillagerEntity)) {
+        if (!(livingEntity instanceof VillagerEntity) || !Configs.Tweakeroo.RENDER_NEXT_RESTOCK_TIME.getBooleanValue()) {
             return;
         }
 
@@ -56,21 +59,40 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
 
         Text text;
 
-        long time = 0;
-        if (villagerEntity.restocksToday < 2) {
-                time = Math.max(villagerEntity.lastRestockTime + 2400 - world.getTime(), 0);
+        long nextRestockTime;
+        long nextWorkTime;
+        long timeOfDay = world.getTimeOfDay() % 24000;
+        if (timeOfDay >= 2000 && timeOfDay <= 9000) {
+            nextWorkTime = 0;
         } else {
-            time = 0x7fffffffffffffffL;
+            nextWorkTime = timeOfDay < 2000 ? 2000 - timeOfDay : 24000 - timeOfDay + 2000;
+        }
+        if (villagerEntity.restocksToday == 0) {
+            nextRestockTime = 0;
+        } else if (villagerEntity.restocksToday < 2) {
+            nextRestockTime = Math.max(villagerEntity.lastRestockTime + 2400 - world.getTime(), 0);
+        } else {
+            nextRestockTime = 0x7fffffffffffffffL;
         }
 
-        time = Math.min(time, 24000L - world.getTimeOfDay() % 24000L);
-        time = Math.min(time,  Math.max(villagerEntity.lastRestockTime + 12000L - world.getTime(), 0));
+        nextRestockTime = Math.min(nextRestockTime, Math.max(villagerEntity.lastRestockTime + 12000L - world.getTime(), 0));
 
 
-        if (time == 0) {
-            text = new LiteralText("OK");
+        if (needsRestock(villagerEntity)) {
+            if (timeOfDay + nextRestockTime > 8000) {
+                // cd 好的时候村民已经不再工作了
+                nextRestockTime = 24000 - timeOfDay + 2000;
+            } else {
+                nextRestockTime = Math.max(nextRestockTime, nextWorkTime);
+            }
         } else {
-            text = new LiteralText(String.format("%d", time));
+            nextRestockTime = 0;
+        }
+
+        if (nextRestockTime == 0) {
+            text = new LiteralText("OK").formatted(Formatting.GREEN);
+        } else {
+            text = new LiteralText(String.format("%d", nextRestockTime));
         }
 
         double d = this.dispatcher.getSquaredDistanceToCamera(livingEntity);
@@ -91,4 +113,16 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
             matrixStack.pop();
         }
     }
+
+    // 因为刁民的需要补货的函数，会检查当前货物是否被消耗，从使用的角度只需要关心当前货物是否用完
+    private static boolean needsRestock(VillagerEntity villagerEntity) {
+
+        for (TradeOffer offer : villagerEntity.getOffers()) {
+            if (offer.isDisabled()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

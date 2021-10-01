@@ -3,3 +3,4 @@ accessible field net/minecraft/entity/vehicle/StorageMinecartEntity inventory Ln
 accessible field net/minecraft/entity/passive/MerchantEntity offers Lnet/minecraft/village/TradeOfferList;
 accessible field net/minecraft/entity/passive/VillagerEntity restocksToday I
 accessible field net/minecraft/entity/passive/VillagerEntity lastRestockTime J
+accessible method net/minecraft/entity/passive/VillagerEntity needsRestock ()Z
