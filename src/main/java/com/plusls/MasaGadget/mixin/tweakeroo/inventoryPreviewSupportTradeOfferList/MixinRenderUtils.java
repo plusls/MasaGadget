@@ -53,7 +53,7 @@ public class MixinRenderUtils {
         }
         SimpleInventory simpleInventory = new SimpleInventory(MAX_TRADE_OFFER_SIZE);
         for (TradeOffer tradeOffer : ((MerchantEntity) entity).getOffers()) {
-            for(int i = 0; i < simpleInventory.size(); ++i) {
+            for (int i = 0; i < simpleInventory.size(); ++i) {
                 ItemStack itemStack = simpleInventory.getStack(i);
                 if (itemStack.isEmpty()) {
                     simpleInventory.setStack(i, tradeOffer.getSellItem().copy());
