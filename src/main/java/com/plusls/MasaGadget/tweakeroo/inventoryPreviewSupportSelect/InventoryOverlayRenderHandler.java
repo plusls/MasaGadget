@@ -236,7 +236,7 @@ public class InventoryOverlayRenderHandler implements IRenderer {
         v = o;
         for (int i = 0; i < components.size(); i++) {
             TooltipComponent lv7 = components.get(i);
-            lv7.drawItems(mc.textRenderer, n, v, matrices, mc.getItemRenderer(), 400, mc.getTextureManager());
+            lv7.drawItems(mc.textRenderer, n, v, matrices, mc.getItemRenderer(), 400);
             v += lv7.getHeight() + ((i == 0) ? 2 : 0);
         }
         mc.getItemRenderer().zOffset = f;
