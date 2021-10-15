@@ -43,6 +43,7 @@ public class InventoryOverlayRenderHandler implements IRenderer {
     public void render(MatrixStack matrixStack) {
         // fuck mojang
         // for 1.18
+        // 不添加会渲染错误，不知道麻将哪里 pop 了没有 apply
         RenderSystem.applyModelViewMatrix();
 
         if (currentIdx == 0) {
