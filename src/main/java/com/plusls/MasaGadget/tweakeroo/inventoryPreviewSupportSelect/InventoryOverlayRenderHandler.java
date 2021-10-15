@@ -41,6 +41,10 @@ public class InventoryOverlayRenderHandler implements IRenderer {
     final public static InventoryOverlayRenderHandler instance = new InventoryOverlayRenderHandler();
 
     public void render(MatrixStack matrixStack) {
+        // fuck mojang
+        // for 1.18
+        RenderSystem.applyModelViewMatrix();
+
         if (currentIdx == 0) {
             return;
         }
@@ -77,6 +81,7 @@ public class InventoryOverlayRenderHandler implements IRenderer {
                                             stack.push();
                                             stack.translate(0, 0, 400);
                                             RenderSystem.applyModelViewMatrix();
+                                            ModInfo.LOGGER.debug("subRenderX: {} subRenderY: {}", subRenderX, subRenderY);
                                             renderSelectedRect(matrixStack, subRenderX, subRenderY);
                                             renderOrderedTooltip(matrixStack, subItemStack, subRenderX, subRenderY + 8);
                                             RenderSystem.getModelViewStack().pop();
@@ -96,6 +101,7 @@ public class InventoryOverlayRenderHandler implements IRenderer {
                         }
                     }
                     if (!selectInventory) {
+                        ModInfo.LOGGER.debug("renderX: {} renderY: {}", renderX, renderY);
                         renderSelectedRect(matrixStack, renderX, renderY);
                         renderOrderedTooltip(matrixStack, itemStack, renderX, renderY + 8);
                     }
