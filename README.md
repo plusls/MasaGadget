@@ -69,6 +69,10 @@
 
     - 在 Masa 家的搜索栏中可以使用中文搜索，还能使用 **modified** 来搜索修改过的配置项
 
+- 快速切换 Masa mod 配置界面(fastSwitchMasaConfigGui)
+  
+    - 可以通过右上角的下拉菜单快速切换到别的 masa mod 的设置界面
+
 ### MiniHUD
 
 - 兼容 BBOR 协议(compactBborProtocol)

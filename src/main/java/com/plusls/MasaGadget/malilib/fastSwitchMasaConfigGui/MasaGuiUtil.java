@@ -1,4 +1,4 @@
-package com.plusls.MasaGadget.malilib.fastSwitchConfig;
+package com.plusls.MasaGadget.malilib.fastSwitchMasaConfigGui;
 
 import com.plusls.MasaGadget.ModInfo;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;

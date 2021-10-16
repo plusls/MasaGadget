@@ -1,7 +1,8 @@
-package com.plusls.MasaGadget.mixin.malilib.fastSwitchConfig;
+package com.plusls.MasaGadget.mixin.malilib.fastSwitchMasaConfigGui;
 
+import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.gui.MyWidgetDropDownList;
-import com.plusls.MasaGadget.malilib.fastSwitchConfig.MasaGuiUtil;
+import com.plusls.MasaGadget.malilib.fastSwitchMasaConfigGui.MasaGuiUtil;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
@@ -27,7 +28,8 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
 
     private final MyWidgetDropDownList<ConfigScreenFactory<?>> masaModGuiList = new MyWidgetDropDownList<>(GuiUtils.getScaledWindowWidth() - 145, 10, 120, 18, 200, 10,
             MasaGuiUtil.masaGuiData.keySet().stream().toList(), MasaGuiUtil.masaGuiData::get,
-            configScreenFactory -> GuiBase.openGui(configScreenFactory.create(this.parentScreen)));
+            configScreenFactory -> GuiBase.openGui(configScreenFactory.create(this.parentScreen)),
+            configScreenFactory -> Configs.Malilib.FAST_SWITCH_MASA_CONFIG_GUI.getBooleanValue());
 
 
     @Override

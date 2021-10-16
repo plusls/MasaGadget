@@ -2,7 +2,7 @@ package com.plusls.MasaGadget;
 
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.event.InputHandler;
-import com.plusls.MasaGadget.malilib.fastSwitchConfig.MasaGuiUtil;
+import com.plusls.MasaGadget.malilib.fastSwitchMasaConfigGui.MasaGuiUtil;
 import com.plusls.MasaGadget.minihud.compactBborProtocol.BborProtocol;
 import com.plusls.MasaGadget.tweakeroo.inventoryPreviewSupportSelect.MouseScrollInputHandler;
 import com.plusls.MasaGadget.tweakeroo.pcaSyncProtocol.PcaSyncProtocol;

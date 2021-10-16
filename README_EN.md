@@ -57,6 +57,10 @@ The default hotkey to open the in-game config GUI is **G + C**.
 
 ### Malilib
 
+- fastSwitchMasaConfigGui
+
+    - Render drop down list widget, player can switch other masa's mod config gui quickly.
+
 - fixConfigWidgetWidth
 
     - Use the length of getTranslatedGuiDisplayName as widget width.
