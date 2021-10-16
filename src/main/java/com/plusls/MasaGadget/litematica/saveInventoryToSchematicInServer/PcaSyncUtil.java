@@ -50,7 +50,7 @@ public class PcaSyncUtil {
                 for (int y = minY; y <= maxY; ++y) {
                     for (int z = minZ; z <= maxZ; ++z) {
                         BlockPos pos = new BlockPos(x, y, z);
-                        if (world.getBlockEntity(pos) instanceof Inventory) {
+                        if (world.getBlockEntity(pos) != null) {
                             lastUpdatePos = pos;
                             PcaSyncProtocol.syncBlockEntity(pos);
                         }
