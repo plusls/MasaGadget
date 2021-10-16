@@ -6,11 +6,13 @@
   "plugin": "com.plusls.MasaGadget.MasaGadgetMixinPlugin",
   "client": [
     "event.disconnect.MixinMinecraftClient",
+    "litematica.betterEasyPlaceMode.MixinWorldUtils",
     "litematica.fixCarpetAccurateProtocol.MixinBlockItem",
     "litematica.fixCarpetAccurateProtocol.MixinWorldUtils",
     "litematica.nudgeSelectionSupportFreeCamera.MixinInputHandler",
     "litematica.saveInventoryToSchematicInServer.MixinSchematicUtils",
     "litematica.useRelativePath.MixinSchematicPlacement",
+    "malilib.fastSwitchMasaConfigGui.MixinGuiConfigBase",
     "malilib.fixConfigWidgetWidth.MixinWidgetListConfigOptions",
     "malilib.fixGetInventoryType.MixinInventoryOverlay",
     "malilib.optimizeConfigWidgetSearch.MixinWidgetListConfigOptions",
@@ -34,5 +36,8 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "litematica.disableLitematicaEasyPlaceFailTip.MixinWorldUtils"
+  ]
 }

@@ -40,6 +40,10 @@ The default hotkey to open the in-game config GUI is **G + C**.
 
 ### Litematica
 
+- betterEasyPlaceMode
+
+    - Easy place mode can open inventory (such as chest, hopper, etc.), and can use beacon.
+
 - fixAccurateProtocol
 
     - Fix accurate protocol support.
@@ -57,6 +61,10 @@ The default hotkey to open the in-game config GUI is **G + C**.
     - Save and load schematic use relative path
 
 ### Malilib
+
+- fastSwitchMasaConfigGui
+
+    - Render drop down list widget, player can switch other masa's mod config gui quickly.
 
 - fixConfigWidgetWidth
 
