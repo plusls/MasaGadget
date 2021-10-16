@@ -2,6 +2,7 @@ package com.plusls.MasaGadget;
 
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.event.InputHandler;
+import com.plusls.MasaGadget.malilib.fastSwitchMasaConfigGui.MasaGuiUtil;
 import com.plusls.MasaGadget.minihud.compactBborProtocol.BborProtocol;
 import com.plusls.MasaGadget.tweakeroo.inventoryPreviewSupportSelect.MouseScrollInputHandler;
 import com.plusls.MasaGadget.tweakeroo.pcaSyncProtocol.PcaSyncProtocol;
@@ -26,5 +27,6 @@ public class MasaGadgetMod implements ClientModInitializer {
         MouseScrollInputHandler.register();
         ConfigManager.getInstance().registerConfigHandler(ModInfo.MOD_ID, new Configs());
         InputEventHandler.getKeybindManager().registerKeybindProvider(InputHandler.getInstance());
+        MasaGuiUtil.init();
     }
 }
