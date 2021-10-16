@@ -63,13 +63,17 @@ public class Configs implements IConfigHandler {
 
     public static class Litematica {
         private static final String PREFIX = String.format("%s.config.litematica", ModInfo.MOD_ID);
+        public static final ConfigBoolean BETTER_EASY_PLACE_MODE = new TranslatableConfigBoolean(PREFIX, "betterEasyPlaceMode", false);
+        public static final ConfigBoolean DISABLE_LITEMATICA_EASY_PLACE_FAIL_TIP = new TranslatableConfigBoolean(PREFIX, "disableLitematicaEasyPlaceFailTip", false);
         public static final ConfigBoolean FIX_ACCURATE_PROTOCOL = new TranslatableConfigBoolean(PREFIX, "fixAccurateProtocol", true);
         public static final ConfigBoolean NUDGE_SELECTION_SUPPORT_FREE_CAMERA = new TranslatableConfigBoolean(PREFIX, "nudgeSelectionSupportFreeCamera", true);
         public static final ConfigBoolean SAVE_INVENTORY_TO_SCHEMATIC_IN_SERVER = new TranslatableConfigBoolean(PREFIX, "saveInventoryToSchematicInServer", false);
         public static final ConfigBoolean USE_RELATIVE_PATH = new TranslatableConfigBoolean(PREFIX, "useRelativePath", false);
 
         public static final List<IConfigBase> OPTIONS = ImmutableList.of(
+                BETTER_EASY_PLACE_MODE,
                 FIX_ACCURATE_PROTOCOL,
+                DISABLE_LITEMATICA_EASY_PLACE_FAIL_TIP,
                 NUDGE_SELECTION_SUPPORT_FREE_CAMERA,
                 SAVE_INVENTORY_TO_SCHEMATIC_IN_SERVER,
                 USE_RELATIVE_PATH
@@ -92,12 +96,15 @@ public class Configs implements IConfigHandler {
 
     public static class Malilib {
         private static final String PREFIX = String.format("%s.config.malilib", ModInfo.MOD_ID);
+        public static final ConfigBoolean FAST_SWITCH_MASA_CONFIG_GUI = new TranslatableConfigBoolean(PREFIX, "fastSwitchMasaConfigGui", true);
         public static final ConfigBoolean FIX_CONFIG_WIDGET_WIDTH = new TranslatableConfigBoolean(PREFIX, "fixConfigWidgetWidth", true);
         public static final ConfigBoolean FIX_GET_INVENTORY_TYPE = new TranslatableConfigBoolean(PREFIX, "fixGetInventoryType", true);
         public static final ConfigBoolean OPTIMIZE_CONFIG_WIDGET_SEARCH = new TranslatableConfigBoolean(PREFIX, "optimizeConfigWidgetSearch", true);
 
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
+                FAST_SWITCH_MASA_CONFIG_GUI,
                 FIX_CONFIG_WIDGET_WIDTH,
+                FIX_GET_INVENTORY_TYPE,
                 OPTIMIZE_CONFIG_WIDGET_SEARCH
         );
     }

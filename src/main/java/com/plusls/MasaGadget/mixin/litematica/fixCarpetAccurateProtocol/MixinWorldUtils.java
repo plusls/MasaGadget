@@ -17,6 +17,9 @@ import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.ComparatorMode;
 import net.minecraft.block.enums.SlabType;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.network.ClientPlayerInteractionManager;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
@@ -33,6 +36,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
@@ -45,6 +49,7 @@ public class MixinWorldUtils {
 
     private static final ThreadLocal<Direction> easyPlaceActionNewSide = ThreadLocal.withInitial(() -> null);
     private static final ThreadLocal<Float> easyPlaceActionOldYaw = ThreadLocal.withInitial(() -> null);
+    private static final ThreadLocal<Integer> interactBlockCount = ThreadLocal.withInitial(() -> null);
 
 
     @Inject(method = "applyCarpetProtocolHitVec", at = @At(value = "HEAD"), cancellable = true)
@@ -129,6 +134,10 @@ public class MixinWorldUtils {
             }
             mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.LookOnly(mc.player.yaw, mc.player.pitch, mc.player.onGround));
         }
+
+        if (stateSchematic.getBlock() instanceof FenceGateBlock && stateSchematic.get(Properties.OPEN)) {
+            interactBlockCount.set(1);
+        }
     }
 
     @ModifyArg(method = "doEasyPlaceAction", at = @At(value = "INVOKE",
@@ -141,8 +150,21 @@ public class MixinWorldUtils {
         return side;
     }
 
+    @Redirect(method = "doEasyPlaceAction", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;interactBlock(Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;", ordinal = 0))
+    private static ActionResult myInteractBlock(ClientPlayerInteractionManager clientPlayerInteractionManager, ClientPlayerEntity player, ClientWorld world, Hand hand, BlockHitResult hitResult) {
+        ActionResult ret = clientPlayerInteractionManager.interactBlock(player, world, hand, hitResult);
+        if (!Configs.Litematica.FIX_ACCURATE_PROTOCOL.getBooleanValue() || interactBlockCount.get() == null) {
+            return ret;
+        }
+        for (int i = 0; i < interactBlockCount.get(); ++i) {
+            clientPlayerInteractionManager.interactBlock(player, world, hand, hitResult);
+        }
+        interactBlockCount.set(null);
+        return ret;
+    }
+
     @Inject(method = "doEasyPlaceAction", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;interactBlock(Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;", ordinal = 0))
+            target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;interactBlock(Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;", shift = At.Shift.AFTER, ordinal = 0))
     private static void fixDoEasyPlaceAction1(MinecraftClient mc, CallbackInfoReturnable<ActionResult> cir) {
         if (!Configs.Litematica.FIX_ACCURATE_PROTOCOL.getBooleanValue()) {
             return;

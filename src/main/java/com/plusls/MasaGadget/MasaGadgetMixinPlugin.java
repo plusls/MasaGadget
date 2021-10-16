@@ -6,8 +6,9 @@ import com.plusls.MasaGadget.mixin.NeedObfuscate;
 import com.plusls.MasaGadget.util.YarnUtil;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
+import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.VersionParsingException;
-import net.fabricmc.loader.util.version.VersionPredicateParser;
+import net.fabricmc.loader.impl.util.version.VersionPredicateParser;
 import org.apache.commons.io.FileUtils;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Type;
@@ -44,6 +45,7 @@ public class MasaGadgetMixinPlugin implements IMixinConfigPlugin {
 
     private final List<String> obfuscatedMixinList = new ArrayList<>();
     static private Path tempDirectory;
+    static private Method oldMatchesMethod;
 
     static {
         if (!FabricLoader.getInstance().isDevelopmentEnvironment()) {
@@ -53,6 +55,10 @@ public class MasaGadgetMixinPlugin implements IMixinConfigPlugin {
                 e.printStackTrace();
                 throw new IllegalStateException("Cannot create temp directory.");
             }
+        }
+        try {
+            oldMatchesMethod = Class.forName("net.fabricmc.loader.util.version.VersionPredicateParser").getMethod("matches", Version.class, String.class);
+        } catch (ClassNotFoundException | NoSuchMethodException ignored) {
         }
     }
 
@@ -67,10 +73,14 @@ public class MasaGadgetMixinPlugin implements IMixinConfigPlugin {
             Object urlLoader = Thread.currentThread().getContextClassLoader();
             Class<?> knotClassLoader;
             try {
-                knotClassLoader = Class.forName("net.fabricmc.loader.launch.knot.KnotClassLoader");
+                if (oldMatchesMethod == null) {
+                    knotClassLoader = Class.forName("net.fabricmc.loader.impl.launch.knot.KnotClassLoader");
+                } else {
+                    knotClassLoader = Class.forName("net.fabricmc.loader.launch.knot.KnotClassLoader");
+                }
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
-                throw new IllegalStateException("Cannot load class: net.fabricmc.loader.launch.knot.KnotClassLoader");
+                throw new IllegalStateException("Cannot load class: KnotClassLoader");
             }
 
             try {
@@ -231,17 +241,23 @@ public class MasaGadgetMixinPlugin implements IMixinConfigPlugin {
         }
     }
 
+    private static boolean myMatches(Version version, String s) {
+        try {
+            if (oldMatchesMethod != null) {
+                return (boolean) oldMatchesMethod.invoke(null, version, s);
+            }
+            return VersionPredicateParser.parse(s).test(version);
+        } catch (VersionParsingException | InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static boolean checkDependency(String modId, String version) {
         Optional<ModContainer> modContainerOptional = FabricLoader.getInstance().getModContainer(modId);
         if (modContainerOptional.isPresent()) {
             ModContainer modContainer = modContainerOptional.get();
-            // not work in fabric-loader 0.12
-            try {
-                return VersionPredicateParser.matches(modContainer.getMetadata().getVersion(), version);
-            } catch (VersionParsingException e) {
-                e.printStackTrace();
-                throw new IllegalStateException(String.format("VersionParsingException, modid=%s, version=%s", modId, version));
-            }
+            return myMatches(modContainer.getMetadata().getVersion(), version);
         }
         return false;
     }
@@ -252,7 +268,6 @@ public class MasaGadgetMixinPlugin implements IMixinConfigPlugin {
         List<String> versionList = Annotations.getValue(dependency, "version");
 
         for (String version : versionList) {
-            // not work in fabric-loader 0.12
             if (!checkDependency(modId, version)) {
                 return false;
             }
