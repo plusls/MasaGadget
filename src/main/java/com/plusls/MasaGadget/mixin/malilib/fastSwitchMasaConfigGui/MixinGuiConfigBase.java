@@ -44,7 +44,7 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
     @Override
     public void resize(MinecraftClient mc, int width, int height) {
         super.resize(mc, width, height);
-        masaModGuiList.setX(GuiUtils.getScaledWindowWidth() - 125);
+        masaModGuiList.setX(GuiUtils.getScaledWindowWidth() - 145);
     }
 
 }
