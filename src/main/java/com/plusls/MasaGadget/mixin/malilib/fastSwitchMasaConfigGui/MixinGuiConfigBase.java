@@ -15,6 +15,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = GuiConfigsBase.class, remap = false)
 public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.ConfigOptionWrapper, WidgetConfigOption, WidgetListConfigOptions> implements IKeybindConfigGui {
@@ -32,9 +35,8 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
             configScreenFactory -> Configs.Malilib.FAST_SWITCH_MASA_CONFIG_GUI.getBooleanValue());
 
 
-    @Override
-    public void init() {
-        super.init();
+    @Inject(method = "initGui", at=@At(value = "RETURN"))
+    public void postInitGui(CallbackInfo ci) {
         masaModGuiList.setSelectedEntry(MasaGuiUtil.masaGuiClassData.get(this.getClass()));
         this.addWidget(masaModGuiList);
     }
