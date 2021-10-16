@@ -1,10 +1,10 @@
 package com.plusls.MasaGadget.malilib.fastSwitchMasaConfigGui;
 
 import com.plusls.MasaGadget.ModInfo;
-import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import com.terraformersmc.modmenu.util.ModMenuApiMarker;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
+import io.github.prospector.modmenu.api.ConfigScreenFactory;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
@@ -30,6 +30,14 @@ public class MasaGuiUtil {
                 ModMenuApiMarker marker = entrypoint.getEntrypoint();
                 if (marker instanceof ModMenuApi) {
                     ModMenuApi api = (ModMenuApi) marker;
+                    Screen screen = api.getModConfigScreenFactory().create(client.currentScreen);
+                    if (screen instanceof GuiConfigsBase) {
+                        masaGuiData.put(api.getModConfigScreenFactory(), metadata.getName());
+                        masaGuiClassData.put(screen.getClass(), api.getModConfigScreenFactory());
+                    }
+                }  else if (marker instanceof io.github.prospector.modmenu.api.ModMenuApi) {
+                    /* Legacy API */
+                    io.github.prospector.modmenu.api.ModMenuApi api = (io.github.prospector.modmenu.api.ModMenuApi) entrypoint.getEntrypoint();
                     Screen screen = api.getModConfigScreenFactory().create(client.currentScreen);
                     if (screen instanceof GuiConfigsBase) {
                         masaGuiData.put(api.getModConfigScreenFactory(), metadata.getName());
