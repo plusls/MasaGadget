@@ -11,6 +11,7 @@
     "litematica.nudgeSelectionSupportFreeCamera.MixinInputHandler",
     "litematica.saveInventoryToSchematicInServer.MixinSchematicUtils",
     "litematica.useRelativePath.MixinSchematicPlacement",
+    "malilib.fastSwitchConfig.MixinGuiConfigBase",
     "malilib.fixConfigWidgetWidth.MixinWidgetListConfigOptions",
     "malilib.fixGetInventoryType.MixinInventoryOverlay",
     "malilib.optimizeConfigWidgetSearch.MixinWidgetListConfigOptions",
