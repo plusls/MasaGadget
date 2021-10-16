@@ -35,7 +35,7 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
             configScreenFactory -> Configs.Malilib.FAST_SWITCH_MASA_CONFIG_GUI.getBooleanValue());
 
 
-    @Inject(method = "initGui", at=@At(value = "RETURN"))
+    @Inject(method = "initGui", at = @At(value = "RETURN"))
     public void postInitGui(CallbackInfo ci) {
         masaModGuiList.setSelectedEntry(MasaGuiUtil.masaGuiClassData.get(this.getClass()));
         this.addWidget(masaModGuiList);
