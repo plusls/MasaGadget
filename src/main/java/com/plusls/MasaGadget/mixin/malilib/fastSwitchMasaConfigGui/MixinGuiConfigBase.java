@@ -3,7 +3,7 @@ package com.plusls.MasaGadget.mixin.malilib.fastSwitchMasaConfigGui;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.gui.MyWidgetDropDownList;
 import com.plusls.MasaGadget.malilib.fastSwitchMasaConfigGui.MasaGuiUtil;
-import com.terraformersmc.modmenu.api.ConfigScreenFactory;
+import io.github.prospector.modmenu.api.ConfigScreenFactory;
 import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.GuiListBase;
