@@ -12,6 +12,8 @@
   "masa_gadget_mod.config.generic.debug.comment": "Display debug message",
   "masa_gadget_mod.config.litematica.betterEasyPlaceMode.name": "betterEasyPlaceMode",
   "masa_gadget_mod.config.litematica.betterEasyPlaceMode.comment": "Easy place mode can open inventory (such as chest, hopper, etc.), and can use beacon.",
+  "masa_gadget_mod.config.litematica.disableLitematicaEasyPlaceFailTip.name": "disableLitematicaEasyPlaceFailTip",
+  "masa_gadget_mod.config.litematica.disableLitematicaEasyPlaceFailTip.comment": "Disable easyPlace failure that annoying prompt window.",
   "masa_gadget_mod.config.litematica.fixAccurateProtocol.name": "fixAccurateProtocol",
   "masa_gadget_mod.config.litematica.fixAccurateProtocol.comment": "Fix accurate protocol support",
   "masa_gadget_mod.config.litematica.nudgeSelectionSupportFreeCamera.name": "nudgeSelectionSupportFreeCamera",

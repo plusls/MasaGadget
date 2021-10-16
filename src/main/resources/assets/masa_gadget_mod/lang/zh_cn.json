@@ -12,6 +12,8 @@
   "masa_gadget_mod.config.generic.debug.comment": "开启后将会打印调试日志",
   "masa_gadget_mod.config.litematica.betterEasyPlaceMode.name": "更好的轻松放置模式",
   "masa_gadget_mod.config.litematica.betterEasyPlaceMode.comment": "轻松放置时可以打开容器（比如箱子，漏斗等等），以及可以使用信标",
+  "masa_gadget_mod.config.litematica.disableLitematicaEasyPlaceFailTip.name": "禁用投影轻松放置失败提示",
+  "masa_gadget_mod.config.litematica.disableLitematicaEasyPlaceFailTip.comment": "禁用轻松放置失败时那烦人的提示窗",
   "masa_gadget_mod.config.litematica.fixAccurateProtocol.name": "修复精准放置协议",
   "masa_gadget_mod.config.litematica.fixAccurateProtocol.comment": "Litematica 本身的精准放置协议实现的有问题，修复后可以在服务器中使用轻松放置来摆放中继器，活塞，侦测器，楼梯等方块",
   "masa_gadget_mod.config.litematica.nudgeSelectionSupportFreeCamera.name": "移动投影时支持 Free Camera",

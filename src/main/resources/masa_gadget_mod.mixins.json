@@ -36,5 +36,8 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "litematica.disableLitematicaEasyPlaceFailTip.MixinWorldUtils"
+  ]
 }
