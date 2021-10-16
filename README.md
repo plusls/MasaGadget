@@ -39,6 +39,10 @@
 
 ### Litematica
 
+- 更好的轻松放置模式(betterEasyPlaceMode)
+
+    - 轻松放置时可以打开容器（比如箱子，漏斗等等），以及可以使用信标
+
 - 修复精准放置协议(fixAccurateProtocol)
 
     - Litematica 本身的精准放置协议实现的有问题，修复后可以在服务器中使用轻松放置来摆放中继器，活塞，侦测器，楼梯等方块.

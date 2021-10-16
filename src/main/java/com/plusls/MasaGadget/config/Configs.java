@@ -62,12 +62,14 @@ public class Configs implements IConfigHandler {
 
     public static class Litematica {
         private static final String PREFIX = String.format("%s.config.litematica", ModInfo.MOD_ID);
+        public static final ConfigBoolean BETTER_EASY_PLACE_MODE = new TranslatableConfigBoolean(PREFIX, "betterEasyPlaceMode", false);
         public static final ConfigBoolean FIX_ACCURATE_PROTOCOL = new TranslatableConfigBoolean(PREFIX, "fixAccurateProtocol", true);
         public static final ConfigBoolean NUDGE_SELECTION_SUPPORT_FREE_CAMERA = new TranslatableConfigBoolean(PREFIX, "nudgeSelectionSupportFreeCamera", true);
         public static final ConfigBoolean SAVE_INVENTORY_TO_SCHEMATIC_IN_SERVER = new TranslatableConfigBoolean(PREFIX, "saveInventoryToSchematicInServer", false);
         public static final ConfigBoolean USE_RELATIVE_PATH = new TranslatableConfigBoolean(PREFIX, "useRelativePath", false);
 
         public static final List<IConfigBase> OPTIONS = ImmutableList.of(
+                BETTER_EASY_PLACE_MODE,
                 FIX_ACCURATE_PROTOCOL,
                 NUDGE_SELECTION_SUPPORT_FREE_CAMERA,
                 SAVE_INVENTORY_TO_SCHEMATIC_IN_SERVER,

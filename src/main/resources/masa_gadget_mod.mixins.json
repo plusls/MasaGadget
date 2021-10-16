@@ -6,6 +6,7 @@
   "plugin": "com.plusls.MasaGadget.MasaGadgetMixinPlugin",
   "client": [
     "event.disconnect.MixinMinecraftClient",
+    "litematica.betterEasyPlaceMode.MixinWorldUtils",
     "litematica.fixCarpetAccurateProtocol.MixinBlockItem",
     "litematica.fixCarpetAccurateProtocol.MixinWorldUtils",
     "litematica.nudgeSelectionSupportFreeCamera.MixinInputHandler",

@@ -39,6 +39,10 @@ The default hotkey to open the in-game config GUI is **G + C**.
 
 ### Litematica
 
+- betterEasyPlaceMode
+
+    - Easy place mode can open inventory (such as chest, hopper, etc.), and can use beacon.
+
 - fixAccurateProtocol
 
     - Fix accurate protocol support.
