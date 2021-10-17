@@ -7,6 +7,7 @@
   "client": [
     "event.disconnect.MixinMinecraftClient",
     "litematica.betterEasyPlaceMode.MixinWorldUtils",
+    "litematica.disableLitematicaEasyPlaceFailTip.MixinWorldUtils",
     "litematica.fixCarpetAccurateProtocol.MixinBlockItem",
     "litematica.fixCarpetAccurateProtocol.MixinWorldUtils",
     "litematica.nudgeSelectionSupportFreeCamera.MixinInputHandler",
@@ -22,11 +23,13 @@
     "tweakeroo.autoSyncTradeOfferList.MixinClientPlayNetworkHandler",
     "tweakeroo.autoSyncTradeOfferList.MixinVillagerEntity",
     "tweakeroo.autoSyncTradeOfferList.MixinZombieVillagerEntity",
+    "tweakeroo.inventoryPreviewSupportComparator.MixinWorldRenderer",
     "tweakeroo.inventoryPreviewSupportFreeCamera.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportPlayer.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportSelect.MixinInGameHud",
     "tweakeroo.inventoryPreviewSupportSelect.MixinInventoryOverlay",
     "tweakeroo.inventoryPreviewSupportSelect.MixinRenderHandler",
+    "tweakeroo.inventoryPreviewSupportShulkerBoxItemEntity.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportTradeOfferList.MixinRenderUtils",
     "tweakeroo.pcaSyncProtocol.MixinRenderUtils",
     "tweakeroo.renderNextRestockTime.MixinLivingEntityRenderer",
@@ -36,8 +39,5 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "litematica.disableLitematicaEasyPlaceFailTip.MixinWorldUtils"
-  ]
+  }
 }

@@ -40,6 +40,7 @@ public abstract class MixinRenderUtils {
                         blockEntity instanceof BarrelBlockEntity ||
                         blockEntity instanceof BrewingStandBlockEntity ||
                         blockEntity instanceof ChestBlockEntity ||
+                        (blockEntity instanceof ComparatorBlockEntity && Configs.Tweakeroo.INVENTORY_PREVIEW_SUPPORT_COMPARATOR.getBooleanValue()) ||
                         (blockEntity instanceof BeehiveBlockEntity && Configs.Minihud.PCA_SYNC_PROTOCOL_SYNC_BEEHIVE.getBooleanValue())
         )) {
             PcaSyncProtocol.syncBlockEntity(pos);

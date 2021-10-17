@@ -1,6 +1,9 @@
 package com.plusls.MasaGadget.mixin.tweakeroo.renderZombieVillagerConvertTime;
 
+import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
 import com.plusls.MasaGadget.config.Configs;
+import com.plusls.MasaGadget.mixin.Dependencies;
+import com.plusls.MasaGadget.mixin.Dependency;
 import fi.dy.masa.malilib.util.WorldUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -21,6 +24,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.TWEAKEROO_MOD_ID, version = "*"))
 @Mixin(LivingEntityRenderer.class)
 public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends EntityRenderer<T> {
 
