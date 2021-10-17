@@ -36,6 +36,8 @@
   "masa_gadget_mod.config.minihud.pcaSyncProtocolSyncBeehive.comment": "Press §6inventoryPreview§r hotkey to use PCA sync protocol to sync Beehive",
   "masa_gadget_mod.config.tweakeroo.autoSyncTradeOfferList.name": "autoSyncTradeOfferList",
   "masa_gadget_mod.config.tweakeroo.autoSyncTradeOfferList.comment": "Auto sync the trade offer list of villager",
+  "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportComparator.name": "inventoryPreviewSupportComparator",
+  "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportComparator.comment": "Inventory preview will render the output of comparator.",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportFreeCamera.name": "inventoryPreviewSupportFreeCamera",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportFreeCamera.comment": "Player can use inventory preview on free camera",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportPlayer.name": "inventoryPreviewSupportPlayer",
