@@ -44,6 +44,8 @@
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportPlayer.comment": "Player can use inventory preview to show the inventory of player and ender chest inventory",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportSelect.name": "inventoryPreviewSupportSelect",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportSelect.comment": "When player press the inventory preview hotkey, player can use the mouse wheel to select items (player can view the enchantment information), and when player select the shulker box in the chest, player can press the mouse scroll to preview the items in the box",
+  "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportShulkerBoxItemEntity.name": "inventoryPreviewSupportShulkerBoxItemEntity",
+  "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportShulkerBoxItemEntity.comment": "Inventory preview support shulker box item entity.",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportTradeOfferList.name": "inventoryPreviewSupportTradeOfferList",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportTradeOfferList.comment": "Inventory preview will preview the trade offer list of merchant",
   "masa_gadget_mod.config.tweakeroo.pcaSyncProtocol.name": "pcaSyncProtocol",

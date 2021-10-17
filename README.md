@@ -105,6 +105,10 @@
 
     - 按下容器预览快捷键时可以使用鼠标滚轮来选中物品（可以查看附魔信息），在选中箱子中的潜影盒时可以按下鼠标中键来预览盒子内的物品。
 
+- 容器预览支持潜影盒实体(inventoryPreviewSupportShulkerBoxItemEntity)
+
+    - 容器预览支持潜影盒实体
+
 - 容器预览显示交易列表(inventoryPreviewSupportTradeOfferList)
 
     - 容器预览村民时会显示出当前的交易列表

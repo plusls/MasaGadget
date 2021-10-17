@@ -29,6 +29,7 @@
     "tweakeroo.inventoryPreviewSupportSelect.MixinInGameHud",
     "tweakeroo.inventoryPreviewSupportSelect.MixinInventoryOverlay",
     "tweakeroo.inventoryPreviewSupportSelect.MixinRenderHandler",
+    "tweakeroo.inventoryPreviewSupportShulkerBoxItemEntity.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportTradeOfferList.MixinRenderUtils",
     "tweakeroo.pcaSyncProtocol.MixinRenderUtils",
     "tweakeroo.renderNextRestockTime.MixinLivingEntityRenderer",
