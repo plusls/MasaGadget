@@ -32,8 +32,9 @@ public class MasaGuiUtil {
                     ModMenuApi api = (ModMenuApi) marker;
                     Screen screen = api.getModConfigScreenFactory().create(client.currentScreen);
                     if (screen instanceof GuiConfigsBase) {
-                        masaGuiData.put(api.getModConfigScreenFactory(), metadata.getName());
-                        masaGuiClassData.put(screen.getClass(), api.getModConfigScreenFactory());
+                        ConfigScreenFactory<?> configScreenFactory = api.getModConfigScreenFactory();
+                        masaGuiData.put(configScreenFactory, metadata.getName());
+                        masaGuiClassData.put(screen.getClass(), configScreenFactory);
                     }
                 }
             } catch (Throwable e) {
