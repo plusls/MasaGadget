@@ -36,13 +36,14 @@ public class MasaGuiUtil {
                         masaGuiData.put(configScreenFactory, metadata.getName());
                         masaGuiClassData.put(screen.getClass(), configScreenFactory);
                     }
-                }  else if (marker instanceof io.github.prospector.modmenu.api.ModMenuApi) {
+                } else if (marker instanceof io.github.prospector.modmenu.api.ModMenuApi) {
                     /* Legacy API */
                     io.github.prospector.modmenu.api.ModMenuApi api = (io.github.prospector.modmenu.api.ModMenuApi) entrypoint.getEntrypoint();
                     Screen screen = api.getModConfigScreenFactory().create(client.currentScreen);
                     if (screen instanceof GuiConfigsBase) {
-                        masaGuiData.put(api.getModConfigScreenFactory(), metadata.getName());
-                        masaGuiClassData.put(screen.getClass(), api.getModConfigScreenFactory());
+                        ConfigScreenFactory<?> configScreenFactory = api.getModConfigScreenFactory();
+                        masaGuiData.put(configScreenFactory, metadata.getName());
+                        masaGuiClassData.put(screen.getClass(), configScreenFactory);
                     }
                 }
             } catch (Throwable e) {
