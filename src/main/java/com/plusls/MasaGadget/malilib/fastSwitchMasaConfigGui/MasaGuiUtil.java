@@ -30,8 +30,9 @@ public class MasaGuiUtil {
             try {
                 Screen screen = entrypoint.getModConfigScreenFactory().create(client.currentScreen);
                 if (screen instanceof GuiConfigsBase) {
-                    masaGuiData.put(entrypoint.getModConfigScreenFactory(), metadata.getName());
-                    masaGuiClassData.put(screen.getClass(), entrypoint.getModConfigScreenFactory());
+                    ConfigScreenFactory<?> configScreenFactory = entrypoint.getModConfigScreenFactory();
+                    masaGuiData.put(configScreenFactory, metadata.getName());
+                    masaGuiClassData.put(screen.getClass(), configScreenFactory);
                 }
 
             } catch (Throwable e) {

@@ -139,9 +139,11 @@ public class Configs implements IConfigHandler {
     public static class Tweakeroo {
         private static final String PREFIX = String.format("%s.config.tweakeroo", ModInfo.MOD_ID);
         public static final ConfigBoolean AUTO_SYNC_TRADE_OFFER_LIST = new TranslatableConfigBoolean(PREFIX, "autoSyncTradeOfferList", true);
+        public static final ConfigBoolean INVENTORY_PREVIEW_SUPPORT_COMPARATOR = new TranslatableConfigBoolean(PREFIX, "inventoryPreviewSupportComparator", true);
         public static final ConfigBoolean INVENTORY_PREVIEW_SUPPORT_FREE_CAMERA = new TranslatableConfigBoolean(PREFIX, "inventoryPreviewSupportFreeCamera", true);
         public static final ConfigBoolean INVENTORY_PREVIEW_SUPPORT_PLAYER = new TranslatableConfigBoolean(PREFIX, "inventoryPreviewSupportPlayer", true);
         public static final ConfigBoolean INVENTORY_PREVIEW_SUPPORT_SELECT = new TranslatableConfigBoolean(PREFIX, "inventoryPreviewSupportSelect", true);
+        public static final ConfigBoolean INVENTORY_PREVIEW_SUPPORT_SHULKER_BOX_ITEM_ENTITY = new TranslatableConfigBoolean(PREFIX, "inventoryPreviewSupportShulkerBoxItemEntity", true);
         public static final ConfigBoolean INVENTORY_PREVIEW_SUPPORT_TRADE_OFFER_LIST = new TranslatableConfigBoolean(PREFIX, "inventoryPreviewSupportTradeOfferList", true);
         public static final ConfigBoolean PCA_SYNC_PROTOCOL = new TranslatableConfigBoolean(PREFIX, "pcaSyncProtocol", true);
         public static final ConfigBoolean RENDER_NEXT_RESTOCK_TIME = new TranslatableConfigBoolean(PREFIX, "renderNextRestockTime", false);
@@ -150,9 +152,11 @@ public class Configs implements IConfigHandler {
 
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
                 AUTO_SYNC_TRADE_OFFER_LIST,
+                INVENTORY_PREVIEW_SUPPORT_COMPARATOR,
                 INVENTORY_PREVIEW_SUPPORT_FREE_CAMERA,
                 INVENTORY_PREVIEW_SUPPORT_PLAYER,
                 INVENTORY_PREVIEW_SUPPORT_SELECT,
+                INVENTORY_PREVIEW_SUPPORT_SHULKER_BOX_ITEM_ENTITY,
                 INVENTORY_PREVIEW_SUPPORT_TRADE_OFFER_LIST,
                 PCA_SYNC_PROTOCOL,
                 RENDER_NEXT_RESTOCK_TIME,
