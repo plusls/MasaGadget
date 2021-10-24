@@ -108,6 +108,10 @@ The default hotkey to open the in-game config GUI is **G + C**.
       the enchantment information), and when player select the shulker box in the chest, player can press the mouse
       scroll to preview the items in the box.
 
+- inventoryPreviewSupportShulkerBoxItemEntity
+
+  - inventory preview support shulkerbox item entity
+
 - inventoryPreviewSupportTradeOfferList
 
     - Inventory preview will preview the trade offer list of merchant

@@ -3,7 +3,6 @@ package com.plusls.MasaGadget.malilib.fastSwitchMasaConfigGui;
 import com.plusls.MasaGadget.ModInfo;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import com.terraformersmc.modmenu.util.ModMenuApiMarker;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
@@ -24,17 +23,15 @@ public class MasaGuiUtil {
 
     public static void initMasaModScreenList(MinecraftClient client) {
 
-        FabricLoader.getInstance().getEntrypointContainers("modmenu", ModMenuApiMarker.class).forEach(entrypoint -> {
+        FabricLoader.getInstance().getEntrypointContainers("modmenu", ModMenuApi.class).forEach(entrypoint -> {
             ModMetadata metadata = entrypoint.getProvider().getMetadata();
             try {
-                ModMenuApiMarker marker = entrypoint.getEntrypoint();
-                if (marker instanceof ModMenuApi) {
-                    ModMenuApi api = (ModMenuApi) marker;
-                    Screen screen = api.getModConfigScreenFactory().create(client.currentScreen);
-                    if (screen instanceof GuiConfigsBase) {
-                        masaGuiData.put(api.getModConfigScreenFactory(), metadata.getName());
-                        masaGuiClassData.put(screen.getClass(), api.getModConfigScreenFactory());
-                    }
+                ModMenuApi api = entrypoint.getEntrypoint();
+                Screen screen = api.getModConfigScreenFactory().create(client.currentScreen);
+                if (screen instanceof GuiConfigsBase) {
+                    ConfigScreenFactory<?> configScreenFactory = api.getModConfigScreenFactory();
+                    masaGuiData.put(configScreenFactory, metadata.getName());
+                    masaGuiClassData.put(screen.getClass(), configScreenFactory);
                 }
             } catch (Throwable e) {
                 ModInfo.LOGGER.error("Mod {} provides a broken implementation of ModMenuApi", metadata.getId(), e);

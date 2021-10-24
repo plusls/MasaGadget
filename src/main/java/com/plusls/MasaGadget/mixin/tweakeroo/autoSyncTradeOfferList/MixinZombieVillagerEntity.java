@@ -1,6 +1,9 @@
 package com.plusls.MasaGadget.mixin.tweakeroo.autoSyncTradeOfferList;
 
+import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
 import com.plusls.MasaGadget.config.Configs;
+import com.plusls.MasaGadget.mixin.Dependencies;
+import com.plusls.MasaGadget.mixin.Dependency;
 import com.plusls.MasaGadget.tweakeroo.pcaSyncProtocol.PcaSyncProtocol;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.EntityType;
@@ -13,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.TWEAKEROO_MOD_ID, version = "*"))
 @Mixin(ZombieVillagerEntity.class)
 public abstract class MixinZombieVillagerEntity extends ZombieEntity implements VillagerDataContainer {
     public MixinZombieVillagerEntity(EntityType<? extends ZombieEntity> entityType, World world) {
