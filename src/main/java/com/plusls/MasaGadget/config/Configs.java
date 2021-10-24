@@ -106,6 +106,17 @@ public class Configs implements IConfigHandler {
                 FIX_GET_INVENTORY_TYPE,
                 OPTIMIZE_CONFIG_WIDGET_SEARCH
         );
+
+        public static final List<IConfigBase> GUI_OPTIONS = new LinkedList<>(OPTIONS);
+
+        static {
+            GUI_OPTIONS.removeIf(iConfigBase -> {
+                if (iConfigBase == FAST_SWITCH_MASA_CONFIG_GUI && !MasaGadgetMixinPlugin.isModmenu) {
+                    return true;
+                }
+                return false;
+            });
+        }
     }
 
     public static class Minihud {
