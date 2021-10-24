@@ -1,5 +1,6 @@
 package com.plusls.MasaGadget.malilib.fastSwitchMasaConfigGui;
 
+import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
 import com.plusls.MasaGadget.ModInfo;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import io.github.prospector.modmenu.api.ConfigScreenFactory;
@@ -22,7 +23,9 @@ public class MasaGuiUtil {
     }
 
     public static void initMasaModScreenList(MinecraftClient client) {
-
+        if (!MasaGadgetMixinPlugin.isModmenu) {
+            return;
+        }
         FabricLoader.getInstance().getEntrypointContainers("modmenu", ModMenuApi.class).forEach(provider -> {
             ModMenuApi entrypoint = provider.getEntrypoint();
 

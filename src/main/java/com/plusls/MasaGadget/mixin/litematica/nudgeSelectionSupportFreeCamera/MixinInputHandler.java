@@ -13,8 +13,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-@Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.LITEMATICA_MOD_ID, version = "<" + LitematicaDependencyUtil.NUDGE_SELECTION_SUPPORT_FREECAMERA_BREAK_VERSION,
-        predicate = LitematicaDependencyUtil.TweakerooPredicate.class))
+@Dependencies(dependencyList = {@Dependency(modId = MasaGadgetMixinPlugin.LITEMATICA_MOD_ID, version = "<" + LitematicaDependencyUtil.NUDGE_SELECTION_SUPPORT_FREECAMERA_BREAK_VERSION,
+        predicate = LitematicaDependencyUtil.TweakerooPredicate.class),
+        @Dependency(modId = MasaGadgetMixinPlugin.TWEAKEROO_MOD_ID, version = "*")})
 @Mixin(value = InputHandler.class, remap = false)
 public class MixinInputHandler {
     @ModifyVariable(method = "nudgeSelection", at = @At(value = "HEAD"), ordinal = 0)
