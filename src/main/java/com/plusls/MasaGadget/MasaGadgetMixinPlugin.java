@@ -36,12 +36,14 @@ public class MasaGadgetMixinPlugin implements IMixinConfigPlugin {
     public static final String TWEAKEROO_MOD_ID = "tweakeroo";
     public static final String MINIHUD_MOD_ID = "minihud";
     public static final String LITEMATICA_MOD_ID = "litematica";
+    public static final String MODMENU_MOD_ID = "modmenu";
     public static final String BBOR_MOD_ID = "bbor";
 
     public static boolean isTweakerooLoaded = false;
     public static boolean isMinihudLoaded = false;
     public static boolean isLitematicaLoaded = false;
     public static boolean isBborLoaded = false;
+    public static boolean isModmenu = false;
 
     private final List<String> obfuscatedMixinList = new ArrayList<>();
     static private Path tempDirectory;
@@ -69,6 +71,7 @@ public class MasaGadgetMixinPlugin implements IMixinConfigPlugin {
         isMinihudLoaded = FabricLoader.getInstance().isModLoaded(MINIHUD_MOD_ID);
         isLitematicaLoaded = FabricLoader.getInstance().isModLoaded(LITEMATICA_MOD_ID);
         isBborLoaded = FabricLoader.getInstance().isModLoaded(BBOR_MOD_ID);
+        isModmenu = FabricLoader.getInstance().isModLoaded(MODMENU_MOD_ID);
         if (!FabricLoader.getInstance().isDevelopmentEnvironment()) {
             Object urlLoader = Thread.currentThread().getContextClassLoader();
             Class<?> knotClassLoader;

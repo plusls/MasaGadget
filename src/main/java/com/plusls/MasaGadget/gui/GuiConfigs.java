@@ -78,7 +78,7 @@ public class GuiConfigs extends GuiConfigsBase {
         } else if (tab == ConfigGuiTab.LITEMATICA) {
             configs = Configs.Litematica.GUI_OPTIONS;
         } else if (tab == ConfigGuiTab.MALILIB) {
-            configs = Configs.Malilib.OPTIONS;
+            configs = Configs.Malilib.GUI_OPTIONS;
         } else if (tab == ConfigGuiTab.MINIHUD) {
             configs = Configs.Minihud.GUI_OPTIONS;
         } else if (tab == ConfigGuiTab.TWEAKEROO) {
