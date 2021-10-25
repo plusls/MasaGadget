@@ -4,24 +4,18 @@ import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.mixin.Dependencies;
 import com.plusls.MasaGadget.mixin.Dependency;
+import com.plusls.MasaGadget.tweakeroo.TraceUtil;
 import fi.dy.masa.malilib.render.InventoryOverlay;
 import fi.dy.masa.malilib.util.GuiUtils;
-import fi.dy.masa.malilib.util.WorldUtils;
-import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.renderer.RenderUtils;
-import fi.dy.masa.tweakeroo.util.RayTraceUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.MerchantEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DyeColor;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.village.TradeOffer;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -35,19 +29,10 @@ public class MixinRenderUtils {
 
     @Inject(method = "renderInventoryOverlay", at = @At(value = "RETURN"))
     private static void renderTradeOfferList(MinecraftClient mc, MatrixStack matrixStack, CallbackInfo ci) {
-        World world = WorldUtils.getBestWorld(mc);
-        if (!Configs.Tweakeroo.INVENTORY_PREVIEW_SUPPORT_TRADE_OFFER_LIST.getBooleanValue() || world == null || mc.getCameraEntity() == null || mc.player == null) {
+        if (!Configs.Tweakeroo.INVENTORY_PREVIEW_SUPPORT_TRADE_OFFER_LIST.getBooleanValue()) {
             return;
         }
-        PlayerEntity player = world.getPlayerByUuid(mc.player.getUuid());
-        if (player == null) {
-            player = mc.player;
-        }
-        HitResult trace = RayTraceUtils.getRayTraceFromEntity(world, FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue() ? mc.getCameraEntity() : player, false);
-        if (trace.getType() != HitResult.Type.ENTITY) {
-            return;
-        }
-        Entity entity = ((EntityHitResult) trace).getEntity();
+        Entity entity = TraceUtil.getTraceEntity();
         if (!(entity instanceof MerchantEntity)) {
             return;
         }
