@@ -10,8 +10,8 @@ import java.util.Optional;
 
 public class ModInfo {
     public static String MOD_ID = "masa_gadget_mod";
-    public static String MOD_VERSION;
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
+    public static String MOD_VERSION;
 
     static {
         Optional<ModContainer> modContainerOptional = FabricLoader.getInstance().getModContainer(MOD_ID);

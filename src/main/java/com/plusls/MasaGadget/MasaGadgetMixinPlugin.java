@@ -38,14 +38,12 @@ public class MasaGadgetMixinPlugin implements IMixinConfigPlugin {
     public static final String LITEMATICA_MOD_ID = "litematica";
     public static final String MODMENU_MOD_ID = "modmenu";
     public static final String BBOR_MOD_ID = "bbor";
-
+    private final static List<String> NAME_LIST = Arrays.asList("method", "target");
     public static boolean isTweakerooLoaded = false;
     public static boolean isMinihudLoaded = false;
     public static boolean isLitematicaLoaded = false;
     public static boolean isBborLoaded = false;
     public static boolean isModmenu = false;
-
-    private final List<String> obfuscatedMixinList = new ArrayList<>();
     static private Path tempDirectory;
     static private Method oldMatchesMethod;
 
@@ -64,6 +62,119 @@ public class MasaGadgetMixinPlugin implements IMixinConfigPlugin {
         }
     }
 
+    private final List<String> obfuscatedMixinList = new ArrayList<>();
+
+    private static ClassNode loadClassNode(String className) {
+        ClassNode classNode;
+        try {
+            classNode = MixinService.getService().getBytecodeProvider().getClassNode(className);
+        } catch (ClassNotFoundException | IOException e) {
+            throw new IllegalStateException(String.format("load ClassNode: %s fail.", className));
+        }
+        return classNode;
+    }
+
+    public static Path createTempDirectory() throws IOException {
+        final Path tmp = Files.createTempDirectory(String.format("%s-", ModInfo.MOD_ID));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                FileUtils.forceDelete(tmp.toFile());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }));
+        return tmp;
+    }
+
+    private static boolean getRemap(AnnotationNode annotationNode, boolean defaultValue) {
+        Boolean ret = Annotations.getValue(annotationNode, "remap");
+        if (ret == null) {
+            return defaultValue;
+        }
+        return ret;
+    }
+
+    private static void obfuscateAnnotation(AnnotationNode annotationNode, boolean defaultRemap) {
+        boolean remap = getRemap(annotationNode, defaultRemap);
+        for (int i = 0; i < annotationNode.values.size(); i += 2) {
+            if (annotationNode.values.get(i + 1) instanceof AnnotationNode) {
+                AnnotationNode node = (AnnotationNode) annotationNode.values.get(i + 1);
+                obfuscateAnnotation(node, remap);
+            } else if (annotationNode.values.get(i + 1) instanceof ArrayList && ((ArrayList) annotationNode.values.get(i + 1)).size() > 0 && ((ArrayList) annotationNode.values.get(i + 1)).get(0) instanceof AnnotationNode) {
+                ArrayList arrayList = (ArrayList) annotationNode.values.get(i + 1);
+                ArrayList<AnnotationNode> subAnnotationNodeList = arrayList;
+                for (AnnotationNode subAnnotationNode : subAnnotationNodeList) {
+                    obfuscateAnnotation(subAnnotationNode, remap);
+                }
+            } else if (!defaultRemap) {
+                String name = (String) annotationNode.values.get(i);
+                if (NAME_LIST.contains(name)) {
+                    if (annotationNode.values.get(i + 1) instanceof String) {
+                        String s = (String) annotationNode.values.get(i + 1);
+                        annotationNode.values.set(i + 1, YarnUtil.obfuscateString(s));
+                    } else if (annotationNode.values.get(i + 1) instanceof ArrayList) {
+                        ArrayList arrayList = (ArrayList) annotationNode.values.get(i + 1);
+                        if (arrayList.size() > 0 && arrayList.get(0) instanceof String) {
+                            ArrayList<String> strList = arrayList;
+                            for (int j = 0; j < strList.size(); ++j) {
+                                strList.set(j, YarnUtil.obfuscateString(strList.get(j)));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static void obfuscateAnnotation(ClassNode classNode, Path outputDirectory) throws IOException {
+        String fullClassName = classNode.name;
+        ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+        boolean classRemap = getRemap(Annotations.getInvisible(classNode, Mixin.class), true);
+
+        for (MethodNode method : classNode.methods) {
+            if (method.visibleAnnotations != null) {
+                for (AnnotationNode annotationNode : method.visibleAnnotations) {
+                    obfuscateAnnotation(annotationNode, classRemap);
+                }
+            }
+        }
+        classNode.accept(classWriter);
+
+        int packageNameIdx = fullClassName.lastIndexOf('/');
+        String packageName, className;
+        if (packageNameIdx == -1) {
+            packageName = "";
+            className = fullClassName;
+        } else {
+            packageName = fullClassName.substring(0, packageNameIdx);
+            className = fullClassName.substring(packageNameIdx + 1);
+        }
+
+        classNode.invisibleAnnotations.remove(Annotations.getInvisible(classNode, NeedObfuscate.class));
+        Files.createDirectories(Paths.get(outputDirectory.toString(), packageName));
+        Files.write(Paths.get(outputDirectory.toString(), packageName, className + "Obfuscated.class"), classWriter.toByteArray());
+    }
+
+    private static boolean myMatches(Version version, String s) {
+        try {
+            if (oldMatchesMethod != null) {
+                return (boolean) oldMatchesMethod.invoke(null, version, s);
+            }
+            return VersionPredicateParser.parse(s).test(version);
+        } catch (VersionParsingException | InvocationTargetException | IllegalAccessException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean checkDependency(String modId, String version) {
+        Optional<ModContainer> modContainerOptional = FabricLoader.getInstance().getModContainer(modId);
+        if (modContainerOptional.isPresent()) {
+            ModContainer modContainer = modContainerOptional.get();
+            return myMatches(modContainer.getMetadata().getVersion(), version);
+        }
+        return false;
+    }
 
     @Override
     public void onLoad(String mixinPackage) {
@@ -135,100 +246,6 @@ public class MasaGadgetMixinPlugin implements IMixinConfigPlugin {
 
     }
 
-
-    private static ClassNode loadClassNode(String className) {
-        ClassNode classNode;
-        try {
-            classNode = MixinService.getService().getBytecodeProvider().getClassNode(className);
-        } catch (ClassNotFoundException | IOException e) {
-            throw new IllegalStateException(String.format("load ClassNode: %s fail.", className));
-        }
-        return classNode;
-    }
-
-    public static Path createTempDirectory() throws IOException {
-        final Path tmp = Files.createTempDirectory(String.format("%s-", ModInfo.MOD_ID));
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            try {
-                FileUtils.forceDelete(tmp.toFile());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }));
-        return tmp;
-    }
-
-    private static boolean getRemap(AnnotationNode annotationNode, boolean defaultValue) {
-        Boolean ret = Annotations.getValue(annotationNode, "remap");
-        if (ret == null) {
-            return defaultValue;
-        }
-        return ret;
-    }
-
-    private final static List<String> NAME_LIST = Arrays.asList("method", "target");
-
-    private static void obfuscateAnnotation(AnnotationNode annotationNode, boolean defaultRemap) {
-        boolean remap = getRemap(annotationNode, defaultRemap);
-        for (int i = 0; i < annotationNode.values.size(); i += 2) {
-            if (annotationNode.values.get(i + 1) instanceof AnnotationNode) {
-                AnnotationNode node = (AnnotationNode) annotationNode.values.get(i + 1);
-                obfuscateAnnotation(node, remap);
-            } else if (annotationNode.values.get(i + 1) instanceof ArrayList && ((ArrayList) annotationNode.values.get(i + 1)).size() > 0 && ((ArrayList) annotationNode.values.get(i + 1)).get(0) instanceof AnnotationNode) {
-                ArrayList arrayList = (ArrayList) annotationNode.values.get(i + 1);
-                ArrayList<AnnotationNode> subAnnotationNodeList = arrayList;
-                for (AnnotationNode subAnnotationNode : subAnnotationNodeList) {
-                    obfuscateAnnotation(subAnnotationNode, remap);
-                }
-            } else if (!defaultRemap) {
-                String name = (String) annotationNode.values.get(i);
-                if (NAME_LIST.contains(name)) {
-                    if (annotationNode.values.get(i + 1) instanceof String) {
-                        String s = (String) annotationNode.values.get(i + 1);
-                        annotationNode.values.set(i + 1, YarnUtil.obfuscateString(s));
-                    } else if (annotationNode.values.get(i + 1) instanceof ArrayList) {
-                        ArrayList arrayList = (ArrayList) annotationNode.values.get(i + 1);
-                        if (arrayList.size() > 0 && arrayList.get(0) instanceof String) {
-                            ArrayList<String> strList = arrayList;
-                            for (int j = 0; j < strList.size(); ++j) {
-                                strList.set(j, YarnUtil.obfuscateString(strList.get(j)));
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private static void obfuscateAnnotation(ClassNode classNode, Path outputDirectory) throws IOException {
-        String fullClassName = classNode.name;
-        ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-        boolean classRemap = getRemap(Annotations.getInvisible(classNode, Mixin.class), true);
-
-        for (MethodNode method : classNode.methods) {
-            if (method.visibleAnnotations != null) {
-                for (AnnotationNode annotationNode : method.visibleAnnotations) {
-                    obfuscateAnnotation(annotationNode, classRemap);
-                }
-            }
-        }
-        classNode.accept(classWriter);
-
-        int packageNameIdx = fullClassName.lastIndexOf('/');
-        String packageName, className;
-        if (packageNameIdx == -1) {
-            packageName = "";
-            className = fullClassName;
-        } else {
-            packageName = fullClassName.substring(0, packageNameIdx);
-            className = fullClassName.substring(packageNameIdx + 1);
-        }
-
-        classNode.invisibleAnnotations.remove(Annotations.getInvisible(classNode, NeedObfuscate.class));
-        Files.createDirectories(Paths.get(outputDirectory.toString(), packageName));
-        Files.write(Paths.get(outputDirectory.toString(), packageName, className + "Obfuscated.class"), classWriter.toByteArray());
-    }
-
     private void obfuscateClass(String classFullName) {
         ClassNode classNode = loadClassNode(classFullName);
         AnnotationNode needObfuscate = Annotations.getInvisible(classNode, NeedObfuscate.class);
@@ -243,28 +260,6 @@ public class MasaGadgetMixinPlugin implements IMixinConfigPlugin {
             obfuscatedMixinList.add(String.format("%sObfuscated", classFullName.replace(packageName + ".", "")));
         }
     }
-
-    private static boolean myMatches(Version version, String s) {
-        try {
-            if (oldMatchesMethod != null) {
-                return (boolean) oldMatchesMethod.invoke(null, version, s);
-            }
-            return VersionPredicateParser.parse(s).test(version);
-        } catch (VersionParsingException | InvocationTargetException | IllegalAccessException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public static boolean checkDependency(String modId, String version) {
-        Optional<ModContainer> modContainerOptional = FabricLoader.getInstance().getModContainer(modId);
-        if (modContainerOptional.isPresent()) {
-            ModContainer modContainer = modContainerOptional.get();
-            return myMatches(modContainer.getMetadata().getVersion(), version);
-        }
-        return false;
-    }
-
 
     private boolean checkDependency(String targetClassName, AnnotationNode dependency) {
         String modId = Annotations.getValue(dependency, "modId");
