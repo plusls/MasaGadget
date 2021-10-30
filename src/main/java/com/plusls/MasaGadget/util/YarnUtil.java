@@ -45,6 +45,35 @@ public class YarnUtil {
         }
     }
 
+    @Nullable
+    public static String getMinecraftTypeStr(String str, int startIdx) {
+        int lIndex = str.indexOf("Lnet/minecraft/", startIdx);
+        if (lIndex == -1) {
+            return null;
+        }
+        int rIndex = str.indexOf(";", lIndex);
+        assert rIndex != -1;
+        return str.substring(lIndex + 1, rIndex);
+    }
+
+    public static String obfuscateString(String str) {
+        return mapMinecraftType(str, obfuscateMappings);
+    }
+
+    public static String mapMinecraftType(String str, Map<String, String> mappings) {
+        int nextIdx = -1;
+        for (String minecraftTypeStr = getMinecraftTypeStr(str, 0); minecraftTypeStr != null; minecraftTypeStr = getMinecraftTypeStr(str, nextIdx)) {
+            nextIdx = str.indexOf(minecraftTypeStr, nextIdx + 1);
+            str = str.replace(minecraftTypeStr, mappings.getOrDefault(minecraftTypeStr, minecraftTypeStr));
+        }
+        str = mappings.getOrDefault(str, str);
+        return str;
+    }
+
+    public static String deobfuscateString(String str) {
+        return mapMinecraftType(str, deobfuscateMappings);
+    }
+
     private static class MappingVisitor implements TinyVisitor {
         private final Map<String, String> obfuscateMappings;
         private final Map<String, String> deobfuscateMappings;
@@ -125,34 +154,5 @@ public class YarnUtil {
             }
         }
 
-    }
-
-    @Nullable
-    public static String getMinecraftTypeStr(String str, int startIdx) {
-        int lIndex = str.indexOf("Lnet/minecraft/", startIdx);
-        if (lIndex == -1) {
-            return null;
-        }
-        int rIndex = str.indexOf(";", lIndex);
-        assert rIndex != -1;
-        return str.substring(lIndex + 1, rIndex);
-    }
-
-    public static String obfuscateString(String str) {
-        return mapMinecraftType(str, obfuscateMappings);
-    }
-
-    public static String mapMinecraftType(String str, Map<String, String> mappings) {
-        int nextIdx = -1;
-        for (String minecraftTypeStr = getMinecraftTypeStr(str, 0); minecraftTypeStr != null; minecraftTypeStr = getMinecraftTypeStr(str, nextIdx)) {
-            nextIdx = str.indexOf(minecraftTypeStr, nextIdx + 1);
-            str = str.replace(minecraftTypeStr, mappings.getOrDefault(minecraftTypeStr, minecraftTypeStr));
-        }
-        str = mappings.getOrDefault(str, str);
-        return str;
-    }
-
-    public static String deobfuscateString(String str) {
-        return mapMinecraftType(str, deobfuscateMappings);
     }
 }

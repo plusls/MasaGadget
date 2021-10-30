@@ -33,6 +33,17 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
         super(ctx);
     }
 
+    // 因为刁民的需要补货的函数，会检查当前货物是否被消耗，从使用的角度只需要关心当前货物是否用完
+    private static boolean needsRestock(VillagerEntity villagerEntity) {
+
+        for (TradeOffer offer : villagerEntity.getOffers()) {
+            if (offer.isDisabled()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // from entityRenderer
     @Inject(method = "render", at = @At(value = "RETURN"))
     private void postRenderEntity(T livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light, CallbackInfo ci) {
@@ -116,17 +127,6 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
             lv2.draw(text, h, 0, -1, false, lv, vertexConsumerProvider, false, 0, light);
             matrixStack.pop();
         }
-    }
-
-    // 因为刁民的需要补货的函数，会检查当前货物是否被消耗，从使用的角度只需要关心当前货物是否用完
-    private static boolean needsRestock(VillagerEntity villagerEntity) {
-
-        for (TradeOffer offer : villagerEntity.getOffers()) {
-            if (offer.isDisabled()) {
-                return true;
-            }
-        }
-        return false;
     }
 
 }

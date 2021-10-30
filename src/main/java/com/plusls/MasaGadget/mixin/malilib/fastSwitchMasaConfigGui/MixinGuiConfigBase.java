@@ -28,16 +28,14 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
 
     @Shadow
     protected Screen parentScreen;
-
-    protected MixinGuiConfigBase(int listX, int listY) {
-        super(listX, listY);
-    }
-
     private final MyWidgetDropDownList<ConfigScreenFactory<?>> masaModGuiList = new MyWidgetDropDownList<>(GuiUtils.getScaledWindowWidth() - 145, 10, 120, 18, 200, 10,
             MasaGuiUtil.masaGuiData.keySet().stream().toList(), MasaGuiUtil.masaGuiData::get,
             configScreenFactory -> GuiBase.openGui(configScreenFactory.create(this.parentScreen)),
             configScreenFactory -> Configs.Malilib.FAST_SWITCH_MASA_CONFIG_GUI.getBooleanValue());
 
+    protected MixinGuiConfigBase(int listX, int listY) {
+        super(listX, listY);
+    }
 
     @Inject(method = "initGui", at = @At(value = "RETURN"))
     public void postInitGui(CallbackInfo ci) {

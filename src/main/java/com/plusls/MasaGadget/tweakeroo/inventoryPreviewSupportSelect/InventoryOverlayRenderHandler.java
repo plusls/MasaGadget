@@ -22,13 +22,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class InventoryOverlayRenderHandler implements IRenderer {
+    final public static InventoryOverlayRenderHandler instance = new InventoryOverlayRenderHandler();
     final private static int UN_SELECTED = 114514;
     private int selectedIdx = UN_SELECTED;
     private int currentIdx = -1;
     private int renderX = -1;
     private int renderY = -1;
     private ItemStack itemStack = null;
-
     // 支持显示盒子在箱子里
     private boolean selectInventory = false;
     private boolean renderingSubInventory = false;
@@ -38,7 +38,34 @@ public class InventoryOverlayRenderHandler implements IRenderer {
     private int subRenderY = -1;
     private ItemStack subItemStack = null;
 
-    final public static InventoryOverlayRenderHandler instance = new InventoryOverlayRenderHandler();
+    protected static void fillGradient(MatrixStack matrices, int startX, int startY, int endX, int endY, int colorStart, int colorEnd, int z) {
+        RenderSystem.disableTexture();
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        Tessellator lv = Tessellator.getInstance();
+        BufferBuilder lv2 = lv.getBuffer();
+        lv2.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+        fillGradient(matrices.peek().getModel(), lv2, startX, startY, endX, endY, z, colorStart, colorEnd);
+        lv.draw();
+        RenderSystem.disableBlend();
+        RenderSystem.enableTexture();
+    }
+
+    protected static void fillGradient(Matrix4f matrix, BufferBuilder arg2, int startX, int startY, int endX, int endY, int z, int colorStart, int colorEnd) {
+        float f = (colorStart >> 24 & 0xFF) / 255.0F;
+        float g = (colorStart >> 16 & 0xFF) / 255.0F;
+        float h = (colorStart >> 8 & 0xFF) / 255.0F;
+        float p = (colorStart & 0xFF) / 255.0F;
+        float q = (colorEnd >> 24 & 0xFF) / 255.0F;
+        float r = (colorEnd >> 16 & 0xFF) / 255.0F;
+        float s = (colorEnd >> 8 & 0xFF) / 255.0F;
+        float t = (colorEnd & 0xFF) / 255.0F;
+        arg2.vertex(matrix, endX, startY, z).color(g, h, p, f).next();
+        arg2.vertex(matrix, startX, startY, z).color(g, h, p, f).next();
+        arg2.vertex(matrix, startX, endY, z).color(r, s, t, q).next();
+        arg2.vertex(matrix, endX, endY, z).color(r, s, t, q).next();
+    }
 
     public void render(MatrixStack matrixStack) {
         if (currentIdx == 0) {
@@ -244,34 +271,5 @@ public class InventoryOverlayRenderHandler implements IRenderer {
 
     protected void fillGradient(MatrixStack matrices, int startX, int startY, int endX, int endY, int colorStart, int colorEnd) {
         fillGradient(matrices, startX, startY, endX, endY, colorStart, colorEnd, 0);
-    }
-
-    protected static void fillGradient(MatrixStack matrices, int startX, int startY, int endX, int endY, int colorStart, int colorEnd, int z) {
-        RenderSystem.disableTexture();
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        Tessellator lv = Tessellator.getInstance();
-        BufferBuilder lv2 = lv.getBuffer();
-        lv2.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-        fillGradient(matrices.peek().getModel(), lv2, startX, startY, endX, endY, z, colorStart, colorEnd);
-        lv.draw();
-        RenderSystem.disableBlend();
-        RenderSystem.enableTexture();
-    }
-
-    protected static void fillGradient(Matrix4f matrix, BufferBuilder arg2, int startX, int startY, int endX, int endY, int z, int colorStart, int colorEnd) {
-        float f = (colorStart >> 24 & 0xFF) / 255.0F;
-        float g = (colorStart >> 16 & 0xFF) / 255.0F;
-        float h = (colorStart >> 8 & 0xFF) / 255.0F;
-        float p = (colorStart & 0xFF) / 255.0F;
-        float q = (colorEnd >> 24 & 0xFF) / 255.0F;
-        float r = (colorEnd >> 16 & 0xFF) / 255.0F;
-        float s = (colorEnd >> 8 & 0xFF) / 255.0F;
-        float t = (colorEnd & 0xFF) / 255.0F;
-        arg2.vertex(matrix, endX, startY, z).color(g, h, p, f).next();
-        arg2.vertex(matrix, startX, startY, z).color(g, h, p, f).next();
-        arg2.vertex(matrix, startX, endY, z).color(r, s, t, q).next();
-        arg2.vertex(matrix, endX, endY, z).color(r, s, t, q).next();
     }
 }

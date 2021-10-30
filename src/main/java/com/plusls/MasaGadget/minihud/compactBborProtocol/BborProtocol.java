@@ -26,11 +26,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class BborProtocol {
     public static final String NAMESPACE = "bbor";
-
-    private static Identifier id(String path) {
-        return new Identifier(NAMESPACE, path);
-    }
-
+    public static final ReentrantLock lock = new ReentrantLock(true);
     // recv
     private static final Identifier INITIALIZE = id("initialize");
     private static final Identifier ADD_BOUNDING_BOX_V2 = id("add_bounding_box_v2");
@@ -44,7 +40,6 @@ public class BborProtocol {
     public static BlockPos spawnPos = null;
     public static boolean enable = false;
     public static boolean carpetOrServux = false;
-    public static final ReentrantLock lock = new ReentrantLock(true);
 
     static {
         for (StructureType type : StructureType.VALUES) {
@@ -57,6 +52,10 @@ public class BborProtocol {
                 }
             }
         }
+    }
+
+    private static Identifier id(String path) {
+        return new Identifier(NAMESPACE, path);
     }
 
     public static String lowVersionStructureName(String name) {

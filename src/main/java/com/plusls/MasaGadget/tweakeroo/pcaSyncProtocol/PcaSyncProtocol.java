@@ -34,32 +34,27 @@ import net.minecraft.world.World;
 
 public class PcaSyncProtocol {
     private static final String NAMESPACE = "pca";
-
-    private static Identifier id(String path) {
-        return new Identifier(NAMESPACE, path);
-    }
-
     // send
     private static final Identifier SYNC_BLOCK_ENTITY = id("sync_block_entity");
     private static final Identifier SYNC_ENTITY = id("sync_entity");
     private static final Identifier CANCEL_SYNC_REQUEST_BLOCK_ENTITY = id("cancel_sync_block_entity");
     private static final Identifier CANCEL_SYNC_ENTITY = id("cancel_sync_entity");
-
     // recv
     private static final Identifier ENABLE_PCA_SYNC_PROTOCOL = id("enable_pca_sync_protocol");
     private static final Identifier DISABLE_PCA_SYNC_PROTOCOL = id("disable_pca_sync_protocol");
     private static final Identifier UPDATE_ENTITY = id("update_entity");
     private static final Identifier UPDATE_BLOCK_ENTITY = id("update_block_entity");
-
-    private static BlockPos lastBlockPos = null;
-    private static int lastEntityId = -1;
-    public static boolean enable = false;
-
     private static final ClientboundIdentifierCustomPayloadListener clientboundIdentifierCustomPayloadListener =
             new ClientboundIdentifierCustomPayloadListener();
     private static final ServerboundIdentifierCustomPayloadListener serverboundIdentifierCustomPayloadListener =
             new ServerboundIdentifierCustomPayloadListener();
+    public static boolean enable = false;
+    private static BlockPos lastBlockPos = null;
+    private static int lastEntityId = -1;
 
+    private static Identifier id(String path) {
+        return new Identifier(NAMESPACE, path);
+    }
 
     public static void init() {
         ClientPlayNetworking.registerGlobalReceiver(ENABLE_PCA_SYNC_PROTOCOL, PcaSyncProtocol::enablePcaSyncProtocolHandle);
@@ -72,39 +67,6 @@ public class PcaSyncProtocol {
         MultiConnectAPI.instance().addClientboundIdentifierCustomPayloadListener(clientboundIdentifierCustomPayloadListener);
         MultiConnectAPI.instance().addServerboundIdentifierCustomPayloadListener(serverboundIdentifierCustomPayloadListener);
     }
-
-    private static class ServerboundIdentifierCustomPayloadListener implements ICustomPayloadListener<Identifier> {
-        @Override
-        public void onCustomPayload(ICustomPayloadEvent<Identifier> event) {
-            Identifier channel = event.getChannel();
-            if (channel.equals(SYNC_BLOCK_ENTITY)) {
-                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
-            } else if (channel.equals(SYNC_ENTITY)) {
-                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
-            } else if (channel.equals(CANCEL_SYNC_REQUEST_BLOCK_ENTITY)) {
-                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
-            } else if (channel.equals(CANCEL_SYNC_ENTITY)) {
-                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
-            }
-        }
-    }
-
-    private static class ClientboundIdentifierCustomPayloadListener implements ICustomPayloadListener<Identifier> {
-        @Override
-        public void onCustomPayload(ICustomPayloadEvent<Identifier> event) {
-            Identifier channel = event.getChannel();
-            if (channel.equals(ENABLE_PCA_SYNC_PROTOCOL)) {
-                enablePcaSyncProtocolHandle(MinecraftClient.getInstance(), null, event.getData(), null);
-            } else if (channel.equals(DISABLE_PCA_SYNC_PROTOCOL)) {
-                disablePcaSyncProtocolHandle(MinecraftClient.getInstance(), null, event.getData(), null);
-            } else if (channel.equals(UPDATE_ENTITY)) {
-                updateEntityHandler(MinecraftClient.getInstance(), null, event.getData(), null);
-            } else if (channel.equals(UPDATE_BLOCK_ENTITY)) {
-                updateBlockEntityHandler(MinecraftClient.getInstance(), null, event.getData(), null);
-            }
-        }
-    }
-
 
     private static void onDisconnect() {
         ModInfo.LOGGER.info("pcaSyncProtocol onDisconnect.");
@@ -191,7 +153,6 @@ public class PcaSyncProtocol {
         }
     }
 
-
     static public void syncBlockEntity(BlockPos pos) {
         if (lastBlockPos != null && lastBlockPos.equals(pos)) {
             return;
@@ -234,5 +195,37 @@ public class PcaSyncProtocol {
         ModInfo.LOGGER.debug("cancelSyncEntity.");
         PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
         ClientPlayNetworking.send(CANCEL_SYNC_ENTITY, buf);
+    }
+
+    private static class ServerboundIdentifierCustomPayloadListener implements ICustomPayloadListener<Identifier> {
+        @Override
+        public void onCustomPayload(ICustomPayloadEvent<Identifier> event) {
+            Identifier channel = event.getChannel();
+            if (channel.equals(SYNC_BLOCK_ENTITY)) {
+                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
+            } else if (channel.equals(SYNC_ENTITY)) {
+                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
+            } else if (channel.equals(CANCEL_SYNC_REQUEST_BLOCK_ENTITY)) {
+                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
+            } else if (channel.equals(CANCEL_SYNC_ENTITY)) {
+                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
+            }
+        }
+    }
+
+    private static class ClientboundIdentifierCustomPayloadListener implements ICustomPayloadListener<Identifier> {
+        @Override
+        public void onCustomPayload(ICustomPayloadEvent<Identifier> event) {
+            Identifier channel = event.getChannel();
+            if (channel.equals(ENABLE_PCA_SYNC_PROTOCOL)) {
+                enablePcaSyncProtocolHandle(MinecraftClient.getInstance(), null, event.getData(), null);
+            } else if (channel.equals(DISABLE_PCA_SYNC_PROTOCOL)) {
+                disablePcaSyncProtocolHandle(MinecraftClient.getInstance(), null, event.getData(), null);
+            } else if (channel.equals(UPDATE_ENTITY)) {
+                updateEntityHandler(MinecraftClient.getInstance(), null, event.getData(), null);
+            } else if (channel.equals(UPDATE_BLOCK_ENTITY)) {
+                updateBlockEntityHandler(MinecraftClient.getInstance(), null, event.getData(), null);
+            }
+        }
     }
 }

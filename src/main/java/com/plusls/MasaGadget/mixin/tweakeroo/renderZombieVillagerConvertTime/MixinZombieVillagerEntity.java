@@ -20,12 +20,12 @@ public abstract class MixinZombieVillagerEntity extends ZombieEntity implements 
     @Shadow
     public int conversionTimer;
 
-    @Shadow
-    protected abstract int getConversionRate();
-
     public MixinZombieVillagerEntity(EntityType<? extends ZombieEntity> entityType, World world) {
         super(entityType, world);
     }
+
+    @Shadow
+    protected abstract int getConversionRate();
 
     @Inject(method = "tick", at = @At(value = "RETURN"))
     private void calcConversionTimer(CallbackInfo ci) {
