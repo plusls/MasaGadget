@@ -32,18 +32,62 @@ public class Configs implements IConfigHandler {
     private static final String CONFIG_FILE_NAME = ModInfo.MOD_ID + ".json";
     private static final int CONFIG_VERSION = 1;
 
+    public static void loadFromFile() {
+        File configFile = new File(FileUtils.getConfigDirectory(), CONFIG_FILE_NAME);
+
+        if (configFile.exists() && configFile.isFile() && configFile.canRead()) {
+            JsonElement element = JsonUtils.parseJsonFile(configFile);
+
+            if (element != null && element.isJsonObject()) {
+                JsonObject root = element.getAsJsonObject();
+                ConfigUtils.readConfigBase(root, "generic", Generic.OPTIONS);
+                ConfigUtils.readConfigBase(root, "litematica", Litematica.OPTIONS);
+                ConfigUtils.readConfigBase(root, "malilib", Malilib.OPTIONS);
+                ConfigUtils.readConfigBase(root, "minihud", Minihud.OPTIONS);
+                ConfigUtils.readConfigBase(root, "tweakeroo", Tweakeroo.OPTIONS);
+                int version = JsonUtils.getIntegerOrDefault(root, "configVersion", 1);
+            }
+        }
+        if (Generic.DEBUG.getBooleanValue()) {
+            Configurator.setLevel(ModInfo.LOGGER.getName(), Level.toLevel("DEBUG"));
+        }
+    }
+
+    public static void saveToFile() {
+        File dir = FileUtils.getConfigDirectory();
+
+        if ((dir.exists() && dir.isDirectory()) || dir.mkdirs()) {
+            JsonObject root = new JsonObject();
+            ConfigUtils.writeConfigBase(root, "generic", Generic.OPTIONS);
+            ConfigUtils.writeConfigBase(root, "litematica", Litematica.OPTIONS);
+            ConfigUtils.writeConfigBase(root, "malilib", Malilib.OPTIONS);
+            ConfigUtils.writeConfigBase(root, "minihud", Minihud.OPTIONS);
+            ConfigUtils.writeConfigBase(root, "tweakeroo", Tweakeroo.OPTIONS);
+            root.add("configVersion", new JsonPrimitive(CONFIG_VERSION));
+            JsonUtils.writeJsonToFile(root, new File(dir, CONFIG_FILE_NAME));
+        }
+    }
+
+    @Override
+    public void load() {
+        loadFromFile();
+    }
+
+    @Override
+    public void save() {
+        saveToFile();
+    }
+
     public static class Generic {
         private static final String PREFIX = String.format("%s.config.generic", ModInfo.MOD_ID);
         public static final ConfigHotkey OPEN_CONFIG_GUI = new TranslatableConfigHotkey(PREFIX, "openConfigGui", "G,C");
+        public static final ImmutableList<ConfigHotkey> HOTKEYS = ImmutableList.of(
+                OPEN_CONFIG_GUI
+        );
         public static final ConfigBoolean DEBUG = new TranslatableConfigBoolean(PREFIX, "debug", false);
-
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
                 OPEN_CONFIG_GUI,
                 DEBUG
-        );
-
-        public static final ImmutableList<ConfigHotkey> HOTKEYS = ImmutableList.of(
-                OPEN_CONFIG_GUI
         );
 
         static {
@@ -187,51 +231,5 @@ public class Configs implements IConfigHandler {
                 return false;
             });
         }
-    }
-
-    public static void loadFromFile() {
-        File configFile = new File(FileUtils.getConfigDirectory(), CONFIG_FILE_NAME);
-
-        if (configFile.exists() && configFile.isFile() && configFile.canRead()) {
-            JsonElement element = JsonUtils.parseJsonFile(configFile);
-
-            if (element != null && element.isJsonObject()) {
-                JsonObject root = element.getAsJsonObject();
-                ConfigUtils.readConfigBase(root, "generic", Generic.OPTIONS);
-                ConfigUtils.readConfigBase(root, "litematica", Litematica.OPTIONS);
-                ConfigUtils.readConfigBase(root, "malilib", Malilib.OPTIONS);
-                ConfigUtils.readConfigBase(root, "minihud", Minihud.OPTIONS);
-                ConfigUtils.readConfigBase(root, "tweakeroo", Tweakeroo.OPTIONS);
-                int version = JsonUtils.getIntegerOrDefault(root, "configVersion", 1);
-            }
-        }
-        if (Generic.DEBUG.getBooleanValue()) {
-            Configurator.setLevel(ModInfo.LOGGER.getName(), Level.toLevel("DEBUG"));
-        }
-    }
-
-    public static void saveToFile() {
-        File dir = FileUtils.getConfigDirectory();
-
-        if ((dir.exists() && dir.isDirectory()) || dir.mkdirs()) {
-            JsonObject root = new JsonObject();
-            ConfigUtils.writeConfigBase(root, "generic", Generic.OPTIONS);
-            ConfigUtils.writeConfigBase(root, "litematica", Litematica.OPTIONS);
-            ConfigUtils.writeConfigBase(root, "malilib", Malilib.OPTIONS);
-            ConfigUtils.writeConfigBase(root, "minihud", Minihud.OPTIONS);
-            ConfigUtils.writeConfigBase(root, "tweakeroo", Tweakeroo.OPTIONS);
-            root.add("configVersion", new JsonPrimitive(CONFIG_VERSION));
-            JsonUtils.writeJsonToFile(root, new File(dir, CONFIG_FILE_NAME));
-        }
-    }
-
-    @Override
-    public void load() {
-        loadFromFile();
-    }
-
-    @Override
-    public void save() {
-        saveToFile();
     }
 }

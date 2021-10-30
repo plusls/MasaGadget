@@ -35,26 +35,23 @@ import java.util.Objects;
 
 public class PcaSyncProtocol {
     private static final String NAMESPACE = "pca";
-
-    private static Identifier id(String path) {
-        return new Identifier(NAMESPACE, path);
-    }
-
     // send
     private static final Identifier SYNC_BLOCK_ENTITY = id("sync_block_entity");
     private static final Identifier SYNC_ENTITY = id("sync_entity");
     private static final Identifier CANCEL_SYNC_REQUEST_BLOCK_ENTITY = id("cancel_sync_block_entity");
     private static final Identifier CANCEL_SYNC_ENTITY = id("cancel_sync_entity");
-
     // recv
     private static final Identifier ENABLE_PCA_SYNC_PROTOCOL = id("enable_pca_sync_protocol");
     private static final Identifier DISABLE_PCA_SYNC_PROTOCOL = id("disable_pca_sync_protocol");
     private static final Identifier UPDATE_ENTITY = id("update_entity");
     private static final Identifier UPDATE_BLOCK_ENTITY = id("update_block_entity");
-
+    public static boolean enable = false;
     private static BlockPos lastBlockPos = null;
     private static int lastEntityId = -1;
-    public static boolean enable = false;
+
+    private static Identifier id(String path) {
+        return new Identifier(NAMESPACE, path);
+    }
 
     public static void init() {
         ClientPlayNetworking.registerGlobalReceiver(ENABLE_PCA_SYNC_PROTOCOL, PcaSyncProtocol::enablePcaSyncProtocolHandle);
