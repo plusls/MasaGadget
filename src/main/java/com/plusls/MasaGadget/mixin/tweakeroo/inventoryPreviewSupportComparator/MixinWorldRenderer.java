@@ -54,7 +54,7 @@ public class MixinWorldRenderer {
 
         MatrixStack matrixStack = RenderSystem.getModelViewStack();
         matrixStack.push();
-        matrixStack.method_34425(matrices.peek().getModel());
+        matrixStack.multiplyPositionMatrix(matrices.peek().getPositionMatrix());
         RenderSystem.applyModelViewMatrix();
 
         // 开始渲染
@@ -78,7 +78,7 @@ public class MixinWorldRenderer {
 
                 matrixStack.push();
                 matrixStack.translate(pos.getX() + 0.5 - camera.getPos().getX(), pos.getY() + 0.6 - camera.getPos().getY(), pos.getZ() + 0.5 - camera.getPos().getZ());
-                matrixStack.method_34425(new Matrix4f(camera.getRotation()));
+                matrixStack.multiplyPositionMatrix(new Matrix4f(camera.getRotation()));
                 matrixStack.scale(-0.04F, -0.04F, -0.04F);
                 RenderSystem.applyModelViewMatrix();
 

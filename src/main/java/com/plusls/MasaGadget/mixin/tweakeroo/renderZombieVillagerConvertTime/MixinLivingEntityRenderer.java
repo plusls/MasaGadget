@@ -76,7 +76,7 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
             matrixStack.multiply(this.dispatcher.getRotation());
             matrixStack.scale(-0.018F, -0.018F, 0.018F);
             matrixStack.translate(0, 0, -33);
-            Matrix4f lv = matrixStack.peek().getModel();
+            Matrix4f lv = matrixStack.peek().getPositionMatrix();
             float g = client.options.getTextBackgroundOpacity(0.25F);
             int k = (int) (g * 255.0F) << 24;
             TextRenderer lv2 = this.getTextRenderer();

@@ -212,7 +212,7 @@ public class InventoryOverlayRenderHandler implements IRenderer {
         BufferBuilder lv3 = lv2.getBuffer();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         lv3.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-        Matrix4f lv4 = matrices.peek().getModel();
+        Matrix4f lv4 = matrices.peek().getPositionMatrix();
         fillGradient(lv4, lv3, n - 3, o - 4, n + p + 3, o - 3, 400, -267386864, -267386864);
         fillGradient(lv4, lv3, n - 3, o + q + 3, n + p + 3, o + q + 4, 400, -267386864, -267386864);
         fillGradient(lv4, lv3, n - 3, o - 3, n + p + 3, o + q + 3, 400, -267386864, -267386864);
@@ -261,7 +261,7 @@ public class InventoryOverlayRenderHandler implements IRenderer {
         Tessellator lv = Tessellator.getInstance();
         BufferBuilder lv2 = lv.getBuffer();
         lv2.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-        fillGradient(matrices.peek().getModel(), lv2, startX, startY, endX, endY, z, colorStart, colorEnd);
+        fillGradient(matrices.peek().getPositionMatrix(), lv2, startX, startY, endX, endY, z, colorStart, colorEnd);
         lv.draw();
         RenderSystem.disableBlend();
         RenderSystem.enableTexture();
