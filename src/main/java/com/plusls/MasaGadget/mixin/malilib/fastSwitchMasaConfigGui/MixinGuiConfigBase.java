@@ -29,7 +29,7 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
     @Shadow
     protected Screen parentScreen;
     private final MyWidgetDropDownList<ConfigScreenFactory<?>> masaModGuiList = new MyWidgetDropDownList<>(GuiUtils.getScaledWindowWidth() - 145, 10, 120, 18, 200, 10,
-            MasaGuiUtil.masaGuiData.keySet().stream().toList(), MasaGuiUtil.masaGuiData::get,
+            MasaGuiUtil.getMasaGuiData().keySet().stream().toList(), MasaGuiUtil.getMasaGuiData()::get,
             configScreenFactory -> GuiBase.openGui(configScreenFactory.create(this.parentScreen)),
             configScreenFactory -> Configs.Malilib.FAST_SWITCH_MASA_CONFIG_GUI.getBooleanValue());
 
@@ -39,7 +39,7 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
 
     @Inject(method = "initGui", at = @At(value = "RETURN"))
     public void postInitGui(CallbackInfo ci) {
-        masaModGuiList.setSelectedEntry(MasaGuiUtil.masaGuiClassData.get(this.getClass()));
+        masaModGuiList.setSelectedEntry(MasaGuiUtil.getMasaGuiClassData().get(this.getClass()));
         this.addWidget(masaModGuiList);
     }
 

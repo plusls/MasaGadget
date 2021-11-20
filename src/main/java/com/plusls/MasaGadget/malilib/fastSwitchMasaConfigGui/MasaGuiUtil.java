@@ -6,7 +6,6 @@ import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import com.terraformersmc.modmenu.util.ModMenuApiMarker;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.MinecraftClient;
@@ -16,14 +15,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MasaGuiUtil {
-    public static Map<ConfigScreenFactory<?>, String> masaGuiData = new HashMap<>();
-    public static Map<Class<?>, ConfigScreenFactory<?>> masaGuiClassData = new HashMap<>();
 
-    public static void init() {
-        ClientLifecycleEvents.CLIENT_STARTED.register(MasaGuiUtil::initMasaModScreenList);
+
+    private final static Map<ConfigScreenFactory<?>, String> masaGuiData = new HashMap<>();
+    private final static Map<Class<?>, ConfigScreenFactory<?>> masaGuiClassData = new HashMap<>();
+    private static boolean initialised = false;
+
+
+    public static Map<ConfigScreenFactory<?>, String> getMasaGuiData() {
+        if (!initialised) {
+            initMasaModScreenList();
+        }
+        return masaGuiData;
     }
 
-    public static void initMasaModScreenList(MinecraftClient client) {
+    public static Map<Class<?>, ConfigScreenFactory<?>> getMasaGuiClassData() {
+        if (!initialised) {
+            initMasaModScreenList();
+        }
+        return masaGuiClassData;
+    }
+
+
+    private static void initMasaModScreenList() {
+        initialised = true;
+        MinecraftClient client = MinecraftClient.getInstance();
         if (!MasaGadgetMixinPlugin.isModmenu) {
             return;
         }
