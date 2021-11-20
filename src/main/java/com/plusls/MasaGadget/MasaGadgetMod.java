@@ -27,6 +27,5 @@ public class MasaGadgetMod implements ClientModInitializer {
         MouseScrollInputHandler.register();
         ConfigManager.getInstance().registerConfigHandler(ModInfo.MOD_ID, new Configs());
         InputEventHandler.getKeybindManager().registerKeybindProvider(InputHandler.getInstance());
-        MasaGuiUtil.init();
     }
 }
