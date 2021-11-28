@@ -1,7 +1,7 @@
 package com.plusls.MasaGadget.mixin.tweakeroo.inventoryPreviewSupportComparator;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
+import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.mixin.Dependencies;
 import com.plusls.MasaGadget.mixin.Dependency;
@@ -28,9 +28,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.TWEAKEROO_MOD_ID, version = "*"))
+@SuppressWarnings("deprecation")
+@Dependencies(dependencyList = @Dependency(modId = ModInfo.TWEAKEROO_MOD_ID, version = "*"))
 @Mixin(WorldRenderer.class)
 public class MixinWorldRenderer {
+    @SuppressWarnings("deprecation")
     @Inject(method = "render", at = @At(value = "RETURN"))
     private void postRender(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci) {
         MinecraftClient mc = MinecraftClient.getInstance();
@@ -43,7 +45,7 @@ public class MixinWorldRenderer {
             cameraEntity = mc.player;
         }
 
-        if (Configs.Tweakeroo.INVENTORY_PREVIEW_SUPPORT_FREE_CAMERA.getBooleanValue() && FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue()) {
+        if (FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue()) {
             cameraEntity = mc.getCameraEntity();
         }
 

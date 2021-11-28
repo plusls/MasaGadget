@@ -1,6 +1,6 @@
 package com.plusls.MasaGadget.tweakeroo.inventoryPreviewSupportSelect;
 
-import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
+import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
 import fi.dy.masa.malilib.event.InputEventHandler;
 import fi.dy.masa.malilib.hotkeys.IMouseInputHandler;
@@ -15,7 +15,8 @@ public class MouseScrollInputHandler implements IMouseInputHandler {
 
     @Override
     public boolean onMouseScroll(int mouseX, int mouseY, double amount) {
-        if (MasaGadgetMixinPlugin.isTweakerooLoaded && Configs.Tweakeroo.INVENTORY_PREVIEW_SUPPORT_SELECT.getBooleanValue() &&
+        if (ModInfo.isModLoaded(ModInfo.TWEAKEROO_MOD_ID) &&
+                Configs.Tweakeroo.INVENTORY_PREVIEW_SUPPORT_SELECT.getBooleanValue() &&
                 FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue() &&
                 Hotkeys.INVENTORY_PREVIEW.getKeybind().isKeybindHeld()) {
             if (amount < 0) {
@@ -30,7 +31,8 @@ public class MouseScrollInputHandler implements IMouseInputHandler {
     @Override
     public boolean onMouseClick(int mouseX, int mouseY, int eventButton, boolean eventButtonState) {
         // 左右中 -> 0 1 2 以此类推
-        if (MasaGadgetMixinPlugin.isTweakerooLoaded && Configs.Tweakeroo.INVENTORY_PREVIEW_SUPPORT_SELECT.getBooleanValue() &&
+        if (ModInfo.isModLoaded(ModInfo.TWEAKEROO_MOD_ID) &&
+                Configs.Tweakeroo.INVENTORY_PREVIEW_SUPPORT_SELECT.getBooleanValue() &&
                 FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue() &&
                 Hotkeys.INVENTORY_PREVIEW.getKeybind().isKeybindHeld()
                 && eventButton == 2 && eventButtonState) {

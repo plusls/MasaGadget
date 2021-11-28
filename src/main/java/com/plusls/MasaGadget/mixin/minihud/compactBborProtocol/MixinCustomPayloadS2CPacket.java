@@ -1,6 +1,6 @@
 package com.plusls.MasaGadget.mixin.minihud.compactBborProtocol;
 
-import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
+import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.minihud.compactBborProtocol.BborProtocol;
 import com.plusls.MasaGadget.mixin.Dependencies;
 import com.plusls.MasaGadget.mixin.Dependency;
@@ -18,13 +18,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(CustomPayloadS2CPacket.class)
-@Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.MINIHUD_MOD_ID, version = "*"))
+@Dependencies(dependencyList = @Dependency(modId = ModInfo.MINIHUD_MOD_ID, version = "*"))
 public abstract class MixinCustomPayloadS2CPacket implements Packet<ClientPlayPacketListener> {
-    @Final
     @Shadow
     private Identifier channel;
 
-    @Inject(method = "apply", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(method = "apply*", at = @At(value = "HEAD"), cancellable = true)
     private void onApply(ClientPlayPacketListener clientPlayPacketListener, CallbackInfo info) {
         if (MinecraftClient.getInstance().isIntegratedServerRunning()) {
             return;
@@ -36,7 +35,7 @@ public abstract class MixinCustomPayloadS2CPacket implements Packet<ClientPlayPa
             BborProtocol.bborProtocolHandler((ClientPlayNetworkHandler) clientPlayPacketListener, channel, packet.getData());
 
             // 兼容 bbor
-            if (!MasaGadgetMixinPlugin.isBborLoaded) {
+            if (!ModInfo.isModLoaded(ModInfo.BBOR_MOD_ID)) {
                 info.cancel();
             }
         } else if (channel.toString().equals("carpet:structures")) {

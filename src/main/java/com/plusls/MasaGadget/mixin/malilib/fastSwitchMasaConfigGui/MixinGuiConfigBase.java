@@ -1,6 +1,6 @@
 package com.plusls.MasaGadget.mixin.malilib.fastSwitchMasaConfigGui;
 
-import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
+import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.gui.MyWidgetDropDownList;
 import com.plusls.MasaGadget.malilib.fastSwitchMasaConfigGui.MasaGuiUtil;
@@ -24,14 +24,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
 
-@Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.MODMENU_MOD_ID, version = "*"))
+@SuppressWarnings("deprecation")
+@Dependencies(dependencyList = @Dependency(modId = ModInfo.MODMENU_MOD_ID, version = "*"))
 @Mixin(value = GuiConfigsBase.class, remap = false)
 public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.ConfigOptionWrapper, WidgetConfigOption, WidgetListConfigOptions> implements IKeybindConfigGui {
 
     @Shadow
     protected Screen parentScreen;
     private final MyWidgetDropDownList<ConfigScreenFactory<?>> masaModGuiList = new MyWidgetDropDownList<>(GuiUtils.getScaledWindowWidth() - 145, 10, 120, 18, 200, 10,
-            new ArrayList<>(MasaGuiUtil.masaGuiData.keySet()), MasaGuiUtil.masaGuiData::get,
+            new ArrayList<>(MasaGuiUtil.getMasaGuiData().keySet()), MasaGuiUtil.getMasaGuiData()::get,
             configScreenFactory -> GuiBase.openGui(configScreenFactory.create(this.parentScreen)),
             configScreenFactory -> Configs.Malilib.FAST_SWITCH_MASA_CONFIG_GUI.getBooleanValue());
 
@@ -41,7 +42,7 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
 
     @Inject(method = "initGui", at = @At(value = "RETURN"))
     public void postInitGui(CallbackInfo ci) {
-        masaModGuiList.setSelectedEntry(MasaGuiUtil.masaGuiClassData.get(this.getClass()));
+        masaModGuiList.setSelectedEntry(MasaGuiUtil.getMasaGuiClassData().get(this.getClass()));
         this.addWidget(masaModGuiList);
     }
 

@@ -16,8 +16,6 @@
   "masa_gadget_mod.config.litematica.disableLitematicaEasyPlaceFailTip.comment": "禁用轻松放置失败时那烦人的提示窗",
   "masa_gadget_mod.config.litematica.fixAccurateProtocol.name": "修复精准放置协议",
   "masa_gadget_mod.config.litematica.fixAccurateProtocol.comment": "Litematica 本身的精准放置协议实现的有问题，修复后可以在服务器中使用轻松放置来摆放中继器，活塞，侦测器，楼梯等方块",
-  "masa_gadget_mod.config.litematica.nudgeSelectionSupportFreeCamera.name": "移动投影时支持 Free Camera",
-  "masa_gadget_mod.config.litematica.nudgeSelectionSupportFreeCamera.comment": "在开启 Free Camera 时，移动投影的方向会取决于 Camera 的方向",
   "masa_gadget_mod.config.litematica.saveInventoryToSchematicInServer.name": "服务器中保存投影保留容器数据",
   "masa_gadget_mod.config.litematica.saveInventoryToSchematicInServer.comment": "保存投影时会使用 PCA 同步协议来同步容器中的数据到本地",
   "masa_gadget_mod.config.litematica.useRelativePath.name": "使用相对路径",

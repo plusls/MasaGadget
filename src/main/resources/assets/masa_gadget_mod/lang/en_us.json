@@ -16,8 +16,6 @@
   "masa_gadget_mod.config.litematica.disableLitematicaEasyPlaceFailTip.comment": "Disable easyPlace failure that annoying prompt window.",
   "masa_gadget_mod.config.litematica.fixAccurateProtocol.name": "fixAccurateProtocol",
   "masa_gadget_mod.config.litematica.fixAccurateProtocol.comment": "Fix accurate protocol support",
-  "masa_gadget_mod.config.litematica.nudgeSelectionSupportFreeCamera.name": "nudgeSelectionSupportFreeCamera",
-  "masa_gadget_mod.config.litematica.nudgeSelectionSupportFreeCamera.comment": "Nudge Selection Support Free Camera",
   "masa_gadget_mod.config.litematica.saveInventoryToSchematicInServer.name": "saveInventoryToSchematicInServer",
   "masa_gadget_mod.config.litematica.saveInventoryToSchematicInServer.comment": "Use pcaSyncProtocol to sync inventory data to local and save to schematic",
   "masa_gadget_mod.config.litematica.useRelativePath.name": "useRelativePath",

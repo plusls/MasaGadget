@@ -1,10 +1,9 @@
 package com.plusls.MasaGadget.mixin.tweakeroo.pcaSyncProtocol;
 
-import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
+import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.mixin.Dependencies;
 import com.plusls.MasaGadget.mixin.Dependency;
-import com.plusls.MasaGadget.mixin.NeedObfuscate;
 import com.plusls.MasaGadget.tweakeroo.pcaSyncProtocol.PcaSyncProtocol;
 import fi.dy.masa.malilib.util.InventoryUtils;
 import fi.dy.masa.tweakeroo.renderer.RenderUtils;
@@ -21,15 +20,15 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@NeedObfuscate(packageName = "com.plusls.MasaGadget.mixin")
-@Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.TWEAKEROO_MOD_ID, version = "*"))
+@SuppressWarnings("DefaultAnnotationParam")
+@Dependencies(dependencyList = @Dependency(modId = ModInfo.TWEAKEROO_MOD_ID, version = "*"))
 @Mixin(value = RenderUtils.class, remap = false)
 public abstract class MixinRenderUtils {
 
     @Redirect(method = "renderInventoryOverlay",
             at = @At(value = "INVOKE",
                     target = "Lfi/dy/masa/malilib/util/InventoryUtils;getInventory(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/inventory/Inventory;",
-                    ordinal = 0))
+                    ordinal = 0, remap = true))
     private static Inventory redirectGetBlockInventory(World world, BlockPos pos) {
         BlockEntity blockEntity = world.getWorldChunk(pos).getBlockEntity(pos);
         if (Configs.Tweakeroo.PCA_SYNC_PROTOCOL.getBooleanValue() && PcaSyncProtocol.enable && (

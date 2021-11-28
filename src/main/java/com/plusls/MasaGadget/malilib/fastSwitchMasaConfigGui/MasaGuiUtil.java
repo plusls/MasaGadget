@@ -1,12 +1,10 @@
 package com.plusls.MasaGadget.malilib.fastSwitchMasaConfigGui;
 
-import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
 import com.plusls.MasaGadget.ModInfo;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import com.terraformersmc.modmenu.util.ModMenuApiMarker;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import io.github.prospector.modmenu.api.ConfigScreenFactory;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.MinecraftClient;
@@ -15,16 +13,31 @@ import net.minecraft.client.gui.screen.Screen;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("deprecation")
 public class MasaGuiUtil {
-    public static Map<ConfigScreenFactory<?>, String> masaGuiData = new HashMap<>();
-    public static Map<Class<?>, ConfigScreenFactory<?>> masaGuiClassData = new HashMap<>();
+    private final static Map<ConfigScreenFactory<?>, String> masaGuiData = new HashMap<>();
+    private final static Map<Class<?>, ConfigScreenFactory<?>> masaGuiClassData = new HashMap<>();
+    private static boolean initialised = false;
 
-    public static void init() {
-        ClientLifecycleEvents.CLIENT_STARTED.register(MasaGuiUtil::initMasaModScreenList);
+    public static Map<ConfigScreenFactory<?>, String> getMasaGuiData() {
+        if (!initialised) {
+            initMasaModScreenList();
+        }
+        return masaGuiData;
     }
 
-    public static void initMasaModScreenList(MinecraftClient client) {
-        if (!MasaGadgetMixinPlugin.isModmenu) {
+    public static Map<Class<?>, ConfigScreenFactory<?>> getMasaGuiClassData() {
+        if (!initialised) {
+            initMasaModScreenList();
+        }
+        return masaGuiClassData;
+    }
+
+
+    private static void initMasaModScreenList() {
+        initialised = true;
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (!ModInfo.isModLoaded(ModInfo.MODMENU_MOD_ID)) {
             return;
         }
         FabricLoader.getInstance().getEntrypointContainers("modmenu", ModMenuApiMarker.class).forEach(entrypoint -> {

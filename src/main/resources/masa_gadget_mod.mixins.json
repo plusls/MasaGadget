@@ -10,7 +10,6 @@
     "litematica.disableLitematicaEasyPlaceFailTip.MixinWorldUtils",
     "litematica.fixCarpetAccurateProtocol.MixinBlockItem",
     "litematica.fixCarpetAccurateProtocol.MixinWorldUtils",
-    "litematica.nudgeSelectionSupportFreeCamera.MixinInputHandler",
     "litematica.saveInventoryToSchematicInServer.MixinSchematicUtils",
     "litematica.useRelativePath.MixinSchematicPlacement",
     "malilib.fastSwitchMasaConfigGui.MixinGuiConfigBase",
