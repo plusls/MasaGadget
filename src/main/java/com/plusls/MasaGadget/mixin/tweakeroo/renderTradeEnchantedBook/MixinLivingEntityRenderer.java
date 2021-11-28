@@ -4,9 +4,8 @@ import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.mixin.Dependencies;
 import com.plusls.MasaGadget.mixin.Dependency;
-import fi.dy.masa.malilib.util.WorldUtils;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
+import com.plusls.MasaGadget.util.MiscUtil;
+import com.plusls.MasaGadget.util.RenderUtil;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -14,7 +13,6 @@ import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.item.ItemStack;
@@ -23,9 +21,7 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.math.Matrix4f;
 import net.minecraft.village.TradeOffer;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -47,25 +43,7 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
             return;
         }
 
-        MinecraftClient client = MinecraftClient.getInstance();
-        World world = livingEntity.getEntityWorld();
-
-        // Only try to fetch the corresponding server world if the entity is in the actual client world.
-        // Otherwise the entity may be for example in Litematica's schematic world.
-        if (world == client.world) {
-            world = WorldUtils.getBestWorld(client);
-
-            if (world != null && world != client.world) {
-                Entity entity = world.getEntityById(livingEntity.getId());
-                if (entity instanceof VillagerEntity) {
-                    villagerEntity = (VillagerEntity) entity;
-                }
-            }
-        }
-
-        if (world == null) {
-            return;
-        }
+        villagerEntity = MiscUtil.getBestEntity(villagerEntity);
 
         Text text = null;
         Text price = null;
@@ -107,25 +85,13 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
         if (text == null) {
             return;
         }
-        double d = this.dispatcher.getSquaredDistanceToCamera(livingEntity);
-        if (!(d > 4096.0D)) {
-            float f = livingEntity.getHeight() / 8 * 7;
-            matrixStack.push();
-            matrixStack.translate(0, f, 0);
-            matrixStack.multiply(this.dispatcher.getRotation());
-            matrixStack.scale(-0.018F, -0.018F, 0.018F);
-            matrixStack.translate(0, 0, -33);
-            Matrix4f lv = matrixStack.peek().getModel();
-            float g = client.options.getTextBackgroundOpacity(0.25F);
-            int k = (int) (g * 255.0F) << 24;
-            TextRenderer lv2 = this.getTextRenderer();
-            float h = (float) (-lv2.getWidth(text) / 2);
-            lv2.draw(text, h, 0, 553648127, false, lv, vertexConsumerProvider, false, k, light);
-            lv2.draw(text, h, 0, -1, false, lv, vertexConsumerProvider, false, 0, light);
-            h = (float) (-lv2.getWidth(price) / 2);
-            lv2.draw(price, h, 11, 553648127, false, lv, vertexConsumerProvider, false, k, light);
-            lv2.draw(price, h, 11, -1, false, lv, vertexConsumerProvider, false, 0, light);
-            matrixStack.pop();
-        }
+
+        RenderUtil.renderTextOnEntity(matrixStack, villagerEntity, this.dispatcher, vertexConsumerProvider, text,
+                villagerEntity.getHeight() / 8 * 7);
+
+        RenderUtil.renderTextOnEntity(matrixStack, villagerEntity, this.dispatcher, vertexConsumerProvider, price,
+                villagerEntity.getHeight() / 8 * 7 - 11 * 0.018F);
+
+
     }
 }
