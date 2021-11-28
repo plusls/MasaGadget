@@ -1,6 +1,6 @@
 package com.plusls.MasaGadget.mixin.litematica.useRelativePath;
 
-import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
+import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.mixin.Dependencies;
 import com.plusls.MasaGadget.mixin.Dependency;
@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.io.File;
 
-@Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.LITEMATICA_MOD_ID, version = "*"))
+@Dependencies(dependencyList = @Dependency(modId = ModInfo.LITEMATICA_MOD_ID, version = "*"))
 @Mixin(value = SchematicPlacement.class, remap = false)
 public class MixinSchematicPlacement {
     @Redirect(method = "toJson", at = @At(value = "INVOKE", target = "Ljava/io/File;getAbsolutePath()Ljava/lang/String;", ordinal = 0))

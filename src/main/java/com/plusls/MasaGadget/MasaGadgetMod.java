@@ -14,14 +14,11 @@ public class MasaGadgetMod implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        if (MasaGadgetMixinPlugin.isBborLoaded) {
+        if (ModInfo.isModLoaded(ModInfo.BBOR_MOD_ID)) {
             ModInfo.LOGGER.info("BBOR detected.");
         }
-
-        if (MasaGadgetMixinPlugin.isTweakerooLoaded) {
-            PcaSyncProtocol.init();
-        }
-        if (MasaGadgetMixinPlugin.isMinihudLoaded) {
+        PcaSyncProtocol.init();
+        if (ModInfo.isModLoaded(ModInfo.MINIHUD_MOD_ID)) {
             BborProtocol.init();
         }
         MouseScrollInputHandler.register();

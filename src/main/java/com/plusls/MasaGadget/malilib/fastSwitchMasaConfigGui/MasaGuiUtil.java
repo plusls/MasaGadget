@@ -1,6 +1,5 @@
 package com.plusls.MasaGadget.malilib.fastSwitchMasaConfigGui;
 
-import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
 import com.plusls.MasaGadget.ModInfo;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
@@ -24,15 +23,14 @@ public class MasaGuiUtil {
     }
 
     public static void initMasaModScreenList(MinecraftClient client) {
-        if (!MasaGadgetMixinPlugin.isModmenu) {
+        if (!ModInfo.isModLoaded(ModInfo.MODMENU_MOD_ID)) {
             return;
         }
         FabricLoader.getInstance().getEntrypointContainers("modmenu", ModMenuApiMarker.class).forEach(entrypoint -> {
             ModMetadata metadata = entrypoint.getProvider().getMetadata();
             try {
                 ModMenuApiMarker marker = entrypoint.getEntrypoint();
-                if (marker instanceof ModMenuApi) {
-                    ModMenuApi api = (ModMenuApi) marker;
+                if (marker instanceof ModMenuApi api) {
                     Screen screen = api.getModConfigScreenFactory().create(client.currentScreen);
                     if (screen instanceof GuiConfigsBase) {
                         ConfigScreenFactory<?> configScreenFactory = api.getModConfigScreenFactory();

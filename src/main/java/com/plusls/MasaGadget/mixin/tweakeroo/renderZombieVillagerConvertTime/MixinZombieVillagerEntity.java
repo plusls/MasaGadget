@@ -1,6 +1,6 @@
 package com.plusls.MasaGadget.mixin.tweakeroo.renderZombieVillagerConvertTime;
 
-import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
+import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.mixin.Dependencies;
 import com.plusls.MasaGadget.mixin.Dependency;
 import net.minecraft.entity.EntityType;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.TWEAKEROO_MOD_ID, version = "*"))
+@Dependencies(dependencyList = @Dependency(modId = ModInfo.TWEAKEROO_MOD_ID, version = "*"))
 @Mixin(ZombieVillagerEntity.class)
 public abstract class MixinZombieVillagerEntity extends ZombieEntity implements VillagerDataContainer {
     @Shadow

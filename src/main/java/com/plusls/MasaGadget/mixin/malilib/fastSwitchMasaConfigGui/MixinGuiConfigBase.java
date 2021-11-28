@@ -1,6 +1,6 @@
 package com.plusls.MasaGadget.mixin.malilib.fastSwitchMasaConfigGui;
 
-import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
+import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.gui.MyWidgetDropDownList;
 import com.plusls.MasaGadget.malilib.fastSwitchMasaConfigGui.MasaGuiUtil;
@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.MODMENU_MOD_ID, version = "*"))
+@Dependencies(dependencyList = @Dependency(modId = ModInfo.MODMENU_MOD_ID, version = "*"))
 @Mixin(value = GuiConfigsBase.class, remap = false)
 public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.ConfigOptionWrapper, WidgetConfigOption, WidgetListConfigOptions> implements IKeybindConfigGui {
 

@@ -1,6 +1,6 @@
 package com.plusls.MasaGadget.mixin.tweakeroo.renderNextRestockTime;
 
-import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
+import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.mixin.Dependencies;
 import com.plusls.MasaGadget.mixin.Dependency;
@@ -26,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.TWEAKEROO_MOD_ID, version = "*"))
+@Dependencies(dependencyList = @Dependency(modId = ModInfo.TWEAKEROO_MOD_ID, version = "*"))
 @Mixin(LivingEntityRenderer.class)
 public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends EntityRenderer<T> {
     protected MixinLivingEntityRenderer(EntityRendererFactory.Context ctx) {
@@ -45,13 +45,12 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
     }
 
     // from entityRenderer
-    @Inject(method = "render", at = @At(value = "RETURN"))
+    @Inject(method = "render*", at = @At(value = "RETURN"))
     private void postRenderEntity(T livingEntity, float yaw, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light, CallbackInfo ci) {
-        if (!(livingEntity instanceof VillagerEntity) || !Configs.Tweakeroo.RENDER_NEXT_RESTOCK_TIME.getBooleanValue()) {
+        if (!(livingEntity instanceof VillagerEntity villagerEntity) || !Configs.Tweakeroo.RENDER_NEXT_RESTOCK_TIME.getBooleanValue()) {
             return;
         }
 
-        VillagerEntity villagerEntity = (VillagerEntity) livingEntity;
         MinecraftClient client = MinecraftClient.getInstance();
         World world = livingEntity.getEntityWorld();
 
