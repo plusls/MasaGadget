@@ -1,11 +1,9 @@
 package com.plusls.MasaGadget.mixin.litematica.fixCarpetAccurateProtocol;
 
-import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.mixin.Dependencies;
 import com.plusls.MasaGadget.mixin.Dependency;
-import com.plusls.MasaGadget.mixin.NeedObfuscate;
 import fi.dy.masa.litematica.materials.MaterialCache;
 import fi.dy.masa.litematica.util.EntityUtils;
 import fi.dy.masa.litematica.util.RayTraceUtils;
@@ -41,8 +39,8 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.Objects;
 
-@NeedObfuscate(packageName = "com.plusls.MasaGadget.mixin")
-@Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.LITEMATICA_MOD_ID, version = "*"))
+@SuppressWarnings("DefaultAnnotationParam")
+@Dependencies(dependencyList = @Dependency(modId = ModInfo.LITEMATICA_MOD_ID, version = "*"))
 @Mixin(value = WorldUtils.class, priority = 900, remap = false)
 public class MixinWorldUtils {
 
@@ -94,7 +92,7 @@ public class MixinWorldUtils {
 
     // 修复 漏斗，原木放置问题
     // 核心思路是修改玩家看的位置以及 side
-    @Inject(method = "doEasyPlaceAction", at = @At(value = "INVOKE", target = "Lfi/dy/masa/litematica/util/WorldUtils;cacheEasyPlacePosition(Lnet/minecraft/util/math/BlockPos;)V", ordinal = 0),
+    @Inject(method = "doEasyPlaceAction", at = @At(value = "INVOKE", target = "Lfi/dy/masa/litematica/util/WorldUtils;cacheEasyPlacePosition(Lnet/minecraft/util/math/BlockPos;)V", ordinal = 0, remap = true),
             locals = LocalCapture.CAPTURE_FAILHARD)
     private static void fixDoEasyPlaceAction0(MinecraftClient mc, CallbackInfoReturnable<ActionResult> cir, RayTraceUtils.RayTraceWrapper traceWrapper) {
         if (!Configs.Litematica.FIX_ACCURATE_PROTOCOL.getBooleanValue()) {
@@ -141,7 +139,7 @@ public class MixinWorldUtils {
     }
 
     @ModifyArg(method = "doEasyPlaceAction", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/util/hit/BlockHitResult;<init>(Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Direction;Lnet/minecraft/util/math/BlockPos;Z)V", ordinal = 0),
+            target = "Lnet/minecraft/util/hit/BlockHitResult;<init>(Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Direction;Lnet/minecraft/util/math/BlockPos;Z)V", ordinal = 0, remap = true),
             index = 1)
     private static Direction modifySide(Direction side) {
         if (Configs.Litematica.FIX_ACCURATE_PROTOCOL.getBooleanValue() && easyPlaceActionNewSide.get() != null) {
@@ -150,7 +148,9 @@ public class MixinWorldUtils {
         return side;
     }
 
-    @Redirect(method = "doEasyPlaceAction", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;interactBlock(Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;", ordinal = 0))
+    @Redirect(method = "doEasyPlaceAction", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;interactBlock(Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;",
+            ordinal = 0, remap = true))
     private static ActionResult myInteractBlock(ClientPlayerInteractionManager clientPlayerInteractionManager, ClientPlayerEntity player, ClientWorld world, Hand hand, BlockHitResult hitResult) {
         ActionResult ret = clientPlayerInteractionManager.interactBlock(player, world, hand, hitResult);
         if (!Configs.Litematica.FIX_ACCURATE_PROTOCOL.getBooleanValue() || interactBlockCount.get() == null) {
@@ -164,7 +164,8 @@ public class MixinWorldUtils {
     }
 
     @Inject(method = "doEasyPlaceAction", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;interactBlock(Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;", shift = At.Shift.AFTER, ordinal = 0))
+            target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;interactBlock(Lnet/minecraft/client/network/ClientPlayerEntity;Lnet/minecraft/client/world/ClientWorld;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;",
+            shift = At.Shift.AFTER, ordinal = 0, remap = true))
     private static void fixDoEasyPlaceAction1(MinecraftClient mc, CallbackInfoReturnable<ActionResult> cir) {
         if (!Configs.Litematica.FIX_ACCURATE_PROTOCOL.getBooleanValue()) {
             return;

@@ -1,6 +1,6 @@
 package com.plusls.MasaGadget.mixin.litematica.saveInventoryToSchematicInServer;
 
-import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
+import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.litematica.saveInventoryToSchematicInServer.PcaSyncUtil;
 import com.plusls.MasaGadget.mixin.Dependencies;
@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = SchematicUtils.class, remap = false)
-@Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.LITEMATICA_MOD_ID, version = "*"))
+@Dependencies(dependencyList = @Dependency(modId = ModInfo.LITEMATICA_MOD_ID, version = "*"))
 public class MixinSchematicUtils {
 
     @Inject(method = "saveSchematic", at = @At(value = "HEAD"))

@@ -1,6 +1,5 @@
 package com.plusls.MasaGadget.gui;
 
-import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
 import fi.dy.masa.malilib.config.IConfigBase;
@@ -31,11 +30,11 @@ public class GuiConfigs extends GuiConfigsBase {
         int y = 26;
         int rows = 1;
         for (ConfigGuiTab tab : ConfigGuiTab.values()) {
-            if (!MasaGadgetMixinPlugin.isLitematicaLoaded && tab == ConfigGuiTab.LITEMATICA) {
+            if (!ModInfo.isModLoaded(ModInfo.LITEMATICA_MOD_ID) && tab == ConfigGuiTab.LITEMATICA) {
                 continue;
-            } else if (!MasaGadgetMixinPlugin.isMinihudLoaded && tab == ConfigGuiTab.MINIHUD) {
+            } else if (!ModInfo.isModLoaded(ModInfo.MINIHUD_MOD_ID) && tab == ConfigGuiTab.MINIHUD) {
                 continue;
-            } else if (!MasaGadgetMixinPlugin.isTweakerooLoaded && tab == ConfigGuiTab.TWEAKEROO) {
+            } else if (!ModInfo.isModLoaded(ModInfo.TWEAKEROO_MOD_ID) && tab == ConfigGuiTab.TWEAKEROO) {
                 continue;
             }
             int width = this.getStringWidth(tab.getDisplayName()) + 10;
@@ -89,24 +88,6 @@ public class GuiConfigs extends GuiConfigsBase {
         return ConfigOptionWrapper.createFor(configs);
     }
 
-    private static class ButtonListenerConfigTabs implements IButtonActionListener {
-        private final GuiConfigs parent;
-        private final ConfigGuiTab tab;
-
-        public ButtonListenerConfigTabs(ConfigGuiTab tab, GuiConfigs parent) {
-            this.tab = tab;
-            this.parent = parent;
-        }
-
-        @Override
-        public void actionPerformedWithButton(ButtonBase button, int mouseButton) {
-            GuiConfigs.tab = this.tab;
-            this.parent.reCreateListWidget(); // apply the new config width
-            Objects.requireNonNull(this.parent.getListWidget()).resetScrollbarPosition();
-            this.parent.initGui();
-        }
-    }
-
     public enum ConfigGuiTab {
         GENERIC("generic"),
         LITEMATICA("litematica"),
@@ -122,6 +103,24 @@ public class GuiConfigs extends GuiConfigsBase {
 
         public String getDisplayName() {
             return I18n.translate(String.format("%s.gui.button.configGui.%s", ModInfo.MOD_ID, name));
+        }
+    }
+
+    private static class ButtonListenerConfigTabs implements IButtonActionListener {
+        private final GuiConfigs parent;
+        private final ConfigGuiTab tab;
+
+        public ButtonListenerConfigTabs(ConfigGuiTab tab, GuiConfigs parent) {
+            this.tab = tab;
+            this.parent = parent;
+        }
+
+        @Override
+        public void actionPerformedWithButton(ButtonBase button, int mouseButton) {
+            GuiConfigs.tab = this.tab;
+            this.parent.reCreateListWidget(); // apply the new config width
+            Objects.requireNonNull(this.parent.getListWidget()).resetScrollbarPosition();
+            this.parent.initGui();
         }
     }
 }

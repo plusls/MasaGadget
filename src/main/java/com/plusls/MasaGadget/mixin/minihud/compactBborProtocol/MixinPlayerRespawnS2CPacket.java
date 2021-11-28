@@ -1,6 +1,6 @@
 package com.plusls.MasaGadget.mixin.minihud.compactBborProtocol;
 
-import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
+import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.minihud.compactBborProtocol.BborProtocol;
 import com.plusls.MasaGadget.mixin.Dependencies;
@@ -18,10 +18,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Objects;
 
 @Mixin(PlayerRespawnS2CPacket.class)
-@Dependencies(dependencyList = @Dependency(modId = MasaGadgetMixinPlugin.MINIHUD_MOD_ID, version = "*"))
+@Dependencies(dependencyList = @Dependency(modId = ModInfo.MINIHUD_MOD_ID, version = "*"))
 public abstract class MixinPlayerRespawnS2CPacket {
 
-    @Inject(method = "apply", at = @At(value = "RETURN"))
+    @Inject(method = "apply*", at = @At(value = "RETURN"))
     void redirectOnPlayerRespawn(ClientPlayPacketListener clientPlayPacketListener, CallbackInfo ci) {
         if (!Configs.Minihud.COMPACT_BBOR_PROTOCOL.getBooleanValue()) {
             return;
@@ -34,7 +34,7 @@ public abstract class MixinPlayerRespawnS2CPacket {
         RegistryKey<World> newDimension = packet.getDimension();
         if (oldDimension != newDimension && BborProtocol.structuresCache != null) {
             // reload minihud struct when dimension change
-            //BborProtocol.bborRefreshData();
+            // BborProtocol.bborRefreshData();
         }
     }
 }
