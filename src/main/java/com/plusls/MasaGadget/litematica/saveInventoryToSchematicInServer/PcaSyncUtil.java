@@ -40,7 +40,7 @@ public class PcaSyncUtil {
             int minZ = Math.min(pos1.getZ(), pos2.getZ());
 
             // 参考 PositionUtils。createAABBFrom
-            List<Entity> entities = world.getEntities((Class<? extends Entity>) null, PositionUtils.createAABB(minX, minY, minZ, maxX + 1, maxY + 1, maxZ + 1), EntityUtils.NOT_PLAYER);
+            List<Entity> entities = world.getEntities((Entity) null, PositionUtils.createAABB(minX, minY, minZ, maxX + 1, maxY + 1, maxZ + 1), EntityUtils.NOT_PLAYER);
             for (Entity entity : entities) {
                 if (entity instanceof Inventory) {
                     PcaSyncProtocol.syncEntity(entity.getEntityId());
