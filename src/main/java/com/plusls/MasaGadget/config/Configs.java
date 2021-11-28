@@ -4,12 +4,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.gui.GuiConfigs;
 import com.plusls.MasaGadget.minihud.compactBborProtocol.BborProtocol;
-import com.plusls.MasaGadget.mixin.litematica.LitematicaDependencyUtil;
-import com.plusls.MasaGadget.mixin.tweakeroo.TweakerooDependencyUtil;
 import fi.dy.masa.malilib.config.ConfigUtils;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigHandler;
@@ -45,7 +42,7 @@ public class Configs implements IConfigHandler {
                 ConfigUtils.readConfigBase(root, "malilib", Malilib.OPTIONS);
                 ConfigUtils.readConfigBase(root, "minihud", Minihud.OPTIONS);
                 ConfigUtils.readConfigBase(root, "tweakeroo", Tweakeroo.OPTIONS);
-                int version = JsonUtils.getIntegerOrDefault(root, "configVersion", 1);
+                // int version = JsonUtils.getIntegerOrDefault(root, "configVersion", 1);
             }
         }
         if (Generic.DEBUG.getBooleanValue()) {
@@ -125,17 +122,6 @@ public class Configs implements IConfigHandler {
 
         public static final List<IConfigBase> GUI_OPTIONS = new LinkedList<>(OPTIONS);
 
-        static {
-            GUI_OPTIONS.removeIf(iConfigBase -> {
-                if (iConfigBase == NUDGE_SELECTION_SUPPORT_FREE_CAMERA &&
-                        (MasaGadgetMixinPlugin.checkDependency(MasaGadgetMixinPlugin.LITEMATICA_MOD_ID,
-                                ">=" + LitematicaDependencyUtil.NUDGE_SELECTION_SUPPORT_FREECAMERA_BREAK_VERSION) ||
-                                !MasaGadgetMixinPlugin.isTweakerooLoaded)) {
-                    return true;
-                }
-                return false;
-            });
-        }
     }
 
     public static class Malilib {
@@ -155,12 +141,7 @@ public class Configs implements IConfigHandler {
         public static final List<IConfigBase> GUI_OPTIONS = new LinkedList<>(OPTIONS);
 
         static {
-            GUI_OPTIONS.removeIf(iConfigBase -> {
-                if (iConfigBase == FAST_SWITCH_MASA_CONFIG_GUI && !MasaGadgetMixinPlugin.isModmenu) {
-                    return true;
-                }
-                return false;
-            });
+            GUI_OPTIONS.removeIf(iConfigBase -> iConfigBase == FAST_SWITCH_MASA_CONFIG_GUI && !ModInfo.isModLoaded(ModInfo.MODMENU_MOD_ID));
         }
     }
 
@@ -176,12 +157,7 @@ public class Configs implements IConfigHandler {
         public static final List<IConfigBase> GUI_OPTIONS = new LinkedList<>(OPTIONS);
 
         static {
-            GUI_OPTIONS.removeIf(iConfigBase -> {
-                if (iConfigBase == PCA_SYNC_PROTOCOL_SYNC_BEEHIVE && !MasaGadgetMixinPlugin.isTweakerooLoaded) {
-                    return true;
-                }
-                return false;
-            });
+            GUI_OPTIONS.removeIf(iConfigBase -> iConfigBase == PCA_SYNC_PROTOCOL_SYNC_BEEHIVE && !ModInfo.isModLoaded(ModInfo.TWEAKEROO_MOD_ID));
             COMPACT_BBOR_PROTOCOL.setValueChangeCallback(config -> {
                 if (config.getBooleanValue()) {
                     BborProtocol.bborInit(DimensionType.getId(Objects.requireNonNull(MinecraftClient.getInstance().world).getDimension().getType()));
@@ -221,15 +197,5 @@ public class Configs implements IConfigHandler {
 
         public static final List<IConfigBase> GUI_OPTIONS = new LinkedList<>(OPTIONS);
 
-        static {
-            GUI_OPTIONS.removeIf(iConfigBase -> {
-                if (iConfigBase == INVENTORY_PREVIEW_SUPPORT_FREE_CAMERA &&
-                        MasaGadgetMixinPlugin.checkDependency(MasaGadgetMixinPlugin.TWEAKEROO_MOD_ID,
-                                ">=" + TweakerooDependencyUtil.INVENTORY_PREVIEW_SUPPORT_FREE_CAMERA_BREAK_VERSION)) {
-                    return true;
-                }
-                return false;
-            });
-        }
     }
 }

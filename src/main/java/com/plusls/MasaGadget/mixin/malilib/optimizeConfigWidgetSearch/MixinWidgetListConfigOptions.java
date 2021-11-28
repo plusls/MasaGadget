@@ -22,7 +22,7 @@ public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptio
         super(x, y, width, height, configWidth);
     }
 
-    @Inject(method = "getEntryStringsForFilter", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(method = "getEntryStringsForFilter*", at = @At(value = "HEAD"), cancellable = true)
     private void preGetEntryStringsForFilter(GuiConfigsBase.ConfigOptionWrapper entry, CallbackInfoReturnable<List<String>> cir) {
         if (!Configs.Malilib.OPTIMIZE_CONFIG_WIDGET_SEARCH.getBooleanValue()) {
             return;

@@ -1,6 +1,5 @@
 package com.plusls.MasaGadget.minihud.compactBborProtocol;
 
-import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.event.DisconnectEvent;
@@ -108,7 +107,7 @@ public class BborProtocol {
                 initMetaData();
             }
             ModInfo.LOGGER.info("init seed: {}", BborProtocol.seedCache);
-            if (!MasaGadgetMixinPlugin.isBborLoaded) {
+            if (!ModInfo.isModLoaded(ModInfo.BBOR_MOD_ID)) {
                 ModInfo.LOGGER.debug("SUBSCRIBE BBOR.");
                 clientPlayNetworkHandler.sendPacket(new CustomPayloadC2SPacket(SUBSCRIBE, new PacketByteBuf(Unpooled.buffer())));
             }

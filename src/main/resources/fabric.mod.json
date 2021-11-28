@@ -28,6 +28,13 @@
     "masa_gadget_mod.mixins.json"
   ],
   "accessWidener": "masa_gadget_mod.accesswidener",
+  "custom": {
+    "compat": {
+      "tweakeroo": ">=0.10.0-dev.20210124.111151",
+      "litematica": ">=0.0.0-dev.20201006.194726",
+      "minihud": ">=0.19.0-dev.20200508.032934"
+    }
+  },
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": ">=0.28.0",

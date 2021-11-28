@@ -1,11 +1,9 @@
 package com.plusls.MasaGadget.malilib.fastSwitchMasaConfigGui;
 
-import com.plusls.MasaGadget.MasaGadgetMixinPlugin;
 import com.plusls.MasaGadget.ModInfo;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import io.github.prospector.modmenu.api.ConfigScreenFactory;
 import io.github.prospector.modmenu.api.ModMenuApi;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.MinecraftClient;
@@ -15,15 +13,29 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MasaGuiUtil {
-    public static Map<ConfigScreenFactory<?>, String> masaGuiData = new HashMap<>();
-    public static Map<Class<?>, ConfigScreenFactory<?>> masaGuiClassData = new HashMap<>();
+    private final static Map<ConfigScreenFactory<?>, String> masaGuiData = new HashMap<>();
+    private final static Map<Class<?>, ConfigScreenFactory<?>> masaGuiClassData = new HashMap<>();
+    private static boolean initialised = false;
 
-    public static void init() {
-        ClientLifecycleEvents.CLIENT_STARTED.register(MasaGuiUtil::initMasaModScreenList);
+    public static Map<ConfigScreenFactory<?>, String> getMasaGuiData() {
+        if (!initialised) {
+            initMasaModScreenList();
+        }
+        return masaGuiData;
     }
 
-    public static void initMasaModScreenList(MinecraftClient client) {
-        if (!MasaGadgetMixinPlugin.isModmenu) {
+    public static Map<Class<?>, ConfigScreenFactory<?>> getMasaGuiClassData() {
+        if (!initialised) {
+            initMasaModScreenList();
+        }
+        return masaGuiClassData;
+    }
+
+
+    private static void initMasaModScreenList() {
+        initialised = true;
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (!ModInfo.isModLoaded(ModInfo.MODMENU_MOD_ID)) {
             return;
         }
         FabricLoader.getInstance().getEntrypointContainers("modmenu", ModMenuApi.class).forEach(provider -> {
@@ -37,7 +49,6 @@ public class MasaGuiUtil {
                     masaGuiData.put(configScreenFactory, metadata.getName());
                     masaGuiClassData.put(screen.getClass(), configScreenFactory);
                 }
-
             } catch (Throwable e) {
                 ModInfo.LOGGER.error("Mod {} provides a broken implementation of ModMenuApi", metadata.getId(), e);
             }

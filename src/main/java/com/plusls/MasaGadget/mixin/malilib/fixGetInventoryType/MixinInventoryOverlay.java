@@ -1,7 +1,6 @@
 package com.plusls.MasaGadget.mixin.malilib.fixGetInventoryType;
 
 import com.plusls.MasaGadget.config.Configs;
-import com.plusls.MasaGadget.mixin.NeedObfuscate;
 import fi.dy.masa.malilib.render.InventoryOverlay;
 import net.minecraft.block.AbstractFurnaceBlock;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
@@ -14,8 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@NeedObfuscate(packageName = "com.plusls.MasaGadget.mixin")
-@Mixin(value = InventoryOverlay.class, remap = false)
+@Mixin(value = InventoryOverlay.class)
 public class MixinInventoryOverlay {
 
     @Inject(method = "getInventoryType(Lnet/minecraft/inventory/Inventory;)Lfi/dy/masa/malilib/render/InventoryOverlay$InventoryRenderType;",
