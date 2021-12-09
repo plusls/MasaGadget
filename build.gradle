@@ -11,7 +11,7 @@ String real_version = "${project.mod_version}"
 
 if (project.pre_release != "") {
     real_version += "-${project.pre_release}+"
-    if (!grgit.status().clean) {
+    if (project.pre_release == "alpha" && !grgit.status().clean) {
         real_version += new Date().format("yyyyMMdd.HHmmss") + ".dirty." + grgit.head().abbreviatedId
     } else {
         real_version += grgit.head().abbreviatedId
@@ -24,10 +24,10 @@ setGroup(project.maven_group)
 
 repositories {
     maven {
-        url "https://www.cursemaven.com"
+        url = "https://www.cursemaven.com"
     }
     maven {
-        url "https://api.modrinth.com/maven"
+        url = "https://api.modrinth.com/maven"
     }
     mavenCentral()
 }
