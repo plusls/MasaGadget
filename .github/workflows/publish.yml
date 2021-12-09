@@ -7,7 +7,7 @@ jobs:
   build:
     strategy:
       matrix:
-        java: [ 16 ]
+        java: [ 17 ]
         os: [ ubuntu-20.04 ]
         branch: [ 1.15.x, 1.16.x, 1.17.x, 1.18.x ]
     runs-on: ${{ matrix.os }}
@@ -22,9 +22,9 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
-      - name: Set build number in codes
+      - name: Set pre_release
         run: |
-          sed -i "s/-alpha.114514//g" gradle.properties
+          sed -i "s/pre_release=alpha/pre_release=/g" gradle.properties
       - name: make gradle wrapper executable
         if: ${{ runner.os != 'Windows' }}
         run: chmod +x ./gradlew
@@ -32,18 +32,19 @@ jobs:
         run: ./gradlew build
       - name: Find correct JAR
         id: findjar
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
         run: |
           output="$(find build/libs/ ! -name "*-dev.jar" ! -name "*-sources.jar" -type f -printf "%f\n")"
           echo "::set-output name=jarname::$output"
       - name: Upload assets to GitHub
         uses: AButler/upload-release-assets@v2.0
-        if: ${{ runner.os == 'Linux' && matrix.java == '16' }}
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
         with:
           files: build/libs/${{ steps.findjar.outputs.jarname }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload to Curseforge
         uses: itsmeow/curseforge-upload@v3
-        if: ${{ runner.os == 'Linux' && matrix.java == '16' }}
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
         with:
           token: ${{ secrets.CF_API_TOKEN }}
           project_id: 525510
@@ -51,12 +52,13 @@ jobs:
           file_path: build/libs/${{ steps.findjar.outputs.jarname }}
           changelog_type: markdown
           changelog: ${{ github.event.release.body }}
-          # 1.16.5:8203, 1.17:8516, fabric:7499
-          game_versions: ${{ fromJson('{"1.15.x":"7722","1.16.x":"8203","1.17.x":"8516","1.18.x":"8633"}')[matrix.branch] }}, 7499
+          # 1.16.5:8203, 1.17:8516, 1.18:8830, fabric:7499
+          game_versions: ${{ fromJson('{"1.15.x":"7722","1.16.x":"8203","1.17.x":"8516","1.18.x":"8830"}')[matrix.branch] }}, 7499
           release_type: release
       - name: Upload to Modrinth
-        if: ${{ runner.os == 'Linux' && matrix.java == '16' }}
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
         run: |
           ./gradlew publishModrinth
         env:
           MODRINTH: ${{ secrets.MODRINTH }}
+          CHANGELOG: ${{ github.event.release.body }}

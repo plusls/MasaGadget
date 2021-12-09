@@ -19,31 +19,23 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
-      - name: Get commit id
-        id: getid
+      - name: Set pre_release
         run: |
-          echo "::set-output name=commitID::${GITHUB_SHA::7}"
-      - name: Set commit id in codes
-        run: |
-          sed -i "s/alpha.114514/beta.${{ steps.getid.outputs.commitID }}/g" gradle.properties
-      - name: Read relevant fields from gradle.properties
-        id: properties
-        run: |
-          path='./gradle.properties'
-          for property in minecraft_version mod_version archives_base_name
-          do
-            result=$(sed -n "/^[[:space:]]*$property[[:space:]]*=[[:space:]]*/s/^[[:space:]]*$property[[:space:]]*=[[:space:]]*//p" "$path")
-            echo "$property: $result"
-            echo ::set-output name=$property::"$result"
-          done
+          sed -i "s/pre_release=alpha/pre_release=beta/g" gradle.properties
       - name: make gradle wrapper executable
         if: ${{ runner.os != 'Windows' }}
         run: chmod +x ./gradlew
       - name: build
         run: ./gradlew build
+      - name: Find correct JAR
+        id: findjar
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
+        run: |
+          output="$(find build/libs/ ! -name "*-dev.jar" ! -name "*-sources.jar" -type f -printf "%f\n")"
+          echo "::set-output name=jarname::$output"
       - name: capture build artifacts
-        if: ${{ runner.os == 'Linux' && matrix.java == '16' }}
+        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ steps.properties.outputs.archives_base_name }}-${{ steps.properties.outputs.minecraft_version }}-${{ steps.properties.outputs.mod_version }}
-          path: build/libs/
+          name: ${{ steps.findjar.outputs.jarname }}
+          path: build/libs/${{ steps.findjar.outputs.jarname }}
