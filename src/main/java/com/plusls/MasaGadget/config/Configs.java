@@ -16,6 +16,7 @@ import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.util.FileUtils;
 import fi.dy.masa.malilib.util.JsonUtils;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.world.ClientWorld;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 
@@ -157,7 +158,11 @@ public class Configs implements IConfigHandler {
             GUI_OPTIONS.removeIf(iConfigBase -> iConfigBase == PCA_SYNC_PROTOCOL_SYNC_BEEHIVE && !ModInfo.isModLoaded(ModInfo.TWEAKEROO_MOD_ID));
             COMPACT_BBOR_PROTOCOL.setValueChangeCallback(config -> {
                 if (config.getBooleanValue()) {
-                    BborProtocol.bborInit(Objects.requireNonNull(MinecraftClient.getInstance().world).getRegistryKey().getValue());
+                    ClientWorld world = MinecraftClient.getInstance().world;
+                    if (world == null) {
+                        return;
+                    }
+                    BborProtocol.bborInit(world.getRegistryKey().getValue());
                 }
             });
         }
