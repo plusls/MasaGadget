@@ -15,6 +15,7 @@
     "malilib.fastSwitchMasaConfigGui.MixinGuiConfigBase",
     "malilib.fixConfigWidgetWidth.MixinWidgetListConfigOptions",
     "malilib.fixGetInventoryType.MixinInventoryOverlay",
+    "malilib.fixInventoryOverlayRender.MixinInventoryOverlay",
     "malilib.optimizeConfigWidgetSearch.MixinWidgetListConfigOptions",
     "minihud.compactBborProtocol.MixinCustomPayloadS2CPacket",
     "minihud.compactBborProtocol.MixinDataStorage",
