@@ -36,6 +36,8 @@
   "masa_gadget_mod.config.tweakeroo.autoSyncTradeOfferList.comment": "自动使用 PCA 同步协议来同步村民的交易列表",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportComparator.name": "容器预览支持比较器",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportComparator.comment": "对比较器使用容器预览时将会显示比较器应该输出的信号",
+  "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportLargeBarrel.name": "容器预览支持大木桶",
+  "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportLargeBarrel.comment": "容器预览支持大木桶 (需要安装 tis carpet)",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportPlayer.name": "容器预览支持预览玩家",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportPlayer.comment": "对着玩家使用容器预览时，会显示出玩家背包和末影箱的内容",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportSelect.name": "容器预览支持选中格子",

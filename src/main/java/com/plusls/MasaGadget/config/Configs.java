@@ -173,6 +173,7 @@ public class Configs implements IConfigHandler {
         private static final String PREFIX = String.format("%s.config.tweakeroo", ModInfo.MOD_ID);
         public static final ConfigBoolean AUTO_SYNC_TRADE_OFFER_LIST = new TranslatableConfigBoolean(PREFIX, "autoSyncTradeOfferList", true);
         public static final ConfigBoolean INVENTORY_PREVIEW_SUPPORT_COMPARATOR = new TranslatableConfigBoolean(PREFIX, "inventoryPreviewSupportComparator", true);
+        public static final ConfigBoolean INVENTORY_PREVIEW_SUPPORT_LARGE_BARREL = new TranslatableConfigBoolean(PREFIX, "inventoryPreviewSupportLargeBarrel", true);
         public static final ConfigBoolean INVENTORY_PREVIEW_SUPPORT_PLAYER = new TranslatableConfigBoolean(PREFIX, "inventoryPreviewSupportPlayer", true);
         public static final ConfigBoolean INVENTORY_PREVIEW_SUPPORT_SELECT = new TranslatableConfigBoolean(PREFIX, "inventoryPreviewSupportSelect", true);
         public static final ConfigBoolean INVENTORY_PREVIEW_SUPPORT_SHULKER_BOX_ITEM_ENTITY = new TranslatableConfigBoolean(PREFIX, "inventoryPreviewSupportShulkerBoxItemEntity", true);
@@ -185,6 +186,7 @@ public class Configs implements IConfigHandler {
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
                 AUTO_SYNC_TRADE_OFFER_LIST,
                 INVENTORY_PREVIEW_SUPPORT_COMPARATOR,
+                INVENTORY_PREVIEW_SUPPORT_LARGE_BARREL,
                 INVENTORY_PREVIEW_SUPPORT_PLAYER,
                 INVENTORY_PREVIEW_SUPPORT_SELECT,
                 INVENTORY_PREVIEW_SUPPORT_SHULKER_BOX_ITEM_ENTITY,
@@ -196,6 +198,8 @@ public class Configs implements IConfigHandler {
         );
 
         public static final List<IConfigBase> GUI_OPTIONS = new LinkedList<>(OPTIONS);
-
+        static {
+            GUI_OPTIONS.removeIf(iConfigBase -> iConfigBase == INVENTORY_PREVIEW_SUPPORT_LARGE_BARREL && !ModInfo.isModLoaded(ModInfo.CARPET_TIS_ADDITION_MOD_ID));
+        }
     }
 }

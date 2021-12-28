@@ -33,7 +33,7 @@ repositories {
 }
 
 loom {
-    getAccessWidenerPath().set(file("src/main/resources/masa_gadget_mod.accesswidener"))
+    accessWidenerPath.set(file(file("src/main/resources/masa_gadget_mod.accesswidener")))
 }
 
 dependencies {
@@ -48,6 +48,7 @@ dependencies {
     modImplementation("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}")
     include("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}")
     modImplementation("maven.modrinth:modmenu:${project.mod_menu_version}")
+    modImplementation("curse.maven:carpet-tis-addition-397510:${project.tis_carpet_version}")
 }
 
 processResources {
