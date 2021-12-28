@@ -16,6 +16,7 @@ import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.util.GuiUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.util.math.MatrixStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,6 +36,12 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
 
     protected MixinGuiConfigBase(int listX, int listY) {
         super(listX, listY);
+    }
+
+    @Override
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        masaModGuiList.render(mouseX, mouseY, false, matrixStack);
     }
 
     @Inject(method = "initGui", at = @At(value = "RETURN"))
