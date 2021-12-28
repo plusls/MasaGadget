@@ -23,7 +23,6 @@ import org.apache.logging.log4j.core.config.Configurator;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 public class Configs implements IConfigHandler {
     private static final String CONFIG_FILE_NAME = ModInfo.MOD_ID + ".json";
@@ -198,6 +197,7 @@ public class Configs implements IConfigHandler {
         );
 
         public static final List<IConfigBase> GUI_OPTIONS = new LinkedList<>(OPTIONS);
+
         static {
             GUI_OPTIONS.removeIf(iConfigBase -> iConfigBase == INVENTORY_PREVIEW_SUPPORT_LARGE_BARREL && !ModInfo.isModLoaded(ModInfo.CARPET_TIS_ADDITION_MOD_ID));
         }

@@ -9,7 +9,6 @@ import io.netty.buffer.Unpooled;
 import net.earthcomputer.multiconnect.api.MultiConnectAPI;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
@@ -26,15 +25,13 @@ import java.util.concurrent.locks.ReentrantLock;
 public class BborProtocol {
     public static final String NAMESPACE = "bbor";
     public static final ReentrantLock lock = new ReentrantLock(true);
+    public final static Map<Identifier, NbtList> structuresCache = new ConcurrentHashMap<>();
     // recv
     private static final Identifier INITIALIZE = id("initialize");
     private static final Identifier ADD_BOUNDING_BOX_V2 = id("add_bounding_box_v2");
-
     // send
     private static final Identifier SUBSCRIBE = id("subscribe");
-
     private static final HashMap<Integer, String> BBOR_ID_TO_MINIHUD_ID = new HashMap<>();
-    public final static Map<Identifier, NbtList> structuresCache = new ConcurrentHashMap<>();
     public static Long seedCache = null;
     public static BlockPos spawnPos = null;
     public static boolean enable = false;
