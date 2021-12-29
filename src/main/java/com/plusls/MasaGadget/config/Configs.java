@@ -7,6 +7,7 @@ import com.google.gson.JsonPrimitive;
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.gui.GuiConfigs;
 import com.plusls.MasaGadget.minihud.compactBborProtocol.BborProtocol;
+import com.plusls.MasaGadget.util.SearchMobSpawnPointUtil;
 import fi.dy.masa.malilib.config.ConfigUtils;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigHandler;
@@ -77,18 +78,25 @@ public class Configs implements IConfigHandler {
     public static class Generic {
         private static final String PREFIX = String.format("%s.config.generic", ModInfo.MOD_ID);
         public static final ConfigHotkey OPEN_CONFIG_GUI = new TranslatableConfigHotkey(PREFIX, "openConfigGui", "G,C");
+        public static final ConfigHotkey SEARCH_MOB_SPAWN_POINT = new TranslatableConfigHotkey(PREFIX, "searchMobSpawnPoint", ";");
         public static final ImmutableList<ConfigHotkey> HOTKEYS = ImmutableList.of(
-                OPEN_CONFIG_GUI
+                OPEN_CONFIG_GUI,
+                SEARCH_MOB_SPAWN_POINT
         );
         public static final ConfigBoolean DEBUG = new TranslatableConfigBoolean(PREFIX, "debug", false);
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
                 OPEN_CONFIG_GUI,
+                SEARCH_MOB_SPAWN_POINT,
                 DEBUG
         );
 
         static {
             OPEN_CONFIG_GUI.getKeybind().setCallback((keyAction, iKeybind) -> {
                 GuiBase.openGui(new GuiConfigs());
+                return true;
+            });
+            SEARCH_MOB_SPAWN_POINT.getKeybind().setCallback((keyAction, iKeybind) -> {
+                SearchMobSpawnPointUtil.search();
                 return true;
             });
             DEBUG.setValueChangeCallback(config -> {
