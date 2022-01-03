@@ -10,6 +10,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.EntityType;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -92,7 +93,7 @@ public class SearchMobSpawnPointUtil {
                     if (state.getCollisionShape(world, currentPos).isEmpty() &&
                             !state.isOf(Blocks.REDSTONE_WIRE) &&
                             state.getFluidState().isEmpty() &&
-                            world.getBlockState(currentPos.down()).allowsSpawning(world, pos, null) &&
+                            world.getBlockState(currentPos.down()).allowsSpawning(world, pos, EntityType.CREEPER) &&
                             lightingProvider.get(LightType.BLOCK).getLightLevel(currentPos) < maxSpawnLightLevel) {
                         spawnPos = currentPos.mutableCopy();
                     }
