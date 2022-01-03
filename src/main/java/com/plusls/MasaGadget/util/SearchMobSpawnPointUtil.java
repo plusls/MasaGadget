@@ -6,6 +6,7 @@ import fi.dy.masa.minihud.renderer.shapes.ShapeBase;
 import fi.dy.masa.minihud.renderer.shapes.ShapeDespawnSphere;
 import fi.dy.masa.minihud.renderer.shapes.ShapeManager;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
@@ -89,6 +90,7 @@ public class SearchMobSpawnPointUtil {
                     currentPos.set(x, y, z);
                     BlockState state = world.getBlockState(currentPos);
                     if (state.getCollisionShape(world, currentPos).isEmpty() &&
+                            !state.isOf(Blocks.REDSTONE_WIRE) &&
                             state.getFluidState().isEmpty() &&
                             world.getBlockState(currentPos.down()).allowsSpawning(world, pos, null) &&
                             lightingProvider.get(LightType.BLOCK).getLightLevel(currentPos) < maxSpawnLightLevel) {
