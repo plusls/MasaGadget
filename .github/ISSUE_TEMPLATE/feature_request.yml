@@ -1,0 +1,23 @@
+name: Feature Request
+description: Suggest an idea for this project.
+title: "[Feature Request] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: "**Note: Please search for existing feature requests before reporting where possible to avoid duplicate requests**"
+  - type: textarea
+    id: description
+    attributes:
+      label: What new features do you want?
+      description: |
+        What new feature or change you want? How it improves? Please tell us the requirements is with a clear and detailed description, put your screenshots if possible.
+    validations:
+      required: true
+  - type: checkboxes
+    id: latest_build_tested
+    attributes:
+      label: Latest CI build tested
+      options:
+        - label: I confirm that the feature I requested is not in the latest CI build.
+          required: true
