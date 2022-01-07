@@ -1,0 +1,59 @@
+name: Bug Report
+description: Create a report to help us improve.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: "**Note: Please search for existing issues before reporting where possible to avoid duplicate reporting.**"
+  - type: input
+    id: version_version
+    attributes:
+      label: Minecraft Version
+      description: |
+        The version of Minecraft you are running?
+    validations:
+      required: true
+  - type: input
+    id: masa_gadget_version
+    attributes:
+      label: MasaGadget Version
+      description: |
+        The version of MasaGadget you are running?
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: |
+        Please tell us what the bug is with a clear and detailed description, put your screenshots if possible.
+    validations:
+      required: true
+  - type: textarea
+    id: to_reproduce
+    attributes:
+      label: To Reproduce
+      description: |
+        How do you trigger this bug? Please walk us through it step by step.
+    validations:
+      required: true
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected behavior
+      description: |
+        A clear and concise description of what you expected to happen.
+  - type: textarea
+    id: log
+    attributes:
+      label: Log
+      description: |
+        Please provide your log here if you can.
+  - type: checkboxes
+    id: latest_build_tested
+    attributes:
+      label: Latest CI build tested
+      options:
+        - label: I confirm that this problem still exists with the latest CI build.
+          required: true
