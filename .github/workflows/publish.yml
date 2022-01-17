@@ -52,8 +52,8 @@ jobs:
           file_path: build/libs/${{ steps.findjar.outputs.jarname }}
           changelog_type: markdown
           changelog: ${{ github.event.release.body }}
-          # 1.16.5:8203, 1.17:8516, 1.18:8830, fabric:7499
-          game_versions: ${{ fromJson('{"1.15.x":"7722","1.16.x":"8203","1.17.x":"8516","1.18.x":"8830"}')[matrix.branch] }}, 7499
+          # 1.16.5:8203, 1.17:8516, 1.18:8857, fabric:7499
+          game_versions: ${{ fromJson('{"1.15.x":"7722","1.16.x":"8203","1.17.x":"8516","1.18.x":"8857"}')[matrix.branch] }}, 7499
           release_type: release
       - name: Upload to Modrinth
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
