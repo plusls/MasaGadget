@@ -31,7 +31,7 @@ public abstract class MixinRenderUtils {
                     ordinal = 0, remap = false), ordinal = 0)
     private static Inventory modifyInv(Inventory inv) {
         Inventory ret = inv;
-        if (Configs.Tweakeroo.INVENTORY_PREVIEW_SUPPORT_PLAYER.getBooleanValue() &&
+        if (Configs.Tweakeroo.INVENTORY_PREVIEW_SUPPORT_LARGE_BARREL.getBooleanValue() &&
                 ret instanceof BarrelBlockEntity barrelBlockEntity && CarpetTISAdditionSettings.largeBarrel) {
             ClientWorld world = MinecraftClient.getInstance().world;
             if (world == null) {
