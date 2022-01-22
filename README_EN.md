@@ -109,7 +109,7 @@ The default hotkey to open the in-game config GUI is **G + C**.
 
 - inventoryPreviewSupportShulkerBoxItemEntity
 
-  - inventory preview support shulkerbox item entity
+    - inventory preview support shulkerbox item entity
 
 - inventoryPreviewSupportTradeOfferList
 
@@ -121,7 +121,7 @@ The default hotkey to open the in-game config GUI is **G + C**.
 
 - renderNextRestockTime
 
-  - Render next restock time on villager.
+    - Render next restock time on villager.
 
 - renderTradeEnchantedBook
 
@@ -135,4 +135,4 @@ The default hotkey to open the in-game config GUI is **G + C**.
 
 - renderZombieVillagerConvertTime
 
-  - Render zombie villager convert time on zombie villager.
+    - Render zombie villager convert time on zombie villager.

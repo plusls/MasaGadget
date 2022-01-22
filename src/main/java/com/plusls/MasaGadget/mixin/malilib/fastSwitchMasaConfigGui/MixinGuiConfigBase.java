@@ -11,6 +11,7 @@ import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.GuiListBase;
 import fi.dy.masa.malilib.gui.interfaces.IKeybindConfigGui;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
+import fi.dy.masa.malilib.gui.widgets.WidgetDropDownList;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.util.GuiUtils;
 import io.github.prospector.modmenu.api.ConfigScreenFactory;
@@ -24,14 +25,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
 
-@SuppressWarnings("deprecation")
 @Dependencies(dependencyList = @Dependency(modId = ModInfo.MODMENU_MOD_ID, version = "*"))
 @Mixin(value = GuiConfigsBase.class, remap = false)
 public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.ConfigOptionWrapper, WidgetConfigOption, WidgetListConfigOptions> implements IKeybindConfigGui {
 
     @Shadow
     protected Screen parentScreen;
-    private final MyWidgetDropDownList<ConfigScreenFactory<?>> masaModGuiList = new MyWidgetDropDownList<>(GuiUtils.getScaledWindowWidth() - 145, 10, 120, 18, 200, 10,
+    private final WidgetDropDownList<ConfigScreenFactory<?>> masaModGuiList = new MyWidgetDropDownList<>(GuiUtils.getScaledWindowWidth() - 155, 13, 130, 18, 200, 10,
             new ArrayList<>(MasaGuiUtil.getMasaGuiData().keySet()), MasaGuiUtil.getMasaGuiData()::get,
             configScreenFactory -> GuiBase.openGui(configScreenFactory.create(this.parentScreen)),
             configScreenFactory -> Configs.Malilib.FAST_SWITCH_MASA_CONFIG_GUI.getBooleanValue());
@@ -49,7 +49,7 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
     @Override
     public void resize(MinecraftClient mc, int width, int height) {
         super.resize(mc, width, height);
-        masaModGuiList.setX(GuiUtils.getScaledWindowWidth() - 145);
+        masaModGuiList.setX(GuiUtils.getScaledWindowWidth() - 155);
     }
 
 }

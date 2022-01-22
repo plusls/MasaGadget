@@ -36,7 +36,12 @@ public abstract class MixinBlockItem {
         if (!Configs.Litematica.FIX_ACCURATE_PROTOCOL.getBooleanValue()) {
             return;
         }
-        BlockState blockState = BlockPlacer.alternativeBlockPlacement(this.getBlock(), context);
+        BlockState blockState = null;
+        try {
+            blockState = BlockPlacer.alternativeBlockPlacement(this.getBlock(), context);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (blockState != null && this.canPlace(context, blockState)) {
             cir.setReturnValue(blockState);
         }

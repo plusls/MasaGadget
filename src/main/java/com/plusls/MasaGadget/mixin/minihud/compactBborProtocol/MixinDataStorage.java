@@ -17,20 +17,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Dependencies(dependencyList = @Dependency(modId = ModInfo.MINIHUD_MOD_ID, version = "*"))
 public abstract class MixinDataStorage {
 
-    // reset 会发生在进入游戏以后, 所以需要在 reset 后重新加载种子和结构
-    @Inject(method = "reset", at = @At(value = "RETURN"))
-    private void postReset(boolean isLogout, CallbackInfo ci) {
-        if (!Configs.Minihud.COMPACT_BBOR_PROTOCOL.getBooleanValue()) {
+    // 每进入一个新维度就需要重新加载一次数据
+    @Inject(method = "onWorldJoin", at = @At(value = "RETURN"))
+    private void postOnWorldJoin(CallbackInfo ci) {
+        if (!Configs.Minihud.COMPACT_BBOR_PROTOCOL.getBooleanValue() || !BborProtocol.enable) {
             return;
         }
-        if (!isLogout) {
-            if (!BborProtocol.enable) {
-                return;
-            }
-            World world = MinecraftClient.getInstance().world;
-            if (world != null) {
-                BborProtocol.bborRefreshData(world.getRegistryKey().getValue());
-            }
+        World world = MinecraftClient.getInstance().world;
+        if (world != null) {
+            BborProtocol.initMetaData();
+            BborProtocol.bborRefreshData(world.getRegistryKey().getValue());
         }
     }
 }

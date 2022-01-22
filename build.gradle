@@ -1,70 +1,85 @@
 plugins {
-    id 'fabric-loom' version '0.10-SNAPSHOT'
-    id "com.modrinth.minotaur" version "1.2.1"
-    id 'maven-publish'
+    id("fabric-loom").version("0.10-SNAPSHOT")
+    id("maven-publish")
+    id("org.ajoberstar.grgit").version("4.1.0")
+    id("com.modrinth.minotaur").version("1.2.1")
 }
 
-sourceCompatibility = JavaVersion.VERSION_16
-targetCompatibility = JavaVersion.VERSION_16
+setSourceCompatibility(JavaVersion.toVersion(project.java_version))
+setTargetCompatibility(JavaVersion.toVersion(project.java_version))
+String real_version = "${project.mod_version}"
 
-archivesBaseName = project.archives_base_name
-version = "${project.minecraft_version}-${project.mod_version}"
-group = project.maven_group
+if (project.pre_release != "") {
+    real_version += "-${project.pre_release}+"
+    if (project.pre_release == "alpha" && !grgit.status().clean) {
+        real_version += new Date().format("yyyyMMdd.HHmmss") + ".dirty." + grgit.head().abbreviatedId
+    } else {
+        real_version += grgit.head().abbreviatedId
+    }
+}
+
+setArchivesBaseName("${project.archives_base_name}-${project.minecraft_version}")
+setVersion(real_version)
+setGroup(project.maven_group)
 
 repositories {
     maven {
-        url "https://www.cursemaven.com"
+        url = "https://www.cursemaven.com"
     }
     maven {
-        url 'https://api.modrinth.com/maven'
+        url = "https://api.modrinth.com/maven"
     }
+    mavenCentral()
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/masa_gadget_mod.accesswidener")
+    accessWidenerPath.set(file(file("src/main/resources/masa_gadget_mod.accesswidener")))
 }
 
 dependencies {
-    //to change the versions see the gradle.properties file
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-
-    // Fabric API. This is technically optional, but you probably want it anyway.
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-
-    // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
-    // You may need to force-disable transitiveness on them.
-
-    modImplementation "curse.maven:malilib-303119:${project.malilib_version}"
-    modImplementation "curse.maven:minihud-244260:${project.minihud_version}"
-    modImplementation "curse.maven:tweakeroo-297344:${project.tweakeroo_version}"
-    modImplementation "curse.maven:litematica-308892:${project.litematica_version}"
-    modImplementation "net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}"
-    include "net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}"
-    modImplementation "maven.modrinth:modmenu:${project.mod_menu_version}"
-}
-
-compileJava {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-    options.encoding = 'UTF-8'
+    minecraft("com.mojang:minecraft:${project.minecraft_version}")
+    mappings("net.fabricmc:yarn:${project.minecraft_version}+build.${project.yarn_mappings}:v2")
+    modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
+    modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
+    modImplementation("curse.maven:malilib-303119:${project.malilib_version}")
+    modImplementation("curse.maven:minihud-244260:${project.minihud_version}")
+    modImplementation("curse.maven:tweakeroo-297344:${project.tweakeroo_version}")
+    modImplementation("curse.maven:litematica-308892:${project.litematica_version}")
+    modImplementation("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}")
+    include("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}")
+    modImplementation("maven.modrinth:modmenu:${project.mod_menu_version}")
+    modImplementation("curse.maven:carpet-tis-addition-397510:${project.tis_carpet_version}")
+    modRuntime("curse.maven:lazydfu-433518:${project.lazydfu_version}")
+    modRuntime("curse.maven:in-game-account-switcher-232676:${project.in_game_account_switcher_version}")
+    modRuntime("curse.maven:imblockerfabric-399225:${project.imblockerfabric}")
+    // tis carpet need
+    modRuntime("curse.maven:carpet-349239:${project.carpet_version}")
+    runtimeOnly("org.yaml:snakeyaml:${project.snakeyaml_version}")
 }
 
 processResources {
-    inputs.property "version", project.version
-
+    inputs.property("version", real_version)
     filesMatching("fabric.mod.json") {
-        expand "version": project.version
+        expand(["version": real_version])
     }
 }
 
 tasks.withType(JavaCompile).configureEach {
-    // ensure that the encoding is set to UTF-8, no matter what the system default is
-    // this fixes some edge cases with special characters not displaying correctly
-    // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-    // If Javadoc is generated, this must be specified in that task too.
     it.options.encoding = "UTF-8"
+    it.options.release.set(Integer.parseInt(project.java_version as String))
+}
+
+java {
+    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+    // if it is present.
+    // If you remove this line, sources will not be generated.
+    // withSourcesJar()
+}
+
+jar {
+    from("LICENSE") {
+        rename({ return "${it}_${project.archives_base_name}" })
+    }
 }
 
 import com.modrinth.minotaur.TaskModrinthUpload
@@ -73,45 +88,12 @@ task publishModrinth(type: TaskModrinthUpload) {
     onlyIf {
         System.getenv("MODRINTH") // Only attempt to run this task if the MODRINTH variable is set, otherwise SKIP it
     }
-
     token = System.getenv("MODRINTH")
-    projectId = 'SFO4Ca80'
+    changelog = System.getenv("CHANGELOG")
+    projectId = "SFO4Ca80"
     versionNumber = version
-    // On fabric, use 'remapJar' instead of 'jar'
+    // On fabric, use "remapJar" instead of "jar"
     uploadFile = remapJar
-    addGameVersion(project.minecraft_version)
-    addLoader('fabric')
-}
-
-
-java {
-    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-    // if it is present.
-    // If you remove this line, sources will not be generated.
-    withSourcesJar()
-}
-
-jar {
-    from "LICENSE"
-}
-
-// configure the maven publication
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            // add all the jars that should be included when publishing to maven
-            artifact(remapJar) {
-                builtBy remapJar
-            }
-            artifact(sourcesJar) {
-                builtBy remapSourcesJar
-            }
-        }
-    }
-
-    // select the repositories you want to publish to
-    repositories {
-        // uncomment to publish to the local maven
-        // mavenLocal()
-    }
+    addGameVersion(project.minecraft_version as String)
+    addLoader("fabric")
 }

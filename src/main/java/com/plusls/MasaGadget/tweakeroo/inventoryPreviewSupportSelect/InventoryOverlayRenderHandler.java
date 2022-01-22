@@ -49,7 +49,6 @@ public class InventoryOverlayRenderHandler implements IRenderer {
         lv.draw();
         RenderSystem.shadeModel(7424);
         RenderSystem.disableBlend();
-        RenderSystem.enableAlphaTest();
         RenderSystem.enableTexture();
     }
 
@@ -121,6 +120,7 @@ public class InventoryOverlayRenderHandler implements IRenderer {
                         }
                     }
                     if (!selectInventory) {
+                        ModInfo.LOGGER.debug("renderX: {} renderY: {}", renderX, renderY);
                         renderSelectedRect(matrixStack, renderX, renderY);
                         renderOrderedTooltip(matrixStack, itemStack, renderX, renderY + 8);
                     }

@@ -74,7 +74,7 @@
     - 在 Masa 家的搜索栏中可以使用中文搜索，还能使用 **modified** 来搜索修改过的配置项
 
 - 快速切换 Masa mod 配置界面(fastSwitchMasaConfigGui)
-  
+
     - 可以通过右上角的下拉菜单快速切换到别的 masa mod 的设置界面
 
 ### MiniHUD
@@ -119,7 +119,7 @@
 
 - 渲染村民交易补货冷却(renderNextRestockTime)
 
-  - 渲染距离村民下一次补货还需要多长时间
+    - 渲染距离村民下一次补货还需要多长时间
 
 - 渲染村民交易的第一本附魔书(renderTradeEnchantedBook)
 
