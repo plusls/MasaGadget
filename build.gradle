@@ -51,7 +51,10 @@ dependencies {
     modImplementation("curse.maven:carpet-tis-addition-397510:${project.tis_carpet_version}")
     modRuntime("curse.maven:lazydfu-433518:${project.lazydfu_version}")
     modRuntime("curse.maven:in-game-account-switcher-232676:${project.in_game_account_switcher_version}")
+    modRuntime("curse.maven:imblockerfabric-399225:${project.imblockerfabric}")
+    // tis carpet need
     modRuntime("curse.maven:carpet-349239:${project.carpet_version}")
+    runtimeOnly("org.yaml:snakeyaml:${project.snakeyaml_version}")
 }
 
 processResources {

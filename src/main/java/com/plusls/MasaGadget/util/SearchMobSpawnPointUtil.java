@@ -7,13 +7,11 @@ import fi.dy.masa.minihud.renderer.shapes.ShapeDespawnSphere;
 import fi.dy.masa.minihud.renderer.shapes.ShapeManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnRestriction;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -88,7 +86,10 @@ public class SearchMobSpawnPointUtil {
                         continue;
                     }
                     currentPos.set(x, y, z);
-                    if (SpawnHelper.canSpawn(SpawnRestriction.getLocation(entityType), world, pos, entityType) &&
+                    if (x == 0 && y == -57 && z == -3) {
+                        x = 0;
+                    }
+                    if (SpawnHelper.canSpawn(SpawnRestriction.getLocation(entityType), world, currentPos, entityType) &&
                             lightingProvider.get(LightType.BLOCK).getLightLevel(currentPos) <= maxSpawnLightLevel) {
                         spawnPos = currentPos.mutableCopy();
                     }
@@ -99,7 +100,8 @@ public class SearchMobSpawnPointUtil {
         if (spawnPos == null) {
             text = new TranslatableText("masa_gadget_mod.message.noBlockCanSpawn").setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.GREEN)));
         } else {
-            text = new TranslatableText("masa_gadget_mod.message.spawnPos", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
+            // for ommc parser
+            text = new LiteralText(I18n.translate("masa_gadget_mod.message.spawnPos", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()));
             player.sendChatMessage(String.format("/highlightWaypoint %d %d %d", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()));
         }
         Objects.requireNonNull(MinecraftClient.getInstance().player).sendMessage(text, false);
