@@ -66,7 +66,7 @@ public class SearchMobSpawnPointUtil {
         int maxX = pos.getX() + 129;
         int maxZ = pos.getZ() + 129;
         BlockPos.Mutable currentPos = new BlockPos.Mutable();
-        int maxSpawnLightLevel = Configs.Generic.LIGHT_LEVEL_THRESHOLD.getIntegerValue();
+        int maxSpawnLightLevel = Configs.Generic.LIGHT_LEVEL_THRESHOLD_SAFE.getIntegerValue();
         LightingProvider lightingProvider = world.getChunkManager().getLightingProvider();
         EntityType<?> entityType = world.getDimension().isUltrawarm() ? EntityType.ZOMBIFIED_PIGLIN : EntityType.CREEPER;
         for (int x = pos.getX() - 129; x <= maxX; ++x) {
