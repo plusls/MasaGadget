@@ -30,8 +30,8 @@
   "accessWidener": "masa_gadget_mod.accesswidener",
   "custom": {
     "compat": {
-      "tweakeroo": ">=0.10.0-dev.20211022.124558",
-      "litematica": ">=0.0.0-dev.20211025.173135",
+      "tweakeroo": ">=0.12.0",
+      "litematica": ">=0.10.0",
       "minihud": ">=0.21.2"
     }
   },

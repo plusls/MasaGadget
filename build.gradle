@@ -49,6 +49,9 @@ dependencies {
     include("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}")
     modImplementation("maven.modrinth:modmenu:${project.mod_menu_version}")
     modImplementation("curse.maven:carpet-tis-addition-397510:${project.tis_carpet_version}")
+    modRuntime("curse.maven:lazydfu-433518:${project.lazydfu_version}")
+    modRuntime("curse.maven:in-game-account-switcher-232676:${project.in_game_account_switcher_version}")
+    modRuntime("curse.maven:carpet-349239:${project.carpet_version}")
 }
 
 processResources {
