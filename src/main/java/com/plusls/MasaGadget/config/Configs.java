@@ -99,14 +99,18 @@ public class Configs implements IConfigHandler {
                 SYNC_ALL_ENTITY_DATA,
                 DEBUG
         );
+        public static final List<IConfigBase> GUI_OPTIONS = new LinkedList<>(OPTIONS);
 
         static {
+            GUI_OPTIONS.removeIf(iConfigBase -> iConfigBase == SEARCH_MOB_SPAWN_POINT && !ModInfo.isModLoaded(ModInfo.MINIHUD_MOD_ID));
             OPEN_CONFIG_GUI.getKeybind().setCallback((keyAction, iKeybind) -> {
                 GuiBase.openGui(new GuiConfigs());
                 return true;
             });
             SEARCH_MOB_SPAWN_POINT.getKeybind().setCallback((keyAction, iKeybind) -> {
-                SearchMobSpawnPointUtil.search();
+                if (ModInfo.isModLoaded(ModInfo.MINIHUD_MOD_ID)) {
+                    SearchMobSpawnPointUtil.search();
+                }
                 return true;
             });
             DEBUG.setValueChangeCallback(config -> {

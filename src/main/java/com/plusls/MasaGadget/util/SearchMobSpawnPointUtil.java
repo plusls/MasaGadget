@@ -86,11 +86,8 @@ public class SearchMobSpawnPointUtil {
                         continue;
                     }
                     currentPos.set(x, y, z);
-                    if (x == 0 && y == -57 && z == -3) {
-                        x = 0;
-                    }
                     if (SpawnHelper.canSpawn(SpawnRestriction.getLocation(entityType), world, currentPos, entityType) &&
-                            lightingProvider.get(LightType.BLOCK).getLightLevel(currentPos) <= maxSpawnLightLevel) {
+                            lightingProvider.get(LightType.BLOCK).getLightLevel(currentPos) < maxSpawnLightLevel) {
                         spawnPos = currentPos.mutableCopy();
                     }
                 }
