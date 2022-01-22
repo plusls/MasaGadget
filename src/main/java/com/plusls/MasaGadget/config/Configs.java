@@ -7,6 +7,7 @@ import com.google.gson.JsonPrimitive;
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.gui.GuiConfigs;
 import com.plusls.MasaGadget.minihud.compactBborProtocol.BborProtocol;
+import com.plusls.MasaGadget.tweakeroo.pcaSyncProtocol.PcaSyncProtocol;
 import com.plusls.MasaGadget.util.SearchMobSpawnPointUtil;
 import fi.dy.masa.malilib.config.ConfigUtils;
 import fi.dy.masa.malilib.config.IConfigBase;
@@ -18,12 +19,18 @@ import fi.dy.masa.malilib.util.FileUtils;
 import fi.dy.masa.malilib.util.JsonUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
+import net.minecraft.text.Style;
+import net.minecraft.text.TextColor;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class Configs implements IConfigHandler {
     private static final String CONFIG_FILE_NAME = ModInfo.MOD_ID + ".json";
@@ -79,14 +86,17 @@ public class Configs implements IConfigHandler {
         private static final String PREFIX = String.format("%s.config.generic", ModInfo.MOD_ID);
         public static final ConfigHotkey OPEN_CONFIG_GUI = new TranslatableConfigHotkey(PREFIX, "openConfigGui", "G,C");
         public static final ConfigHotkey SEARCH_MOB_SPAWN_POINT = new TranslatableConfigHotkey(PREFIX, "searchMobSpawnPoint", ";");
+        public static final ConfigHotkey SYNC_ALL_ENTITY_DATA = new TranslatableConfigHotkey(PREFIX, "syncAllEntityData", "");
         public static final ImmutableList<ConfigHotkey> HOTKEYS = ImmutableList.of(
                 OPEN_CONFIG_GUI,
-                SEARCH_MOB_SPAWN_POINT
+                SEARCH_MOB_SPAWN_POINT,
+                SYNC_ALL_ENTITY_DATA
         );
         public static final ConfigBoolean DEBUG = new TranslatableConfigBoolean(PREFIX, "debug", false);
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
                 OPEN_CONFIG_GUI,
                 SEARCH_MOB_SPAWN_POINT,
+                SYNC_ALL_ENTITY_DATA,
                 DEBUG
         );
 
@@ -105,6 +115,19 @@ public class Configs implements IConfigHandler {
                 } else {
                     Configurator.setLevel(ModInfo.LOGGER.getName(), Level.toLevel("INFO"));
                 }
+            });
+            SYNC_ALL_ENTITY_DATA.getKeybind().setCallback((keyAction, iKeybind) -> {
+                if (!PcaSyncProtocol.enable) {
+                    return true;
+                }
+                MinecraftClient mc = MinecraftClient.getInstance();
+                for (Entity entity: Objects.requireNonNull(mc.world).getEntities()) {
+                    PcaSyncProtocol.syncEntity(entity.getId());
+                }
+                TranslatableText text = new TranslatableText("masa_gadget_mod.message.syncAllEntityDataSuccess");
+                text.setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(Formatting.GREEN)));
+                Objects.requireNonNull(mc.player).sendMessage(text, false);
+                return true;
             });
         }
     }
