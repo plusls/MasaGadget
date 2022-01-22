@@ -10,12 +10,11 @@ import net.minecraft.block.BarrelBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BarrelBlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.inventory.DoubleInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -33,7 +32,7 @@ public abstract class MixinRenderUtils {
         Inventory ret = inv;
         if (Configs.Tweakeroo.INVENTORY_PREVIEW_SUPPORT_LARGE_BARREL.getBooleanValue() &&
                 ret instanceof BarrelBlockEntity barrelBlockEntity && CarpetTISAdditionSettings.largeBarrel) {
-            ClientWorld world = MinecraftClient.getInstance().world;
+            World world = barrelBlockEntity.getWorld();
             if (world == null) {
                 return ret;
             }

@@ -125,7 +125,7 @@ public class Configs implements IConfigHandler {
                     return true;
                 }
                 MinecraftClient mc = MinecraftClient.getInstance();
-                for (Entity entity: Objects.requireNonNull(mc.world).getEntities()) {
+                for (Entity entity : Objects.requireNonNull(mc.world).getEntities()) {
                     PcaSyncProtocol.syncEntity(entity.getId());
                 }
                 TranslatableText text = new TranslatableText("masa_gadget_mod.message.syncAllEntityDataSuccess");
