@@ -69,8 +69,10 @@ public class InventoryOverlayRenderHandler implements IRenderer {
 
     public void render(MatrixStack matrixStack) {
         // fuck mojang
+        // for 1.18
         // 不添加会渲染错误，不知道麻将哪里 pop 了没有 apply
         RenderSystem.applyModelViewMatrix();
+
         if (currentIdx == 0) {
             return;
         }
@@ -107,6 +109,7 @@ public class InventoryOverlayRenderHandler implements IRenderer {
                                             stack.push();
                                             stack.translate(0, 0, 400);
                                             RenderSystem.applyModelViewMatrix();
+                                            ModInfo.LOGGER.debug("subRenderX: {} subRenderY: {}", subRenderX, subRenderY);
                                             renderSelectedRect(matrixStack, subRenderX, subRenderY);
                                             renderOrderedTooltip(matrixStack, subItemStack, subRenderX, subRenderY + 8);
                                             RenderSystem.getModelViewStack().pop();
@@ -126,6 +129,7 @@ public class InventoryOverlayRenderHandler implements IRenderer {
                         }
                     }
                     if (!selectInventory) {
+                        ModInfo.LOGGER.debug("renderX: {} renderY: {}", renderX, renderY);
                         renderSelectedRect(matrixStack, renderX, renderY);
                         renderOrderedTooltip(matrixStack, itemStack, renderX, renderY + 8);
                     }
@@ -204,7 +208,7 @@ public class InventoryOverlayRenderHandler implements IRenderer {
 
         MinecraftClient mc = MinecraftClient.getInstance();
         List<OrderedText> lines = Lists.transform(stack.getTooltip(mc.player, mc.options.advancedItemTooltips ? TooltipContext.Default.ADVANCED : TooltipContext.Default.NORMAL), Text::asOrderedText);
-        List<TooltipComponent> components = lines.stream().map(TooltipComponent::of).collect(Collectors.toList());
+        List<TooltipComponent> components = lines.stream().map(TooltipComponent::of).toList();
         if (components.isEmpty())
             return;
         int k = 0;

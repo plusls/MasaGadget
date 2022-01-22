@@ -73,7 +73,7 @@ public class GuiConfigs extends GuiConfigsBase {
         List<? extends IConfigBase> configs;
         ConfigGuiTab tab = GuiConfigs.tab;
         if (tab == ConfigGuiTab.GENERIC) {
-            configs = Configs.Generic.OPTIONS;
+            configs = Configs.Generic.GUI_OPTIONS;
         } else if (tab == ConfigGuiTab.LITEMATICA) {
             configs = Configs.Litematica.GUI_OPTIONS;
         } else if (tab == ConfigGuiTab.MALILIB) {

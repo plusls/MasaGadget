@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.plusls.MasaGadget.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_16",
   "plugin": "com.plusls.MasaGadget.MasaGadgetMixinPlugin",
   "client": [
     "event.disconnect.MixinMinecraftClient",
@@ -23,6 +23,7 @@
     "tweakeroo.autoSyncTradeOfferList.MixinVillagerEntity",
     "tweakeroo.autoSyncTradeOfferList.MixinZombieVillagerEntity",
     "tweakeroo.inventoryPreviewSupportComparator.MixinWorldRenderer",
+    "tweakeroo.inventoryPreviewSupportLargeBarrel.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportPlayer.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportSelect.MixinInGameHud",
     "tweakeroo.inventoryPreviewSupportSelect.MixinInventoryOverlay",

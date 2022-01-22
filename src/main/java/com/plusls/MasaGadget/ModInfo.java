@@ -14,6 +14,7 @@ public class ModInfo {
     public static final String LITEMATICA_MOD_ID = "litematica";
     public static final String MODMENU_MOD_ID = "modmenu";
     public static final String BBOR_MOD_ID = "bbor";
+    public static final String CARPET_TIS_ADDITION_MOD_ID = "carpet-tis-addition";
     public static String MOD_ID = "masa_gadget_mod";
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
     public static String MOD_VERSION;
