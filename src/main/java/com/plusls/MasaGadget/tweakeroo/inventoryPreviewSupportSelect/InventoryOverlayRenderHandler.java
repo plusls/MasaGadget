@@ -197,6 +197,7 @@ public class InventoryOverlayRenderHandler implements IRenderer {
                         }
                     }
                     if (!selectInventory) {
+                        ModInfo.LOGGER.debug("renderX: {} renderY: {}", renderX, renderY);
                         renderSelectedRect(renderX, renderY);
                         renderOrderedTooltip(itemStack, renderX, renderY + 8);
                     }

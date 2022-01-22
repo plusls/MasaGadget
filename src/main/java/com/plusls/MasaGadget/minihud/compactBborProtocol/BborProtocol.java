@@ -8,7 +8,6 @@ import fi.dy.masa.minihud.util.StructureTypes;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
@@ -33,7 +32,7 @@ public class BborProtocol {
     private static final Identifier SUBSCRIBE = id("subscribe");
 
     private static final HashMap<Integer, String> BBOR_ID_TO_MINIHUD_ID = new HashMap<>();
-    public static Map<Identifier, ListTag> structuresCache = null;
+    public final static Map<Identifier, ListTag> structuresCache = new ConcurrentHashMap<>();
     public static Long seedCache = null;
     public static BlockPos spawnPos = null;
     public static boolean enable = false;
@@ -71,18 +70,15 @@ public class BborProtocol {
         ModInfo.LOGGER.info("BborProtocol onDisconnect");
         BborProtocol.seedCache = null;
         BborProtocol.spawnPos = null;
-        BborProtocol.structuresCache = null;
+        BborProtocol.structuresCache.clear();
         BborProtocol.enable = false;
         BborProtocol.carpetOrServux = false;
-        // 为了鲁棒性考虑 断开连接时应该确保当前的锁已解开
-        while (BborProtocol.lock.isLocked()) {
-            BborProtocol.lock.unlock();
-        }
     }
 
     public static void bborProtocolHandler(ClientPlayNetworkHandler clientPlayNetworkHandler, Identifier channel, PacketByteBuf data) {
         try {
             if (channel.equals(INITIALIZE)) {
+                onDisconnect();
                 bborInitializeHandler(clientPlayNetworkHandler, data);
             } else if (channel.equals(ADD_BOUNDING_BOX_V2)) {
                 bborAddBoundingBoxV2Handler(data);
@@ -98,7 +94,6 @@ public class BborProtocol {
         int spawnZ = data.readInt();
         BborProtocol.seedCache = seed;
         BborProtocol.spawnPos = new BlockPos(spawnX, 0, spawnZ);
-        BborProtocol.structuresCache = new ConcurrentHashMap<>();
         // 若是未加载 MiniHUD，则不会去 mixin CustomPayloadS2CPacket，因此不会有机会调用该函数
         // 因此无需对是否加载 MiniHUD 进行特判
         if (!BborProtocol.carpetOrServux) {
@@ -115,10 +110,6 @@ public class BborProtocol {
     }
 
     public static void bborInit(Identifier dimensionId) {
-        ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        if (player == null) {
-            return;
-        }
         initMetaData();
         bborRefreshData(dimensionId);
     }
@@ -136,11 +127,13 @@ public class BborProtocol {
         if (!structuresCache.containsKey(dimensionId)) {
             structuresCache.put(dimensionId, new ListTag());
         }
-        if (BborProtocol.structuresCache != null) {
-            BborProtocol.lock.lock();
+        BborProtocol.lock.lock();
+        try {
             DataStorage.getInstance().addOrUpdateStructuresFromServer(BborProtocol.structuresCache.get(dimensionId), 0x7fffffff - 0x1000, false);
-            BborProtocol.lock.unlock();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        BborProtocol.lock.unlock();
     }
 
     private static void bborAddBoundingBoxV2Handler(PacketByteBuf data) {
@@ -161,11 +154,15 @@ public class BborProtocol {
         }
         if (tag != null) {
             structuresCache.get(dimensionId).add(tag);
-            BborProtocol.lock.lock();
             if (enable && Configs.Minihud.COMPACT_BBOR_PROTOCOL.getBooleanValue() && MinecraftClient.getInstance().world != null) {
-                DataStorage.getInstance().addOrUpdateStructuresFromServer(structuresCache.get(dimensionId), 0x7fffffff - 0x1000, false);
+                BborProtocol.lock.lock();
+                try {
+                    DataStorage.getInstance().addOrUpdateStructuresFromServer(structuresCache.get(dimensionId), 0x7fffffff - 0x1000, false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                BborProtocol.lock.unlock();
             }
-            BborProtocol.lock.unlock();
         }
     }
 }

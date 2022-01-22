@@ -14,6 +14,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.ZombieVillagerEntity;
 import net.minecraft.entity.passive.AbstractTraderEntity;
 import net.minecraft.entity.passive.HorseBaseEntity;
@@ -100,6 +101,11 @@ public class PcaSyncProtocol {
         if (entity != null) {
             ModInfo.LOGGER.debug("update entity!");
             assert tag != null;
+            if (entity instanceof MobEntity) {
+                if (tag.getBoolean("PersistenceRequired")) {
+                    ((MobEntity) entity).setPersistent();
+                }
+            }
             if (entity instanceof StorageMinecartEntity) {
                 ((StorageMinecartEntity) entity).inventory.clear();
                 Inventories.fromTag(tag, ((StorageMinecartEntity) entity).inventory);

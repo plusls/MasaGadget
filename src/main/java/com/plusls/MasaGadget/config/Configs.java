@@ -7,6 +7,8 @@ import com.google.gson.JsonPrimitive;
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.gui.GuiConfigs;
 import com.plusls.MasaGadget.minihud.compactBborProtocol.BborProtocol;
+import com.plusls.MasaGadget.tweakeroo.pcaSyncProtocol.PcaSyncProtocol;
+import com.plusls.MasaGadget.util.SearchMobSpawnPointUtil;
 import fi.dy.masa.malilib.config.ConfigUtils;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigHandler;
@@ -16,6 +18,11 @@ import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.util.FileUtils;
 import fi.dy.masa.malilib.util.JsonUtils;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.world.dimension.DimensionType;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
@@ -78,18 +85,32 @@ public class Configs implements IConfigHandler {
     public static class Generic {
         private static final String PREFIX = String.format("%s.config.generic", ModInfo.MOD_ID);
         public static final ConfigHotkey OPEN_CONFIG_GUI = new TranslatableConfigHotkey(PREFIX, "openConfigGui", "G,C");
+        public static final ConfigHotkey SEARCH_MOB_SPAWN_POINT = new TranslatableConfigHotkey(PREFIX, "searchMobSpawnPoint", ";");
+        public static final ConfigHotkey SYNC_ALL_ENTITY_DATA = new TranslatableConfigHotkey(PREFIX, "syncAllEntityData", "");
         public static final ImmutableList<ConfigHotkey> HOTKEYS = ImmutableList.of(
-                OPEN_CONFIG_GUI
+                OPEN_CONFIG_GUI,
+                SEARCH_MOB_SPAWN_POINT,
+                SYNC_ALL_ENTITY_DATA
         );
         public static final ConfigBoolean DEBUG = new TranslatableConfigBoolean(PREFIX, "debug", false);
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
                 OPEN_CONFIG_GUI,
+                SEARCH_MOB_SPAWN_POINT,
+                SYNC_ALL_ENTITY_DATA,
                 DEBUG
         );
+        public static final List<IConfigBase> GUI_OPTIONS = new LinkedList<>(OPTIONS);
 
         static {
+            GUI_OPTIONS.removeIf(iConfigBase -> iConfigBase == SEARCH_MOB_SPAWN_POINT && !ModInfo.isModLoaded(ModInfo.MINIHUD_MOD_ID));
             OPEN_CONFIG_GUI.getKeybind().setCallback((keyAction, iKeybind) -> {
                 GuiBase.openGui(new GuiConfigs());
+                return true;
+            });
+            SEARCH_MOB_SPAWN_POINT.getKeybind().setCallback((keyAction, iKeybind) -> {
+                if (ModInfo.isModLoaded(ModInfo.MINIHUD_MOD_ID)) {
+                    SearchMobSpawnPointUtil.search();
+                }
                 return true;
             });
             DEBUG.setValueChangeCallback(config -> {
@@ -98,6 +119,18 @@ public class Configs implements IConfigHandler {
                 } else {
                     Configurator.setLevel(ModInfo.LOGGER.getName(), Level.toLevel("INFO"));
                 }
+            });
+            SYNC_ALL_ENTITY_DATA.getKeybind().setCallback((keyAction, iKeybind) -> {
+                if (!PcaSyncProtocol.enable) {
+                    return true;
+                }
+                MinecraftClient mc = MinecraftClient.getInstance();
+                for (Entity entity : Objects.requireNonNull(mc.world).getEntities()) {
+                    PcaSyncProtocol.syncEntity(entity.getEntityId());
+                }
+                Text text = new TranslatableText("masa_gadget_mod.message.syncAllEntityDataSuccess").formatted(Formatting.GREEN);
+                Objects.requireNonNull(mc.player).sendMessage(text);
+                return true;
             });
         }
     }
@@ -160,6 +193,10 @@ public class Configs implements IConfigHandler {
             GUI_OPTIONS.removeIf(iConfigBase -> iConfigBase == PCA_SYNC_PROTOCOL_SYNC_BEEHIVE && !ModInfo.isModLoaded(ModInfo.TWEAKEROO_MOD_ID));
             COMPACT_BBOR_PROTOCOL.setValueChangeCallback(config -> {
                 if (config.getBooleanValue()) {
+                    ClientWorld world = MinecraftClient.getInstance().world;
+                    if (world == null) {
+                        return;
+                    }
                     BborProtocol.bborInit(DimensionType.getId(Objects.requireNonNull(MinecraftClient.getInstance().world).getDimension().getType()));
                 }
             });
@@ -171,6 +208,7 @@ public class Configs implements IConfigHandler {
         private static final String PREFIX = String.format("%s.config.tweakeroo", ModInfo.MOD_ID);
         public static final ConfigBoolean AUTO_SYNC_TRADE_OFFER_LIST = new TranslatableConfigBoolean(PREFIX, "autoSyncTradeOfferList", true);
         public static final ConfigBoolean INVENTORY_PREVIEW_SUPPORT_COMPARATOR = new TranslatableConfigBoolean(PREFIX, "inventoryPreviewSupportComparator", true);
+        public static final ConfigBoolean INVENTORY_PREVIEW_SUPPORT_LARGE_BARREL = new TranslatableConfigBoolean(PREFIX, "inventoryPreviewSupportLargeBarrel", true);
         public static final ConfigBoolean INVENTORY_PREVIEW_SUPPORT_FREE_CAMERA = new TranslatableConfigBoolean(PREFIX, "inventoryPreviewSupportFreeCamera", true);
         public static final ConfigBoolean INVENTORY_PREVIEW_SUPPORT_PLAYER = new TranslatableConfigBoolean(PREFIX, "inventoryPreviewSupportPlayer", true);
         public static final ConfigBoolean INVENTORY_PREVIEW_SUPPORT_SELECT = new TranslatableConfigBoolean(PREFIX, "inventoryPreviewSupportSelect", true);
@@ -185,6 +223,7 @@ public class Configs implements IConfigHandler {
                 AUTO_SYNC_TRADE_OFFER_LIST,
                 INVENTORY_PREVIEW_SUPPORT_COMPARATOR,
                 INVENTORY_PREVIEW_SUPPORT_FREE_CAMERA,
+                INVENTORY_PREVIEW_SUPPORT_LARGE_BARREL,
                 INVENTORY_PREVIEW_SUPPORT_PLAYER,
                 INVENTORY_PREVIEW_SUPPORT_SELECT,
                 INVENTORY_PREVIEW_SUPPORT_SHULKER_BOX_ITEM_ENTITY,
@@ -197,5 +236,8 @@ public class Configs implements IConfigHandler {
 
         public static final List<IConfigBase> GUI_OPTIONS = new LinkedList<>(OPTIONS);
 
+        static {
+            GUI_OPTIONS.removeIf(iConfigBase -> iConfigBase == INVENTORY_PREVIEW_SUPPORT_LARGE_BARREL && !ModInfo.isModLoaded(ModInfo.CARPET_TIS_ADDITION_MOD_ID));
+        }
     }
 }
