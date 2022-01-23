@@ -13,6 +13,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ConcurrentModificationException;
+
 
 public class TraceUtil {
 
@@ -39,7 +41,12 @@ public class TraceUtil {
         if (player == null) {
             player = mc.player;
         }
-        return RayTraceUtils.getRayTraceFromEntity(world, FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue() ? mc.getCameraEntity() : player, false);
+        try {
+            return RayTraceUtils.getRayTraceFromEntity(world, FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue() ? mc.getCameraEntity() : player, false);
+        } catch (ConcurrentModificationException e) {
+            // 不知道为啥，在容器预览时调用该函数有概率崩溃（在实体频繁生成死亡的时候，比如刷石机）
+            return null;
+        }
     }
 
     @Nullable
