@@ -36,6 +36,9 @@ public class RestockUtil {
     }
 
     public static void tryCraftingRestocking(PlayerEntity player, Hand hand, ItemStack itemStack) {
+        if (player.isCreative()) {
+            return;
+        }
         updateRecipes();
         // TODO: Lazy update (on itemscoller's RecipeStorage updated or config changed)
         MinecraftClient mc = MinecraftClient.getInstance();
