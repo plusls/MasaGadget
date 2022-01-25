@@ -42,7 +42,7 @@ public class RestockUtil {
         HandledScreen<? extends ScreenHandler> gui = new InventoryScreen(player);
         gui.init(MinecraftClient.getInstance(), 0, 0);
         for (RecipePattern recipe : RestockUtil.recipes) {
-            if (recipe.getResult().isItemEqual(itemStack)) {
+            if (ItemStack.canCombine(recipe.getResult(), itemStack)) {
                 InventoryUtils.tryMoveItemsToFirstCraftingGrid(recipe, gui, false);
                 mc.interactionManager.clickSlot(player.playerScreenHandler.syncId, 0, 0, SlotActionType.PICKUP, player);
                 if (player.playerScreenHandler.getCursorStack().isItemEqual(itemStack)) {
