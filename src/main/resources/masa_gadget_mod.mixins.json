@@ -37,6 +37,6 @@
     "tweakeroo.renderZombieVillagerConvertTime.MixinZombieVillagerEntity"
   ],
   "injectors": {
-    "defaultRequire": 1
+    "defaultRequire": 0
   }
 }
