@@ -15,6 +15,8 @@
   "masa_gadget_mod.config.generic.openConfigGui.comment": "A hotkey to open the in-game Config GUI",
   "masa_gadget_mod.config.generic.searchMobSpawnPoint.name": "searchMobSpawnPoint",
   "masa_gadget_mod.config.generic.searchMobSpawnPoint.comment": "Search mob spawn point. Need set §6Despawn Sphere§r in minihud, and light check depends on §6lightLevelThresholdSafe§r in minihud",
+  "masa_gadget_mod.config.generic.searchMobSpawnPointBlackList.name": "searchMobSpawnPointBlackList",
+  "masa_gadget_mod.config.generic.searchMobSpawnPointBlackList.comment": "Don't search blocks in this list.",
   "masa_gadget_mod.config.generic.syncAllEntityData.name": "syncAllEntityData",
   "masa_gadget_mod.config.generic.syncAllEntityData.comment": "Use pcaSyncProtocol to sync all entity data.",
   "masa_gadget_mod.config.generic.debug.name": "debug",

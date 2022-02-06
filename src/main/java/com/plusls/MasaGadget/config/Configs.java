@@ -14,6 +14,7 @@ import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigHandler;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
 import fi.dy.masa.malilib.config.options.ConfigHotkey;
+import fi.dy.masa.malilib.config.options.ConfigStringList;
 import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.util.FileUtils;
 import fi.dy.masa.malilib.util.JsonUtils;
@@ -86,6 +87,7 @@ public class Configs implements IConfigHandler {
         private static final String PREFIX = String.format("%s.config.generic", ModInfo.MOD_ID);
         public static final ConfigHotkey OPEN_CONFIG_GUI = new TranslatableConfigHotkey(PREFIX, "openConfigGui", "G,C");
         public static final ConfigHotkey SEARCH_MOB_SPAWN_POINT = new TranslatableConfigHotkey(PREFIX, "searchMobSpawnPoint", ";");
+        public static final ConfigStringList SEARCH_MOB_SPAWN_POINT_BLACK_LIST = new TranslatableConfigStringList(PREFIX, "searchMobSpawnPointBlackList", ImmutableList.of());
         public static final ConfigHotkey SYNC_ALL_ENTITY_DATA = new TranslatableConfigHotkey(PREFIX, "syncAllEntityData", "");
         public static final ImmutableList<ConfigHotkey> HOTKEYS = ImmutableList.of(
                 OPEN_CONFIG_GUI,
@@ -96,6 +98,7 @@ public class Configs implements IConfigHandler {
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
                 OPEN_CONFIG_GUI,
                 SEARCH_MOB_SPAWN_POINT,
+                SEARCH_MOB_SPAWN_POINT_BLACK_LIST,
                 SYNC_ALL_ENTITY_DATA,
                 DEBUG
         );

@@ -45,13 +45,17 @@ dependencies {
     modImplementation("curse.maven:minihud-244260:${project.minihud_version}")
     modImplementation("curse.maven:tweakeroo-297344:${project.tweakeroo_version}")
     modImplementation("curse.maven:litematica-308892:${project.litematica_version}")
-    modImplementation("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}")
+    modImplementation("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}") {
+        transitive = false
+    }
     include("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}")
     modImplementation("maven.modrinth:modmenu:${project.mod_menu_version}")
     modImplementation("curse.maven:carpet-tis-addition-397510:${project.tis_carpet_version}")
+    // Runtime Deps
+    modRuntimeOnly("curse.maven:ommc-454900:${project.ommc_version}")
     modRuntimeOnly("curse.maven:lazydfu-433518:${project.lazydfu_version}")
     modRuntimeOnly("curse.maven:in-game-account-switcher-232676:${project.in_game_account_switcher_version}")
-    modRuntime("curse.maven:imblockerfabric-399225:${project.imblockerfabric}")
+    modRuntimeOnly("curse.maven:imblockerfabric-399225:${project.imblockerfabric}")
     // tis carpet need
     modRuntimeOnly("curse.maven:carpet-349239:${project.carpet_version}")
     runtimeOnly("org.yaml:snakeyaml:${project.snakeyaml_version}")
