@@ -93,7 +93,7 @@ public class SearchMobSpawnPointUtil {
                     if (SpawnHelper.canSpawn(SpawnRestriction.getLocation(entityType), world, currentPos, entityType) &&
                             lightingProvider.get(LightType.BLOCK).getLightLevel(currentPos) < maxSpawnLightLevel) {
                         Block block = world.getBlockState(currentPos.down()).getBlock();
-                        String blockId = Registry.BLOCK.getId(world.getBlockState(currentPos).getBlock()).toString();
+                        String blockId = Registry.BLOCK.getId(world.getBlockState(currentPos.down()).getBlock()).toString();
                         String blockName = block.getName().getString();
                         if (Configs.Generic.SEARCH_MOB_SPAWN_POINT_BLACK_LIST.getStrings().stream().noneMatch(s -> blockId.contains(s) || blockName.contains(s))) {
                             if (world.isSpaceEmpty(entityType.createSimpleBoundingBox(currentPos.getX() + 0.5D, currentPos.getY(), currentPos.getZ() + 0.5D))) {
