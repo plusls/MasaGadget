@@ -14,6 +14,7 @@ import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigHandler;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
 import fi.dy.masa.malilib.config.options.ConfigHotkey;
+import fi.dy.masa.malilib.config.options.ConfigStringList;
 import fi.dy.masa.malilib.gui.GuiBase;
 import fi.dy.masa.malilib.util.FileUtils;
 import fi.dy.masa.malilib.util.JsonUtils;
@@ -86,6 +87,7 @@ public class Configs implements IConfigHandler {
         private static final String PREFIX = String.format("%s.config.generic", ModInfo.MOD_ID);
         public static final ConfigHotkey OPEN_CONFIG_GUI = new TranslatableConfigHotkey(PREFIX, "openConfigGui", "G,C");
         public static final ConfigHotkey SEARCH_MOB_SPAWN_POINT = new TranslatableConfigHotkey(PREFIX, "searchMobSpawnPoint", ";");
+        public static final ConfigStringList SEARCH_MOB_SPAWN_POINT_BLACK_LIST = new TranslatableConfigStringList(PREFIX, "searchMobSpawnPointBlackList", ImmutableList.of());
         public static final ConfigHotkey SYNC_ALL_ENTITY_DATA = new TranslatableConfigHotkey(PREFIX, "syncAllEntityData", "");
         public static final ImmutableList<ConfigHotkey> HOTKEYS = ImmutableList.of(
                 OPEN_CONFIG_GUI,
@@ -96,6 +98,7 @@ public class Configs implements IConfigHandler {
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
                 OPEN_CONFIG_GUI,
                 SEARCH_MOB_SPAWN_POINT,
+                SEARCH_MOB_SPAWN_POINT_BLACK_LIST,
                 SYNC_ALL_ENTITY_DATA,
                 DEBUG
         );
@@ -160,15 +163,19 @@ public class Configs implements IConfigHandler {
     public static class Malilib {
         private static final String PREFIX = String.format("%s.config.malilib", ModInfo.MOD_ID);
         public static final ConfigBoolean FAST_SWITCH_MASA_CONFIG_GUI = new TranslatableConfigBoolean(PREFIX, "fastSwitchMasaConfigGui", true);
+        public static final ConfigBoolean BACKPORT_I18N_SUPPORT = new TranslatableConfigBoolean(PREFIX, "backportI18nSupport", true);
         public static final ConfigBoolean FIX_CONFIG_WIDGET_WIDTH = new TranslatableConfigBoolean(PREFIX, "fixConfigWidgetWidth", true);
         public static final ConfigBoolean FIX_GET_INVENTORY_TYPE = new TranslatableConfigBoolean(PREFIX, "fixGetInventoryType", true);
         public static final ConfigBoolean OPTIMIZE_CONFIG_WIDGET_SEARCH = new TranslatableConfigBoolean(PREFIX, "optimizeConfigWidgetSearch", true);
+        public static final ConfigBoolean SHOW_ORIGINAL_CONFIG_NAME = new TranslatableConfigBoolean(PREFIX, "showOriginalConfigName", false);
 
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
+                BACKPORT_I18N_SUPPORT,
                 FAST_SWITCH_MASA_CONFIG_GUI,
                 FIX_CONFIG_WIDGET_WIDTH,
                 FIX_GET_INVENTORY_TYPE,
-                OPTIMIZE_CONFIG_WIDGET_SEARCH
+                OPTIMIZE_CONFIG_WIDGET_SEARCH,
+                SHOW_ORIGINAL_CONFIG_NAME
         );
 
         public static final List<IConfigBase> GUI_OPTIONS = new LinkedList<>(OPTIONS);
@@ -218,6 +225,8 @@ public class Configs implements IConfigHandler {
         public static final ConfigBoolean RENDER_NEXT_RESTOCK_TIME = new TranslatableConfigBoolean(PREFIX, "renderNextRestockTime", false);
         public static final ConfigBoolean RENDER_TRADE_ENCHANTED_BOOK = new TranslatableConfigBoolean(PREFIX, "renderTradeEnchantedBook", false);
         public static final ConfigBoolean RENDER_ZOMBIE_VILLAGER_CONVERT_TIME = new TranslatableConfigBoolean(PREFIX, "renderZombieVillagerConvertTime", false);
+        public static final ConfigBoolean RESTOCK_WITH_CRAFTING = new TranslatableConfigBoolean(PREFIX, "restockWithCrafting", false);
+        public static final ConfigStringList RESTOCK_WITH_CRAFTING_RECIPES = new TranslatableConfigStringList(PREFIX, "restockWithCraftingRecipes", ImmutableList.of());
 
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
                 AUTO_SYNC_TRADE_OFFER_LIST,
@@ -231,13 +240,17 @@ public class Configs implements IConfigHandler {
                 PCA_SYNC_PROTOCOL,
                 RENDER_NEXT_RESTOCK_TIME,
                 RENDER_TRADE_ENCHANTED_BOOK,
-                RENDER_ZOMBIE_VILLAGER_CONVERT_TIME
+                RENDER_ZOMBIE_VILLAGER_CONVERT_TIME,
+                RESTOCK_WITH_CRAFTING,
+                RESTOCK_WITH_CRAFTING_RECIPES
         );
 
         public static final List<IConfigBase> GUI_OPTIONS = new LinkedList<>(OPTIONS);
 
         static {
             GUI_OPTIONS.removeIf(iConfigBase -> iConfigBase == INVENTORY_PREVIEW_SUPPORT_LARGE_BARREL && !ModInfo.isModLoaded(ModInfo.CARPET_TIS_ADDITION_MOD_ID));
+            GUI_OPTIONS.removeIf(iConfigBase -> iConfigBase == RESTOCK_WITH_CRAFTING && !ModInfo.isModLoaded(ModInfo.LITEMATICA_MOD_ID));
+            GUI_OPTIONS.removeIf(iConfigBase -> iConfigBase == RESTOCK_WITH_CRAFTING_RECIPES && !ModInfo.isModLoaded(ModInfo.LITEMATICA_MOD_ID));
         }
     }
 }
