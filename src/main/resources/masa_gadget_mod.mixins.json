@@ -41,5 +41,12 @@
   ],
   "injectors": {
     "defaultRequire": 0
-  }
+  },
+  "mixins": [
+    "malilib.backportI18nSupport.MixinConfigBase",
+    "malilib.backportI18nSupport.MixinConfigBooleanClient",
+    "malilib.backportI18nSupport.MixinFeatureToggle",
+    "malilib.backportI18nSupport.MixinInfoToggle",
+    "malilib.backportI18nSupport.MixinRendererToggle"
+  ]
 }
