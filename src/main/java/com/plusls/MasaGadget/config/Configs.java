@@ -162,10 +162,10 @@ public class Configs implements IConfigHandler {
     public static class Malilib {
         private static final String PREFIX = String.format("%s.config.malilib", ModInfo.MOD_ID);
         public static final ConfigBoolean FAST_SWITCH_MASA_CONFIG_GUI = new TranslatableConfigBoolean(PREFIX, "fastSwitchMasaConfigGui", true);
-        public static final ConfigBoolean SHOW_ORIGINAL_CONFIG_NAME = new TranslatableConfigBoolean(PREFIX, "showOriginalConfigName", true);
         public static final ConfigBoolean FIX_CONFIG_WIDGET_WIDTH = new TranslatableConfigBoolean(PREFIX, "fixConfigWidgetWidth", true);
         public static final ConfigBoolean FIX_GET_INVENTORY_TYPE = new TranslatableConfigBoolean(PREFIX, "fixGetInventoryType", true);
         public static final ConfigBoolean OPTIMIZE_CONFIG_WIDGET_SEARCH = new TranslatableConfigBoolean(PREFIX, "optimizeConfigWidgetSearch", true);
+        public static final ConfigBoolean SHOW_ORIGINAL_CONFIG_NAME = new TranslatableConfigBoolean(PREFIX, "showOriginalConfigName", false);
 
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
                 FAST_SWITCH_MASA_CONFIG_GUI,

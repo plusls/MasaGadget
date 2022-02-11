@@ -1,6 +1,7 @@
 package com.plusls.MasaGadget.mixin.malilib.showOriginalConfigName;
 
 import com.plusls.MasaGadget.config.Configs;
+import com.plusls.MasaGadget.util.MiscUtil;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
@@ -30,7 +31,7 @@ public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptio
     @ModifyVariable(method = "getMaxNameLengthWrapped", at = @At(value = "INVOKE_ASSIGN", target = "Ljava/lang/Math;max(II)I", ordinal = 0), ordinal = 0)
     private int getWrapper(int width) {
         if (Configs.Malilib.SHOW_ORIGINAL_CONFIG_NAME.getBooleanValue()) {
-            String displayName = Objects.requireNonNull(mg_getMaxNameLength_wrapped.getConfig()).getConfigGuiDisplayName();
+            String displayName = MiscUtil.getStringWithoutFormat(Objects.requireNonNull(mg_getMaxNameLength_wrapped.getConfig()).getConfigGuiDisplayName());
             String name = mg_getMaxNameLength_wrapped.getConfig().getName();
             if (!displayName.equals(name)) {
                 width = Math.max(width, (int) Math.ceil(this.getStringWidth(name) * 0.65f));

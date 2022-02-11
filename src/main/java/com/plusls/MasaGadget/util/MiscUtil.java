@@ -25,4 +25,19 @@ public class MiscUtil {
         }
         return ret;
     }
+
+    public static String getStringWithoutFormat(String text) {
+        StringBuilder ret = new StringBuilder(text);
+        if (text.contains("§")) {
+            ret = new StringBuilder();
+            for (int i = 0; i < text.length(); ++i) {
+                if (text.charAt(i) == '§') {
+                    ++i;
+                    continue;
+                }
+                ret.append(text.charAt(i));
+            }
+        }
+        return ret.toString();
+    }
 }
