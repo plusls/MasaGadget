@@ -12,6 +12,7 @@ public class ModInfo {
     public static final String TWEAKEROO_MOD_ID = "tweakeroo";
     public static final String MINIHUD_MOD_ID = "minihud";
     public static final String LITEMATICA_MOD_ID = "litematica";
+    public static final String ITEMSCROLLER_MOD_ID = "itemscroller";
     public static final String MODMENU_MOD_ID = "modmenu";
     public static final String BBOR_MOD_ID = "bbor";
     public static final String CARPET_TIS_ADDITION_MOD_ID = "carpet-tis-addition";

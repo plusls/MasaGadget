@@ -1,10 +1,11 @@
 package com.plusls.MasaGadget.util;
 
 import com.plusls.MasaGadget.ModInfo;
-import fi.dy.masa.minihud.config.Configs;
+import com.plusls.MasaGadget.config.Configs;
 import fi.dy.masa.minihud.renderer.shapes.ShapeBase;
 import fi.dy.masa.minihud.renderer.shapes.ShapeDespawnSphere;
 import fi.dy.masa.minihud.renderer.shapes.ShapeManager;
+import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.resource.language.I18n;
@@ -15,6 +16,7 @@ import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.LightType;
 import net.minecraft.world.SpawnHelper;
@@ -64,9 +66,11 @@ public class SearchMobSpawnPointUtil {
         int maxX = pos.getX() + 129;
         int maxZ = pos.getZ() + 129;
         BlockPos.Mutable currentPos = new BlockPos.Mutable();
-        int maxSpawnLightLevel = Configs.Generic.LIGHT_LEVEL_THRESHOLD.getIntegerValue();
+        int maxSpawnLightLevel = fi.dy.masa.minihud.config.Configs.Generic.LIGHT_LEVEL_THRESHOLD.getIntegerValue();
         LightingProvider lightingProvider = world.getChunkManager().getLightingProvider();
         EntityType<?> entityType = world.getDimension().isUltrawarm() ? EntityType.ZOMBIFIED_PIGLIN : EntityType.CREEPER;
+        EntityType<?> entityType2 = world.getDimension().isUltrawarm() ? null : EntityType.SPIDER;
+
         for (int x = pos.getX() - 129; x <= maxX; ++x) {
             for (int z = pos.getZ() - 129; z <= maxZ; ++z) {
                 WorldChunk chunk = world.getChunk(x >> 4, z >> 4);
@@ -88,7 +92,16 @@ public class SearchMobSpawnPointUtil {
                     currentPos.set(x, y, z);
                     if (SpawnHelper.canSpawn(SpawnRestriction.getLocation(entityType), world, currentPos, entityType) &&
                             lightingProvider.get(LightType.BLOCK).getLightLevel(currentPos) < maxSpawnLightLevel) {
-                        spawnPos = currentPos.mutableCopy();
+                        Block block = world.getBlockState(currentPos.down()).getBlock();
+                        String blockId = Registry.BLOCK.getId(world.getBlockState(currentPos.down()).getBlock()).toString();
+                        String blockName = block.getName().getString();
+                        if (Configs.Generic.SEARCH_MOB_SPAWN_POINT_BLACK_LIST.getStrings().stream().noneMatch(s -> blockId.contains(s) || blockName.contains(s))) {
+                            if (world.isSpaceEmpty(entityType.createSimpleBoundingBox(currentPos.getX() + 0.5D, currentPos.getY(), currentPos.getZ() + 0.5D))) {
+                                spawnPos = currentPos.mutableCopy();
+                            } else if (entityType2 != null && world.isSpaceEmpty(entityType2.createSimpleBoundingBox(currentPos.getX() + 0.5D, currentPos.getY(), currentPos.getZ() + 0.5D))) {
+                                spawnPos = currentPos.mutableCopy();
+                            }
+                        }
                     }
                 }
             }

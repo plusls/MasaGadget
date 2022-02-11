@@ -32,7 +32,8 @@
     "compat": {
       "tweakeroo": ">=0.11.0",
       "litematica": ">=0.9.0",
-      "minihud": ">=0.20.0"
+      "minihud": ">=0.20.0",
+      "itemscoller": ">=0.15.0-dev.20211201.010054"
     }
   },
   "depends": {
