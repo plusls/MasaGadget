@@ -33,6 +33,8 @@
   "masa_gadget_mod.config.litematica.useRelativePath.comment": "加载和保存投影时使用相对路径",
   "masa_gadget_mod.config.malilib.fastSwitchMasaConfigGui.name": "快速切换 Masa mod 配置界面",
   "masa_gadget_mod.config.malilib.fastSwitchMasaConfigGui.comment": "可以通过右上角的下拉菜单快速切换到别的 masa mod 的设置界面",
+  "masa_gadget_mod.config.malilib.showOriginalConfigName.name": "显示原始的配置选项名",
+  "masa_gadget_mod.config.malilib.showOriginalConfigName.comment": "如果当前显示的配置选项名和原始名字不一致时，在下方显示原始的配置名（英文）",
   "masa_gadget_mod.config.minihud.compactBborProtocol.name": "兼容 BBOR 协议",
   "masa_gadget_mod.config.minihud.compactBborProtocol.comment": "解析 BBOR 的协议并将结构数据发送给 MiniHUD，可以在未安装 servux 的服务器上使用 MiniHUD 的查看结构功能",
   "masa_gadget_mod.config.minihud.pcaSyncProtocolSyncBeehive.name": "PCA同步协议同步蜂巢数据",

@@ -13,6 +13,8 @@
     "litematica.saveInventoryToSchematicInServer.MixinSchematicUtils",
     "litematica.useRelativePath.MixinSchematicPlacement",
     "malilib.fastSwitchMasaConfigGui.MixinGuiConfigBase",
+    "malilib.showOriginalConfigName.MixinWidgetConfigOption",
+    "malilib.showOriginalConfigName.MixinWidgetListConfigOptions",
     "minihud.compactBborProtocol.MixinCustomPayloadS2CPacket",
     "minihud.compactBborProtocol.MixinDataStorage",
     "minihud.compactBborProtocol.MixinPlayerRespawnS2CPacket",
@@ -34,6 +36,6 @@
     "tweakeroo.renderZombieVillagerConvertTime.MixinZombieVillagerEntity"
   ],
   "injectors": {
-    "defaultRequire": 1
+    "defaultRequire": 0
   }
 }
