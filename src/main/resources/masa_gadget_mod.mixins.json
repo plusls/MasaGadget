@@ -16,12 +16,15 @@
     "malilib.fixConfigWidgetWidth.MixinWidgetListConfigOptions",
     "malilib.fixGetInventoryType.MixinInventoryOverlay",
     "malilib.optimizeConfigWidgetSearch.MixinWidgetListConfigOptions",
+    "malilib.showOriginalConfigName.MixinWidgetConfigOption",
+    "malilib.showOriginalConfigName.MixinWidgetListConfigOptions",
     "minihud.compactBborProtocol.MixinCustomPayloadS2CPacket",
     "minihud.compactBborProtocol.MixinDataStorage",
     "minihud.compactBborProtocol.MixinPlayerRespawnS2CPacket",
     "tweakeroo.autoSyncTradeOfferList.MixinClientPlayNetworkHandler",
     "tweakeroo.autoSyncTradeOfferList.MixinVillagerEntity",
     "tweakeroo.autoSyncTradeOfferList.MixinZombieVillagerEntity",
+    "tweakeroo.handRestockCrafting.MixinInventoryUtils",
     "tweakeroo.inventoryPreviewSupportComparator.MixinWorldRenderer",
     "tweakeroo.inventoryPreviewSupportFreeCamera.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportLargeBarrel.MixinRenderUtils",
@@ -38,6 +41,13 @@
     "tweakeroo.renderZombieVillagerConvertTime.MixinZombieVillagerEntity"
   ],
   "injectors": {
-    "defaultRequire": 1
-  }
+    "defaultRequire": 0
+  },
+  "mixins": [
+    "malilib.backportI18nSupport.MixinConfigBase",
+    "malilib.backportI18nSupport.MixinConfigBooleanClient",
+    "malilib.backportI18nSupport.MixinFeatureToggle",
+    "malilib.backportI18nSupport.MixinInfoToggle",
+    "malilib.backportI18nSupport.MixinRendererToggle"
+  ]
 }
