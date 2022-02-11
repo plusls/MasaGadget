@@ -21,6 +21,7 @@
     "tweakeroo.autoSyncTradeOfferList.MixinClientPlayNetworkHandler",
     "tweakeroo.autoSyncTradeOfferList.MixinVillagerEntity",
     "tweakeroo.autoSyncTradeOfferList.MixinZombieVillagerEntity",
+    "tweakeroo.handRestockCrafting.MixinInventoryUtils",
     "tweakeroo.inventoryPreviewSupportComparator.MixinWorldRenderer",
     "tweakeroo.inventoryPreviewSupportLargeBarrel.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportPlayer.MixinRenderUtils",

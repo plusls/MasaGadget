@@ -45,6 +45,7 @@ dependencies {
     modImplementation("curse.maven:minihud-244260:${project.minihud_version}")
     modImplementation("curse.maven:tweakeroo-297344:${project.tweakeroo_version}")
     modImplementation("curse.maven:litematica-308892:${project.litematica_version}")
+    modImplementation("curse.maven:itemscroller-242064:${project.itemscroller_version}")
     modImplementation("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}") {
         transitive = false
     }
