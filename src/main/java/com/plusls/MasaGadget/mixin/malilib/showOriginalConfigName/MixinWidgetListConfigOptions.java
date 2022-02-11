@@ -6,6 +6,7 @@ import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptionsBase;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
@@ -13,6 +14,7 @@ import java.util.Objects;
 
 @Mixin(value = WidgetListConfigOptions.class, remap = false)
 public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptionsBase<GuiConfigsBase.ConfigOptionWrapper, WidgetConfigOption> {
+    @Unique
     private GuiConfigsBase.ConfigOptionWrapper mg_getMaxNameLength_wrapped;
 
     public MixinWidgetListConfigOptions(int x, int y, int width, int height, int configWidth) {
