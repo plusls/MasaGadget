@@ -12,6 +12,11 @@
     "litematica.fixCarpetAccurateProtocol.MixinWorldUtils",
     "litematica.saveInventoryToSchematicInServer.MixinSchematicUtils",
     "litematica.useRelativePath.MixinSchematicPlacement",
+    "malilib.backportI18nSupport.MixinConfigBase",
+    "malilib.backportI18nSupport.MixinConfigBooleanClient",
+    "malilib.backportI18nSupport.MixinFeatureToggle",
+    "malilib.backportI18nSupport.MixinInfoToggle",
+    "malilib.backportI18nSupport.MixinRendererToggle",
     "malilib.fastSwitchMasaConfigGui.MixinGuiConfigBase",
     "malilib.fixConfigWidgetWidth.MixinWidgetListConfigOptions",
     "malilib.fixGetInventoryType.MixinInventoryOverlay",
@@ -41,12 +46,5 @@
   ],
   "injectors": {
     "defaultRequire": 0
-  },
-  "mixins": [
-    "malilib.backportI18nSupport.MixinConfigBase",
-    "malilib.backportI18nSupport.MixinConfigBooleanClient",
-    "malilib.backportI18nSupport.MixinFeatureToggle",
-    "malilib.backportI18nSupport.MixinInfoToggle",
-    "malilib.backportI18nSupport.MixinRendererToggle"
-  ]
+  }
 }
