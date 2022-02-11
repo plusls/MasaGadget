@@ -244,6 +244,8 @@ public class Configs implements IConfigHandler {
 
         static {
             GUI_OPTIONS.removeIf(iConfigBase -> iConfigBase == INVENTORY_PREVIEW_SUPPORT_LARGE_BARREL && !ModInfo.isModLoaded(ModInfo.CARPET_TIS_ADDITION_MOD_ID));
+            GUI_OPTIONS.removeIf(iConfigBase -> iConfigBase == RESTOCK_WITH_CRAFTING && !ModInfo.isModLoaded(ModInfo.LITEMATICA_MOD_ID));
+            GUI_OPTIONS.removeIf(iConfigBase -> iConfigBase == RESTOCK_WITH_CRAFTING_RECIPES && !ModInfo.isModLoaded(ModInfo.LITEMATICA_MOD_ID));
         }
     }
 }
