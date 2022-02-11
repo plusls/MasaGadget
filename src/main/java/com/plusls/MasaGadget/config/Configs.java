@@ -87,6 +87,7 @@ public class Configs implements IConfigHandler {
         private static final String PREFIX = String.format("%s.config.generic", ModInfo.MOD_ID);
         public static final ConfigHotkey OPEN_CONFIG_GUI = new TranslatableConfigHotkey(PREFIX, "openConfigGui", "G,C");
         public static final ConfigHotkey SEARCH_MOB_SPAWN_POINT = new TranslatableConfigHotkey(PREFIX, "searchMobSpawnPoint", ";");
+        public static final ConfigStringList SEARCH_MOB_SPAWN_POINT_BLACK_LIST = new TranslatableConfigStringList(PREFIX, "searchMobSpawnPointBlackList", ImmutableList.of());
         public static final ConfigHotkey SYNC_ALL_ENTITY_DATA = new TranslatableConfigHotkey(PREFIX, "syncAllEntityData", "");
         public static final ImmutableList<ConfigHotkey> HOTKEYS = ImmutableList.of(
                 OPEN_CONFIG_GUI,
@@ -97,6 +98,7 @@ public class Configs implements IConfigHandler {
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
                 OPEN_CONFIG_GUI,
                 SEARCH_MOB_SPAWN_POINT,
+                SEARCH_MOB_SPAWN_POINT_BLACK_LIST,
                 SYNC_ALL_ENTITY_DATA,
                 DEBUG
         );
@@ -160,9 +162,10 @@ public class Configs implements IConfigHandler {
     public static class Malilib {
         private static final String PREFIX = String.format("%s.config.malilib", ModInfo.MOD_ID);
         public static final ConfigBoolean FAST_SWITCH_MASA_CONFIG_GUI = new TranslatableConfigBoolean(PREFIX, "fastSwitchMasaConfigGui", true);
-
+        public static final ConfigBoolean SHOW_ORIGINAL_CONFIG_NAME = new TranslatableConfigBoolean(PREFIX, "showOriginalConfigName", true);
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
-                FAST_SWITCH_MASA_CONFIG_GUI
+                FAST_SWITCH_MASA_CONFIG_GUI,
+                SHOW_ORIGINAL_CONFIG_NAME
         );
 
         public static final List<IConfigBase> GUI_OPTIONS = new LinkedList<>(OPTIONS);
