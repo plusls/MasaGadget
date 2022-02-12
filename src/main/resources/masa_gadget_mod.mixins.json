@@ -13,6 +13,9 @@
     "litematica.saveInventoryToSchematicInServer.MixinSchematicUtils",
     "litematica.useRelativePath.MixinSchematicPlacement",
     "malilib.fastSwitchMasaConfigGui.MixinGuiConfigBase",
+    "malilib.favorites.MixinGuiConfigBase",
+    "malilib.favorites.MixinWidgetConfigOption",
+    "malilib.favorites.MixinWidgetListConfigOptions",
     "malilib.showOriginalConfigName.MixinWidgetConfigOption",
     "malilib.showOriginalConfigName.MixinWidgetListConfigOptions",
     "minihud.compactBborProtocol.MixinCustomPayloadS2CPacket",
@@ -38,10 +41,5 @@
   ],
   "injectors": {
     "defaultRequire": 0
-  },
-  "mixins": [
-    "malilib.favorites.MixinGuiConfigBase",
-    "malilib.favorites.MixinWidgetConfigOption",
-    "malilib.favorites.MixinWidgetListConfigOptions"
-  ]
+  }
 }
