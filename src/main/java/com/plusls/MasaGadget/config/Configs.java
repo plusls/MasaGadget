@@ -1,6 +1,7 @@
 package com.plusls.MasaGadget.config;
 
 import com.google.common.collect.ImmutableList;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -29,9 +30,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 
 import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Configs implements IConfigHandler {
     private static final String CONFIG_FILE_NAME = ModInfo.MOD_ID + ".json";
@@ -48,6 +47,19 @@ public class Configs implements IConfigHandler {
                 ConfigUtils.readConfigBase(root, "generic", Generic.OPTIONS);
                 ConfigUtils.readConfigBase(root, "litematica", Litematica.OPTIONS);
                 ConfigUtils.readConfigBase(root, "malilib", Malilib.OPTIONS);
+                try {
+                    JsonObject obj = Objects.requireNonNull(JsonUtils.getNestedObject(root, "malilib", true));
+                    JsonObject favoriteObj = Objects.requireNonNull(JsonUtils.getNestedObject(obj, "favorites", true));
+                    for (Map.Entry<String, JsonElement> favoriteEntry : favoriteObj.entrySet()) {
+                        HashSet<String> modFavorites = new HashSet<>();
+                        favoriteEntry.getValue().getAsJsonArray().forEach(jsonElement -> modFavorites.add(jsonElement.getAsString()));
+                        Malilib.FAVORITES.put(favoriteEntry.getKey(), modFavorites);
+                    }
+                    Malilib.favoritesFilter = JsonUtils.getBooleanOrDefault(obj, "favoritesFilter", false);
+                } catch (ClassCastException | IllegalStateException ignored) {
+
+                }
+
                 ConfigUtils.readConfigBase(root, "minihud", Minihud.OPTIONS);
                 ConfigUtils.readConfigBase(root, "tweakeroo", Tweakeroo.OPTIONS);
                 // int version = JsonUtils.getIntegerOrDefault(root, "configVersion", 1);
@@ -66,6 +78,19 @@ public class Configs implements IConfigHandler {
             ConfigUtils.writeConfigBase(root, "generic", Generic.OPTIONS);
             ConfigUtils.writeConfigBase(root, "litematica", Litematica.OPTIONS);
             ConfigUtils.writeConfigBase(root, "malilib", Malilib.OPTIONS);
+            JsonObject obj = Objects.requireNonNull(JsonUtils.getNestedObject(root, "malilib", true));
+            JsonObject favoriteObj = new JsonObject();
+            for (Map.Entry<String, HashSet<String>> favoriteEntry : Malilib.FAVORITES.entrySet()) {
+                JsonArray modFavoriteObj = new JsonArray();
+                if (!favoriteEntry.getValue().isEmpty()) {
+                    for (String modFavoriteConfigName : favoriteEntry.getValue()) {
+                        modFavoriteObj.add(modFavoriteConfigName);
+                    }
+                    favoriteObj.add(favoriteEntry.getKey(), modFavoriteObj);
+                }
+            }
+            obj.add("favorites", favoriteObj);
+            obj.add("favoritesFilter", new JsonPrimitive(Malilib.favoritesFilter));
             ConfigUtils.writeConfigBase(root, "minihud", Minihud.OPTIONS);
             ConfigUtils.writeConfigBase(root, "tweakeroo", Tweakeroo.OPTIONS);
             root.add("configVersion", new JsonPrimitive(CONFIG_VERSION));
@@ -160,8 +185,10 @@ public class Configs implements IConfigHandler {
     }
 
     public static class Malilib {
+        public static final HashMap<String, HashSet<String>> FAVORITES = new HashMap<>();
         private static final String PREFIX = String.format("%s.config.malilib", ModInfo.MOD_ID);
         public static final ConfigBoolean FAST_SWITCH_MASA_CONFIG_GUI = new TranslatableConfigBoolean(PREFIX, "fastSwitchMasaConfigGui", true);
+        public static final ConfigBoolean FAVORITES_SUPPORT = new TranslatableConfigBoolean(PREFIX, "favoritesSupport", false);
         public static final ConfigBoolean BACKPORT_I18N_SUPPORT = new TranslatableConfigBoolean(PREFIX, "backportI18nSupport", true);
         public static final ConfigBoolean FIX_CONFIG_WIDGET_WIDTH = new TranslatableConfigBoolean(PREFIX, "fixConfigWidgetWidth", true);
         public static final ConfigBoolean FIX_GET_INVENTORY_TYPE = new TranslatableConfigBoolean(PREFIX, "fixGetInventoryType", true);
@@ -171,16 +198,22 @@ public class Configs implements IConfigHandler {
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
                 BACKPORT_I18N_SUPPORT,
                 FAST_SWITCH_MASA_CONFIG_GUI,
+                FAVORITES_SUPPORT,
                 FIX_CONFIG_WIDGET_WIDTH,
                 FIX_GET_INVENTORY_TYPE,
                 OPTIMIZE_CONFIG_WIDGET_SEARCH,
                 SHOW_ORIGINAL_CONFIG_NAME
         );
-
         public static final List<IConfigBase> GUI_OPTIONS = new LinkedList<>(OPTIONS);
+        public static boolean favoritesFilter;
 
         static {
             GUI_OPTIONS.removeIf(iConfigBase -> iConfigBase == FAST_SWITCH_MASA_CONFIG_GUI && !ModInfo.isModLoaded(ModInfo.MODMENU_MOD_ID));
+            FAVORITES_SUPPORT.setValueChangeCallback(configBoolean -> {
+                if (MinecraftClient.getInstance().currentScreen instanceof GuiConfigs) {
+                    ((GuiConfigs) MinecraftClient.getInstance().currentScreen).refresh();
+                }
+            });
         }
     }
 

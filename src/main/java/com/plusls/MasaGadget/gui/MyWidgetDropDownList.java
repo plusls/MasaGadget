@@ -11,25 +11,28 @@ import java.util.function.Predicate;
 
 public class MyWidgetDropDownList<T> extends WidgetDropDownList<T> {
     private final Consumer<T> selectedCallback;
-    private final Predicate<T> shouldRender;
+    private final Predicate<T> shouldEnable;
 
     public MyWidgetDropDownList(int x, int y, int width, int height, int maxHeight, int maxVisibleEntries,
                                 List<T> entries, @Nullable IStringRetriever<T> stringRetriever,
-                                Consumer<T> selectedCallback, Predicate<T> shouldRender) {
+                                Consumer<T> selectedCallback, Predicate<T> shouldEnable) {
         super(x, y, width, height, maxHeight, maxVisibleEntries, entries, stringRetriever);
         this.selectedCallback = selectedCallback;
-        this.shouldRender = shouldRender;
+        this.shouldEnable = shouldEnable;
     }
 
     @Override
     protected void setSelectedEntry(int index) {
-        super.setSelectedEntry(index);
-        selectedCallback.accept(this.getSelectedEntry());
+        if (shouldEnable.test(this.getSelectedEntry())) {
+            super.setSelectedEntry(index);
+            selectedCallback.accept(this.getSelectedEntry());
+        }
+
     }
 
     @Override
     public void render(int mouseX, int mouseY, boolean selected, MatrixStack matrixStack) {
-        if (shouldRender.test(this.getSelectedEntry())) {
+        if (shouldEnable.test(this.getSelectedEntry())) {
             super.render(mouseX, mouseY, selected, matrixStack);
         }
     }
