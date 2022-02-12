@@ -67,6 +67,7 @@ public class GuiConfigs extends GuiConfigsBase {
     public void refresh() {
         WidgetListConfigOptions widgetListConfigOptions = this.getListWidget();
         if (widgetListConfigOptions != null) {
+            widgetListConfigOptions.getScrollbar().setValue(0);
             widgetListConfigOptions.refreshEntries();
         }
     }

@@ -1,6 +1,7 @@
 package com.plusls.MasaGadget.mixin.malilib.favorites;
 
 import com.plusls.MasaGadget.config.Configs;
+import com.plusls.MasaGadget.gui.GuiConfigs;
 import com.plusls.MasaGadget.gui.MasaGadgetIcons;
 import com.plusls.MasaGadget.gui.WidgetIconToggleButton;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
@@ -25,6 +26,7 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
                 Configs.Malilib.favorites = status;
                 WidgetListConfigOptions widgetListConfigOptions = this.getListWidget();
                 if (widgetListConfigOptions != null) {
+                    widgetListConfigOptions.getScrollbar().setValue(0);
                     widgetListConfigOptions.refreshEntries();
                 }
             },

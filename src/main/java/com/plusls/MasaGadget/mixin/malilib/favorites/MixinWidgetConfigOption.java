@@ -3,6 +3,7 @@ package com.plusls.MasaGadget.mixin.malilib.favorites;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.gui.MasaGadgetIcons;
 import com.plusls.MasaGadget.gui.WidgetIconToggleButton;
+import fi.dy.masa.malilib.config.ConfigType;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
@@ -24,6 +25,12 @@ public abstract class MixinWidgetConfigOption extends WidgetConfigOptionBase<Gui
     private void addFavoritesButton(int x, int y, float zLevel, int labelWidth, int configWidth, IConfigBase config, CallbackInfo ci) {
         if (!Configs.Malilib.FAVORITES_SUPPORT.getBooleanValue()) {
             return;
+        }
+        ConfigType type = config.getType();
+        if (type == ConfigType.COLOR) {
+            configWidth += 22;
+        } else if (type == ConfigType.INTEGER || type == ConfigType.DOUBLE) {
+            configWidth += 18;
         }
         this.addWidget(new WidgetIconToggleButton(x + configWidth + 15 +
                 this.getStringWidth(I18n.translate("malilib.gui.button.reset.caps")),
