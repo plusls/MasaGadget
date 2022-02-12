@@ -9,11 +9,15 @@ import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOptionBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptionsBase;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.HashSet;
 
 @Mixin(value = WidgetConfigOption.class, remap = false)
 public abstract class MixinWidgetConfigOption extends WidgetConfigOptionBase<GuiConfigsBase.ConfigOptionWrapper> {
@@ -32,14 +36,22 @@ public abstract class MixinWidgetConfigOption extends WidgetConfigOptionBase<Gui
         } else if (type == ConfigType.INTEGER || type == ConfigType.DOUBLE) {
             configWidth += 18;
         }
+
+        Screen screen = MinecraftClient.getInstance().currentScreen;
+        if (!(screen instanceof GuiConfigsBase)) {
+            return;
+        }
+        String modId = ((GuiConfigsBase)screen).getModId();
+
         this.addWidget(new WidgetIconToggleButton(x + configWidth + 15 +
-                this.getStringWidth(I18n.translate("malilib.gui.button.reset.caps")),
-                y + 2, MasaGadgetIcons.FAVORITE, Configs.Malilib.FAVORITES.getOrDefault(config.getName(), false),
+                this.getStringWidth(I18n.translate("malilib.gui.button.reset.caps")), y + 2,
+                MasaGadgetIcons.FAVORITE, Configs.Malilib.FAVORITES.computeIfAbsent(modId, k -> new HashSet<>()).contains(config.getName()),
                 status -> {
+                    HashSet<String> modFavorites = Configs.Malilib.FAVORITES.computeIfAbsent(modId, k -> new HashSet<>());
                     if (status) {
-                        Configs.Malilib.FAVORITES.put(config.getName(), true);
+                        modFavorites.add(config.getName());
                     } else {
-                        Configs.Malilib.FAVORITES.put(config.getName(), false);
+                        modFavorites.remove(config.getName());
                     }
                     Configs.saveToFile();
                     Configs.loadFromFile();

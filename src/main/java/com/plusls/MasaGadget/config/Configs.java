@@ -1,6 +1,7 @@
 package com.plusls.MasaGadget.config;
 
 import com.google.common.collect.ImmutableList;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -50,7 +51,9 @@ public class Configs implements IConfigHandler {
                     JsonObject obj = Objects.requireNonNull(JsonUtils.getNestedObject(root, "malilib", true));
                     JsonObject favoriteObj = Objects.requireNonNull(JsonUtils.getNestedObject(obj, "favorites", true));
                     for (Map.Entry<String, JsonElement> favoriteEntry : favoriteObj.entrySet()) {
-                        Malilib.FAVORITES.put(favoriteEntry.getKey(), favoriteEntry.getValue().getAsBoolean());
+                        HashSet<String> modFavorites = new HashSet<>();
+                        favoriteEntry.getValue().getAsJsonArray().forEach(jsonElement -> modFavorites.add(jsonElement.getAsString()));
+                        Malilib.FAVORITES.put(favoriteEntry.getKey(), modFavorites);
                     }
                     Malilib.favoritesFilter = JsonUtils.getBooleanOrDefault(obj, "favoritesFilter", false);
                 } catch (ClassCastException | IllegalStateException ignored) {
@@ -77,9 +80,13 @@ public class Configs implements IConfigHandler {
             ConfigUtils.writeConfigBase(root, "malilib", Malilib.OPTIONS);
             JsonObject obj = Objects.requireNonNull(JsonUtils.getNestedObject(root, "malilib", true));
             JsonObject favoriteObj = new JsonObject();
-            for (Map.Entry<String, Boolean> favoriteEntry : Malilib.FAVORITES.entrySet()) {
-                if (favoriteEntry.getValue()) {
-                    favoriteObj.add(favoriteEntry.getKey(), new JsonPrimitive(true));
+            for (Map.Entry<String, HashSet<String>> favoriteEntry : Malilib.FAVORITES.entrySet()) {
+                JsonArray modFavoriteObj = new JsonArray();
+                if (!favoriteEntry.getValue().isEmpty()) {
+                    for (String modFavoriteConfigName: favoriteEntry.getValue()) {
+                        modFavoriteObj.add(modFavoriteConfigName);
+                    }
+                    favoriteObj.add(favoriteEntry.getKey(), modFavoriteObj);
                 }
             }
             obj.add("favorites", favoriteObj);
@@ -178,7 +185,7 @@ public class Configs implements IConfigHandler {
     }
 
     public static class Malilib {
-        public static final HashMap<String, Boolean> FAVORITES = new HashMap<>();
+        public static final HashMap<String, HashSet<String>> FAVORITES = new HashMap<>();
         private static final String PREFIX = String.format("%s.config.malilib", ModInfo.MOD_ID);
         public static final ConfigBoolean FAST_SWITCH_MASA_CONFIG_GUI = new TranslatableConfigBoolean(PREFIX, "fastSwitchMasaConfigGui", true);
         public static final ConfigBoolean FAVORITES_SUPPORT = new TranslatableConfigBoolean(PREFIX, "favoritesSupport", false);
