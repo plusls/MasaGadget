@@ -6,9 +6,13 @@ import com.plusls.MasaGadget.gui.WidgetIconToggleButton;
 import fi.dy.masa.malilib.config.ConfigType;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
+import fi.dy.masa.malilib.gui.button.ConfigButtonKeybind;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOptionBase;
+import fi.dy.masa.malilib.gui.widgets.WidgetKeybindSettings;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptionsBase;
+import fi.dy.masa.malilib.hotkeys.IHotkey;
+import fi.dy.masa.malilib.hotkeys.IKeybind;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.I18n;
@@ -32,9 +36,12 @@ public abstract class MixinWidgetConfigOption extends WidgetConfigOptionBase<Gui
         }
         ConfigType type = config.getType();
         if (type == ConfigType.COLOR) {
-            configWidth += 22;
+            configWidth += 24;
         } else if (type == ConfigType.INTEGER || type == ConfigType.DOUBLE) {
             configWidth += 18;
+        } else if (type == ConfigType.HOTKEY) {
+            configWidth += 25;
+            x = x - 4 - configWidth;
         }
 
         Screen screen = MinecraftClient.getInstance().currentScreen;
