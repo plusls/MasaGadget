@@ -38,5 +38,10 @@
   ],
   "injectors": {
     "defaultRequire": 0
-  }
+  },
+  "mixins": [
+    "malilib.favorites.MixinGuiConfigBase",
+    "malilib.favorites.MixinWidgetConfigOption",
+    "malilib.favorites.MixinWidgetListConfigOptions"
+  ]
 }

@@ -7,6 +7,7 @@ import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.button.ButtonBase;
 import fi.dy.masa.malilib.gui.button.ButtonGeneric;
 import fi.dy.masa.malilib.gui.button.IButtonActionListener;
+import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.util.StringUtils;
 import net.minecraft.client.resource.language.I18n;
 
@@ -61,6 +62,13 @@ public class GuiConfigs extends GuiConfigsBase {
         button.setEnabled(GuiConfigs.tab != tab);
         this.addButton(button, new ButtonListenerConfigTabs(tab, this));
         return button.getWidth() + 2;
+    }
+
+    public void refresh() {
+        WidgetListConfigOptions widgetListConfigOptions = this.getListWidget();
+        if (widgetListConfigOptions != null) {
+            widgetListConfigOptions.refreshEntries();
+        }
     }
 
     @Override
