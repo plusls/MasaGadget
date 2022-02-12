@@ -48,10 +48,11 @@ public class Configs implements IConfigHandler {
                 ConfigUtils.readConfigBase(root, "malilib", Malilib.OPTIONS);
                 try {
                     JsonObject obj = Objects.requireNonNull(JsonUtils.getNestedObject(root, "malilib", true));
-                    JsonObject favoriteObj = Objects.requireNonNull(JsonUtils.getNestedObject(obj, "favorite", true));
+                    JsonObject favoriteObj = Objects.requireNonNull(JsonUtils.getNestedObject(obj, "favorites", true));
                     for (Map.Entry<String, JsonElement> favoriteEntry : favoriteObj.entrySet()) {
                         Malilib.FAVORITES.put(favoriteEntry.getKey(), favoriteEntry.getValue().getAsBoolean());
                     }
+                    Malilib.favoritesFilter = JsonUtils.getBooleanOrDefault(obj, "favoritesFilter", false);
                 } catch (ClassCastException | IllegalStateException ignored) {
 
                 }
@@ -81,7 +82,8 @@ public class Configs implements IConfigHandler {
                     favoriteObj.add(favoriteEntry.getKey(), new JsonPrimitive(true));
                 }
             }
-            obj.add("favorite", favoriteObj);
+            obj.add("favorites", favoriteObj);
+            obj.add("favoritesFilter", new JsonPrimitive(Malilib.favoritesFilter));
             ConfigUtils.writeConfigBase(root, "minihud", Minihud.OPTIONS);
             ConfigUtils.writeConfigBase(root, "tweakeroo", Tweakeroo.OPTIONS);
             root.add("configVersion", new JsonPrimitive(CONFIG_VERSION));
@@ -187,7 +189,7 @@ public class Configs implements IConfigHandler {
                 SHOW_ORIGINAL_CONFIG_NAME
         );
         public static final List<IConfigBase> GUI_OPTIONS = new LinkedList<>(OPTIONS);
-        public static boolean favorites;
+        public static boolean favoritesFilter;
 
         static {
             GUI_OPTIONS.removeIf(iConfigBase -> iConfigBase == FAST_SWITCH_MASA_CONFIG_GUI && !ModInfo.isModLoaded(ModInfo.MODMENU_MOD_ID));

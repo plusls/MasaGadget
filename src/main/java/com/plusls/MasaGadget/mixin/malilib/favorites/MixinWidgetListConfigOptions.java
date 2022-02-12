@@ -24,7 +24,7 @@ public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptio
 
     @Inject(method = "getEntryStringsForFilter*", at = @At(value = "HEAD"), cancellable = true)
     private void filterFavorites(GuiConfigsBase.ConfigOptionWrapper entry, CallbackInfoReturnable<List<String>> cir) {
-        if (Configs.Malilib.FAVORITES_SUPPORT.getBooleanValue() && Configs.Malilib.favorites) {
+        if (Configs.Malilib.FAVORITES_SUPPORT.getBooleanValue() && Configs.Malilib.favoritesFilter) {
             IConfigBase config = entry.getConfig();
             if (config == null || !Configs.Malilib.FAVORITES.getOrDefault(config.getName(), false)) {
                 cir.setReturnValue(ImmutableList.of(""));
@@ -34,7 +34,7 @@ public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptio
 
     @Override
     protected void addNonFilteredContents(Collection<GuiConfigsBase.ConfigOptionWrapper> placements) {
-        if (Configs.Malilib.FAVORITES_SUPPORT.getBooleanValue() && Configs.Malilib.favorites) {
+        if (Configs.Malilib.FAVORITES_SUPPORT.getBooleanValue() && Configs.Malilib.favoritesFilter) {
             for (GuiConfigsBase.ConfigOptionWrapper configWrapper : placements) {
                 IConfigBase config = configWrapper.getConfig();
                 if (config != null && Configs.Malilib.FAVORITES.getOrDefault(config.getName(), false)) {

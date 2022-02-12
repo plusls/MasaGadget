@@ -1,7 +1,6 @@
 package com.plusls.MasaGadget.mixin.malilib.favorites;
 
 import com.plusls.MasaGadget.config.Configs;
-import com.plusls.MasaGadget.gui.GuiConfigs;
 import com.plusls.MasaGadget.gui.MasaGadgetIcons;
 import com.plusls.MasaGadget.gui.WidgetIconToggleButton;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
@@ -21,14 +20,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = GuiConfigsBase.class, remap = false)
 public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.ConfigOptionWrapper, WidgetConfigOption, WidgetListConfigOptions> implements IKeybindConfigGui {
     private final WidgetIconToggleButton favoritesButton = new WidgetIconToggleButton(GuiUtils.getScaledWindowWidth() - 175, 13,
-            MasaGadgetIcons.FAVORITE, Configs.Malilib.favorites,
+            MasaGadgetIcons.FAVORITE, Configs.Malilib.favoritesFilter,
             status -> {
-                Configs.Malilib.favorites = status;
+                Configs.Malilib.favoritesFilter = status;
                 WidgetListConfigOptions widgetListConfigOptions = this.getListWidget();
                 if (widgetListConfigOptions != null) {
                     widgetListConfigOptions.getScrollbar().setValue(0);
                     widgetListConfigOptions.refreshEntries();
                 }
+                Configs.saveToFile();
+                Configs.loadFromFile();
             },
             status -> status ? I18n.translate("masa_gadget_mod.message.showAllOptions") : I18n.translate("masa_gadget_mod.message.showFavorite"),
             widgetIconToggleButton -> Configs.Malilib.FAVORITES_SUPPORT.getBooleanValue());
@@ -43,7 +44,7 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
     }
 
     @Dynamic
-    @Inject(method = "resize", at = @At(value = "HEAD"))
+    @Inject(method = "resize", at = @At(value = "RETURN"))
     public void favoritesResize(MinecraftClient mc, int width, int height, CallbackInfo callbackInfo) {
         favoritesButton.setX(GuiUtils.getScaledWindowWidth() - 175);
     }
