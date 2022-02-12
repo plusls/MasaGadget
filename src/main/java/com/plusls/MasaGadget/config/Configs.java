@@ -179,7 +179,7 @@ public class Configs implements IConfigHandler {
         public static final HashMap<String, Boolean> FAVORITES = new HashMap<>();
         private static final String PREFIX = String.format("%s.config.malilib", ModInfo.MOD_ID);
         public static final ConfigBoolean FAST_SWITCH_MASA_CONFIG_GUI = new TranslatableConfigBoolean(PREFIX, "fastSwitchMasaConfigGui", true);
-        public static final ConfigBoolean FAVORITES_SUPPORT = new TranslatableConfigBoolean(PREFIX, "favoritesSupport", true);
+        public static final ConfigBoolean FAVORITES_SUPPORT = new TranslatableConfigBoolean(PREFIX, "favoritesSupport", false);
         public static final ConfigBoolean SHOW_ORIGINAL_CONFIG_NAME = new TranslatableConfigBoolean(PREFIX, "showOriginalConfigName", false);
         public static final ImmutableList<IConfigBase> OPTIONS = ImmutableList.of(
                 FAST_SWITCH_MASA_CONFIG_GUI,
