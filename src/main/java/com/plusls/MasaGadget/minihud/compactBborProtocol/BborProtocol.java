@@ -15,7 +15,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,12 +39,10 @@ public class BborProtocol {
     static {
         for (StructureType type : StructureType.VALUES) {
             String structureName = type.getStructureName();
-            if (type.getFeature() != null) {
-                Identifier key = Registry.STRUCTURE_FEATURE.getId(type.getFeature());
-                if (key != null) {
-                    BBOR_ID_TO_MINIHUD_ID.put(structureName.hashCode(), key.toString());
-                    BBOR_ID_TO_MINIHUD_ID.put(lowVersionStructureName(structureName).hashCode(), key.toString());
-                }
+            Identifier key = type.getFeatureId();
+            if (key != null) {
+                BBOR_ID_TO_MINIHUD_ID.put(structureName.hashCode(), key.toString());
+                BBOR_ID_TO_MINIHUD_ID.put(lowVersionStructureName(structureName).hashCode(), key.toString());
             }
         }
     }
