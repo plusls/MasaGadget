@@ -83,7 +83,7 @@ public class Configs implements IConfigHandler {
             for (Map.Entry<String, HashSet<String>> favoriteEntry : Malilib.FAVORITES.entrySet()) {
                 JsonArray modFavoriteObj = new JsonArray();
                 if (!favoriteEntry.getValue().isEmpty()) {
-                    for (String modFavoriteConfigName: favoriteEntry.getValue()) {
+                    for (String modFavoriteConfigName : favoriteEntry.getValue()) {
                         modFavoriteObj.add(modFavoriteConfigName);
                     }
                     favoriteObj.add(favoriteEntry.getKey(), modFavoriteObj);

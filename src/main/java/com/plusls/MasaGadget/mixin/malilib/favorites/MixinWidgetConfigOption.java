@@ -41,7 +41,7 @@ public abstract class MixinWidgetConfigOption extends WidgetConfigOptionBase<Gui
         if (!(screen instanceof GuiConfigsBase)) {
             return;
         }
-        String modId = ((GuiConfigsBase)screen).getModId();
+        String modId = ((GuiConfigsBase) screen).getModId();
 
         this.addWidget(new WidgetIconToggleButton(x + configWidth + 15 +
                 this.getStringWidth(I18n.translate("malilib.gui.button.reset.caps")), y + 2,

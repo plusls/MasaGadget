@@ -33,7 +33,7 @@ public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptio
             if (!(screen instanceof GuiConfigsBase)) {
                 return;
             }
-            String modId = ((GuiConfigsBase)screen).getModId();
+            String modId = ((GuiConfigsBase) screen).getModId();
             if (config == null || !Configs.Malilib.FAVORITES.computeIfAbsent(modId, k -> new HashSet<>()).contains(config.getName())) {
                 cir.setReturnValue(ImmutableList.of(""));
             }
@@ -47,7 +47,7 @@ public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptio
             if (!(screen instanceof GuiConfigsBase)) {
                 return;
             }
-            String modId = ((GuiConfigsBase)screen).getModId();
+            String modId = ((GuiConfigsBase) screen).getModId();
             for (GuiConfigsBase.ConfigOptionWrapper configWrapper : placements) {
                 IConfigBase config = configWrapper.getConfig();
                 if (config != null && Configs.Malilib.FAVORITES.computeIfAbsent(modId, k -> new HashSet<>()).contains(config.getName())) {
