@@ -32,7 +32,7 @@ public abstract class MixinPlayerRespawnS2CPacket {
         }
         RegistryKey<World> oldDimension = Objects.requireNonNull(MinecraftClient.getInstance().player).world.getRegistryKey();
         RegistryKey<World> newDimension = packet.getDimension();
-        if (oldDimension != newDimension && BborProtocol.structuresCache != null) {
+        if (oldDimension != newDimension) {
             // reload minihud struct when dimension change
             // BborProtocol.bborRefreshData();
         }

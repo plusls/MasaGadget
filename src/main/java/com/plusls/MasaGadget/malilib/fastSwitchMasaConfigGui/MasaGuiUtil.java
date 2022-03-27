@@ -9,30 +9,21 @@ import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MasaGuiUtil {
-    private final static Map<ConfigScreenFactory<?>, String> masaGuiData = new HashMap<>();
-    private final static Map<Class<?>, ConfigScreenFactory<?>> masaGuiClassData = new HashMap<>();
+    public final static Map<ConfigScreenFactory<?>, String> masaGuiData = new HashMap<>();
+    public final static ArrayList<ConfigScreenFactory<?>> masaGuiConfigScreenFactorys = new ArrayList<>();
+    public final static Map<Class<?>, ConfigScreenFactory<?>> masaGuiClassData = new HashMap<>();
+
     private static boolean initialised = false;
 
-    public static Map<ConfigScreenFactory<?>, String> getMasaGuiData() {
-        if (!initialised) {
-            initMasaModScreenList();
+    public static void initMasaModScreenList() {
+        if (initialised) {
+            return;
         }
-        return masaGuiData;
-    }
-
-    public static Map<Class<?>, ConfigScreenFactory<?>> getMasaGuiClassData() {
-        if (!initialised) {
-            initMasaModScreenList();
-        }
-        return masaGuiClassData;
-    }
-
-
-    private static void initMasaModScreenList() {
         initialised = true;
         MinecraftClient client = MinecraftClient.getInstance();
         if (!ModInfo.isModLoaded(ModInfo.MODMENU_MOD_ID)) {
@@ -46,6 +37,7 @@ public class MasaGuiUtil {
                 if (screen instanceof GuiConfigsBase) {
                     ConfigScreenFactory<?> configScreenFactory = api.getModConfigScreenFactory();
                     masaGuiData.put(configScreenFactory, metadata.getName());
+                    masaGuiConfigScreenFactorys.add(configScreenFactory);
                     masaGuiClassData.put(screen.getClass(), configScreenFactory);
                 }
             } catch (Throwable e) {

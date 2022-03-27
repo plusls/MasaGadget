@@ -41,8 +41,5 @@
     "fabric": ">=0.28.0",
     "minecraft": "1.17.x",
     "malilib": ">=0.10.0-dev.26"
-  },
-  "injectors": {
-    "defaultRequire": 0
   }
 }
