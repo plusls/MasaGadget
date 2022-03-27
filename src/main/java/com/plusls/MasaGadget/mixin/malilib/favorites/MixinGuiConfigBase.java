@@ -47,6 +47,9 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
     @Dynamic
     @Inject(method = "resize", at = @At(value = "RETURN"))
     public void favoritesResize(MinecraftClient mc, int width, int height, CallbackInfo callbackInfo) {
+        if (favoritesButton == null) {
+            return;
+        }
         favoritesButton.setX(GuiUtils.getScaledWindowWidth() - 175);
     }
 }
