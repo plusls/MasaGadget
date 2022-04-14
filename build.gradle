@@ -1,104 +1,207 @@
 plugins {
-    id("fabric-loom").version("0.11-SNAPSHOT")
+    id 'java-library'
     id("maven-publish")
     id("org.ajoberstar.grgit").version("4.1.0")
     id("com.modrinth.minotaur").version("1.2.1")
 }
 
-setSourceCompatibility(JavaVersion.toVersion(project.java_version))
-setTargetCompatibility(JavaVersion.toVersion(project.java_version))
 String real_version = "${project.mod_version}"
 
 if (project.pre_release != "") {
     real_version += "-${project.pre_release}+"
-    if (project.pre_release == "alpha" && !grgit.status().clean) {
-        real_version += new Date().format("yyyyMMdd.HHmmss") + ".dirty." + grgit.head().abbreviatedId
-    } else {
-        real_version += grgit.head().abbreviatedId
+    real_version += grgit.head().abbreviatedId
+}
+
+version = real_version
+group = project.group
+
+var currentProject = project
+
+allprojects {
+    apply plugin: "maven-publish"
+
+    tasks.withType(JavaCompile).configureEach {
+        it.options.encoding = "UTF-8"
+        it.sourceCompatibility = JavaVersion.VERSION_1_8
+        it.targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    java {
+        withSourcesJar()
     }
 }
 
-setArchivesBaseName("${project.archives_base_name}-${project.minecraft_version}")
-setVersion(real_version)
-setGroup(project.maven_group)
-
-repositories {
-    maven {
-        url = "https://www.cursemaven.com"
+static String getMagiclibCompatName(String minecraftVersion) {
+    String ret = minecraftVersion.replace(".", "_")
+    int idx = ret.lastIndexOf("_")
+    if (idx == -1) {
+        return ""
     }
-    maven {
-        url = "https://api.modrinth.com/maven"
+    if (idx != 1) {
+        ret = ret.substring(0, idx)
     }
-    mavenCentral()
+    return ret
 }
 
-loom {
-    accessWidenerPath.set(file(file("src/main/resources/masa_gadget_mod.accesswidener")))
-}
+subprojects {
+    apply plugin: "fabric-loom"
 
-dependencies {
-    minecraft("com.mojang:minecraft:${project.minecraft_version}")
-    mappings("net.fabricmc:yarn:${project.minecraft_version}+build.${project.yarn_mappings}:v2")
-    modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
-    modImplementation("curse.maven:malilib-303119:${project.malilib_version}")
-    modImplementation("curse.maven:minihud-244260:${project.minihud_version}")
-    modImplementation("curse.maven:tweakeroo-297344:${project.tweakeroo_version}")
-    modImplementation("curse.maven:litematica-308892:${project.litematica_version}")
-    modImplementation("curse.maven:itemscroller-242064:${project.itemscroller_version}")
-    modImplementation("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}") {
-        transitive = false
+    loom.runConfigs.configureEach {
+        property("mixin.debug.export", "true")
     }
-    include("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}")
-    modImplementation("maven.modrinth:modmenu:${project.mod_menu_version}")
-    modImplementation("curse.maven:carpet-tis-addition-397510:${project.tis_carpet_version}")
-    // Runtime Deps
-    modRuntimeOnly("curse.maven:ommc-454900:${project.ommc_version}")
-    modRuntimeOnly("curse.maven:lazydfu-433518:${project.lazydfu_version}")
-    modRuntimeOnly("curse.maven:in-game-account-switcher-232676:${project.in_game_account_switcher_version}")
-    modRuntimeOnly("curse.maven:imblockerfabric-399225:${project.imblockerfabric}")
-    // tis carpet need
-    modRuntimeOnly("curse.maven:carpet-349239:${project.carpet_version}")
-    runtimeOnly("org.yaml:snakeyaml:${project.snakeyaml_version}")
-}
 
-processResources {
-    inputs.property("version", real_version)
-    filesMatching("fabric.mod.json") {
-        expand(["version": real_version])
+    version = currentProject.version
+    group = currentProject.group
+
+
+    repositories {
+        maven {
+            url 'https://www.cursemaven.com/'
+        }
+        maven {
+            url = "https://api.modrinth.com/maven"
+        }
+        maven {
+            url 'https://maven.hendrixshen.top'
+        }
+        mavenCentral()
+        mavenLocal()
     }
-}
 
-tasks.withType(JavaCompile).configureEach {
-    it.options.encoding = "UTF-8"
-    it.options.release.set(Integer.parseInt(project.java_version as String))
-}
+    dependencies {
+        minecraft("com.mojang:minecraft:${project.minecraft_version}")
+        mappings(loom.officialMojangMappings())
 
-java {
-    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-    // if it is present.
-    // If you remove this line, sources will not be generated.
-    // withSourcesJar()
-}
+        modImplementation("curse.maven:minihud-244260:${project.minihud_version}")
+        modImplementation("curse.maven:tweakeroo-297344:${project.tweakeroo_version}")
+        modImplementation("curse.maven:litematica-308892:${project.litematica_version}")
+        modImplementation("curse.maven:itemscroller-242064:${project.itemscroller_version}")
+        modImplementation("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}") {
+            transitive = false
+        }
+        include("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}")
+        modImplementation("curse.maven:carpet-tis-addition-397510:${project.tis_carpet_version}")
 
-jar {
-    from("LICENSE") {
-        rename({ return "${it}_${project.archives_base_name}" })
+
+        modImplementation("top.hendrixshen:magiclib-compat-mc${currentProject.getMagiclibCompatName(project.minecraft_version)}:${project.magiclib_version}")
+
+        // tis carpet need
+        modRuntimeOnly("curse.maven:carpet-349239:${project.carpet_version}")
+        runtimeOnly("org.yaml:snakeyaml:${project.snakeyaml_version}")
+
+        if (project.name != (String) "${currentProject.mod_id}-core") {
+            if (project.gradle.startParameter.taskNames.size() == 1 &&
+                    project.gradle.startParameter.taskNames.get(0) == "runClient") {
+                modImplementation(project(path: ":${currentProject.mod_id}-core")) {
+                    transitive = false
+                }
+            } else {
+                implementation(project(path: ":${currentProject.mod_id}-core")) {
+                    transitive = false
+                }
+            }
+        } else {
+            runtimeOnly(fileTree([dir: "../${currentProject.mod_id}-compat-mc1_18/build/devlibs", include: ["${currentProject.mod_id}-compat-mc1_18-${project.version}-dev.jar"]]))
+        }
+        runtimeOnly(currentProject) {
+            transitive = false
+        }
     }
+    processResources {
+        inputs.property("version", currentProject.version)
+        filesMatching("fabric.mod.json") {
+            expand(["mod_version" : currentProject.version,
+                    "mod_id"      : currentProject.mod_id,
+                    "mod_name"    : currentProject.mod_name,
+                    "mod_homepage": currentProject.mod_homepage,
+                    "mod_sources" : currentProject.mod_sources,
+                    "mod_license" : currentProject.mod_license
+            ])        }
+    }
+
+    runClient {
+        defaultCharacterEncoding = "UTF-8"
+    }
+
+    runServer {
+        defaultCharacterEncoding = "UTF-8"
+    }
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from(components.java)
+            }
+        }
+
+        repositories {
+            mavenLocal()
+            maven {
+                url "${rootDir}/publish"
+            }
+        }
+    }
+
 }
+
 
 import com.modrinth.minotaur.TaskModrinthUpload
+import groovy.json.JsonBuilder
 
-task publishModrinth(type: TaskModrinthUpload) {
-    onlyIf {
-        System.getenv("MODRINTH") // Only attempt to run this task if the MODRINTH variable is set, otherwise SKIP it
+processResources {
+    inputs.property "version", currentProject.version
+    if (project.gradle.startParameter.taskNames.size() >= 1 &&
+            project.gradle.startParameter.taskNames.get(0) != "runClient") {
+        var jars = []
+        subprojects.each({
+            jars.add(["file": "META-INF/jars/${it.name}-${it.version}.jar"])
+        })
+        filesMatching(("fabric.mod.json"), {
+            include("fabric.mod.json")
+            expand(["mod_version" : currentProject.version,
+                    "sub_jars"    : new JsonBuilder(jars).toPrettyString(),
+                    "mod_id"      : currentProject.mod_id,
+                    "mod_name"    : currentProject.mod_name,
+                    "mod_homepage": currentProject.mod_homepage,
+                    "mod_sources" : currentProject.mod_sources,
+                    "mod_license" : currentProject.mod_license
+            ])
+        })
     }
-    token = System.getenv("MODRINTH")
-    changelog = System.getenv("CHANGELOG")
-    projectId = "SFO4Ca80"
-    versionNumber = "${project.mod_version}-${project.minecraft_version}"
-    // On fabric, use "remapJar" instead of "jar"
-    uploadFile = remapJar
-    addGameVersion(project.minecraft_version as String)
-    addLoader("fabric")
+}
+
+
+jar {
+    dependsOn(subprojects.collect {
+        it.tasks.remapJar
+    })
+
+    doFirst {
+        copy {
+            from {
+                subprojects.collect {
+                    it.remapJar.outputs.files
+                }
+            }
+            into("build/tmp/submods/META-INF/jars")
+        }
+    }
+
+    from("LICENSE")
+
+    from("build/tmp/submods")
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from(components.java)
+        }
+    }
+
+    repositories {
+        mavenLocal()
+        maven {
+            url "${rootDir}/publish"
+        }
+    }
 }

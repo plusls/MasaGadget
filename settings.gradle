@@ -8,3 +8,15 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
+plugins {
+    id 'fabric-loom' version '0.12-SNAPSHOT' apply false
+}
+
+mod_id = "masa_gadget_mod"
+
+include "${mod_id}-core"
+//include "${mod_id}-compat-mc1_15"
+//include "${mod_id}-compat-mc1_16"
+//include "${mod_id}-compat-mc1_17"
+include "${mod_id}-compat-mc1_18"

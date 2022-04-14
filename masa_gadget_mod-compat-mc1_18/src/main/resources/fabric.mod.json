@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}-compat-mc1_18",
+  "version": "${mod_version}",
+  "name": "${mod_name} Compat",
+  "description": "${mod_id} compat for Minecraft 1.18.x",
+  "authors": [
+    "plusls",
+    "Hendrix-Shen"
+  ],
+  "contact": {
+    "homepage": "${mod_homepage}",
+    "issues": "${mod_sources}/issues",
+    "sources": "${mod_sources}"
+  },
+  "license": "${mod_license}",
+  "icon": "assets/${mod_id}-compat-mc1_18/icon.jpg",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+    ]
+  },
+  "mixins": [
+    "${mod_id}-compat-mc1_18.mixins.json"
+  ],
+  "depends": {
+    "minecraft": "1.18.x"
+  },
+  "custom": {
+    "modmenu:api": true,
+    "modmenu:parent": "${mod_id}",
+    "modmenu:clientsideOnly": true,
+    "modmenu": {
+      "badges": [
+        "library"
+      ],
+      "parent": "${mod_id}"
+    }
+  }
+}

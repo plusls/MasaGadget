@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.plusls.MasaGadget.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "plugin": "top.hendrixshen.magiclib.MagicMixinPlugin",
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

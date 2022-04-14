@@ -1,45 +1,30 @@
 {
   "schemaVersion": 1,
-  "id": "masa_gadget_mod",
-  "version": "${version}",
-  "name": "Masa Gadget",
-  "description": "Masa Gadget.",
+  "id": "${mod_id}",
+  "version": "${mod_version}",
+  "name": "${mod_name}",
+  "description": "${mod_name}",
   "authors": [
     "plusls",
     "Hendrix-Shen"
   ],
   "contact": {
-    "homepage": "https://blog.plusls.com/",
-    "sources": "https://github.com/plusls/MasaGadget",
-    "issues": "https://github.com/plusls/MasaGadget/issues"
+    "homepage": "${mod_homepage}",
+    "issues": "${mod_sources}/issues",
+    "sources": "${mod_sources}"
   },
-  "license": "GPL-3.0",
-  "icon": "assets/masa_gadget_mod/icon.jpg",
+  "license": "${mod_license}",
+  "icon": "assets/${mod_id}/icon.jpg",
   "environment": "client",
   "entrypoints": {
-    "client": [
-      "com.plusls.MasaGadget.MasaGadgetMod"
-    ],
     "modmenu": [
       "com.plusls.MasaGadget.compat.modmenu.ModMenuApiImpl"
     ]
   },
-  "mixins": [
-    "masa_gadget_mod.mixins.json"
-  ],
-  "accessWidener": "masa_gadget_mod.accesswidener",
-  "custom": {
-    "compat": {
-      "tweakeroo": ">=0.13.1",
-      "litematica": ">=0.11.0",
-      "minihud": ">=0.22.0",
-      "itemscoller": ">=0.16.0"
-    }
-  },
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": "*",
-    "minecraft": "1.18.x",
-    "malilib": ">=0.12.0"
-  }
+    "magiclib": ">=0.4.12"
+  },
+  "jars": ${sub_jars}
 }
