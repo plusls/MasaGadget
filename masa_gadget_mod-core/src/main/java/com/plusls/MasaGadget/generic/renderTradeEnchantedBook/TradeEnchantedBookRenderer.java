@@ -1,47 +1,38 @@
-package com.plusls.MasaGadget.mixin.generic.renderTradeEnchantedBook;
+package com.plusls.MasaGadget.generic.renderTradeEnchantedBook;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.plusls.MasaGadget.config.Configs;
+import com.plusls.MasaGadget.event.RenderEvent;
 import com.plusls.MasaGadget.util.MiscUtil;
 import com.plusls.MasaGadget.util.RenderUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.trading.MerchantOffer;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
 
-@Mixin(LivingEntityRenderer.class)
-public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends EntityRenderer<T> {
+public class TradeEnchantedBookRenderer {
 
-    protected MixinLivingEntityRenderer(EntityRendererProvider.Context context) {
-        super(context);
+    public static void init() {
+        RenderEvent.register(TradeEnchantedBookRenderer::postRenderEntity);
     }
 
-    // from entityRenderer
-    @Inject(method = "render*", at = @At(value = "RETURN"))
-    private void postRenderEntity(T livingEntity, float yaw, float tickDelta, PoseStack matrixStack,
-                                  MultiBufferSource vertexConsumerProvider, int light, CallbackInfo ci) {
-        if (!(livingEntity instanceof Villager) || !Configs.renderTradeEnchantedBook) {
+    private static void postRenderEntity(EntityRenderDispatcher dispatcher, Entity entity, float yaw, float tickDelta,
+                                         PoseStack matrixStack, MultiBufferSource vertexConsumerProvider, int light) {
+        if (!(entity instanceof Villager) || !Configs.renderTradeEnchantedBook) {
             return;
         }
-        Villager villagerEntity = (Villager) livingEntity;
-        villagerEntity = MiscUtil.getBestEntity(villagerEntity);
+        Villager villagerEntity = MiscUtil.getBestEntity((Villager) entity);
 
         Component text = null;
         Component price = null;
@@ -84,10 +75,10 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
             return;
         }
 
-        RenderUtil.renderTextOnEntity(matrixStack, villagerEntity, this.entityRenderDispatcher, vertexConsumerProvider, text,
+        RenderUtil.renderTextOnEntity(matrixStack, villagerEntity, dispatcher, vertexConsumerProvider, text,
                 villagerEntity.getBbHeight() / 8 * 7);
 
-        RenderUtil.renderTextOnEntity(matrixStack, villagerEntity, this.entityRenderDispatcher, vertexConsumerProvider, price,
+        RenderUtil.renderTextOnEntity(matrixStack, villagerEntity, dispatcher, vertexConsumerProvider, price,
                 villagerEntity.getBbHeight() / 8 * 7 - 11 * 0.018F);
 
 

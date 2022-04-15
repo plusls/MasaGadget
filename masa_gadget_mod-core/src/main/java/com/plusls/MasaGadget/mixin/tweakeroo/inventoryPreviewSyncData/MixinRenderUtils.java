@@ -1,4 +1,4 @@
-package com.plusls.MasaGadget.mixin.tweakeroo.pcaSyncProtocol;
+package com.plusls.MasaGadget.mixin.tweakeroo.inventoryPreviewSyncData;
 
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;

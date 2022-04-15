@@ -5,43 +5,26 @@
   "compatibilityLevel": "JAVA_8",
   "plugin": "top.hendrixshen.magiclib.MagicMixinPlugin",
   "client": [
+    "MixinConnection",
     "accessor.AccessorAbstractMinecartContainer",
     "accessor.AccessorAbstractVillager",
     "accessor.AccessorGuiListBase",
     "accessor.AccessorVillager",
     "accessor.AccessorZombieVillager",
     "event.disconnect.MixinMinecraftClient",
+    "event.render.MixinEntityRenderer",
     "generic.autoSyncEntityData.MixinClientPlayNetworkHandler",
     "generic.autoSyncEntityData.MixinVillagerEntity",
     "generic.autoSyncEntityData.MixinZombieVillagerEntity",
-    "generic.renderNextRestockTime.MixinLivingEntityRenderer",
-    "generic.renderTradeEnchantedBook.MixinLivingEntityRenderer",
-    "generic.renderZombieVillagerConvertTime.MixinZombieVillagerEntity",
-    "generic.renderZombieVillagerConvertTime.MixinZombieVillagerRenderer",
-    "litematica.betterEasyPlaceMode.MixinWorldUtils",
-    "litematica.disableLitematicaEasyPlaceFailTip.MixinWorldUtils",
-    "litematica.fixCarpetAccurateProtocol.MixinBlockItem",
-    "litematica.fixCarpetAccurateProtocol.MixinWorldUtils",
-    "litematica.saveInventoryToSchematicInServer.MixinSchematicUtils",
-    "litematica.useRelativePath.MixinSchematicPlacement",
     "malilib.fastSwitchMasaConfigGui.MixinGuiConfigBase",
     "malilib.favorites.MixinGuiConfigBase",
     "malilib.favorites.MixinWidgetConfigOption",
     "malilib.favorites.MixinWidgetListConfigOptions",
     "malilib.showOriginalConfigName.MixinWidgetConfigOption",
     "malilib.showOriginalConfigName.MixinWidgetListConfigOptions",
-    "tweakeroo.handRestockCrafting.MixinInventoryUtils",
-    "tweakeroo.inventoryPreviewSupportComparator.MixinWorldRenderer",
-    "tweakeroo.inventoryPreviewSupportLargeBarrel.MixinRenderUtils",
-    "tweakeroo.inventoryPreviewSupportPlayer.MixinRenderUtils",
-    "tweakeroo.inventoryPreviewSupportSelect.MixinInGameHud",
-    "tweakeroo.inventoryPreviewSupportSelect.MixinInventoryOverlay",
-    "tweakeroo.inventoryPreviewSupportSelect.MixinRenderHandler",
-    "tweakeroo.inventoryPreviewSupportShulkerBoxItemEntity.MixinRenderUtils",
-    "tweakeroo.inventoryPreviewSupportTradeOfferList.MixinRenderUtils",
-    "tweakeroo.pcaSyncProtocol.MixinRenderUtils"
+    "tweakeroo.inventoryPreviewSyncData.MixinRenderUtils"
   ],
   "injectors": {
-    "defaultRequire": 0
+    "defaultRequire": 1
   }
 }

@@ -1,53 +1,31 @@
-package com.plusls.MasaGadget.mixin.generic.renderNextRestockTime;
+package com.plusls.MasaGadget.generic.renderNextRestockTime;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.plusls.MasaGadget.config.Configs;
+import com.plusls.MasaGadget.event.RenderEvent;
 import com.plusls.MasaGadget.mixin.accessor.AccessorVillager;
 import com.plusls.MasaGadget.util.MiscUtil;
 import com.plusls.MasaGadget.util.RenderUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.trading.MerchantOffer;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(LivingEntityRenderer.class)
-public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends EntityRenderer<T> {
-
-
-    protected MixinLivingEntityRenderer(EntityRendererProvider.Context context) {
-        super(context);
+public class NextRestockTimeRenderer {
+    public static void init() {
+        RenderEvent.register(NextRestockTimeRenderer::postRenderEntity);
     }
 
-    // 因为刁民的需要补货的函数，会检查当前货物是否被消耗，从使用的角度只需要关心当前货物是否用完
-    private static boolean needsRestock(Villager villagerEntity) {
-
-        for (MerchantOffer offer : villagerEntity.getOffers()) {
-            if (offer.isOutOfStock()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // from entityRenderer
-    @Inject(method = "render*", at = @At(value = "RETURN"))
-    private void postRenderEntity(T livingEntity, float yaw, float tickDelta, PoseStack matrixStack,
-                                  MultiBufferSource vertexConsumerProvider, int light, CallbackInfo ci) {
-        if (!(livingEntity instanceof Villager) || !Configs.renderNextRestockTime) {
+    private static void postRenderEntity(EntityRenderDispatcher dispatcher, Entity entity, float yaw, float tickDelta, PoseStack matrixStack,
+                                         MultiBufferSource vertexConsumerProvider, int light) {
+        if (!(entity instanceof Villager) || !Configs.renderNextRestockTime) {
             return;
         }
-        Villager villagerEntity = (Villager) livingEntity;
-        villagerEntity = MiscUtil.getBestEntity(villagerEntity);
+        Villager villagerEntity = MiscUtil.getBestEntity((Villager) entity);
 
         Component text;
 
@@ -90,8 +68,18 @@ public abstract class MixinLivingEntityRenderer<T extends LivingEntity> extends 
         } else {
             text = new TextComponent(String.format("%d", nextRestockTime));
         }
-        RenderUtil.renderTextOnEntity(matrixStack, villagerEntity, this.entityRenderDispatcher, vertexConsumerProvider, text,
-                livingEntity.getBbHeight() / 32 * 31);
+        RenderUtil.renderTextOnEntity(matrixStack, villagerEntity,
+                dispatcher, vertexConsumerProvider, text,
+                villagerEntity.getBbHeight() / 32 * 31);
     }
 
+    // 因为刁民的需要补货的函数，会检查当前货物是否被消耗，从使用的角度只需要关心当前货物是否用完
+    private static boolean needsRestock(Villager villagerEntity) {
+        for (MerchantOffer offer : villagerEntity.getOffers()) {
+            if (offer.isOutOfStock()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

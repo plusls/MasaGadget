@@ -1,7 +1,7 @@
 package com.plusls.MasaGadget.malilib.fastSwitchMasaConfigGui;
 
 import com.plusls.MasaGadget.ModInfo;
-import com.terraformersmc.modmenu.api.ConfigScreenFactory;
+import com.plusls.MasaGadget.compat.modmenu.ConfigScreenFactoryCompat;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import net.fabricmc.loader.api.FabricLoader;
@@ -9,36 +9,107 @@ import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 public class MasaGuiUtil {
-    public final static Map<ConfigScreenFactory<?>, String> masaGuiData = new HashMap<>();
-    public final static ArrayList<ConfigScreenFactory<?>> masaGuiConfigScreenFactorys = new ArrayList<>();
-    public final static Map<Class<?>, ConfigScreenFactory<?>> masaGuiClassData = new HashMap<>();
+    public final static Map<ConfigScreenFactoryCompat<?>, String> masaGuiData = new HashMap<>();
+    public final static ArrayList<ConfigScreenFactoryCompat<?>> masaGuiConfigScreenFactorys = new ArrayList<>();
+    public final static Map<Class<?>, ConfigScreenFactoryCompat<?>> masaGuiClassData = new HashMap<>();
 
-    private static boolean initialised = false;
+    private static final Class<?> modMenuApiClass;
+    private static final Class<?> legacyModMenuApiClass;
+    private static final Method legacyGetModConfigScreenFactoryMethod;
+    private static final Method legacyCreateMethod;
+    private static final Method legacyGetConfigScreenFactory;
+    private static boolean initialized = false;
+
+    static {
+        Class<?> tmpModMenuApiClass;
+        Method tmpGetModConfigScreenFactoryMethod;
+        Method tmpGetConfigScreenFactory;
+
+        Method tmpCreateMethod;
+
+        try {
+            tmpModMenuApiClass = Class.forName("com.terraformersmc.modmenu.api.ModMenuApi");
+        } catch (ClassNotFoundException e) {
+            tmpModMenuApiClass = null;
+        }
+        modMenuApiClass = tmpModMenuApiClass;
+
+        try {
+            tmpModMenuApiClass = Class.forName("io.github.prospector.modmenu.api.ModMenuApi");
+            try {
+                tmpGetModConfigScreenFactoryMethod = tmpModMenuApiClass.getMethod("getModConfigScreenFactory");
+                Class<?> legacyConfigScreenFactoryClass = Class.forName("io.github.prospector.modmenu.api.ConfigScreenFactory");
+                tmpCreateMethod = legacyConfigScreenFactoryClass.getMethod("create", Screen.class);
+                tmpGetConfigScreenFactory = null;
+            } catch (NoSuchMethodException e) {
+                tmpGetConfigScreenFactory = tmpModMenuApiClass.getMethod("getConfigScreenFactory");
+                tmpGetModConfigScreenFactoryMethod = null;
+                tmpCreateMethod = null;
+            }
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
+            tmpModMenuApiClass = null;
+            tmpGetModConfigScreenFactoryMethod = null;
+            tmpCreateMethod = null;
+            tmpGetConfigScreenFactory = null;
+        }
+        legacyModMenuApiClass = tmpModMenuApiClass;
+        legacyGetModConfigScreenFactoryMethod = tmpGetModConfigScreenFactoryMethod;
+        legacyCreateMethod = tmpCreateMethod;
+        legacyGetConfigScreenFactory = tmpGetConfigScreenFactory;
+    }
 
     public static void initMasaModScreenList() {
-        if (initialised) {
+        if (initialized) {
             return;
         }
-        initialised = true;
+        initialized = true;
         Minecraft client = Minecraft.getInstance();
         if (!ModInfo.isModLoaded(ModInfo.MODMENU_MOD_ID)) {
             return;
         }
-        FabricLoader.getInstance().getEntrypointContainers("modmenu", ModMenuApi.class).forEach(entrypoint -> {
+        FabricLoader.getInstance().getEntrypointContainers("modmenu", Object.class).forEach(entrypoint -> {
             ModMetadata metadata = entrypoint.getProvider().getMetadata();
             try {
-                ModMenuApi api = entrypoint.getEntrypoint();
-                Screen screen = api.getModConfigScreenFactory().create(client.screen);
+                Object api = entrypoint.getEntrypoint();
+                ConfigScreenFactoryCompat<?> configScreenFactoryCompat;
+                if (modMenuApiClass.isAssignableFrom(api.getClass())) {
+                    // >= 1.16
+                    configScreenFactoryCompat = screen -> ((ModMenuApi) api).getModConfigScreenFactory().create(screen);
+                } else if (legacyModMenuApiClass != null && legacyModMenuApiClass.isAssignableFrom(api.getClass())) {
+                    if (legacyGetModConfigScreenFactoryMethod != null) {
+                        // 1.15 and 1.16 legacy
+                        Object legacyModConfigScreenFactory = legacyGetModConfigScreenFactoryMethod.invoke(api);
+                        configScreenFactoryCompat = screen -> {
+                            try {
+                                return (Screen) legacyCreateMethod.invoke(legacyModConfigScreenFactory, screen);
+                            } catch (IllegalAccessException | InvocationTargetException e) {
+                                throw new RuntimeException(e);
+                            }
+                        };
+                    } else {
+                        // 1.14
+                        //noinspection unchecked
+                        Function<Screen, ? extends Screen> f = (Function<Screen, ? extends Screen>) legacyGetConfigScreenFactory.invoke(api);
+                        configScreenFactoryCompat = f::apply;
+                    }
+
+                } else {
+                    ModInfo.LOGGER.error("Mod {} provides a unknow type {} of ModMenuApi", metadata.getId(), api.getClass());
+                    return;
+                }
+                Screen screen = configScreenFactoryCompat.create(client.screen);
                 if (screen instanceof GuiConfigsBase) {
-                    ConfigScreenFactory<?> configScreenFactory = api.getModConfigScreenFactory();
-                    masaGuiData.put(configScreenFactory, metadata.getName());
-                    masaGuiConfigScreenFactorys.add(configScreenFactory);
-                    masaGuiClassData.put(screen.getClass(), configScreenFactory);
+                    masaGuiData.put(configScreenFactoryCompat, metadata.getName());
+                    masaGuiConfigScreenFactorys.add(configScreenFactoryCompat);
+                    masaGuiClassData.put(screen.getClass(), configScreenFactoryCompat);
                 }
             } catch (Throwable e) {
                 ModInfo.LOGGER.error("Mod {} provides a broken implementation of ModMenuApi", metadata.getId(), e);

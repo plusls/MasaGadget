@@ -15,7 +15,6 @@ public class RenderUtil {
     public static void renderTextOnEntity(PoseStack matrixStack, Entity entity,
                                           EntityRenderDispatcher entityRenderDispatcher, MultiBufferSource vertexConsumerProvider,
                                           Component text, float height) {
-        // TODO 理解代码并兼容低版本
         Minecraft client = Minecraft.getInstance();
         if (entityRenderDispatcher.distanceToSqr(entity) <= 4096.0D) {
             matrixStack.pushPose();
@@ -23,12 +22,23 @@ public class RenderUtil {
             matrixStack.mulPose(entityRenderDispatcher.cameraOrientation());
             matrixStack.scale(-0.018F, -0.018F, 0.018F);
             matrixStack.translate(0, 0, -33);
-            Matrix4f lv = matrixStack.last().pose();
-            float g = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
-            int k = (int) (g * 255.0F) << 24;
-            float h = (float) (-client.font.width(text) / 2);
-            client.font.drawInBatch(text, h, 0, 553648127, false, lv, vertexConsumerProvider, false, k, 0xf00000);
-            client.font.drawInBatch(text, h, 0, -1, false, lv, vertexConsumerProvider, false, 0, 0xf00000);
+            Matrix4f matrix4f = matrixStack.last().pose();
+            float backgroundOpacity = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
+            int backgroundColor = (int) (backgroundOpacity * 255.0F) << 24;
+            float xOffset = (float) (-client.font.width(text) / 2);
+            // 		ARG 1 text
+            //		ARG 2 x
+            //		ARG 3 y
+            //		ARG 4 color
+            //			COMMENT the text color in the 0xAARRGGBB format
+            //		ARG 5 shadow
+            //		ARG 6 matrix
+            //		ARG 7 vertexConsumers
+            //		ARG 8 seeThrough
+            //		ARG 9 backgroundColor
+            //		ARG 10 light
+            client.font.drawInBatch(text, xOffset, 0, 0x20ffffff, false, matrix4f, vertexConsumerProvider, false, backgroundColor, 0xf00000);
+            client.font.drawInBatch(text, xOffset, 0, 0xffffffff, false, matrix4f, vertexConsumerProvider, false, 0, 0xf00000);
             matrixStack.popPose();
         }
     }

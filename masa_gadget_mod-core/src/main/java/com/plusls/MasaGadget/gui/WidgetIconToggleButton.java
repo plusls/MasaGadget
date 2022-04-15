@@ -26,6 +26,13 @@ public class WidgetIconToggleButton extends WidgetHoverInfo {
         this.icon = icon;
     }
 
+    //@Override
+    // for 1.14 and 1.15
+    public void render(int mouseX, int mouseY, boolean selected) {
+        render(mouseX, mouseY, selected, null);
+    }
+
+
     @Override
     public void render(int mouseX, int mouseY, boolean selected, PoseStack matrixStack) {
         if (!shouldEnable.test(this)) {

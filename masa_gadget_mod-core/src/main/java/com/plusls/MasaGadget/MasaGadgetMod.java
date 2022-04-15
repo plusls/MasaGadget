@@ -1,6 +1,9 @@
 package com.plusls.MasaGadget;
 
 import com.plusls.MasaGadget.config.Configs;
+import com.plusls.MasaGadget.generic.renderNextRestockTime.NextRestockTimeRenderer;
+import com.plusls.MasaGadget.generic.renderTradeEnchantedBook.TradeEnchantedBookRenderer;
+import com.plusls.MasaGadget.generic.renderZombieVillagerConvertTime.ZombieVillagerConvertTimeRenderer;
 import com.plusls.MasaGadget.tweakeroo.inventoryPreviewSupportSelect.MouseScrollInputHandler;
 import com.plusls.MasaGadget.util.PcaSyncProtocol;
 import net.fabricmc.api.ClientModInitializer;
@@ -21,6 +24,9 @@ public class MasaGadgetMod implements ClientModInitializer {
         Configs.init(cm);
         PcaSyncProtocol.init();
         MouseScrollInputHandler.register();
+        NextRestockTimeRenderer.init();
+        TradeEnchantedBookRenderer.init();
+        ZombieVillagerConvertTimeRenderer.init();
     }
 
 }

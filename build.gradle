@@ -56,6 +56,9 @@ subprojects {
 
     repositories {
         maven {
+            url 'https://masa.dy.fi/maven'
+        }
+        maven {
             url 'https://www.cursemaven.com/'
         }
         maven {
@@ -76,17 +79,28 @@ subprojects {
         modImplementation("curse.maven:tweakeroo-297344:${project.tweakeroo_version}")
         modImplementation("curse.maven:litematica-308892:${project.litematica_version}")
         modImplementation("curse.maven:itemscroller-242064:${project.itemscroller_version}")
-        modImplementation("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}") {
-            transitive = false
+
+        if (project.name != (String) "${currentProject.mod_id}-compat-mc1_15" &&
+                project.name != (String) "${currentProject.mod_id}-compat-mc1_14") {
+            modImplementation("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}") {
+                transitive = false
+            }
+            include("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}")
         }
-        include("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}")
         modImplementation("curse.maven:carpet-tis-addition-397510:${project.tis_carpet_version}")
 
 
-        modImplementation("top.hendrixshen:magiclib-compat-mc${currentProject.getMagiclibCompatName(project.minecraft_version)}:${project.magiclib_version}")
+        modImplementation("top.hendrixshen:magiclib-compat-mc${currentProject.getMagiclibCompatName(project.minecraft_version)}:${project.magiclib_version}") {
+            exclude group: "curse.maven", module: "imblockerfabric-399225"
+        }
 
         // tis carpet need
-        modRuntimeOnly("curse.maven:carpet-349239:${project.carpet_version}")
+        if (project.name == (String) "${currentProject.mod_id}-compat-mc1_14") {
+            modImplementation "carpet:fabric-carpet:${project.carpet_version}"
+
+        } else {
+            modRuntimeOnly("curse.maven:carpet-349239:${project.carpet_version}")
+        }
         runtimeOnly("org.yaml:snakeyaml:${project.snakeyaml_version}")
 
         if (project.name != (String) "${currentProject.mod_id}-core") {
@@ -116,7 +130,8 @@ subprojects {
                     "mod_homepage": currentProject.mod_homepage,
                     "mod_sources" : currentProject.mod_sources,
                     "mod_license" : currentProject.mod_license
-            ])        }
+            ])
+        }
     }
 
     runClient {
@@ -144,7 +159,6 @@ subprojects {
 }
 
 
-import com.modrinth.minotaur.TaskModrinthUpload
 import groovy.json.JsonBuilder
 
 processResources {

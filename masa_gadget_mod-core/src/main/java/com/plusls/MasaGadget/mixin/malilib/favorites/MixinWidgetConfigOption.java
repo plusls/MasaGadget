@@ -4,7 +4,6 @@ import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.gui.MasaGadgetIcons;
 import com.plusls.MasaGadget.gui.WidgetIconToggleButton;
-import fi.dy.masa.malilib.config.ConfigType;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
@@ -26,16 +25,10 @@ public abstract class MixinWidgetConfigOption extends WidgetConfigOptionBase<Gui
         super(x, y, width, height, parent, entry, listIndex);
     }
 
-    @Inject(method = "addConfigOption", at = @At(value = "RETURN"))
+    @Inject(method = "addConfigOption", at = @At(value = "HEAD"))
     private void addFavoritesButton(int x, int y, float zLevel, int labelWidth, int configWidth, IConfigBase config, CallbackInfo ci) {
         if (!Configs.favoritesSupport) {
             return;
-        }
-        ConfigType type = config.getType();
-        if (type == ConfigType.COLOR) {
-            configWidth += 22;
-        } else if (type == ConfigType.INTEGER || type == ConfigType.DOUBLE) {
-            configWidth += 18;
         }
 
         Screen screen = Minecraft.getInstance().screen;
@@ -44,8 +37,8 @@ public abstract class MixinWidgetConfigOption extends WidgetConfigOptionBase<Gui
         }
         String modId = ((GuiConfigsBase) screen).getModId();
 
-        this.addWidget(new WidgetIconToggleButton(x + configWidth + 15 +
-                this.getStringWidth(I18n.get("malilib.gui.button.reset.caps")), y + 2,
+        this.addWidget(new WidgetIconToggleButton(x + labelWidth + configWidth + 25 +
+                this.getStringWidth(I18n.get("malilib.gui.button.reset.caps")), y + 3,
                 MasaGadgetIcons.FAVORITE, Configs.FAVORITES.computeIfAbsent(modId, k -> new HashSet<>()).contains(config.getName()),
                 status -> {
                     HashSet<String> modFavorites = Configs.FAVORITES.computeIfAbsent(modId, k -> new HashSet<>());

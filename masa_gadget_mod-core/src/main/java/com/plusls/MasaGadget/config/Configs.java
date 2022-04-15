@@ -21,6 +21,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 import top.hendrixshen.magiclib.config.ConfigHandler;
 import top.hendrixshen.magiclib.config.ConfigManager;
+import top.hendrixshen.magiclib.config.Option;
 import top.hendrixshen.magiclib.config.annotation.Config;
 import top.hendrixshen.magiclib.config.annotation.Hotkey;
 import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
@@ -202,17 +203,20 @@ public class Configs {
         });
 
         // MALILIB
-        cm.setValueChangeCallback("favoritesSupport", option -> {
-            if (Minecraft.getInstance().screen instanceof GuiConfigsBase) {
-                GuiConfigsBase guiConfigsBase = (GuiConfigsBase) Minecraft.getInstance().screen;
-                WidgetListConfigOptions widgetListConfigOptions =
-                        (WidgetListConfigOptions) ((AccessorGuiListBase) guiConfigsBase).invokeGetListWidget();
-                if (widgetListConfigOptions != null) {
-                    widgetListConfigOptions.getScrollbar().setValue(0);
-                    widgetListConfigOptions.refreshEntries();
-                }
+        cm.setValueChangeCallback("favoritesSupport", Configs::refreshOptions);
+        cm.setValueChangeCallback("showOriginalConfigName", Configs::refreshOptions);
+    }
+
+    private static void refreshOptions(Option option) {
+        if (Minecraft.getInstance().screen instanceof GuiConfigsBase) {
+            GuiConfigsBase guiConfigsBase = (GuiConfigsBase) Minecraft.getInstance().screen;
+            WidgetListConfigOptions widgetListConfigOptions =
+                    (WidgetListConfigOptions) ((AccessorGuiListBase) guiConfigsBase).invokeGetListWidget();
+            if (widgetListConfigOptions != null) {
+                widgetListConfigOptions.getScrollbar().setValue(0);
+                widgetListConfigOptions.refreshEntries();
             }
-        });
+        }
     }
 
     public static class ConfigCategory {

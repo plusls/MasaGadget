@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.plusls.MasaGadget.compat.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "plugin": "top.hendrixshen.magiclib.MagicMixinPlugin",
+  "client": [
+    "event.render.MixinEntityRenderer",
+    "minecraft.sounds.MixinSoundEvents"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

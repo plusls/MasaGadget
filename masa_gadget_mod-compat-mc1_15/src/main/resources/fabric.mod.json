@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "${mod_id}-compat-mc1_18",
+  "id": "${mod_id}-compat-mc1_15",
   "version": "${mod_version}",
   "name": "${mod_name} Compat",
-  "description": "${mod_id} compat for Minecraft 1.18.x",
+  "description": "${mod_id} compat for Minecraft 1.15.x",
   "authors": [
     "plusls",
     "Hendrix-Shen"
@@ -14,7 +14,7 @@
     "sources": "${mod_sources}"
   },
   "license": "${mod_license}",
-  "icon": "assets/${mod_id}-compat-mc1_18/icon.jpg",
+  "icon": "assets/${mod_id}-compat-mc1_15/icon.jpg",
   "environment": "client",
   "entrypoints": {
     "client": [
@@ -22,10 +22,10 @@
     ]
   },
   "mixins": [
-    "${mod_id}-compat-mc1_18.mixins.json"
+    "${mod_id}-compat-mc1_15.mixins.json"
   ],
   "depends": {
-    "minecraft": "1.18.x"
+    "minecraft": "1.15.x"
   },
   "custom": {
     "modmenu:api": true,
