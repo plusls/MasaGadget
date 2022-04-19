@@ -22,6 +22,7 @@
     "malilib.favorites.MixinWidgetListConfigOptions",
     "malilib.showOriginalConfigName.MixinWidgetConfigOption",
     "malilib.showOriginalConfigName.MixinWidgetListConfigOptions",
+    "tweakeroo.inventoryPreviewSupportPlayer.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSyncData.MixinRenderUtils"
   ],
   "injectors": {
