@@ -6,7 +6,8 @@
   "plugin": "top.hendrixshen.magiclib.MagicMixinPlugin",
   "client": [
     "event.render.MixinEntityRenderer",
-    "minecraft.sounds.MixinSoundEvents"
+    "minecraft.sounds.MixinSoundEvents",
+    "tweakeroo.inventoryPreviewSupportComparator.MixinGameRenderer"
   ],
   "injectors": {
     "defaultRequire": 1

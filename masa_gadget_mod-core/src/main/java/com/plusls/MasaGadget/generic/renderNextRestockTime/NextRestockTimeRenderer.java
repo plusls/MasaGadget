@@ -70,7 +70,7 @@ public class NextRestockTimeRenderer {
         }
         RenderUtil.renderTextOnEntity(matrixStack, villagerEntity,
                 dispatcher, vertexConsumerProvider, text,
-                villagerEntity.getBbHeight() / 32 * 31);
+                villagerEntity.getBbHeight() / 32 * 31, false);
     }
 
     // 因为刁民的需要补货的函数，会检查当前货物是否被消耗，从使用的角度只需要关心当前货物是否用完

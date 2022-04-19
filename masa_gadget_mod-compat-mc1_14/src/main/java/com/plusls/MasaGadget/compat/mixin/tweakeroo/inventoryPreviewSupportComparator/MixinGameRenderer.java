@@ -1,10 +1,7 @@
-package com.plusls.MasaGadget.mixin.tweakeroo.inventoryPreviewSupportComparator;
+package com.plusls.MasaGadget.compat.mixin.tweakeroo.inventoryPreviewSupportComparator;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.math.Matrix4f;
-import com.plusls.MasaGadget.ModInfo;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.vertex.PoseStackCompat;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.tweakeroo.TraceUtil;
 import com.plusls.MasaGadget.util.RenderUtil;
@@ -15,9 +12,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.level.Level;
@@ -27,18 +21,14 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
-import top.hendrixshen.magiclib.dependency.annotation.Dependency;
 
-@Dependencies(and = {@Dependency(ModInfo.TWEAKEROO_MOD_ID), @Dependency(value = "minecraft", versionPredicate = ">=1.15.2")})
-@Mixin(LevelRenderer.class)
-public class MixinWorldRenderer {
-    @Inject(method = "renderLevel", at = @At(value = "RETURN"))
-    private void postRender(PoseStack matrices, float tickDelta, long limitTime,
-                            boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer,
-                            LightTexture lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci) {
+@Mixin(GameRenderer.class)
+public class MixinGameRenderer {
+    @Inject(method = "render(FJ)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/GameRenderer;renderHand:Z"))
+    private void postRender(float partialTicks, long finishTimeNano, CallbackInfo ci) {
         Minecraft mc = Minecraft.getInstance();
         Level world = WorldUtils.getBestWorld(mc);
+        Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
         if (world == null) {
             return;
         }
@@ -48,7 +38,6 @@ public class MixinWorldRenderer {
             return;
         }
 
-
         // 开始渲染
         BlockPos pos = TraceUtil.getTraceBlockPos();
         if (pos != null) {
@@ -57,12 +46,10 @@ public class MixinWorldRenderer {
             if (blockEntity instanceof ComparatorBlockEntity) {
                 TextComponent literalText = new TextComponent(((ComparatorBlockEntity) blockEntity).getOutputSignal() + "");
                 literalText.withStyle(ChatFormatting.GREEN);
-                // 不加 1.17 渲染会有问题
-                RenderSystem.disableDepthTest();
-                MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
-                RenderUtil.renderTextOnWorld(matrices, camera, immediate, pos, literalText, true);
-                immediate.endBatch();
-                RenderSystem.enableDepthTest();
+                GlStateManager.disableDepthTest();
+                PoseStackCompat poseStackCompat = new PoseStackCompat();
+                RenderUtil.renderTextOnWorldCompat(poseStackCompat, camera, pos, literalText, true);
+                GlStateManager.enableDepthTest();
             }
         }
     }

@@ -76,10 +76,10 @@ public class TradeEnchantedBookRenderer {
         }
 
         RenderUtil.renderTextOnEntity(matrixStack, villagerEntity, dispatcher, vertexConsumerProvider, text,
-                villagerEntity.getBbHeight() / 8 * 7);
+                villagerEntity.getBbHeight() / 8 * 7, false);
 
         RenderUtil.renderTextOnEntity(matrixStack, villagerEntity, dispatcher, vertexConsumerProvider, price,
-                villagerEntity.getBbHeight() / 8 * 7 - 11 * 0.018F);
+                villagerEntity.getBbHeight() / 8 * 7 - 11 * 0.018F, false);
 
 
     }

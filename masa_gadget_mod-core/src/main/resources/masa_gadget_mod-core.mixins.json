@@ -22,7 +22,10 @@
     "malilib.favorites.MixinWidgetListConfigOptions",
     "malilib.showOriginalConfigName.MixinWidgetConfigOption",
     "malilib.showOriginalConfigName.MixinWidgetListConfigOptions",
+    "tweakeroo.inventoryPreviewSupportComparator.MixinWorldRenderer",
     "tweakeroo.inventoryPreviewSupportPlayer.MixinRenderUtils",
+    "tweakeroo.inventoryPreviewSupportShulkerBoxItemEntity.MixinRenderUtils",
+    "tweakeroo.inventoryPreviewSupportTradeOfferList.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSyncData.MixinRenderUtils"
   ],
   "injectors": {

@@ -87,21 +87,10 @@ subprojects {
             }
             include("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}")
         }
-        modImplementation("curse.maven:carpet-tis-addition-397510:${project.tis_carpet_version}")
 
 
-        modImplementation("top.hendrixshen:magiclib-compat-mc${currentProject.getMagiclibCompatName(project.minecraft_version)}:${project.magiclib_version}") {
-            exclude group: "curse.maven", module: "imblockerfabric-399225"
-        }
+        modImplementation("top.hendrixshen:magiclib-compat-mc${currentProject.getMagiclibCompatName(project.minecraft_version)}:${project.magiclib_version}")
 
-        // tis carpet need
-        if (project.name == (String) "${currentProject.mod_id}-compat-mc1_14") {
-            modImplementation "carpet:fabric-carpet:${project.carpet_version}"
-
-        } else {
-            modRuntimeOnly("curse.maven:carpet-349239:${project.carpet_version}")
-        }
-        runtimeOnly("org.yaml:snakeyaml:${project.snakeyaml_version}")
 
         if (project.name != (String) "${currentProject.mod_id}-core") {
             if (project.gradle.startParameter.taskNames.size() == 1 &&

@@ -36,6 +36,6 @@ public class ZombieVillagerConvertTimeRenderer {
         }
 
         RenderUtil.renderTextOnEntity(matrixStack, zombieVillager, dispatcher, vertexConsumerProvider, text,
-                zombieVillager.getBbHeight() / 16 * 15);
+                zombieVillager.getBbHeight() / 16 * 15, false);
     }
 }

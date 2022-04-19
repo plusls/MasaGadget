@@ -69,6 +69,10 @@ public class Configs {
     @Hotkey
     @Config(category = ConfigCategory.LITEMATICA, dependencies = @Dependencies(and = @Dependency(ModInfo.LITEMATICA_MOD_ID)))
     public static boolean fixAccurateProtocol = false;
+    // TODO add litematica version
+    @Hotkey
+    @Config(category = ConfigCategory.LITEMATICA, dependencies = @Dependencies(and = @Dependency(ModInfo.LITEMATICA_MOD_ID)))
+    public static boolean nudgeSelectionSupportFreeCamera = true;
     @Hotkey
     @Config(category = ConfigCategory.LITEMATICA, dependencies = @Dependencies(and = @Dependency(ModInfo.LITEMATICA_MOD_ID)))
     public static boolean saveInventoryToSchematicInServer = false;
@@ -86,13 +90,13 @@ public class Configs {
     @Config(category = ConfigCategory.MALILIB)
     public static boolean favoritesSupport = false;
     @Hotkey
-    @Config(category = ConfigCategory.MALILIB)
+    @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(value = ModInfo.MALILIB_MOD_ID, versionPredicate = "<0.11.4")))
     public static boolean fixConfigWidgetWidth = true;
     @Hotkey
-    @Config(category = ConfigCategory.MALILIB)
+    @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(value = ModInfo.MALILIB_MOD_ID, versionPredicate = "<0.11.4")))
     public static boolean fixGetInventoryType = true;
     @Hotkey
-    @Config(category = ConfigCategory.MALILIB)
+    @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(value = ModInfo.MALILIB_MOD_ID, versionPredicate = "<0.11.4")))
     public static boolean optimizeConfigWidgetSearch = true;
     @Hotkey
     @Config(category = ConfigCategory.MALILIB)
@@ -105,9 +109,11 @@ public class Configs {
     @Hotkey
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
     public static boolean inventoryPreviewSupportComparator = true;
+
+    // TODO set TW version
     @Hotkey
-    @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = {@Dependency(ModInfo.TWEAKEROO_MOD_ID), @Dependency(ModInfo.CARPET_TIS_ADDITION_MOD_ID)}))
-    public static boolean inventoryPreviewSupportLargeBarrel = true;
+    @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
+    public static boolean inventoryPreviewSupportFreeCamera = true;
     @Hotkey
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = {@Dependency(ModInfo.TWEAKEROO_MOD_ID), @Dependency(ModInfo.CARPET_TIS_ADDITION_MOD_ID)}))
     public static boolean inventoryPreviewSupportPlayer = true;
