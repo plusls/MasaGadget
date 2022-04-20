@@ -9,6 +9,7 @@ import fi.dy.masa.malilib.render.RenderUtils;
 import fi.dy.masa.malilib.util.Color4f;
 import fi.dy.masa.malilib.util.GuiUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
@@ -63,8 +64,7 @@ public class InventoryOverlayRenderHandler {
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        // TODO
-        //RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder bufferBuilder = tesselator.getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
@@ -227,7 +227,7 @@ public class InventoryOverlayRenderHandler {
 
     public void renderOrderedTooltip(PoseStack matrices, ItemStack stack, int x, int y) {
         y = y + 8;
-
+        RenderSystem.disableDepthTest();
         Minecraft mc = Minecraft.getInstance();
         List<Component> components = stack.getTooltipLines(mc.player, mc.options.advancedItemTooltips ?
                 TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL);
@@ -301,5 +301,6 @@ public class InventoryOverlayRenderHandler {
         bufferSource.endBatch();
         matrices.popPose();
         mc.getItemRenderer().blitOffset = oldBlitOffset;
+        RenderSystem.enableDepthTest();
     }
 }
