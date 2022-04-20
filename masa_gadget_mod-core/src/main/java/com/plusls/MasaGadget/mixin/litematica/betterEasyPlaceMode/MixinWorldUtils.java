@@ -30,6 +30,7 @@ public class MixinWorldUtils {
             BlockHitResult blockHitResult = (BlockHitResult) trace;
             BlockPos pos = blockHitResult.getBlockPos();
             Block block = mc.level.getBlockState(pos).getBlock();
+            mc.level.getBlockState(pos);
             if (block == Blocks.BEACON || mc.level.getBlockEntity(pos) instanceof Container) {
                 cir.setReturnValue(false);
             }

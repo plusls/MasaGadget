@@ -6,6 +6,7 @@
   "plugin": "top.hendrixshen.magiclib.MagicMixinPlugin",
   "client": [
     "event.render.MixinEntityRenderer",
+    "litematica.materials.MixinMaterialCache",
     "minecraft.sounds.MixinSoundEvents",
     "tweakeroo.inventoryPreviewSupportComparator.MixinGameRenderer"
   ],

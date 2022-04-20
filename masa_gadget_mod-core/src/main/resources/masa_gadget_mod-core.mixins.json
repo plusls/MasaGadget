@@ -16,6 +16,10 @@
     "generic.autoSyncEntityData.MixinClientPlayNetworkHandler",
     "generic.autoSyncEntityData.MixinVillagerEntity",
     "generic.autoSyncEntityData.MixinZombieVillagerEntity",
+    "litematica.betterEasyPlaceMode.MixinWorldUtils",
+    "litematica.disableLitematicaEasyPlaceFailTip.MixinWorldUtils",
+    "litematica.saveInventoryToSchematicInServer.MixinSchematicUtils",
+    "litematica.useRelativePath.MixinSchematicPlacement",
     "malilib.fastSwitchMasaConfigGui.MixinGuiConfigBase",
     "malilib.favorites.MixinGuiConfigBase",
     "malilib.favorites.MixinWidgetConfigOption",
@@ -30,5 +34,9 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "litematica.fixCarpetAccurateProtocol.MixinBlockItem",
+    "litematica.fixCarpetAccurateProtocol.MixinWorldUtils"
+  ]
 }
