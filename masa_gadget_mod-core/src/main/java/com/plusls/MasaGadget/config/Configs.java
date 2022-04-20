@@ -31,7 +31,6 @@ import java.util.*;
 
 public class Configs {
     public static final HashMap<String, HashSet<String>> FAVORITES = new HashMap<>();
-    private static final int CONFIG_VERSION = 1;
     public static boolean favoritesFilter = false;
     // GENERIC
     @Hotkey
@@ -69,9 +68,11 @@ public class Configs {
     @Hotkey
     @Config(category = ConfigCategory.LITEMATICA, dependencies = @Dependencies(and = @Dependency(ModInfo.LITEMATICA_MOD_ID)))
     public static boolean fixAccurateProtocol = false;
-    // TODO add litematica version
     @Hotkey
-    @Config(category = ConfigCategory.LITEMATICA, dependencies = @Dependencies(and = @Dependency(ModInfo.LITEMATICA_MOD_ID)))
+    @Config(category = ConfigCategory.LITEMATICA, dependencies = @Dependencies(and = {
+            @Dependency(ModInfo.LITEMATICA_MOD_ID),
+            @Dependency(ModInfo.TWEAKEROO_MOD_ID),
+            @Dependency(value = "minecraft", versionPredicate = "<=1.17.1")}))
     public static boolean nudgeSelectionSupportFreeCamera = true;
     @Hotkey
     @Config(category = ConfigCategory.LITEMATICA, dependencies = @Dependencies(and = @Dependency(ModInfo.LITEMATICA_MOD_ID)))

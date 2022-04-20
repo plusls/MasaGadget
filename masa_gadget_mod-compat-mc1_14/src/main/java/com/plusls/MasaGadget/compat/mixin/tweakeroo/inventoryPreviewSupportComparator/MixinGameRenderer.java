@@ -2,6 +2,7 @@ package com.plusls.MasaGadget.compat.mixin.tweakeroo.inventoryPreviewSupportComp
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.PoseStackCompat;
+import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.tweakeroo.TraceUtil;
 import com.plusls.MasaGadget.util.RenderUtil;
@@ -21,7 +22,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
+import top.hendrixshen.magiclib.dependency.annotation.Dependency;
 
+@Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID))
 @Mixin(GameRenderer.class)
 public class MixinGameRenderer {
     @Inject(method = "render(FJ)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/GameRenderer;renderHand:Z"))
