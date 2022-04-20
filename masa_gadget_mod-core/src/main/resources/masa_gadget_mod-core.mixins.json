@@ -30,6 +30,7 @@
     "malilib.showOriginalConfigName.MixinWidgetConfigOption",
     "malilib.showOriginalConfigName.MixinWidgetListConfigOptions",
     "tweakeroo.inventoryPreviewSupportComparator.MixinWorldRenderer",
+    "tweakeroo.inventoryPreviewSupportFreeCamera.MixinMixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportPlayer.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportShulkerBoxItemEntity.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportTradeOfferList.MixinRenderUtils",

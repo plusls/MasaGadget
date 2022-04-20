@@ -113,19 +113,21 @@ public class Configs {
 
     // TODO set TW version
     @Hotkey
-    @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
+    @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = {
+            @Dependency(ModInfo.TWEAKEROO_MOD_ID),
+            @Dependency(value = "minecraft", versionPredicate = "<=1.17.1")}))
     public static boolean inventoryPreviewSupportFreeCamera = true;
     @Hotkey
-    @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = {@Dependency(ModInfo.TWEAKEROO_MOD_ID), @Dependency(ModInfo.CARPET_TIS_ADDITION_MOD_ID)}))
+    @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
     public static boolean inventoryPreviewSupportPlayer = true;
     @Hotkey
-    @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = {@Dependency(ModInfo.TWEAKEROO_MOD_ID), @Dependency(ModInfo.CARPET_TIS_ADDITION_MOD_ID)}))
+    @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
     public static boolean inventoryPreviewSupportSelect = true;
     @Hotkey
-    @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = {@Dependency(ModInfo.TWEAKEROO_MOD_ID), @Dependency(ModInfo.CARPET_TIS_ADDITION_MOD_ID)}))
+    @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
     public static boolean inventoryPreviewSupportShulkerBoxItemEntity = true;
     @Hotkey
-    @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = {@Dependency(ModInfo.TWEAKEROO_MOD_ID), @Dependency(ModInfo.CARPET_TIS_ADDITION_MOD_ID)}))
+    @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
     public static boolean inventoryPreviewSupportTradeOfferList = true;
     @Hotkey
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
