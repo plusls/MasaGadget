@@ -1,28 +1,26 @@
 package com.plusls.MasaGadget.tweakeroo.inventoryPreviewSupportSelect;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.plusls.MasaGadget.ModInfo;
-import fi.dy.masa.malilib.interfaces.IRenderer;
 import fi.dy.masa.malilib.render.RenderUtils;
+import fi.dy.masa.malilib.util.Color4f;
 import fi.dy.masa.malilib.util.GuiUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class InventoryOverlayRenderHandler implements IRenderer {
+public class InventoryOverlayRenderHandler {
     final public static InventoryOverlayRenderHandler instance = new InventoryOverlayRenderHandler();
     final private static int UN_SELECTED = 114514;
     private int selectedIdx = UN_SELECTED;
@@ -39,36 +37,60 @@ public class InventoryOverlayRenderHandler implements IRenderer {
     private int subRenderY = -1;
     private ItemStack subItemStack = null;
 
-    protected static void fillGradient(PoseStack matrices, int startX, int startY, int endX, int endY, int colorStart, int colorEnd, int z) {
+    public static class GradientData {
+        public int startX;
+        public int startY;
+        public int endX;
+        public int endY;
+
+        public int z;
+
+        public Color4f colorStart;
+        public Color4f colorEnd;
+
+        public GradientData(Color4f colorStart, Color4f colorEnd, int startX, int startY, int endX, int endY, int z) {
+            this.endY = endY;
+            this.colorStart = colorStart;
+            this.colorEnd = colorEnd;
+            this.startX = startX;
+            this.startY = startY;
+            this.endX = endX;
+            this.z = z;
+        }
+    }
+
+    private static void fillGradient(PoseStack matrices, Collection<GradientData> gradientDataCollection) {
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        Tesselator lv = Tesselator.getInstance();
-        BufferBuilder lv2 = lv.getBuilder();
-        lv2.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        fillGradient(matrices.last().pose(), lv2, startX, startY, endX, endY, z, colorStart, colorEnd);
-        lv.end();
+        // TODO
+        //RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder bufferBuilder = tesselator.getBuilder();
+        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        for (GradientData gradientData : gradientDataCollection) {
+            fillGradient(matrices.last().pose(), bufferBuilder, gradientData);
+        }
+        tesselator.end();
         RenderSystem.disableBlend();
         RenderSystem.enableTexture();
     }
 
-    protected static void fillGradient(Matrix4f matrix, BufferBuilder arg2, int startX, int startY, int endX, int endY, int z, int colorStart, int colorEnd) {
-        float f = (colorStart >> 24 & 0xFF) / 255.0F;
-        float g = (colorStart >> 16 & 0xFF) / 255.0F;
-        float h = (colorStart >> 8 & 0xFF) / 255.0F;
-        float p = (colorStart & 0xFF) / 255.0F;
-        float q = (colorEnd >> 24 & 0xFF) / 255.0F;
-        float r = (colorEnd >> 16 & 0xFF) / 255.0F;
-        float s = (colorEnd >> 8 & 0xFF) / 255.0F;
-        float t = (colorEnd & 0xFF) / 255.0F;
-        arg2.vertex(matrix, endX, startY, z).color(g, h, p, f).endVertex();
-        arg2.vertex(matrix, startX, startY, z).color(g, h, p, f).endVertex();
-        arg2.vertex(matrix, startX, endY, z).color(r, s, t, q).endVertex();
-        arg2.vertex(matrix, endX, endY, z).color(r, s, t, q).endVertex();
+    private static void fillGradient(Matrix4f matrix, BufferBuilder bufferBuilder, GradientData gradientData) {
+        bufferBuilder.vertex(matrix, gradientData.endX, gradientData.startY, gradientData.z)
+                .color(gradientData.colorStart.r, gradientData.colorStart.g, gradientData.colorStart.b, gradientData.colorStart.a).endVertex();
+        bufferBuilder.vertex(matrix, gradientData.startX, gradientData.startY, gradientData.z)
+                .color(gradientData.colorStart.r, gradientData.colorStart.g, gradientData.colorStart.b, gradientData.colorStart.a).endVertex();
+        bufferBuilder.vertex(matrix, gradientData.startX, gradientData.endY, gradientData.z)
+                .color(gradientData.colorEnd.r, gradientData.colorEnd.g, gradientData.colorEnd.b, gradientData.colorEnd.a).endVertex();
+        bufferBuilder.vertex(matrix, gradientData.endX, gradientData.endY, gradientData.z)
+                .color(gradientData.colorEnd.r, gradientData.colorEnd.g, gradientData.colorEnd.b, gradientData.colorEnd.a).endVertex();
     }
 
-    public void render(PoseStack matrixStack) {
+    // for 1.14
+
+    public <T> void render(T obj) {
+        PoseStack matrixStack = (PoseStack) obj;
         // fuck mojang
         // for 1.18
         // 不添加会渲染错误，不知道麻将哪里 pop 了没有 apply
@@ -106,15 +128,12 @@ public class InventoryOverlayRenderHandler implements IRenderer {
                                         }
                                     } else {
                                         if (subItemStack != null) {
-                                            PoseStack stack = RenderSystem.getModelViewStack();
-                                            stack.pushPose();
-                                            stack.translate(0, 0, 400);
-                                            RenderSystem.applyModelViewMatrix();
+                                            matrixStack.pushPose();
+                                            matrixStack.translate(0, 0, 400);
                                             ModInfo.LOGGER.debug("subRenderX: {} subRenderY: {}", subRenderX, subRenderY);
                                             renderSelectedRect(matrixStack, subRenderX, subRenderY);
                                             renderOrderedTooltip(matrixStack, subItemStack, subRenderX, subRenderY + 8);
-                                            RenderSystem.getModelViewStack().popPose();
-                                            RenderSystem.applyModelViewMatrix();
+                                            matrixStack.popPose();
 
                                         } else {
                                             ModInfo.LOGGER.debug("InventoryOverlayRenderHandler sub wtf???");
@@ -199,7 +218,9 @@ public class InventoryOverlayRenderHandler implements IRenderer {
         // 选中框
         RenderSystem.disableDepthTest();
         RenderSystem.colorMask(true, true, true, false);
-        fillGradient(matrices, x, y, x + 16, y + 16, -2130706433, -2130706433);
+        fillGradient(matrices, ImmutableList.of(new GradientData(
+                Color4f.fromColor(0x80ffffff), Color4f.fromColor(0x80ffffff),
+                x, y, x + 16, y + 16, 0)));
         RenderSystem.colorMask(true, true, true, true);
         RenderSystem.enableDepthTest();
     }
@@ -208,76 +229,77 @@ public class InventoryOverlayRenderHandler implements IRenderer {
         y = y + 8;
 
         Minecraft mc = Minecraft.getInstance();
-        List<FormattedCharSequence> lines = Lists.transform(stack.getTooltipLines(mc.player, mc.options.advancedItemTooltips ? TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL), Component::getVisualOrderText);
-        List<ClientTooltipComponent> components = lines.stream().map(ClientTooltipComponent::create).collect(Collectors.toList());
+        List<Component> components = stack.getTooltipLines(mc.player, mc.options.advancedItemTooltips ?
+                TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL);
         if (components.isEmpty())
             return;
-        int k = 0;
-        int l = (components.size() == 1) ? -2 : 0;
-        for (ClientTooltipComponent lv : components) {
-            int m = lv.getWidth(mc.font);
-            if (m > k)
-                k = m;
-            l += lv.getHeight();
+        int xOffset = 0;
+        int yOffset = (components.size() == 1) ? -2 : 0;
+
+        for (Component component : components) {
+            int m = mc.font.width(component);
+            if (m > xOffset)
+                xOffset = m;
+            yOffset += 10;
         }
-        int n = x + 12;
-        int o = y - 12;
-        int p = k;
-        int q = l;
-        if (n + k > GuiUtils.getScaledWindowWidth())
-            n -= 28 + k;
-        if (o + q + 6 > GuiUtils.getScaledWindowHeight())
-            o = GuiUtils.getScaledWindowHeight() - q - 6;
+
+        int renderX = x + 12;
+        int renderY = y - 12;
+
+        if (renderX + xOffset > GuiUtils.getScaledWindowWidth()) {
+            renderX -= 28 + xOffset;
+        }
+
+        if (renderY + yOffset + 6 > GuiUtils.getScaledWindowHeight()) {
+            renderY = GuiUtils.getScaledWindowHeight() - yOffset - 6;
+        }
         matrices.pushPose();
 
-        int r = -267386864;
-        int s = 1347420415;
-        int t = 1344798847;
-        int u = 400;
-        float f = mc.getItemRenderer().blitOffset;
+
+        float oldBlitOffset = mc.getItemRenderer().blitOffset;
         mc.getItemRenderer().blitOffset = 400.0F;
-        Tesselator lv2 = Tesselator.getInstance();
-        BufferBuilder lv3 = lv2.getBuilder();
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        lv3.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        Matrix4f lv4 = matrices.last().pose();
-        fillGradient(lv4, lv3, n - 3, o - 4, n + p + 3, o - 3, 400, -267386864, -267386864);
-        fillGradient(lv4, lv3, n - 3, o + q + 3, n + p + 3, o + q + 4, 400, -267386864, -267386864);
-        fillGradient(lv4, lv3, n - 3, o - 3, n + p + 3, o + q + 3, 400, -267386864, -267386864);
-        fillGradient(lv4, lv3, n - 4, o - 3, n - 3, o + q + 3, 400, -267386864, -267386864);
-        fillGradient(lv4, lv3, n + p + 3, o - 3, n + p + 4, o + q + 3, 400, -267386864, -267386864);
-        fillGradient(lv4, lv3, n - 3, o - 3 + 1, n - 3 + 1, o + q + 3 - 1, 400, 1347420415, 1344798847);
-        fillGradient(lv4, lv3, n + p + 2, o - 3 + 1, n + p + 3, o + q + 3 - 1, 400, 1347420415, 1344798847);
-        fillGradient(lv4, lv3, n - 3, o - 3, n + p + 3, o - 3 + 1, 400, 1347420415, 1347420415);
-        fillGradient(lv4, lv3, n - 3, o + q + 2, n + p + 3, o + q + 3, 400, 1344798847, 1344798847);
-        RenderSystem.enableDepthTest();
+
+        Color4f colorA = Color4f.fromColor(0xf0100010);
+
+        ArrayList<GradientData> gradientDataArrayList = new ArrayList<>();
+        gradientDataArrayList.add(new GradientData(colorA, colorA, renderX - 3, renderY - 4,
+                renderX + xOffset + 3, renderY - 3, 400));
+        gradientDataArrayList.add(new GradientData(colorA, colorA, renderX - 3, renderY + yOffset + 3,
+                renderX + xOffset + 3, renderY + yOffset + 4, 400));
+        gradientDataArrayList.add(new GradientData(colorA, colorA, renderX - 3, renderY - 3,
+                renderX + xOffset + 3, renderY + yOffset + 3, 400));
+        gradientDataArrayList.add(new GradientData(colorA, colorA, renderX - 4, renderY - 3,
+                renderX - 3, renderY + yOffset + 3, 400));
+        gradientDataArrayList.add(new GradientData(colorA, colorA, renderX + xOffset + 3, renderY - 3,
+                renderX + xOffset + 4, renderY + yOffset + 3, 400));
+
+        Color4f colorB = Color4f.fromColor(0x505000ff);
+        Color4f colorC = Color4f.fromColor(0x5028007f);
+
+        gradientDataArrayList.add(new GradientData(colorB, colorC, renderX - 3, renderY - 3 + 1,
+                renderX - 3 + 1, renderY + yOffset + 3 - 1, 400));
+        gradientDataArrayList.add(new GradientData(colorB, colorC, renderX + xOffset + 2, renderY - 3 + 1,
+                renderX + xOffset + 3, renderY + yOffset + 3 - 1, 400));
+        gradientDataArrayList.add(new GradientData(colorB, colorB, renderX - 3, renderY - 3,
+                renderX + xOffset + 3, renderY + 3 - 1, 400));
+        gradientDataArrayList.add(new GradientData(colorC, colorC, renderX - 3, renderY + yOffset + 2,
+                renderX + xOffset + 3, renderY + yOffset + 3, 400));
+
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        lv3.end();
-        BufferUploader.end(lv3);
+        fillGradient(matrices, gradientDataArrayList);
         RenderSystem.disableBlend();
         RenderSystem.enableTexture();
-        MultiBufferSource.BufferSource lv5 = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
         matrices.translate(0.0D, 0.0D, 400.0D);
-        int v = o;
-        for (int w = 0; w < components.size(); w++) {
-            ClientTooltipComponent lv6 = components.get(w);
-            lv6.renderText(mc.font, n, v, lv4, lv5);
-            v += lv6.getHeight() + ((w == 0) ? 2 : 0);
-        }
-        lv5.endBatch();
-        matrices.popPose();
-        v = o;
+        MultiBufferSource.BufferSource bufferSource = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
         for (int i = 0; i < components.size(); i++) {
-            ClientTooltipComponent lv7 = components.get(i);
-            lv7.renderImage(mc.font, n, v, matrices, mc.getItemRenderer(), 400);
-            v += lv7.getHeight() + ((i == 0) ? 2 : 0);
+            mc.font.drawInBatch(components.get(i), renderX, renderY, 0xffffffff, true,
+                    matrices.last().pose(), bufferSource, false, 0, 0xf000f0);
+            renderY += 10 + ((i == 0) ? 2 : 0);
         }
-        mc.getItemRenderer().blitOffset = f;
-    }
-
-    protected void fillGradient(PoseStack matrices, int startX, int startY, int endX, int endY, int colorStart, int colorEnd) {
-        fillGradient(matrices, startX, startY, endX, endY, colorStart, colorEnd, 0);
+        bufferSource.endBatch();
+        matrices.popPose();
+        mc.getItemRenderer().blitOffset = oldBlitOffset;
     }
 }

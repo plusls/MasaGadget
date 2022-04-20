@@ -38,5 +38,11 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "tweakeroo.inventoryPreviewSupportSelect.MixinInGameHud",
+    "tweakeroo.inventoryPreviewSupportSelect.MixinInventoryOverlay",
+    "tweakeroo.inventoryPreviewSupportSelect.MixinRenderHandler",
+    "tweakeroo.inventoryPreviewSyncData.MixinRenderHandler"
+  ]
 }

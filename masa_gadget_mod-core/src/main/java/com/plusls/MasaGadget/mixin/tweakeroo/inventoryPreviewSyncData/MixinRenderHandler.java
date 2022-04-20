@@ -1,8 +1,8 @@
-package com.plusls.MasaGadget.mixin.tweakeroo.inventoryPreviewSupportSelect;
+package com.plusls.MasaGadget.mixin.tweakeroo.inventoryPreviewSyncData;
 
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
-import com.plusls.MasaGadget.tweakeroo.inventoryPreviewSupportSelect.InventoryOverlayRenderHandler;
+import com.plusls.MasaGadget.util.PcaSyncProtocol;
 import fi.dy.masa.malilib.hotkeys.IKeybind;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.config.Hotkeys;
@@ -20,15 +20,15 @@ public abstract class MixinRenderHandler {
     @ModifyVariable(method = "onRenderGameOverlayPost",
             at = @At(value = "RETURN"))
     private Minecraft checkInventoryPreviewPress(Minecraft mc) {
-        if (!FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue() || !Configs.inventoryPreviewSupportSelect) {
+        if (!FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue() || !Configs.inventoryPreviewSyncData || !PcaSyncProtocol.enable) {
             return mc;
         }
         IKeybind iKeybind = Hotkeys.INVENTORY_PREVIEW.getKeybind();
         if (!iKeybind.isKeybindHeld()) {
-            // 重置预览选择槽
-            InventoryOverlayRenderHandler.instance.resetSelectedIdx();
+            // 未按下按键时若是 lastBlockPos 不为空， 则告诉服务端不需要更新 block entity
+            PcaSyncProtocol.cancelSyncBlockEntity();
+            PcaSyncProtocol.cancelSyncEntity();
         }
         return mc;
     }
-
 }

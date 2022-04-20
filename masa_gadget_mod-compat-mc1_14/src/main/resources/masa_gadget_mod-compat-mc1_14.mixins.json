@@ -8,7 +8,8 @@
     "event.render.MixinEntityRenderer",
     "litematica.materials.MixinMaterialCache",
     "minecraft.sounds.MixinSoundEvents",
-    "tweakeroo.inventoryPreviewSupportComparator.MixinGameRenderer"
+    "tweakeroo.inventoryPreviewSupportComparator.MixinGameRenderer",
+    "tweakeroo.inventoryPreviewSupportSelect.MixinInGameHud"
   ],
   "injectors": {
     "defaultRequire": 1
