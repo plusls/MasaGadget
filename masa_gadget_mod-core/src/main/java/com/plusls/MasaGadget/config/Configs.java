@@ -72,7 +72,7 @@ public class Configs {
     @Config(category = ConfigCategory.LITEMATICA, dependencies = @Dependencies(and = {
             @Dependency(ModInfo.LITEMATICA_MOD_ID),
             @Dependency(ModInfo.TWEAKEROO_MOD_ID),
-            @Dependency(value = "minecraft", versionPredicate = "<=1.17.1")}))
+            @Dependency(value = "minecraft", versionPredicate = "<=1.15.2")}))
     public static boolean nudgeSelectionSupportFreeCamera = true;
     @Hotkey
     @Config(category = ConfigCategory.LITEMATICA, dependencies = @Dependencies(and = @Dependency(ModInfo.LITEMATICA_MOD_ID)))
@@ -115,7 +115,7 @@ public class Configs {
     @Hotkey
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = {
             @Dependency(ModInfo.TWEAKEROO_MOD_ID),
-            @Dependency(value = "minecraft", versionPredicate = "<=1.17.1")}))
+            @Dependency(value = "minecraft", versionPredicate = "<=1.16.5")}))
     public static boolean inventoryPreviewSupportFreeCamera = true;
     @Hotkey
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))

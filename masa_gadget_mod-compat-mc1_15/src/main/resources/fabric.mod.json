@@ -3,7 +3,7 @@
   "id": "${mod_id}-compat-mc1_15",
   "version": "${mod_version}",
   "name": "${mod_name} Compat",
-  "description": "${mod_id} compat for Minecraft 1.15.x",
+  "description": "${mod_id} compat for Minecraft 1.15.2",
   "authors": [
     "plusls",
     "Hendrix-Shen"
@@ -25,7 +25,7 @@
     "${mod_id}-compat-mc1_15.mixins.json"
   ],
   "depends": {
-    "minecraft": "1.15.x"
+    "minecraft": "1.15.2"
   },
   "custom": {
     "modmenu:api": true,

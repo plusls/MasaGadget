@@ -15,7 +15,7 @@ import top.hendrixshen.magiclib.dependency.annotation.Dependency;
 
 import java.util.UUID;
 
-@Dependencies(and = {@Dependency(ModInfo.TWEAKEROO_MOD_ID), @Dependency(value = "minecraft", versionPredicate = "<=1.17.1")})
+@Dependencies(and = {@Dependency(ModInfo.TWEAKEROO_MOD_ID), @Dependency(value = "minecraft", versionPredicate = "<=1.16.5")})
 @Mixin(value = RenderUtils.class, remap = false)
 public class MixinMixinRenderUtils {
     @Redirect(method = "renderInventoryOverlay",

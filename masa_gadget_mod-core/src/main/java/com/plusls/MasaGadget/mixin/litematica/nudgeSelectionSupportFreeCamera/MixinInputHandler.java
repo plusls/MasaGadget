@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.annotation.Dependency;
 
-@Dependencies(and = {@Dependency(ModInfo.LITEMATICA_MOD_ID), @Dependency(ModInfo.TWEAKEROO_MOD_ID), @Dependency(value = "minecraft", versionPredicate = "<=1.17.1")})
+@Dependencies(and = {@Dependency(ModInfo.LITEMATICA_MOD_ID), @Dependency(ModInfo.TWEAKEROO_MOD_ID), @Dependency(value = "minecraft", versionPredicate = "<=1.15.2")})
 @Mixin(value = InputHandler.class, remap = false)
 public class MixinInputHandler {
 
