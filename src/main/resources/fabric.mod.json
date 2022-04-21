@@ -17,14 +17,17 @@
   "icon": "assets/${mod_id}/icon.jpg",
   "environment": "client",
   "entrypoints": {
+    "client": [
+      "com.plusls.MasaGadget.MasaGadgetMod"
+    ],
     "modmenu": [
       "com.plusls.MasaGadget.compat.modmenu.ModMenuApiImpl"
     ]
   },
-  "depends": {
-    "fabricloader": ">=0.7.4",
-    "fabric": "*",
-    "magiclib": ">=0.4.28"
-  },
-  "jars": ${sub_jars}
+  "mixins": [
+    "${mod_id}.mixins.json"
+  ],
+  "custom": {
+    "modmenu:clientsideOnly": true
+  }
 }

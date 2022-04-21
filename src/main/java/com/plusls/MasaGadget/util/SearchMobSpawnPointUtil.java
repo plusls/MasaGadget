@@ -66,7 +66,11 @@ public class SearchMobSpawnPointUtil {
         int maxX = pos.getX() + 129;
         int maxZ = pos.getZ() + 129;
         BlockPos.MutableBlockPos currentPos = new BlockPos.MutableBlockPos();
+        //#if MC >= 11800
         int maxSpawnLightLevel = fi.dy.masa.minihud.config.Configs.Generic.LIGHT_LEVEL_THRESHOLD_SAFE.getIntegerValue();
+        //#else
+        //$$ int maxSpawnLightLevel = fi.dy.masa.minihud.config.Configs.Generic.LIGHT_LEVEL_THRESHOLD.getIntegerValue();
+        //#endif
         LevelLightEngine lightingProvider = world.getChunkSource().getLightEngine();
         EntityType<?> entityType = world.dimensionType().ultraWarm() ? EntityType.ZOMBIFIED_PIGLIN : EntityType.CREEPER;
         EntityType<?> entityType2 = world.dimensionType().ultraWarm() ? null : EntityType.SPIDER;

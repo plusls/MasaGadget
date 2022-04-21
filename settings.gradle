@@ -4,20 +4,41 @@ pluginManagement {
             name = 'Fabric'
             url = 'https://maven.fabricmc.net/'
         }
+        maven {
+            name = 'Jitpack'
+            url = "https://jitpack.io"
+        }
+        maven {
+            name = 'Cotton'
+            url = 'https://server.bbkr.space/artifactory/libs-release/'
+        }
         mavenCentral()
         gradlePluginPortal()
     }
+    resolutionStrategy {
+        eachPlugin {
+            switch (requested.id.id) {
+                case "com.replaymod.preprocess": {
+                    useModule("com.github.Fallen-Breath:preprocessor:${requested.version}")
+                }
+            }
+        }
+    }
 }
 
-plugins {
-    id 'fabric-loom' version '0.12-SNAPSHOT' apply false
+def versions = Arrays.asList(
+//        "1.14.4",
+//        "1.15.2",
+//        "1.16.5",
+        "1.17.1",
+        "1.18.2",
+        //"snapshot",
+)
+for (String version : versions) {
+    include(":$version")
+
+    def proj = project(":$version")
+    proj.projectDir = file("versions/$version")
+    proj.buildFileName = "../../common.gradle"
 }
-
-mod_id = "masa_gadget_mod"
-
-include "${mod_id}-core"
-include "${mod_id}-compat-mc1_14"
-include "${mod_id}-compat-mc1_15"
-include "${mod_id}-compat-mc1_16"
-include "${mod_id}-compat-mc1_17"
-include "${mod_id}-compat-mc1_18"
+include(":fabricWrapper")

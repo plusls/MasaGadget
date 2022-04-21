@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}-wrapper",
+  "version": "${mod_version}",
+  "name": "${mod_name} wrapper",
+  "description": "${mod_name} wrapper",
+  "authors": [
+    "plusls"
+  ],
+  "contact": {
+    "homepage": "${mod_homepage}",
+    "issues": "${mod_sources}/issues",
+    "sources": "${mod_sources}"
+  },
+  "license": "${mod_license}",
+  "icon": "assets/${mod_id}-wrapper/icon.png",
+  "environment": "*",
+  "custom": {
+    "modmenu:api": true,
+    "modmenu": {
+      "badges": [
+        "library"
+      ],
+      "parent": "${mod_id}"
+    }
+  }
+}
