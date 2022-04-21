@@ -38,28 +38,6 @@ public class InventoryOverlayRenderHandler {
     private int subRenderY = -1;
     private ItemStack subItemStack = null;
 
-    public static class GradientData {
-        public int startX;
-        public int startY;
-        public int endX;
-        public int endY;
-
-        public int z;
-
-        public Color4f colorStart;
-        public Color4f colorEnd;
-
-        public GradientData(Color4f colorStart, Color4f colorEnd, int startX, int startY, int endX, int endY, int z) {
-            this.endY = endY;
-            this.colorStart = colorStart;
-            this.colorEnd = colorEnd;
-            this.startX = startX;
-            this.startY = startY;
-            this.endX = endX;
-            this.z = z;
-        }
-    }
-
     private static void fillGradient(PoseStack matrices, Collection<GradientData> gradientDataCollection) {
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
@@ -86,8 +64,6 @@ public class InventoryOverlayRenderHandler {
         bufferBuilder.vertex(matrix, gradientData.endX, gradientData.endY, gradientData.z)
                 .color(gradientData.colorEnd.r, gradientData.colorEnd.g, gradientData.colorEnd.b, gradientData.colorEnd.a).endVertex();
     }
-
-    // for 1.14
 
     public <T> void render(T obj) {
         PoseStack matrixStack = (PoseStack) obj;
@@ -169,6 +145,8 @@ public class InventoryOverlayRenderHandler {
         subRenderX = -1;
         subRenderY = -1;
     }
+
+    // for 1.14
 
     public void updateState(int x, int y, ItemStack stack) {
         if (renderingSubInventory) {
@@ -302,5 +280,27 @@ public class InventoryOverlayRenderHandler {
         matrices.popPose();
         mc.getItemRenderer().blitOffset = oldBlitOffset;
         RenderSystem.enableDepthTest();
+    }
+
+    public static class GradientData {
+        public int startX;
+        public int startY;
+        public int endX;
+        public int endY;
+
+        public int z;
+
+        public Color4f colorStart;
+        public Color4f colorEnd;
+
+        public GradientData(Color4f colorStart, Color4f colorEnd, int startX, int startY, int endX, int endY, int z) {
+            this.endY = endY;
+            this.colorStart = colorStart;
+            this.colorEnd = colorEnd;
+            this.startX = startX;
+            this.startY = startY;
+            this.endX = endX;
+            this.z = z;
+        }
     }
 }
