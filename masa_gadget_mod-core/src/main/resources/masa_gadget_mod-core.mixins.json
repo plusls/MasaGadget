@@ -23,6 +23,11 @@
     "litematica.nudgeSelectionSupportFreeCamera.MixinInputHandler",
     "litematica.saveInventoryToSchematicInServer.MixinSchematicUtils",
     "litematica.useRelativePath.MixinSchematicPlacement",
+    "malilib.backportI18nSupport.MixinConfigBase",
+    "malilib.backportI18nSupport.MixinConfigBooleanClient",
+    "malilib.backportI18nSupport.MixinFeatureToggle",
+    "malilib.backportI18nSupport.MixinInfoToggle",
+    "malilib.backportI18nSupport.MixinRendererToggle",
     "malilib.fastSwitchMasaConfigGui.MixinGuiConfigBase",
     "malilib.favorites.MixinGuiConfigBase",
     "malilib.favorites.MixinWidgetConfigOption",
@@ -32,17 +37,15 @@
     "tweakeroo.inventoryPreviewSupportComparator.MixinWorldRenderer",
     "tweakeroo.inventoryPreviewSupportFreeCamera.MixinMixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportPlayer.MixinRenderUtils",
+    "tweakeroo.inventoryPreviewSupportSelect.MixinInGameHud",
+    "tweakeroo.inventoryPreviewSupportSelect.MixinInventoryOverlay",
+    "tweakeroo.inventoryPreviewSupportSelect.MixinRenderHandler",
     "tweakeroo.inventoryPreviewSupportShulkerBoxItemEntity.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportTradeOfferList.MixinRenderUtils",
+    "tweakeroo.inventoryPreviewSyncData.MixinRenderHandler",
     "tweakeroo.inventoryPreviewSyncData.MixinRenderUtils"
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "tweakeroo.inventoryPreviewSupportSelect.MixinInGameHud",
-    "tweakeroo.inventoryPreviewSupportSelect.MixinInventoryOverlay",
-    "tweakeroo.inventoryPreviewSupportSelect.MixinRenderHandler",
-    "tweakeroo.inventoryPreviewSyncData.MixinRenderHandler"
-  ]
+  }
 }

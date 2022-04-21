@@ -2,8 +2,11 @@ package com.plusls.MasaGadget.util;
 
 import fi.dy.masa.malilib.util.WorldUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+
+import javax.annotation.Nullable;
 
 public class MiscUtil {
 
@@ -39,5 +42,11 @@ public class MiscUtil {
             }
         }
         return ret.toString();
+    }
+
+    @Nullable
+    public static String getTranslatedOrFallback(String key, @Nullable String fallback, Object... objects) {
+        String translated = I18n.get(key, objects);
+        return !key.equals(translated) ? translated : fallback;
     }
 }

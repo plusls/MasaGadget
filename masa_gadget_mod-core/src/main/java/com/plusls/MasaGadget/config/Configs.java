@@ -82,7 +82,7 @@ public class Configs {
     public static boolean useRelativePath = false;
     // MALILIB
     @Hotkey
-    @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(value = ModInfo.MALILIB_MOD_ID, versionPredicate = "<0.11.4")))
+    @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(value = "minecraft", versionPredicate = "<=1.17.1")))
     public static boolean backportI18nSupport = true;
     @Hotkey
     @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(ModInfo.MODMENU_MOD_ID)))
@@ -91,13 +91,13 @@ public class Configs {
     @Config(category = ConfigCategory.MALILIB)
     public static boolean favoritesSupport = false;
     @Hotkey
-    @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(value = ModInfo.MALILIB_MOD_ID, versionPredicate = "<0.11.4")))
+    @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(value = "minecraft", versionPredicate = "<=1.17.1")))
     public static boolean fixConfigWidgetWidth = true;
     @Hotkey
-    @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(value = ModInfo.MALILIB_MOD_ID, versionPredicate = "<0.11.4")))
+    @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(value = "minecraft", versionPredicate = "<=1.17.1")))
     public static boolean fixGetInventoryType = true;
     @Hotkey
-    @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(value = ModInfo.MALILIB_MOD_ID, versionPredicate = "<0.11.4")))
+    @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(value = "minecraft", versionPredicate = "<=1.17.1")))
     public static boolean optimizeConfigWidgetSearch = true;
     @Hotkey
     @Config(category = ConfigCategory.MALILIB)
