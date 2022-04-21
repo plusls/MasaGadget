@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "plugin": "top.hendrixshen.magiclib.MagicMixinPlugin",
   "client": [
+    "MixinMyWidgetDropDownList",
     "tweakeroo.inventoryPreviewSupportSelect.MixinInGameHud"
   ],
   "injectors": {

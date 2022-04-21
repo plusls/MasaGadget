@@ -27,13 +27,22 @@ public class MyWidgetDropDownList<T> extends WidgetDropDownList<T> {
             super.setSelectedEntry(index);
             selectedCallback.accept(this.getSelectedEntry());
         }
+    }
 
+    // 1.14 1.15
+    public void render(int mouseX, int mouseY, boolean selected) {
+        this.render(mouseX, mouseY, selected, new PoseStack());
+    }
+
+    // will be overwrite by mixin in 1.14 1.15
+    public void superRender(int mouseX, int mouseY, boolean selected, PoseStack matrixStack) {
+        super.render(mouseX, mouseY, selected, matrixStack);
     }
 
     @Override
     public void render(int mouseX, int mouseY, boolean selected, PoseStack matrixStack) {
         if (shouldEnable.test(this.getSelectedEntry())) {
-            super.render(mouseX, mouseY, selected, matrixStack);
+            superRender(mouseX, mouseY, selected, matrixStack);
         }
     }
 

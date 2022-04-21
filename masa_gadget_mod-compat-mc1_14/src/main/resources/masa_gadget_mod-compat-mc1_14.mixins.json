@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "plugin": "top.hendrixshen.magiclib.MagicMixinPlugin",
   "client": [
+    "MixinMyWidgetDropDownList",
     "event.render.MixinEntityRenderer",
     "litematica.materials.MixinMaterialCache",
     "minecraft.sounds.MixinSoundEvents",
