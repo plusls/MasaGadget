@@ -281,7 +281,7 @@ public class InventoryOverlayRenderHandler {
         gradientDataArrayList.add(new GradientData(colorB, colorC, renderX + xOffset + 2, renderY - 3 + 1,
                 renderX + xOffset + 3, renderY + yOffset + 3 - 1, 400));
         gradientDataArrayList.add(new GradientData(colorB, colorB, renderX - 3, renderY - 3,
-                renderX + xOffset + 3, renderY + 3 - 1, 400));
+                renderX + xOffset + 3, renderY - 3 + 1, 400));
         gradientDataArrayList.add(new GradientData(colorC, colorC, renderX - 3, renderY + yOffset + 2,
                 renderX + xOffset + 3, renderY + yOffset + 3, 400));
 
