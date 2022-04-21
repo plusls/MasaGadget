@@ -50,7 +50,7 @@ public class Configs {
     @Hotkey
     @Config(category = ConfigCategory.GENERIC, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
     public static boolean renderZombieVillagerConvertTime = true;
-    @Hotkey(hotkey = ";")
+    @Hotkey
     @Config(category = ConfigCategory.GENERIC, dependencies = @Dependencies(and = @Dependency(ModInfo.MINIHUD_MOD_ID)))
     public static ConfigHotkey searchMobSpawnPoint;
     @Config(category = ConfigCategory.GENERIC, dependencies = @Dependencies(and = @Dependency(ModInfo.MINIHUD_MOD_ID)))
