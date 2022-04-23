@@ -12,9 +12,6 @@ preprocess {
 
 repositories {
     maven {
-        url 'https://masa.dy.fi/maven'
-    }
-    maven {
         url 'https://www.cursemaven.com/'
     }
     maven {
@@ -57,7 +54,7 @@ dependencies {
         include("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}")
     }
 
-    modImplementation("top.hendrixshen:magiclib-compat-mc${getMagiclibCompatName(project.minecraft_version)}:${project.magiclib_version}")
+    modImplementation("top.hendrixshen:magiclib:${project.minecraft_version}-${project.magiclib_version}")
 }
 
 loom {

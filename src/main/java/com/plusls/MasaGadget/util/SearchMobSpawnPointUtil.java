@@ -103,7 +103,7 @@ public class SearchMobSpawnPointUtil {
                             if (world.noCollision(entityType.getAABB(currentPos.getX() + 0.5D, currentPos.getY(), currentPos.getZ() + 0.5D))) {
                                 spawnPos = currentPos.mutable();
                             } else if (entityType2 != null && world.noCollision(entityType2.getAABB(currentPos.getX() + 0.5D, currentPos.getY(), currentPos.getZ() + 0.5D))) {
-                                spawnPos = currentPos.mutable();
+                                spawnPos = currentPos.immutable();
                             }
                         }
                     }

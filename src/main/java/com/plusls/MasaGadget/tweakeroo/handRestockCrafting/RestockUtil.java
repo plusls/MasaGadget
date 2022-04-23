@@ -15,6 +15,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import top.hendrixshen.magiclib.compat.minecraft.world.item.ItemStackCompatApi;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,10 +46,15 @@ public class RestockUtil {
         AbstractContainerScreen<? extends AbstractContainerMenu> gui = new InventoryScreen(player);
         gui.init(Minecraft.getInstance(), 0, 0);
         for (RecipePattern recipe : RestockUtil.recipes) {
-            if (ItemStack.isSameItemSameTags(recipe.getResult(), itemStack)) {
+            if (ItemStackCompatApi.isSameItemSameTags(recipe.getResult(), itemStack)) {
                 InventoryUtils.tryMoveItemsToFirstCraftingGrid(recipe, gui, false);
                 mc.gameMode.handleInventoryMouseClick(player.inventoryMenu.containerId, 0, 0, ClickType.PICKUP, player);
-                if (player.inventoryMenu.getCarried().sameItemStackIgnoreDurability(itemStack)) {
+                //#if MC > 11605
+                if (player.inventoryMenu.getCarried()
+                        //#else
+                        //$$ if(player.getInventory().getCarried()
+                        //#endif
+                        .sameItemStackIgnoreDurability(itemStack)) {
                     mc.gameMode.handleInventoryMouseClick(player.inventoryMenu.containerId,
                             hand == InteractionHand.MAIN_HAND ? player.getInventory().selected + 36 : 45,
                             0, ClickType.PICKUP, player);

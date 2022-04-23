@@ -43,7 +43,8 @@
     "tweakeroo.inventoryPreviewSupportShulkerBoxItemEntity.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportTradeOfferList.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSyncData.MixinRenderHandler",
-    "tweakeroo.inventoryPreviewSyncData.MixinRenderUtils"
+    "tweakeroo.inventoryPreviewSyncData.MixinRenderUtils",
+    "tweakeroo.handRestockCrafting.MixinInventoryUtils"
   ],
   "injectors": {
     "defaultRequire": 1

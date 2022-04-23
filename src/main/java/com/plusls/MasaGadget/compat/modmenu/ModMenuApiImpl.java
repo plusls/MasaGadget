@@ -2,14 +2,12 @@ package com.plusls.MasaGadget.compat.modmenu;
 
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.gui.GuiConfigs;
-import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import top.hendrixshen.magiclib.compat.modmenu.ModMenuApiCompat;
+import top.hendrixshen.magiclib.compat.modmenu.ModMenuCompatApi;
 
-public class ModMenuApiImpl implements ModMenuApi, ModMenuApiCompat {
+public class ModMenuApiImpl implements ModMenuApi, ModMenuCompatApi {
     @Override
-    public ConfigScreenFactory<?> getModConfigScreenFactory() {
-
+    public ConfigScreenFactoryCompat<?> getConfigScreenFactoryCompat() {
         return (screen) -> {
             GuiConfigs gui = GuiConfigs.getInstance();
             gui.setParentGui(screen);
@@ -18,7 +16,8 @@ public class ModMenuApiImpl implements ModMenuApi, ModMenuApiCompat {
     }
 
     @Override
-    public String getModId() {
+    public String getModIdCompat() {
         return ModInfo.MOD_ID;
     }
+
 }

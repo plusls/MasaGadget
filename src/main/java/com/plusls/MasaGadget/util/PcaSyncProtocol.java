@@ -35,6 +35,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import top.hendrixshen.magiclib.compat.minecraft.nbt.TagCompatApi;
 
 public class PcaSyncProtocol {
     private static final String NAMESPACE = "pca";
@@ -120,7 +121,7 @@ public class PcaSyncProtocol {
                 ContainerHelper.loadAllItems(tag, itemStacks);
             } else if (entity instanceof AbstractVillager) {
                 ((AbstractVillager) entity).getInventory().clearContent();
-                ((AbstractVillager) entity).getInventory().fromTag(tag.getList("Inventory", Tag.TAG_COMPOUND));
+                ((AbstractVillager) entity).getInventory().fromTag(tag.getList("Inventory", TagCompatApi.TAG_COMPOUND));
                 ((AccessorAbstractVillager) entity).setOffers(new MerchantOffers(tag.getCompound("Offers")));
                 if (entity instanceof Villager) {
                     ((AccessorVillager) entity).setNumberOfRestocksToday(tag.getInt("RestocksToday"));
@@ -131,9 +132,9 @@ public class PcaSyncProtocol {
                 entity.load(tag);
             } else if (entity instanceof Player) {
                 Player playerEntity = (Player) entity;
-                playerEntity.getInventory().load(tag.getList("Inventory", Tag.TAG_COMPOUND));
-                if (tag.contains("EnderItems", Tag.TAG_LIST)) {
-                    playerEntity.getEnderChestInventory().fromTag(tag.getList("EnderItems", Tag.TAG_COMPOUND));
+                playerEntity.getInventory().load(tag.getList("Inventory", TagCompatApi.TAG_COMPOUND));
+                if (tag.contains("EnderItems", TagCompatApi.TAG_LIST)) {
+                    playerEntity.getEnderChestInventory().fromTag(tag.getList("EnderItems", TagCompatApi.TAG_COMPOUND));
                 }
             } else if (entity instanceof ZombieVillager) {
                 if (tag.contains("ConversionTime", 99) && tag.getInt("ConversionTime") > -1) {

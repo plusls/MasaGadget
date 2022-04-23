@@ -34,9 +34,16 @@ public class MixinInventoryUtils {
                 fi.dy.masa.tweakeroo.config.Configs.Generic.HAND_RESTOCK_PRE.getBooleanValue() &&
                 !stackHand.isEmpty() &&
                 stackHand.getCount() <= threshold && stackHand.getMaxStackSize() > threshold &&
+                //#if MC > 11605
                 PlacementTweaks.canUseItemWithRestriction(PlacementTweaks.HAND_RESTOCK_RESTRICTION, stackHand) &&
+                //#endif
                 player.containerMenu == player.inventoryMenu &&
-                player.containerMenu.getCarried().isEmpty()) {
+                //#if MC > 11605
+                player.containerMenu.getCarried().isEmpty()
+            //#else
+            //$$ player.getInventory().getCarried().isEmpty()
+            //#endif
+        ) {
             RestockUtil.tryCraftingRestocking(player, hand, stackHand);
         }
     }

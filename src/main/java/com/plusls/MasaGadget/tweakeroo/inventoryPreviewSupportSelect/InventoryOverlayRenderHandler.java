@@ -16,10 +16,15 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
+import top.hendrixshen.magiclib.compat.minecraft.blaze3d.vertex.VertexFormatCompatApi;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+//#if MC <= 11605
+//$$ import org.lwjgl.opengl.GL11;
+//#endif
 
 public class InventoryOverlayRenderHandler {
     final public static InventoryOverlayRenderHandler instance = new InventoryOverlayRenderHandler();
@@ -42,14 +47,24 @@ public class InventoryOverlayRenderHandler {
         RenderSystem.disableTexture();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
+        //#if MC > 11605
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        //#else
+        //$$ RenderSystem.disableAlphaTest();
+        //$$ RenderSystem.shadeModel(GL11.GL_SMOOTH);
+        //#endif
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder bufferBuilder = tesselator.getBuilder();
-        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        bufferBuilder.begin(VertexFormatCompatApi.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         for (GradientData gradientData : gradientDataCollection) {
             fillGradient(matrices.last().pose(), bufferBuilder, gradientData);
         }
         tesselator.end();
+
+        //#if MC <= 11605
+        //$$ RenderSystem.shadeModel(GL11.GL_FLAT);
+        //#endif
+
         RenderSystem.disableBlend();
         RenderSystem.enableTexture();
     }
@@ -70,7 +85,9 @@ public class InventoryOverlayRenderHandler {
         // fuck mojang
         // for 1.18
         // 不添加会渲染错误，不知道麻将哪里 pop 了没有 apply
+        //#if MC > 11605
         RenderSystem.applyModelViewMatrix();
+        //#endif
 
         if (currentIdx == 0) {
             return;
