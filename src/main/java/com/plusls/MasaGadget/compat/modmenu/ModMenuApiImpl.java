@@ -2,10 +2,9 @@ package com.plusls.MasaGadget.compat.modmenu;
 
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.gui.GuiConfigs;
-import com.terraformersmc.modmenu.api.ModMenuApi;
 import top.hendrixshen.magiclib.compat.modmenu.ModMenuCompatApi;
 
-public class ModMenuApiImpl implements ModMenuApi, ModMenuCompatApi {
+public class ModMenuApiImpl implements ModMenuCompatApi {
     @Override
     public ConfigScreenFactoryCompat<?> getConfigScreenFactoryCompat() {
         return (screen) -> {

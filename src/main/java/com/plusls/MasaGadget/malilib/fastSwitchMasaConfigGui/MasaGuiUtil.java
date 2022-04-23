@@ -2,12 +2,12 @@ package com.plusls.MasaGadget.malilib.fastSwitchMasaConfigGui;
 
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.compat.modmenu.ConfigScreenFactoryCompat;
-import com.terraformersmc.modmenu.api.ModMenuApi;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -21,7 +21,11 @@ public class MasaGuiUtil {
     public final static ArrayList<ConfigScreenFactoryCompat<?>> masaGuiConfigScreenFactorys = new ArrayList<>();
     public final static Map<Class<?>, ConfigScreenFactoryCompat<?>> masaGuiClassData = new HashMap<>();
 
+    @Nullable
     private static final Class<?> modMenuApiClass;
+    private static final Method getModConfigScreenFactoryMethod;
+    private static final Method createMethod;
+    @Nullable
     private static final Class<?> legacyModMenuApiClass;
     private static final Method legacyGetModConfigScreenFactoryMethod;
     private static final Method legacyCreateMethod;
@@ -37,10 +41,17 @@ public class MasaGuiUtil {
 
         try {
             tmpModMenuApiClass = Class.forName("com.terraformersmc.modmenu.api.ModMenuApi");
-        } catch (ClassNotFoundException e) {
+            tmpGetModConfigScreenFactoryMethod = tmpModMenuApiClass.getMethod("getModConfigScreenFactory");
+            Class<?> configScreenFactoryClass = Class.forName("com.terraformersmc.modmenu.api.ConfigScreenFactory");
+            tmpCreateMethod = configScreenFactoryClass.getMethod("create", Screen.class);
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
             tmpModMenuApiClass = null;
+            tmpGetModConfigScreenFactoryMethod = null;
+            tmpCreateMethod = null;
         }
         modMenuApiClass = tmpModMenuApiClass;
+        getModConfigScreenFactoryMethod = tmpGetModConfigScreenFactoryMethod;
+        createMethod = tmpCreateMethod;
 
         try {
             tmpModMenuApiClass = Class.forName("io.github.prospector.modmenu.api.ModMenuApi");
@@ -80,9 +91,17 @@ public class MasaGuiUtil {
             try {
                 Object api = entrypoint.getEntrypoint();
                 ConfigScreenFactoryCompat<?> configScreenFactoryCompat;
-                if (modMenuApiClass.isAssignableFrom(api.getClass())) {
+                if (modMenuApiClass != null && modMenuApiClass.isAssignableFrom(api.getClass())) {
                     // >= 1.16
-                    configScreenFactoryCompat = screen -> ((ModMenuApi) api).getModConfigScreenFactory().create(screen);
+                    Object modConfigScreenFactory = getModConfigScreenFactoryMethod.invoke(api);
+                    configScreenFactoryCompat = screen -> {
+                        try {
+                            return (Screen) createMethod.invoke(modConfigScreenFactory, screen);
+                        } catch (IllegalAccessException | InvocationTargetException e) {
+                            throw new RuntimeException(e);
+                        }
+                    };
+
                 } else if (legacyModMenuApiClass != null && legacyModMenuApiClass.isAssignableFrom(api.getClass())) {
                     if (legacyGetModConfigScreenFactoryMethod != null) {
                         // 1.15 and 1.16 legacy
