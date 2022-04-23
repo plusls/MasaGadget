@@ -1,12 +1,9 @@
 package com.plusls.MasaGadget.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
 import fi.dy.masa.malilib.gui.widgets.WidgetLabel;
 import fi.dy.masa.malilib.render.RenderUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.network.chat.TextComponent;
 
 public class ScalableWidgetLabel extends WidgetLabel {
     public float scale;
@@ -16,12 +13,13 @@ public class ScalableWidgetLabel extends WidgetLabel {
         this.scale = scale;
     }
 
-    public void render(int mouseX, int mouseY, boolean selected) {
-        this.render(mouseX, mouseY, selected, new PoseStack());
-    }
-
-        @Override
+    @Override
+    //#if MC > 11502
     public void render(int mouseX, int mouseY, boolean selected, PoseStack matrixStack) {
+        //#else
+        //$$ public void render(int mouseX, int mouseY, boolean selected) {
+        //$$ PoseStack matrixStack = new PoseStack();
+        //#endif
         if (this.visible) {
             matrixStack.pushPose();
             RenderUtils.setupBlend();
@@ -33,7 +31,6 @@ public class ScalableWidgetLabel extends WidgetLabel {
 
             for (int i = 0; i < this.labels.size(); ++i) {
                 String text = this.labels.get(i);
-                MultiBufferSource.BufferSource bufferSource = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
                 if (this.centered) {
                     matrixStack.translate(this.x + this.width / 2.0f - this.getStringWidth(text) / 2.0f, yTextStart + i * fontHeight, 0);
                 } else {
@@ -41,8 +38,7 @@ public class ScalableWidgetLabel extends WidgetLabel {
                 }
                 matrixStack.scale(scale, scale, scale);
                 Minecraft.getInstance().font.drawInBatch(text, 0, 0, this.textColor, true, matrixStack.last().pose(),
-                        bufferSource, false, 0, 0xf000f0);
-                bufferSource.endBatch();
+                        false, 0, 0xf000f0);
             }
             matrixStack.popPose();
         }

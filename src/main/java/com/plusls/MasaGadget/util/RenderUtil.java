@@ -4,18 +4,20 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 
+//#if MC <= 11502
+//$$ import com.mojang.blaze3d.systems.RenderSystem;
+//#endif
 
 public class RenderUtil {
 
     // 只能在 EntityRenderer.render 中调用
     public static void renderTextOnEntity(PoseStack matrixStack, Entity entity,
-                                          EntityRenderDispatcher entityRenderDispatcher, MultiBufferSource vertexConsumerProvider,
+                                          EntityRenderDispatcher entityRenderDispatcher,
                                           Component text, float height, boolean seeThrough) {
         if (entityRenderDispatcher.distanceToSqr(entity) <= 4096.0D) {
             matrixStack.pushPose();
@@ -23,30 +25,30 @@ public class RenderUtil {
             matrixStack.mulPose(entityRenderDispatcher.cameraOrientation());
             matrixStack.scale(-0.018F, -0.018F, -0.018F);
             matrixStack.translate(0, 0, 33);
-            renderText(matrixStack, vertexConsumerProvider, text, seeThrough);
+            renderText(matrixStack, text, seeThrough);
             matrixStack.popPose();
         }
     }
 
 
-    public static void renderTextOnWorldCompat(Object matrixStack, Camera camera, BlockPos pos, Component text, boolean seeThrough) {
-        renderTextOnWorld((PoseStack) matrixStack, camera, null, pos, text, seeThrough);
-    }
-
     // 在 LevelRenderer.renderLevel 中调用
-    public static void renderTextOnWorld(PoseStack matrixStack, Camera camera, MultiBufferSource vertexConsumerProvider, BlockPos pos,
+    public static void renderTextOnWorld(PoseStack matrixStack, Camera camera, BlockPos pos,
                                          Component text, boolean seeThrough) {
         matrixStack.pushPose();
         matrixStack.translate(pos.getX() + 0.5 - camera.getPosition().x(), pos.getY() + 0.6 - camera.getPosition().y(), pos.getZ() + 0.5 - camera.getPosition().z());
         // 保证文字面向玩家
         matrixStack.mulPose(camera.rotation());
         matrixStack.scale(-0.04F, -0.04F, -0.04F);
-        renderText(matrixStack, vertexConsumerProvider, text, seeThrough);
+        renderText(matrixStack, text, seeThrough);
         matrixStack.popPose();
     }
 
-    public static void renderText(PoseStack matrixStack, MultiBufferSource vertexConsumerProvider,
-                                  Component text, boolean seeThrough) {
+    public static void renderText(PoseStack matrixStack, Component text, boolean seeThrough) {
+
+        //#if MC <= 11502
+        // 不加的话 minihud 渲染球体时会导致 bug
+        //$$ RenderSystem.disableLighting();
+        //#endif
         matrixStack.pushPose();
         Minecraft client = Minecraft.getInstance();
         Matrix4f matrix4f = matrixStack.last().pose();
@@ -64,9 +66,12 @@ public class RenderUtil {
         //		ARG 8 seeThrough
         //		ARG 9 backgroundColor
         //		ARG 10 light
-        client.font.drawInBatch(text, xOffset, 0, 0x20ffffff, false, matrix4f, vertexConsumerProvider, seeThrough, backgroundColor, 0xf00000);
+        client.font.drawInBatch(text, xOffset, 0, 0x20ffffff, false, matrix4f, seeThrough, backgroundColor, 0xF000F0);
         matrixStack.translate(0, 0, 2);
-        client.font.drawInBatch(text, xOffset, 0, 0xffffffff, false, matrix4f, vertexConsumerProvider, seeThrough, 0, 0xf00000);
+        client.font.drawInBatch(text, xOffset, 0, 0xffffffff, false, matrix4f, seeThrough, 0, 0xF000F0);
         matrixStack.popPose();
+        //#if MC <= 11502
+        //$$ RenderSystem.enableLighting();
+        //#endif
     }
 }

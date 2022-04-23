@@ -121,7 +121,7 @@ public class PcaSyncProtocol {
                 ContainerHelper.loadAllItems(tag, itemStacks);
             } else if (entity instanceof AbstractVillager) {
                 ((AbstractVillager) entity).getInventory().clearContent();
-                ((AbstractVillager) entity).getInventory().fromTag(tag.getList("Inventory", TagCompatApi.TAG_COMPOUND));
+                ((AbstractVillager) entity).getInventory().fromTagCompat(tag.getList("Inventory", TagCompatApi.TAG_COMPOUND));
                 ((AccessorAbstractVillager) entity).setOffers(new MerchantOffers(tag.getCompound("Offers")));
                 if (entity instanceof Villager) {
                     ((AccessorVillager) entity).setNumberOfRestocksToday(tag.getInt("RestocksToday"));

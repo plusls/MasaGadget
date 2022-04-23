@@ -2,7 +2,6 @@ package com.plusls.MasaGadget.mixin.tweakeroo.inventoryPreviewSupportComparator;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.math.Matrix4f;
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
@@ -17,7 +16,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.level.Level;
@@ -30,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.annotation.Dependency;
 
-@Dependencies(and = {@Dependency(ModInfo.TWEAKEROO_MOD_ID), @Dependency(value = "minecraft", versionPredicate = ">=1.15.2")})
+@Dependencies(and = {@Dependency(ModInfo.TWEAKEROO_MOD_ID), @Dependency(value = "minecraft", versionPredicate = ">1.14.4")})
 @Mixin(LevelRenderer.class)
 public class MixinWorldRenderer {
     @Inject(method = "renderLevel", at = @At(value = "RETURN"))
@@ -59,9 +57,7 @@ public class MixinWorldRenderer {
                 literalText.withStyle(ChatFormatting.GREEN);
                 // 不加 1.17 渲染会有问题
                 RenderSystem.disableDepthTest();
-                MultiBufferSource.BufferSource immediate = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
-                RenderUtil.renderTextOnWorld(matrices, camera, immediate, pos, literalText, true);
-                immediate.endBatch();
+                RenderUtil.renderTextOnWorld(matrices, camera, pos, literalText, true);
                 RenderSystem.enableDepthTest();
             }
         }

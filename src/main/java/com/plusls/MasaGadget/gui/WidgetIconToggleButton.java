@@ -26,15 +26,14 @@ public class WidgetIconToggleButton extends WidgetHoverInfo {
         this.icon = icon;
     }
 
-    //@Override
-    // for 1.14 and 1.15
-    public void render(int mouseX, int mouseY, boolean selected) {
-        render(mouseX, mouseY, selected, null);
-    }
-
 
     @Override
+    //#if MC > 11502
     public void render(int mouseX, int mouseY, boolean selected, PoseStack matrixStack) {
+        //#else
+        //$$ public void render(int mouseX, int mouseY, boolean selected) {
+        //$$ PoseStack matrixStack = new PoseStack();
+        //#endif
         if (!shouldEnable.test(this)) {
             return;
         }
@@ -59,9 +58,17 @@ public class WidgetIconToggleButton extends WidgetHoverInfo {
     }
 
     @Override
+    //#if MC > 11502
     public void postRenderHovered(int mouseX, int mouseY, boolean selected, PoseStack matrixStack) {
+        //#else
+        //$$ public void postRenderHovered(int mouseX, int mouseY, boolean selected) {
+        //#endif
         if (shouldEnable.test(this)) {
+            //#if MC > 11502
             super.postRenderHovered(mouseX, mouseY, selected, matrixStack);
+            //#else
+            //$$ super.postRenderHovered(mouseX, mouseY, selected);
+            //#endif
         }
     }
 

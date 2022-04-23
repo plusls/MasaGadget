@@ -29,20 +29,19 @@ public class MyWidgetDropDownList<T> extends WidgetDropDownList<T> {
         }
     }
 
-    // 1.14 1.15
-    public void render(int mouseX, int mouseY, boolean selected) {
-        this.render(mouseX, mouseY, selected, new PoseStack());
-    }
-
-    // will be overwrite by mixin in 1.14 1.15
-    public void superRender(int mouseX, int mouseY, boolean selected, PoseStack matrixStack) {
-        super.render(mouseX, mouseY, selected, matrixStack);
-    }
 
     @Override
+    //#if MC > 11502
     public void render(int mouseX, int mouseY, boolean selected, PoseStack matrixStack) {
+        //#else
+        //$$ public void render(int mouseX, int mouseY, boolean selected) {
+        //#endif
         if (shouldEnable.test(this.getSelectedEntry())) {
-            superRender(mouseX, mouseY, selected, matrixStack);
+            //#if MC > 11502
+            super.render(mouseX, mouseY, selected, matrixStack);
+            //#else
+            //$$ super.render(mouseX, mouseY, selected);
+            //#endif
         }
     }
 

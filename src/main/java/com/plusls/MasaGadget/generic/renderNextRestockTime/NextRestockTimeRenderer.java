@@ -7,7 +7,6 @@ import com.plusls.MasaGadget.mixin.accessor.AccessorVillager;
 import com.plusls.MasaGadget.util.MiscUtil;
 import com.plusls.MasaGadget.util.RenderUtil;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -20,8 +19,8 @@ public class NextRestockTimeRenderer {
         RenderEvent.register(NextRestockTimeRenderer::postRenderEntity);
     }
 
-    private static void postRenderEntity(EntityRenderDispatcher dispatcher, Entity entity, float yaw, float tickDelta, PoseStack matrixStack,
-                                         MultiBufferSource vertexConsumerProvider, int light) {
+    private static void postRenderEntity(EntityRenderDispatcher dispatcher, Entity entity, float yaw, float tickDelta,
+                                         PoseStack matrixStack, int light) {
         if (!(entity instanceof Villager) || !Configs.renderNextRestockTime) {
             return;
         }
@@ -69,7 +68,7 @@ public class NextRestockTimeRenderer {
             text = new TextComponent(String.format("%d", nextRestockTime));
         }
         RenderUtil.renderTextOnEntity(matrixStack, villagerEntity,
-                dispatcher, vertexConsumerProvider, text,
+                dispatcher, text,
                 villagerEntity.getBbHeight() / 32 * 31, false);
     }
 

@@ -40,6 +40,11 @@ import top.hendrixshen.magiclib.dependency.annotation.Dependency;
 
 import java.util.Objects;
 
+//#if MC <= 11502
+//$$ import net.minecraft.world.item.UseOnContext;
+//#endif
+
+
 @SuppressWarnings("DefaultAnnotationParam")
 @Dependencies(and = @Dependency(ModInfo.LITEMATICA_MOD_ID))
 @Mixin(value = WorldUtils.class, priority = 900, remap = false)
@@ -122,7 +127,11 @@ public class MixinWorldUtils {
             // 有时候放的东西是反向的,需要特判
             mc.player.setYRot(newSide.toYRot());
             ItemStack itemStack = new ItemStack(stateSchematic.getBlock().asItem());
+            //#if MC > 11502
             BlockPlaceContext itemPlacementContext = new BlockPlaceContext(mc.player, hand, itemStack, new BlockHitResult(hitPos, newSide, pos, false));
+            //#else
+            //$$ BlockPlaceContext itemPlacementContext = new BlockPlaceContext(new UseOnContext(mc.player, hand, new BlockHitResult(hitPos, newSide, pos, false)));
+            //#endif
             BlockState testState = stateSchematic.getBlock().getStateForPlacement(itemPlacementContext);
             if (testState != null) {
                 Direction testDirection = BlockUtils.getFirstPropertyFacingValue(testState);

@@ -13,6 +13,7 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.LightLayer;
@@ -23,6 +24,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import top.hendrixshen.magiclib.compat.minecraft.network.chat.StyleCompatApi;
 
 import java.util.Objects;
 
@@ -72,8 +74,8 @@ public class SearchMobSpawnPointUtil {
         //$$ int maxSpawnLightLevel = fi.dy.masa.minihud.config.Configs.Generic.LIGHT_LEVEL_THRESHOLD.getIntegerValue();
         //#endif
         LevelLightEngine lightingProvider = world.getChunkSource().getLightEngine();
-        EntityType<?> entityType = world.dimensionType().ultraWarm() ? EntityType.ZOMBIFIED_PIGLIN : EntityType.CREEPER;
-        EntityType<?> entityType2 = world.dimensionType().ultraWarm() ? null : EntityType.SPIDER;
+        EntityType<?> entityType = world.getDimensionLocation().equals(new ResourceLocation("the_nether")) ? EntityType.ZOMBIFIED_PIGLIN : EntityType.CREEPER;
+        EntityType<?> entityType2 = world.getDimensionLocation().equals(new ResourceLocation("the_nether")) ? null : EntityType.SPIDER;
 
         for (int x = pos.getX() - 129; x <= maxX; ++x) {
             for (int z = pos.getZ() - 129; z <= maxZ; ++z) {
@@ -101,7 +103,7 @@ public class SearchMobSpawnPointUtil {
                         String blockName = block.getName().getString();
                         if (Configs.searchMobSpawnPointBlackList.stream().noneMatch(s -> blockId.contains(s) || blockName.contains(s))) {
                             if (world.noCollision(entityType.getAABB(currentPos.getX() + 0.5D, currentPos.getY(), currentPos.getZ() + 0.5D))) {
-                                spawnPos = currentPos.mutable();
+                                spawnPos = currentPos.immutable();
                             } else if (entityType2 != null && world.noCollision(entityType2.getAABB(currentPos.getX() + 0.5D, currentPos.getY(), currentPos.getZ() + 0.5D))) {
                                 spawnPos = currentPos.immutable();
                             }
@@ -112,7 +114,7 @@ public class SearchMobSpawnPointUtil {
         }
         Component text;
         if (spawnPos == null) {
-            text = new TranslatableComponent("masa_gadget_mod.message.noBlockCanSpawn").setStyle(Style.EMPTY.withColor(TextColor.fromLegacyFormat(ChatFormatting.GREEN)));
+            text = new TranslatableComponent("masa_gadget_mod.message.noBlockCanSpawn").setStyle(StyleCompatApi.empty().withColor(ChatFormatting.GREEN));
         } else {
             // for ommc parser
             text = new TextComponent(I18n.get("masa_gadget_mod.message.spawnPos", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()));

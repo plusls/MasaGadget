@@ -6,7 +6,6 @@ import com.plusls.MasaGadget.event.RenderEvent;
 import com.plusls.MasaGadget.util.MiscUtil;
 import com.plusls.MasaGadget.util.RenderUtil;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -28,7 +27,7 @@ public class TradeEnchantedBookRenderer {
     }
 
     private static void postRenderEntity(EntityRenderDispatcher dispatcher, Entity entity, float yaw, float tickDelta,
-                                         PoseStack matrixStack, MultiBufferSource vertexConsumerProvider, int light) {
+                                         PoseStack matrixStack, int light) {
         if (!(entity instanceof Villager) || !Configs.renderTradeEnchantedBook) {
             return;
         }
@@ -75,10 +74,10 @@ public class TradeEnchantedBookRenderer {
             return;
         }
 
-        RenderUtil.renderTextOnEntity(matrixStack, villagerEntity, dispatcher, vertexConsumerProvider, text,
+        RenderUtil.renderTextOnEntity(matrixStack, villagerEntity, dispatcher, text,
                 villagerEntity.getBbHeight() / 8 * 7, false);
 
-        RenderUtil.renderTextOnEntity(matrixStack, villagerEntity, dispatcher, vertexConsumerProvider, price,
+        RenderUtil.renderTextOnEntity(matrixStack, villagerEntity, dispatcher, price,
                 villagerEntity.getBbHeight() / 8 * 7 - 11 * 0.018F, false);
 
 

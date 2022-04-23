@@ -10,7 +10,6 @@ import fi.dy.masa.malilib.util.Color4f;
 import fi.dy.masa.malilib.util.GuiUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -287,13 +286,12 @@ public class InventoryOverlayRenderHandler {
         RenderSystem.disableBlend();
         RenderSystem.enableTexture();
         matrices.translate(0.0D, 0.0D, 400.0D);
-        MultiBufferSource.BufferSource bufferSource = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
+
         for (int i = 0; i < components.size(); i++) {
             mc.font.drawInBatch(components.get(i), renderX, renderY, 0xffffffff, true,
-                    matrices.last().pose(), bufferSource, false, 0, 0xf000f0);
+                    matrices.last().pose(), false, 0, 0xf000f0);
             renderY += 10 + ((i == 0) ? 2 : 0);
         }
-        bufferSource.endBatch();
         matrices.popPose();
         mc.getItemRenderer().blitOffset = oldBlitOffset;
         RenderSystem.enableDepthTest();

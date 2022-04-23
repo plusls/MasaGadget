@@ -6,7 +6,6 @@ import com.plusls.MasaGadget.event.RenderEvent;
 import com.plusls.MasaGadget.mixin.accessor.AccessorZombieVillager;
 import com.plusls.MasaGadget.util.MiscUtil;
 import com.plusls.MasaGadget.util.RenderUtil;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -20,7 +19,7 @@ public class ZombieVillagerConvertTimeRenderer {
     }
 
     private static void postRenderEntity(EntityRenderDispatcher dispatcher, Entity entity, float yaw, float tickDelta,
-                                         PoseStack matrixStack, MultiBufferSource vertexConsumerProvider, int light) {
+                                         PoseStack matrixStack, int light) {
         if (!(entity instanceof ZombieVillager) || !Configs.renderZombieVillagerConvertTime) {
             return;
         }
@@ -35,7 +34,7 @@ public class ZombieVillagerConvertTimeRenderer {
             text = new TextComponent(String.format("%d", villagerConversionTime));
         }
 
-        RenderUtil.renderTextOnEntity(matrixStack, zombieVillager, dispatcher, vertexConsumerProvider, text,
+        RenderUtil.renderTextOnEntity(matrixStack, zombieVillager, dispatcher, text,
                 zombieVillager.getBbHeight() / 16 * 15, false);
     }
 }
