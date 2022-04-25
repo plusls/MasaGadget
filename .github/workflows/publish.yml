@@ -9,13 +9,10 @@ jobs:
       matrix:
         java: [ 17 ]
         os: [ ubuntu-20.04 ]
-        branch: [ 1.15.x, 1.16.x, 1.17.x, 1.18.x ]
     runs-on: ${{ matrix.os }}
     steps:
       - name: checkout repository
         uses: actions/checkout@v2
-        with:
-          ref: ${{ matrix.branch }}
       - name: validate gradle wrapper
         uses: gradle/wrapper-validation-action@v1
       - name: setup jdk ${{ matrix.java }}
@@ -32,35 +29,27 @@ jobs:
         run: ./gradlew preprocessResources
       - name: build
         run: ./gradlew build
-      - name: Find correct JAR
-        id: findjar
-        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
-        run: |
-          output="$(find build/libs/ ! -name "*-dev.jar" ! -name "*-sources.jar" -type f -printf "%f\n")"
-          echo "::set-output name=jarname::$output"
-      - name: Upload assets to GitHub
-        uses: AButler/upload-release-assets@v2.0
+      - name: Publish Minecraft Mods
+        uses: Kir-Antipov/mc-publish@v2.1
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
         with:
-          files: build/libs/${{ steps.findjar.outputs.jarname }}
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload to Curseforge
-        uses: itsmeow/curseforge-upload@v3
-        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
-        with:
-          token: ${{ secrets.CF_API_TOKEN }}
-          project_id: 525510
-          game_endpoint: minecraft
-          file_path: build/libs/${{ steps.findjar.outputs.jarname }}
-          changelog_type: markdown
+          modrinth-id: SFO4Ca80
+          modrinth-token: ${{ secrets.MODRINTH }}
+
+          curseforge-id: 525510
+          curseforge-token: ${{ secrets.CF_API_TOKEN }}
+
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          files-primary: fabricWrapper/build/libs/!(*-@(dev|sources)).jar
+          files-secondary: ''
+
+          version-type: release
           changelog: ${{ github.event.release.body }}
-          # 1.16.5:8203, 1.17:8516, 1.18:8857, fabric:7499
-          game_versions: ${{ fromJson('{"1.15.x":"7722","1.16.x":"8203","1.17.x":"8516","1.18.x":"8857"}')[matrix.branch] }}, 7499
-          release_type: release
-      - name: Upload to Modrinth
-        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
-        run: |
-          ./gradlew publishModrinth
-        env:
-          MODRINTH: ${{ secrets.MODRINTH }}
-          CHANGELOG: ${{ github.event.release.body }}
+
+          loaders: fabric
+          game-versions: "1.14.4\n1.15.2\n1.16.5\n1.17.1\n1.18.2"
+          version-resolver: exact
+
+          retry-attempts: 3
+          retry-delay: 10000

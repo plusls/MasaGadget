@@ -5,8 +5,18 @@
   "name": "${mod_name}",
   "description": "${mod_name}",
   "authors": [
-    "plusls",
-    "Hendrix-Shen"
+    {
+      "name": "Hendrix-Shen",
+      "contact": {
+        "homepage": "https://github.com/Hendrix-Shen"
+      }
+    },
+    {
+      "name": "plusls",
+      "contact": {
+        "homepage": "https://github.com/plusls"
+      }
+    }
   ],
   "contact": {
     "homepage": "${mod_homepage}",
@@ -28,10 +38,12 @@
     "${mod_id}.mixins.json"
   ],
   "custom": {
-    "modmenu:clientsideOnly": true
+    "modmenu:clientsideOnly": true,
+    "modmenu": {
+      "parent": "${mod_id}"
+    }
   },
   "depends": {
-    "magiclib": ">=0.5.1",
     "minecraft": "${minecraft_dependency}"
   }
 }

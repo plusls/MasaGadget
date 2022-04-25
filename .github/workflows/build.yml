@@ -40,4 +40,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ steps.findjar.outputs.jarname }}
-          path: build/libs/${{ steps.findjar.outputs.jarname }}
+          path: fabricWrapper/build/libs/${{ steps.findjar.outputs.jarname }}

@@ -5,7 +5,18 @@
   "name": "${mod_name} wrapper",
   "description": "${mod_name} wrapper",
   "authors": [
-    "plusls"
+    {
+      "name": "Hendrix-Shen",
+      "contact": {
+        "homepage": "https://github.com/Hendrix-Shen"
+      }
+    },
+    {
+      "name": "plusls",
+      "contact": {
+        "homepage": "https://github.com/plusls"
+      }
+    }
   ],
   "contact": {
     "homepage": "${mod_homepage}",
@@ -14,14 +25,19 @@
   },
   "license": "${mod_license}",
   "icon": "assets/${mod_id}-wrapper/icon.png",
-  "environment": "*",
+  "environment": "client",
   "custom": {
     "modmenu:api": true,
+    "modmenu:parent": "${mod_id}",
+    "modmenu:clientsideOnly": true,
     "modmenu": {
       "badges": [
         "library"
       ],
       "parent": "${mod_id}"
     }
+  },
+  "depends": {
+    "magiclib": ">=0.5.1"
   }
 }

@@ -24,11 +24,21 @@ preprocess {
     mc118.link(mcSnapshot, null)
 }
 
+String realVersion = "${project.mod_version}"
+
+if (project.pre_release != "") {
+    realVersion += "-${project.pre_release}+"
+    realVersion += grgit.head().abbreviatedId
+}
+
+version = realVersion
+
+
 subprojects {
     if (project.name ==  "fabricWrapper") {
         apply plugin: "fabric-loom"
         archivesBaseName = project.archives_base_name
-        version = project.version
+        version = project.parent.version
         dependencies {
             minecraft("com.mojang:minecraft:${project.minecraft_version}")
             mappings(loom.officialMojangMappings())

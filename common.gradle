@@ -24,19 +24,6 @@ repositories {
     mavenLocal()
 }
 
-static String getMagiclibCompatName(String minecraftVersion) {
-    String ret = minecraftVersion.replace(".", "_")
-    int idx = ret.lastIndexOf("_")
-    if (idx == -1) {
-        return ""
-    }
-    if (idx != 1) {
-        ret = ret.substring(0, idx)
-    }
-    return ret
-}
-
-
 dependencies {
     minecraft("com.mojang:minecraft:${project.minecraft_version}")
     mappings(loom.officialMojangMappings())
@@ -76,15 +63,9 @@ remapJar {
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
-String realVersion = "${project.mod_version}"
-
-if (project.pre_release != "") {
-    realVersion += "-${project.pre_release}+"
-    realVersion += grgit.head().abbreviatedId
-}
 
 archivesBaseName = project.archives_base_name + "-" + project.minecraft_version
-version = realVersion
+version = project.parent.version
 group = project.maven_group
 
 processResources {
