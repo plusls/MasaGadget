@@ -2,6 +2,7 @@ package com.plusls.MasaGadget.malilib.fastSwitchMasaConfigGui;
 
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.compat.modmenu.ConfigScreenFactoryCompat;
+import com.plusls.MasaGadget.util.MiscUtil;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
@@ -115,8 +116,7 @@ public class MasaGuiUtil {
                         };
                     } else {
                         // 1.14
-                        //noinspection unchecked
-                        Function<Screen, ? extends Screen> f = (Function<Screen, ? extends Screen>) legacyGetConfigScreenFactory.invoke(api);
+                        Function<Screen, ? extends Screen> f = MiscUtil.cast(legacyGetConfigScreenFactory.invoke(api));
                         configScreenFactoryCompat = f::apply;
                     }
 

@@ -41,7 +41,11 @@ public abstract class MixinRenderUtils {
                         blockEntity instanceof BrewingStandBlockEntity ||
                         blockEntity instanceof ChestBlockEntity ||
                         (blockEntity instanceof ComparatorBlockEntity && Configs.inventoryPreviewSupportComparator) ||
+                        //#if MC > 11404
                         (blockEntity instanceof BeehiveBlockEntity && Configs.pcaSyncProtocolSyncBeehive)
+                //#else
+                //$$ true
+                //#endif
         )) {
             PcaSyncProtocol.syncBlockEntity(pos);
         }

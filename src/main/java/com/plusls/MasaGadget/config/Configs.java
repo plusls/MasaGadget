@@ -104,7 +104,11 @@ public class Configs {
     public static boolean showOriginalConfigName = false;
     // MINIHUD
     @Hotkey
-    @Config(category = ConfigCategory.MINIHUD, dependencies = @Dependencies(and = {@Dependency(ModInfo.MINIHUD_MOD_ID), @Dependency(ModInfo.TWEAKEROO_MOD_ID)}))
+    @Config(category = ConfigCategory.MINIHUD, dependencies = @Dependencies(and = {
+            @Dependency(ModInfo.MINIHUD_MOD_ID),
+            @Dependency(ModInfo.TWEAKEROO_MOD_ID),
+            @Dependency(value = "minecraft", versionPredicate = ">1.14.4")
+    }))
     public static boolean pcaSyncProtocolSyncBeehive = true;
     // TWEAKEROO
     @Hotkey

@@ -109,7 +109,11 @@ public class MixinWorldUtils {
         BlockPos pos = Objects.requireNonNull(trace).getBlockPos();
         Level world = Objects.requireNonNull(SchematicWorldHandler.getSchematicWorld());
         BlockState stateSchematic = world.getBlockState(pos);
+        //#if MC > 11404
         ItemStack stack = MaterialCache.getInstance().getRequiredBuildItemForState(stateSchematic);
+        //#else
+        //$$ ItemStack stack = MaterialCache.getInstance().getItemForState(stateSchematic);
+        //#endif
         InteractionHand hand = EntityUtils.getUsedHandForItem(Objects.requireNonNull(mc.player), stack);
         Vec3 hitPos = trace.getLocation();
 

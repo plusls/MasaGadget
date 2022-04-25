@@ -29,5 +29,9 @@
   ],
   "custom": {
     "modmenu:clientsideOnly": true
+  },
+  "depends": {
+    "magiclib": ">=0.5.1",
+    "minecraft": "${minecraft_dependency}"
   }
 }

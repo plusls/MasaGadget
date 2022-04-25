@@ -11,6 +11,10 @@ import javax.annotation.Nullable;
 public class MiscUtil {
 
     @SuppressWarnings("unchecked")
+    public static <T> T cast(Object obj) {
+        return (T) obj;
+    }
+
     public static <T extends Entity> T getBestEntity(T entity) {
         // Only try to fetch the corresponding server world if the entity is in the actual client world.
         // Otherwise the entity may be for example in Litematica's schematic world.
@@ -22,7 +26,7 @@ public class MiscUtil {
             if (world != null && world != client.level) {
                 Entity bestEntity = world.getEntity(entity.getId());
                 if (entity.getClass().isInstance(bestEntity)) {
-                    ret = (T) bestEntity;
+                    ret = MiscUtil.cast(bestEntity);
                 }
             }
         }
