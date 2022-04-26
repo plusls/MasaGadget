@@ -37,6 +37,8 @@ jar {
 import groovy.json.JsonBuilder
 
 processResources {
+    // disable cache
+    outputs.upToDateWhen { false }
     var jars = []
     fabric_subprojects.each({
         jars.add(["file": "META-INF/jars/${project.archives_base_name}-${it.name}-${project.version}.jar"])
