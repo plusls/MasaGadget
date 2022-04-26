@@ -33,7 +33,7 @@ jobs:
         id: findjar
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
         run: |
-          output="$(find build/libs/ ! -name "*-dev.jar" ! -name "*-sources.jar" -type f -printf "%f\n")"
+          output="$(find fabricWrapper/build/libs/ ! -name "*-dev.jar" ! -name "*-sources.jar" -type f -printf "%f\n")"
           echo "::set-output name=jarname::$output"
       - name: capture build artifacts
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
