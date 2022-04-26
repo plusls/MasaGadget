@@ -33,77 +33,90 @@ public class Configs {
     public static final HashMap<String, HashSet<String>> FAVORITES = new HashMap<>();
     public static boolean favoritesFilter = false;
     // GENERIC
-    @Hotkey
     @Config(category = ConfigCategory.GENERIC)
     public static boolean autoSyncEntityData = true;
+
     @Config(category = ConfigCategory.GENERIC)
     public static boolean debug = false;
+
     @Hotkey(hotkey = "G,C")
     @Config(category = ConfigCategory.GENERIC)
     public static ConfigHotkey openConfigGui;
+
     @Hotkey
     @Config(category = ConfigCategory.GENERIC, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
     public static boolean renderNextRestockTime = true;
+
     @Hotkey
     @Config(category = ConfigCategory.GENERIC, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
     public static boolean renderTradeEnchantedBook = true;
+
     @Hotkey
     @Config(category = ConfigCategory.GENERIC, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
     public static boolean renderZombieVillagerConvertTime = true;
+
     @Hotkey
     @Config(category = ConfigCategory.GENERIC, dependencies = @Dependencies(and = @Dependency(ModInfo.MINIHUD_MOD_ID)))
     public static ConfigHotkey searchMobSpawnPoint;
+
     @Config(category = ConfigCategory.GENERIC, dependencies = @Dependencies(and = @Dependency(ModInfo.MINIHUD_MOD_ID)))
     public static ArrayList<String> searchMobSpawnPointBlackList = new ArrayList<>();
+
     @Hotkey
     @Config(category = ConfigCategory.GENERIC)
     public static ConfigHotkey syncAllEntityData;
     // LITEMATICA
+
     @Hotkey
     @Config(category = ConfigCategory.LITEMATICA, dependencies = @Dependencies(and = @Dependency(ModInfo.LITEMATICA_MOD_ID)))
     public static boolean betterEasyPlaceMode = false;
+
     @Hotkey
     @Config(category = ConfigCategory.LITEMATICA, dependencies = @Dependencies(and = @Dependency(ModInfo.LITEMATICA_MOD_ID)))
     public static boolean disableLitematicaEasyPlaceFailTip = false;
+
     @Hotkey
     @Config(category = ConfigCategory.LITEMATICA, dependencies = @Dependencies(and = @Dependency(ModInfo.LITEMATICA_MOD_ID)))
     public static boolean fixAccurateProtocol = false;
-    @Hotkey
+
     @Config(category = ConfigCategory.LITEMATICA, dependencies = @Dependencies(and = {
             @Dependency(ModInfo.LITEMATICA_MOD_ID),
             @Dependency(ModInfo.TWEAKEROO_MOD_ID),
             @Dependency(value = "minecraft", versionPredicate = "<=1.15.2")}))
     public static boolean nudgeSelectionSupportFreeCamera = true;
-    @Hotkey
+
     @Config(category = ConfigCategory.LITEMATICA, dependencies = @Dependencies(and = @Dependency(ModInfo.LITEMATICA_MOD_ID)))
     public static boolean saveInventoryToSchematicInServer = false;
-    @Hotkey
+
     @Config(category = ConfigCategory.LITEMATICA, dependencies = @Dependencies(and = @Dependency(ModInfo.LITEMATICA_MOD_ID)))
     public static boolean useRelativePath = false;
     // MALILIB
-    @Hotkey
+
     @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(value = "minecraft", versionPredicate = "<=1.17.1")))
     public static boolean backportI18nSupport = true;
+
     @Hotkey
     @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(ModInfo.MODMENU_MOD_ID)))
     public static boolean fastSwitchMasaConfigGui = true;
+
     @Hotkey
     @Config(category = ConfigCategory.MALILIB)
     public static boolean favoritesSupport = false;
-    @Hotkey
+
     @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(value = "minecraft", versionPredicate = "<=1.17.1")))
     public static boolean fixConfigWidgetWidth = true;
-    @Hotkey
+
     @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(value = "minecraft", versionPredicate = "<=1.17.1")))
     public static boolean fixGetInventoryType = true;
-    @Hotkey
+
     @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(value = "minecraft", versionPredicate = "<=1.17.1")))
     public static boolean optimizeConfigWidgetSearch = true;
+
     @Hotkey
     @Config(category = ConfigCategory.MALILIB)
     public static boolean showOriginalConfigName = false;
     // MINIHUD
-    @Hotkey
+
     @Config(category = ConfigCategory.MINIHUD, dependencies = @Dependencies(and = {
             @Dependency(ModInfo.MINIHUD_MOD_ID),
             @Dependency(ModInfo.TWEAKEROO_MOD_ID),
@@ -111,34 +124,36 @@ public class Configs {
     }))
     public static boolean pcaSyncProtocolSyncBeehive = true;
     // TWEAKEROO
-    @Hotkey
+
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
     public static boolean inventoryPreviewSupportComparator = true;
 
-    // TODO set TW version
-    @Hotkey
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = {
             @Dependency(ModInfo.TWEAKEROO_MOD_ID),
             @Dependency(value = "minecraft", versionPredicate = "<=1.16.5")}))
     public static boolean inventoryPreviewSupportFreeCamera = true;
-    @Hotkey
+
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
     public static boolean inventoryPreviewSupportPlayer = true;
+
     @Hotkey
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
     public static boolean inventoryPreviewSupportSelect = true;
-    @Hotkey
+
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
     public static boolean inventoryPreviewSupportShulkerBoxItemEntity = true;
-    @Hotkey
+
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
     public static boolean inventoryPreviewSupportTradeOfferList = true;
+
     @Hotkey
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
     public static boolean inventoryPreviewSyncData = true;
+
     @Hotkey
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = {@Dependency(ModInfo.TWEAKEROO_MOD_ID), @Dependency(ModInfo.ITEMSCROLLER_MOD_ID)}))
     public static boolean restockWithCrafting = true;
+
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = {@Dependency(ModInfo.TWEAKEROO_MOD_ID), @Dependency(ModInfo.ITEMSCROLLER_MOD_ID)}))
     public static ArrayList<String> restockWithCraftingRecipes = new ArrayList<>();
 
