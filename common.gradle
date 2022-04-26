@@ -1,7 +1,7 @@
-apply plugin: "maven-publish"
-apply plugin: "fabric-loom"
-apply plugin: "io.github.juuxel.loom-quiltflower"
-apply plugin: "com.replaymod.preprocess"
+apply(plugin: "maven-publish")
+apply(plugin: "fabric-loom")
+apply(plugin: "io.github.juuxel.loom-quiltflower")
+apply(plugin: "com.replaymod.preprocess")
 
 int mcVersion = 1
 
@@ -41,7 +41,7 @@ dependencies {
         include("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}")
     }
 
-    modImplementation("top.hendrixshen:magiclib:${project.minecraft_version}-${project.magiclib_version}")
+    modImplementation("top.hendrixshen:magiclib-${project.name.replace(".", "_")}:${project.magiclib_version}")
 }
 
 loom {
@@ -51,7 +51,7 @@ loom {
 //    }
     runConfigs.all {
         // to make sure it generates all "Minecraft Client (:subproject_name)" applications
-        ideConfigGenerated = true
+        // ideConfigGenerated = true
         property("mixin.debug.export", "true")
         runDir "../../run"
     }
@@ -78,6 +78,8 @@ processResources {
                 "mod_sources"         : project.mod_sources,
                 "mod_license"         : project.mod_license,
                 "minecraft_dependency": project.minecraft_dependency,
+                "minecraft_version_id": project.name.replace(".", "_"),
+                "minecraft_version"   : project.minecraft_version
         ])
     }
 }
@@ -97,22 +99,35 @@ java {
 }
 
 jar {
-    from("../../LICENSE") {
-        rename { "${it}_${project.archives_base_name}" }
-    }
+    from("../../LICENSE")
 }
 
-// configure the maven publication
+import groovy.util.Node
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            from components.java
+            artifactId = "${project.mod_id}-${project.name.replace(".", "_")}"
+            version = "${project.version}"
+            from(components.java)
+            pom.withXml {
+                rootNode ->
+                    {
+                        def depNode = new Node(null, "dependency")
+                        depNode.appendNode("groupId", project.group)
+                        depNode.appendNode("artifactId", project.mod_id)
+                        depNode.appendNode("version", project.version)
+                        depNode.appendNode("scope", "compile")
+                        rootNode.asNode().dependencies[0].children().add(depNode)
+                    }
+            }
         }
     }
 
-    // select the repositories you want to publish to
     repositories {
-        // uncomment to publish to the local maven
-        // mavenLocal()
+        mavenLocal()
+        maven {
+            url("$rootDir/publish")
+        }
     }
 }

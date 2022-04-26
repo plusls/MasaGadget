@@ -1,9 +1,10 @@
 {
   "schemaVersion": 1,
-  "id": "${mod_id}-wrapper",
+  "id": "${mod_id}",
   "version": "${mod_version}",
-  "name": "${mod_name} wrapper",
-  "description": "${mod_name} wrapper",
+  "icon": "assets/${mod_id}/icon.jpg",
+  "name": "${mod_name}",
+  "description": "${mod_name}",
   "authors": [
     {
       "name": "Hendrix-Shen",
@@ -24,20 +25,20 @@
     "sources": "${mod_sources}"
   },
   "license": "${mod_license}",
-  "icon": "assets/${mod_id}-wrapper/icon.png",
   "environment": "client",
+  "entrypoints": {
+    "modmenu": [
+      "com.plusls.MasaGadget.compat.modmenu.WrapperModMenuApiImpl"
+    ]
+  },
   "custom": {
     "modmenu:api": true,
-    "modmenu:parent": "${mod_id}",
     "modmenu:clientsideOnly": true,
     "modmenu": {
       "badges": [
         "library"
-      ],
-      "parent": "${mod_id}"
+      ]
     }
   },
-  "depends": {
-    "magiclib": ">=0.5.1"
-  }
+  "jars": ${sub_jars}
 }

@@ -32,33 +32,3 @@ if (project.pre_release != "") {
 }
 
 version = realVersion
-
-
-subprojects {
-    if (project.name ==  "fabricWrapper") {
-        apply plugin: "fabric-loom"
-        archivesBaseName = project.archives_base_name
-        version = project.parent.version
-        dependencies {
-            minecraft("com.mojang:minecraft:${project.minecraft_version}")
-            mappings(loom.officialMojangMappings())
-            parent.subprojects.collect {
-                if (it.name != "fabricWrapper") {
-                    include(it)
-                }
-            }
-        }
-        processResources {
-            inputs.property("version", version)
-            filesMatching("fabric.mod.json") {
-                expand(["mod_version" : project.version,
-                        "mod_id"      : project.mod_id,
-                        "mod_name"    : project.mod_name,
-                        "mod_homepage": project.mod_homepage,
-                        "mod_sources" : project.mod_sources,
-                        "mod_license" : project.mod_license,
-                ])
-            }
-        }
-    }
-}

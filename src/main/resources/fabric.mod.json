@@ -1,9 +1,10 @@
 {
   "schemaVersion": 1,
-  "id": "${mod_id}",
+  "id": "${mod_id}-${minecraft_version_id}",
   "version": "${mod_version}",
-  "name": "${mod_name}",
-  "description": "${mod_name}",
+  "icon": "assets/${mod_id}/icon.jpg",
+  "name": "${mod_name} for ${minecraft_version}",
+  "description": "${mod_name} for ${minecraft_version}",
   "authors": [
     {
       "name": "Hendrix-Shen",
@@ -24,7 +25,6 @@
     "sources": "${mod_sources}"
   },
   "license": "${mod_license}",
-  "icon": "assets/${mod_id}/icon.jpg",
   "environment": "client",
   "entrypoints": {
     "client": [
@@ -37,13 +37,15 @@
   "mixins": [
     "${mod_id}.mixins.json"
   ],
+  "depends": {
+    "minecraft": "${minecraft_dependency}",
+    "magiclib-${minecraft_version_id}": ">=0.5.5"
+  },
   "custom": {
     "modmenu:clientsideOnly": true,
+    "modmenu:parent": "${mod_id}",
     "modmenu": {
       "parent": "${mod_id}"
     }
-  },
-  "depends": {
-    "minecraft": "${minecraft_dependency}"
   }
 }
