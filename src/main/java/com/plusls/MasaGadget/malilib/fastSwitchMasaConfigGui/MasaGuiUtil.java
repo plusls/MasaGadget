@@ -125,7 +125,7 @@ public class MasaGuiUtil {
                     return;
                 }
                 Screen screen = configScreenFactoryCompat.create(client.screen);
-                if (screen instanceof GuiConfigsBase) {
+                if (screen instanceof GuiConfigsBase && !masaGuiClassData.containsKey(screen.getClass())) {
                     masaGuiData.put(configScreenFactoryCompat, metadata.getName());
                     masaGuiConfigScreenFactorys.add(configScreenFactoryCompat);
                     masaGuiClassData.put(screen.getClass(), configScreenFactoryCompat);
