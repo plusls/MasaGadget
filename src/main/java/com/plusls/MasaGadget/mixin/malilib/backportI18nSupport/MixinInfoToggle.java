@@ -5,9 +5,7 @@ import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.util.MiscUtil;
 import fi.dy.masa.malilib.config.IHotkeyTogglable;
 import fi.dy.masa.minihud.config.InfoToggle;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -17,15 +15,12 @@ import top.hendrixshen.magiclib.dependency.annotation.Dependency;
 @Dependencies(and = {@Dependency(ModInfo.MINIHUD_MOD_ID), @Dependency(value = "minecraft", versionPredicate = "<=1.17.1")})
 @Mixin(value = InfoToggle.class, remap = false)
 public abstract class MixinInfoToggle implements IHotkeyTogglable {
-    @Final
-    @Shadow
-    private String comment;
 
-
-    @Inject(method = "getComment", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(method = "getComment", at = @At(value = "RETURN"), cancellable = true)
     private void useI18nComment(CallbackInfoReturnable<String> cir) {
         if (Configs.backportI18nSupport) {
-            cir.setReturnValue(MiscUtil.getTranslatedOrFallback("config.comment." + this.getName().toLowerCase(), this.comment));
+            cir.setReturnValue(MiscUtil.getTranslatedOrFallback("config.comment." + this.getName().toLowerCase(),
+                    cir.getReturnValue()));
         }
     }
 
