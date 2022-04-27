@@ -42,6 +42,7 @@ dependencies {
     }
 
     modImplementation("top.hendrixshen:magiclib-${project.name.replace(".", "_")}:${project.magiclib_version}")
+    runtimeOnly(project(path: ":fabricWrapper"))
 }
 
 loom {
