@@ -204,7 +204,9 @@ public class Configs {
         }
 
         openConfigGui.getKeybind().setCallback((keyAction, iKeybind) -> {
-            Minecraft.getInstance().setScreen(GuiConfigs.getInstance());
+            GuiConfigs screen = GuiConfigs.getInstance();
+            screen.setParentGui(Minecraft.getInstance().screen);
+            Minecraft.getInstance().setScreen(screen);
             return true;
         });
 
