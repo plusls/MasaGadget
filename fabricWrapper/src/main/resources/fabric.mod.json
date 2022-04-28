@@ -32,7 +32,7 @@
     ]
   },
   "custom": {
-    "modmenu:clientsideOnly": true,
+    "modmenu:clientsideOnly": true
   },
   "jars": ${sub_jars}
 }
