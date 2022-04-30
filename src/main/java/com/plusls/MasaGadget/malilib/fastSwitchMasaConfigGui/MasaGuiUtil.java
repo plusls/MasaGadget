@@ -125,10 +125,20 @@ public class MasaGuiUtil {
                     return;
                 }
                 Screen screen = configScreenFactoryCompat.create(client.screen);
-                if (screen instanceof GuiConfigsBase && !masaGuiClassData.containsKey(screen.getClass())) {
-                    masaGuiData.put(configScreenFactoryCompat, metadata.getName());
-                    masaGuiConfigScreenFactorys.add(configScreenFactoryCompat);
-                    masaGuiClassData.put(screen.getClass(), configScreenFactoryCompat);
+                if (screen instanceof GuiConfigsBase) {
+                    String modName = metadata.getName();
+                    if (!masaGuiClassData.containsKey(screen.getClass())) {
+                        masaGuiData.put(configScreenFactoryCompat, modName);
+                        masaGuiConfigScreenFactorys.add(configScreenFactoryCompat);
+                        masaGuiClassData.put(screen.getClass(), configScreenFactoryCompat);
+                    } else {
+                        ConfigScreenFactoryCompat<?> savedConfigScreenFactoryCompat = masaGuiClassData.get(screen.getClass());
+                        String savedName = masaGuiData.get(savedConfigScreenFactoryCompat);
+                        if (savedName.length() > modName.length()) {
+                            masaGuiData.put(savedConfigScreenFactoryCompat, modName);
+                        }
+                    }
+
                 }
             } catch (Throwable e) {
                 ModInfo.LOGGER.error("Mod {} provides a broken implementation of ModMenuApi", metadata.getId(), e);
