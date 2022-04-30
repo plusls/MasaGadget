@@ -59,6 +59,8 @@
   "masa_gadget_mod.config.malilib.optimizeConfigWidgetSearch.comment": "在 Masa 家的搜索栏中可以使用中文搜索，还能使用 §6modified§r 来搜索修改过的配置项",
   "masa_gadget_mod.config.malilib.showOriginalConfigName.name": "显示原始的配置选项名",
   "masa_gadget_mod.config.malilib.showOriginalConfigName.comment": "如果当前显示的配置选项名和原始名字不一致时，在下方显示原始的配置名（英文）",
+  "masa_gadget_mod.config.malilib.showOriginalConfigNameScale.name": "显示原始的配置选项名字体大小",
+  "masa_gadget_mod.config.malilib.showOriginalConfigNameScale.comment": "原始的配置选项名字体大小",
   "masa_gadget_mod.config.minihud.minihudI18n.name": "Minihud 支持翻译",
   "masa_gadget_mod.config.minihud.minihudI18n.comment": "Minihud 显示的文本可以被翻译",
   "masa_gadget_mod.config.minihud.pcaSyncProtocolSyncBeehive.name": "PCA同步协议同步蜂巢数据",

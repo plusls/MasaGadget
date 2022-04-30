@@ -32,7 +32,7 @@ public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptio
             String displayName = MiscUtil.getStringWithoutFormat(Objects.requireNonNull(mg_getMaxNameLength_wrapped.getConfig()).getConfigGuiDisplayName());
             String name = mg_getMaxNameLength_wrapped.getConfig().getName();
             if (!displayName.equals(name)) {
-                width = Math.max(width, (int) Math.ceil(this.getStringWidth(name) * 0.65f));
+                width = Math.max(width, (int) Math.ceil(this.getStringWidth(name) * Configs.showOriginalConfigNameScale));
             }
         }
         return width;

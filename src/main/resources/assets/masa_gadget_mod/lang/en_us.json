@@ -53,6 +53,8 @@
   "masa_gadget_mod.config.malilib.favoritesSupport.comment": "Users can favorite and filter their frequently used options.",
   "masa_gadget_mod.config.malilib.showOriginalConfigName.name": "showOriginalConfigName",
   "masa_gadget_mod.config.malilib.showOriginalConfigName.comment": "Show original config name when config gui display name no the same as original config name.",
+  "masa_gadget_mod.config.malilib.showOriginalConfigNameScale.name": "showOriginalConfigNameScale",
+  "masa_gadget_mod.config.malilib.showOriginalConfigNameScale.comment": "Original config name font scale.",
   "masa_gadget_mod.config.malilib.fixConfigWidgetWidth.name": "fixConfigWidgetWidth",
   "masa_gadget_mod.config.malilib.fixConfigWidgetWidth.comment": "Use the length of getTranslatedGuiDisplayName as widget width",
   "masa_gadget_mod.config.malilib.fixGetInventoryType.name": "fixGetInventoryType",

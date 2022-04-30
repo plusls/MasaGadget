@@ -28,7 +28,8 @@ public abstract class MixinWidgetConfigOption extends WidgetConfigOptionBase<Gui
             if (this.subWidgets.get(this.subWidgets.size() - 1).getClass() == WidgetLabel.class) {
                 this.subWidgets.remove(this.subWidgets.size() - 1);
                 this.addLabel(x, y, width, height, -1, config.getConfigGuiDisplayName(), "");
-                ScalableWidgetLabel label = new ScalableWidgetLabel(x, y + 7, width, height, -1, 0.65f, String.format("§7%s§r", config.getName()));
+                ScalableWidgetLabel label = new ScalableWidgetLabel(x, y + 7, width, height, -1,
+                        (float) Configs.showOriginalConfigNameScale, String.format("§7%s§r", config.getName()));
                 this.addWidget(label);
             }
         }

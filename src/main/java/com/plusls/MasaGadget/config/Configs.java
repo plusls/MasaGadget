@@ -24,6 +24,7 @@ import top.hendrixshen.magiclib.config.ConfigManager;
 import top.hendrixshen.magiclib.config.Option;
 import top.hendrixshen.magiclib.config.annotation.Config;
 import top.hendrixshen.magiclib.config.annotation.Hotkey;
+import top.hendrixshen.magiclib.config.annotation.Numeric;
 import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.annotation.Dependency;
 
@@ -103,7 +104,6 @@ public class Configs {
     @Config(category = ConfigCategory.MALILIB)
     public static boolean favoritesSupport = false;
 
-    @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(value = "minecraft", versionPredicate = "<=1.17.1")))
     public static boolean fixConfigWidgetWidth = true;
 
     @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(value = "minecraft", versionPredicate = "<=1.17.1")))
@@ -115,6 +115,11 @@ public class Configs {
     @Hotkey
     @Config(category = ConfigCategory.MALILIB)
     public static boolean showOriginalConfigName = false;
+
+    @Numeric(maxValue = 2, minValue = 0)
+    @Config(category = ConfigCategory.MALILIB)
+    public static double showOriginalConfigNameScale = 0.65;
+
     // MINIHUD
 
     @Hotkey
@@ -239,6 +244,7 @@ public class Configs {
         // MALILIB
         cm.setValueChangeCallback("favoritesSupport", Configs::refreshOptions);
         cm.setValueChangeCallback("showOriginalConfigName", Configs::refreshOptions);
+        cm.setValueChangeCallback("showOriginalConfigNameScale", Configs::refreshOptions);
     }
 
     private static void refreshOptions(Option option) {
