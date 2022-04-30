@@ -117,6 +117,10 @@ public class Configs {
     public static boolean showOriginalConfigName = false;
     // MINIHUD
 
+    @Hotkey
+    @Config(category = ConfigCategory.MINIHUD, dependencies = @Dependencies(and = @Dependency(ModInfo.MINIHUD_MOD_ID)))
+    public static boolean minihudI18n = true;
+
     @Config(category = ConfigCategory.MINIHUD, dependencies = @Dependencies(and = {
             @Dependency(ModInfo.MINIHUD_MOD_ID),
             @Dependency(ModInfo.TWEAKEROO_MOD_ID),

@@ -59,6 +59,8 @@
   "masa_gadget_mod.config.malilib.fixGetInventoryType.comment": "Fix AbstractFurnaceBlock inventory type",
   "masa_gadget_mod.config.malilib.optimizeConfigWidgetSearch.name": "optimizeConfigWidgetSearch",
   "masa_gadget_mod.config.malilib.optimizeConfigWidgetSearch.comment": "Make search support uppercase, translate text, and can use §6modified§r to search modified config",
+  "masa_gadget_mod.config.minihud.minihudI18n.name": "minihudI18n",
+  "masa_gadget_mod.config.minihud.minihudI18n.comment": "Minihud display text support i18n translate.",
   "masa_gadget_mod.config.minihud.pcaSyncProtocolSyncBeehive.name": "pcaSyncProtocolSyncBeehive",
   "masa_gadget_mod.config.minihud.pcaSyncProtocolSyncBeehive.comment": "Press §6inventoryPreview§r hotkey to use PCA sync protocol to sync Beehive",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportComparator.name": "inventoryPreviewSupportComparator",

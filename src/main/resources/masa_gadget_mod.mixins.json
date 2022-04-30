@@ -37,6 +37,7 @@
     "malilib.optimizeConfigWidgetSearch.MixinWidgetListConfigOptions",
     "malilib.showOriginalConfigName.MixinWidgetConfigOption",
     "malilib.showOriginalConfigName.MixinWidgetListConfigOptions",
+    "minihud.minihudI18n.MixinRenderHandler",
     "tweakeroo.handRestockCrafting.MixinInventoryUtils",
     "tweakeroo.inventoryPreviewSupportComparator.MixinGameRenderer",
     "tweakeroo.inventoryPreviewSupportComparator.MixinWorldRenderer",
