@@ -48,8 +48,9 @@ public class MasaGadgetMod implements ClientModInitializer {
     public void onInitializeClient() {
         ConfigManager cm = ConfigManager.get(ModInfo.MOD_ID);
         cm.parseConfigClass(Configs.class);
-        ModInfo.configHandler = new ConfigHandler(ModInfo.MOD_ID, cm, CONFIG_VERSION, Configs::preDeserialize,
-                Configs::postSerialize);
+        ModInfo.configHandler = new ConfigHandler(ModInfo.MOD_ID, cm, CONFIG_VERSION);
+        ModInfo.configHandler.preDeserializeCallback = Configs::preDeserialize;
+        ModInfo.configHandler.postSerializeCallback = Configs::postSerialize;
         ConfigHandler.register(ModInfo.configHandler);
         Configs.init(cm);
         PcaSyncProtocol.init();
