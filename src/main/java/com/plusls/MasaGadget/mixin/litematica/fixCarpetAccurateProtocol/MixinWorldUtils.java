@@ -165,6 +165,7 @@ public class MixinWorldUtils {
         return side;
     }
 
+    //#if MC <= 11802
     @Redirect(method = "doEasyPlaceAction", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;useItemOn(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;",
             ordinal = 0, remap = true))
@@ -194,4 +195,5 @@ public class MixinWorldUtils {
             mc.player.connection.send(new ServerboundMovePlayerPacket.Rot(mc.player.getYRot(), mc.player.getXRot(), mc.player.isOnGround()));
         }
     }
+    //#endif
 }

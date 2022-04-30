@@ -8,9 +8,9 @@ import com.plusls.MasaGadget.util.MiscUtil;
 import com.plusls.MasaGadget.util.RenderUtil;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.ZombieVillager;
+import top.hendrixshen.magiclib.compat.minecraft.network.chat.ComponentCompatApi;
 
 public class ZombieVillagerConvertTimeRenderer {
 
@@ -31,7 +31,7 @@ public class ZombieVillagerConvertTimeRenderer {
         if (villagerConversionTime <= 0) {
             return;
         } else {
-            text = new TextComponent(String.format("%d", villagerConversionTime));
+            text = ComponentCompatApi.literal(String.format("%d", villagerConversionTime));
         }
 
         RenderUtil.renderTextOnEntity(matrixStack, zombieVillager, dispatcher, text,

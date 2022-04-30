@@ -15,6 +15,9 @@ def fabric_subprojects = project.parent.subprojects.findAll({
     it.name != "fabricWrapper"
 })
 
+fabric_subprojects.collect {
+    evaluationDependsOn(":${it.name}")
+}
 
 jar {
     dependsOn(fabric_subprojects.collect {

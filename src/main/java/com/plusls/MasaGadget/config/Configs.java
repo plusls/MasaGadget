@@ -15,10 +15,10 @@ import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.util.JsonUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
+import top.hendrixshen.magiclib.compat.minecraft.network.chat.ComponentCompatApi;
 import top.hendrixshen.magiclib.config.ConfigHandler;
 import top.hendrixshen.magiclib.config.ConfigManager;
 import top.hendrixshen.magiclib.config.Option;
@@ -235,9 +235,9 @@ public class Configs {
             for (Entity entity : Objects.requireNonNull(mc.level).entitiesForRendering()) {
                 PcaSyncProtocol.syncEntity(entity.getId());
             }
-            TextComponent text = new TextComponent(ModInfo.translate("message.syncAllEntityDataSuccess"));
-            text.withStyle(ChatFormatting.GREEN);
-            Objects.requireNonNull(mc.player).displayClientMessage(text, false);
+            Objects.requireNonNull(mc.player).displayClientMessage(
+                    ComponentCompatApi.literal((ModInfo.translate("message.syncAllEntityDataSuccess")))
+                            .withStyle(ChatFormatting.GREEN), false);
             return true;
         });
 

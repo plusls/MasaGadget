@@ -2,9 +2,9 @@ package com.plusls.MasaGadget.util;
 
 import fi.dy.masa.malilib.util.WorldUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import top.hendrixshen.magiclib.language.I18n;
 
 import javax.annotation.Nullable;
 

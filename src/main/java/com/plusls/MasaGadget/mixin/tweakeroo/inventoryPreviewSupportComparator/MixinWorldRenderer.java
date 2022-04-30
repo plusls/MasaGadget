@@ -17,7 +17,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ComparatorBlockEntity;
@@ -25,6 +25,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import top.hendrixshen.magiclib.compat.minecraft.network.chat.ComponentCompatApi;
 import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.annotation.Dependency;
 
@@ -55,8 +56,8 @@ public class MixinWorldRenderer {
             // 绕过线程检查
             BlockEntity blockEntity = world.getChunkAt(pos).getBlockEntity(pos);
             if (blockEntity instanceof ComparatorBlockEntity) {
-                TextComponent literalText = new TextComponent(((ComparatorBlockEntity) blockEntity).getOutputSignal() + "");
-                literalText.withStyle(ChatFormatting.GREEN);
+                Component literalText = ComponentCompatApi.literal(((ComparatorBlockEntity) blockEntity).getOutputSignal() + "")
+                        .withStyle(ChatFormatting.GREEN);
                 // 不加 1.17 渲染会有问题
                 RenderSystem.disableDepthTest();
                 RenderUtil.renderTextOnWorld(matrices, camera, pos, literalText, true);

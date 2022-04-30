@@ -9,10 +9,9 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
-import net.minecraft.network.chat.*;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -24,6 +23,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import top.hendrixshen.magiclib.compat.minecraft.network.chat.ComponentCompatApi;
 import top.hendrixshen.magiclib.compat.minecraft.network.chat.StyleCompatApi;
 
 import java.util.Objects;
@@ -38,14 +38,16 @@ public class SearchMobSpawnPointUtil {
                     ret = (ShapeDespawnSphere) shapeBase;
                 } else {
                     Objects.requireNonNull(Minecraft.getInstance().player).displayClientMessage(
-                            new TranslatableComponent("masa_gadget_mod.message.onlySupportOneDespawnShape").withStyle(ChatFormatting.RED), false);
+                            ComponentCompatApi.literal(ModInfo.translate("message.onlySupportOneDespawnShape"))
+                                    .withStyle(ChatFormatting.RED), false);
                     return null;
                 }
             }
         }
         if (ret == null) {
             Objects.requireNonNull(Minecraft.getInstance().player).displayClientMessage(
-                    new TranslatableComponent("masa_gadget_mod.message.canNotFindDespawnShape").withStyle(ChatFormatting.RED), false);
+                    ComponentCompatApi.literal(ModInfo.translate("message.canNotFindDespawnShape"))
+                            .withStyle(ChatFormatting.RED), false);
         }
         return ret;
     }
@@ -114,10 +116,11 @@ public class SearchMobSpawnPointUtil {
         }
         Component text;
         if (spawnPos == null) {
-            text = new TranslatableComponent("masa_gadget_mod.message.noBlockCanSpawn").setStyle(StyleCompatApi.empty().withColor(ChatFormatting.GREEN));
+            text = ComponentCompatApi.literal(ModInfo.translate("message.noBlockCanSpawn"))
+                    .withStyle(StyleCompatApi.empty().withColor(ChatFormatting.GREEN));
         } else {
             // for ommc parser
-            text = new TextComponent(I18n.get("masa_gadget_mod.message.spawnPos", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()));
+            text = ComponentCompatApi.literal(ModInfo.translate("message.spawnPos", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()));
             player.chat(String.format("/highlightWaypoint %d %d %d", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()));
         }
         Objects.requireNonNull(Minecraft.getInstance().player).displayClientMessage(text, false);

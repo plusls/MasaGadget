@@ -9,10 +9,10 @@ import com.plusls.MasaGadget.util.RenderUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.trading.MerchantOffer;
+import top.hendrixshen.magiclib.compat.minecraft.network.chat.ComponentCompatApi;
 
 public class NextRestockTimeRenderer {
     public static void init() {
@@ -63,9 +63,9 @@ public class NextRestockTimeRenderer {
         }
 
         if (nextRestockTime == 0) {
-            text = new TextComponent("OK").withStyle(ChatFormatting.GREEN);
+            text = ComponentCompatApi.literal("OK").withStyle(ChatFormatting.GREEN);
         } else {
-            text = new TextComponent(String.format("%d", nextRestockTime));
+            text = ComponentCompatApi.literal(String.format("%d", nextRestockTime));
         }
         RenderUtil.renderTextOnEntity(matrixStack, villagerEntity,
                 dispatcher, text,

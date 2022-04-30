@@ -7,9 +7,7 @@ import com.plusls.MasaGadget.util.MiscUtil;
 import com.plusls.MasaGadget.util.RenderUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.*;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.ItemStack;
@@ -17,6 +15,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.trading.MerchantOffer;
+import top.hendrixshen.magiclib.compat.minecraft.network.chat.ComponentCompatApi;
 
 import java.util.Map;
 
@@ -57,12 +56,20 @@ public class TradeEnchantedBookRenderer {
                     } else {
                         color = ChatFormatting.RED;
                     }
-                    price = new TextComponent(String.format("%d(%d-%d)", cost, minCost, maxCost)).withStyle(color);
+                    price = ComponentCompatApi.literal(String.format("%d(%d-%d)", cost, minCost, maxCost)).withStyle(color);
 
                     if (level == entry.getKey().getMaxLevel()) {
-                        text = ((TranslatableComponent) entry.getKey().getFullname(entry.getValue())).withStyle(ChatFormatting.GOLD);
+                        //#if MC > 11502
+                        text = ((MutableComponent) entry.getKey().getFullname(entry.getValue())).withStyle(ChatFormatting.GOLD);
+                        //#else
+                        //$$ text = ((BaseComponent) entry.getKey().getFullname(entry.getValue())).withStyle(ChatFormatting.GOLD);
+                        //#endif
                     } else {
-                        text = ((TranslatableComponent) entry.getKey().getFullname(entry.getValue())).withStyle(ChatFormatting.WHITE);
+                        //#if MC > 11502
+                        text = ((MutableComponent) entry.getKey().getFullname(entry.getValue())).withStyle(ChatFormatting.WHITE);
+                        //#else
+                        //$$ text = ((BaseComponent) entry.getKey().getFullname(entry.getValue())).withStyle(ChatFormatting.GOLD);
+                        //#endif
                     }
                 }
             }
