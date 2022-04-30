@@ -2,7 +2,10 @@ package com.plusls.MasaGadget.tweakeroo.inventoryPreviewSupportSelect;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.math.Matrix4f;
 import com.plusls.MasaGadget.ModInfo;
 import fi.dy.masa.malilib.render.RenderUtils;

@@ -29,15 +29,11 @@ public class ModInfo {
     //#else
     //$$ public static final String CURRENT_MOD_ID = MOD_ID + "-1_14_4";
     //#endif
-
-    public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
-
     public static final String MOD_NAME = FabricLoader.getInstance().getModContainer(CURRENT_MOD_ID)
             .orElseThrow(RuntimeException::new).getMetadata().getName();
     public static final String MOD_VERSION = FabricLoader.getInstance().getModContainer(CURRENT_MOD_ID)
             .orElseThrow(RuntimeException::new).getMetadata().getVersion().getFriendlyString();
-
-
+    public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
     public static ConfigHandler configHandler;
 
     public static String translate(String key, Object... objects) {
