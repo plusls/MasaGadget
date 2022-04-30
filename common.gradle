@@ -41,7 +41,7 @@ dependencies {
         include("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}")
     }
 
-    modImplementation("top.hendrixshen:magiclib-${project.name.replace(".", "_")}:${project.magiclib_version}")
+    modImplementation("top.hendrixshen:magiclib-${project.minecraft_version.replace(".", "_")}:${project.magiclib_version}")
     runtimeOnly(project(path: ":fabricWrapper"))
 }
 
@@ -79,7 +79,7 @@ processResources {
                 "mod_sources"         : project.mod_sources,
                 "mod_license"         : project.mod_license,
                 "minecraft_dependency": project.minecraft_dependency,
-                "minecraft_version_id": project.name.replace(".", "_"),
+                "minecraft_version_id": project.minecraft_version.replace(".", "_"),
                 "minecraft_version"   : project.minecraft_version
         ])
     }
@@ -108,20 +108,9 @@ import groovy.util.Node
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifactId = "${project.mod_id}-${project.name.replace(".", "_")}"
-            version = "${project.version}"
+            artifactId = "${project.mod_id}-${project.minecraft_version.replace(".", "_")}"
+            version = project.version
             from(components.java)
-            pom.withXml {
-                rootNode ->
-                    {
-                        def depNode = new Node(null, "dependency")
-                        depNode.appendNode("groupId", project.group)
-                        depNode.appendNode("artifactId", project.mod_id)
-                        depNode.appendNode("version", project.version)
-                        depNode.appendNode("scope", "compile")
-                        rootNode.asNode().dependencies[0].children().add(depNode)
-                    }
-            }
         }
     }
 
