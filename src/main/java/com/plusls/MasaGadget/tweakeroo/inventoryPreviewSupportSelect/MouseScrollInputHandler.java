@@ -24,6 +24,7 @@ public class MouseScrollInputHandler implements IMouseInputHandler {
             } else if (amount > 0) {
                 InventoryOverlayRenderHandler.instance.addSelectedIdx(-1);
             }
+            return true;
         }
         return false;
     }
