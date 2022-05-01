@@ -17,7 +17,7 @@ public class ModInfo {
     public static String MOD_ID = "masa_gadget_mod";
 
     //#if MC > 11802
-    //$$ public static final String CURRENT_MOD_ID = MOD_ID + "-snapshot";
+    //$$ public static final String CURRENT_MOD_ID = MOD_ID + "-22w17a";
     //#elseif MC > 11701
     public static final String CURRENT_MOD_ID = MOD_ID + "-1_18_2";
     //#elseif MC > 11605

@@ -31,6 +31,9 @@
       "com.plusls.MasaGadget.compat.modmenu.WrapperModMenuApiImpl"
     ]
   },
+  "depends": {
+    "magiclib": ">=${magiclib_version}"
+  },
   "custom": {
     "modmenu:clientsideOnly": true
   },

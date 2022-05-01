@@ -50,13 +50,14 @@ processResources {
         jars.add(["file": "META-INF/jars/${project.archives_base_name}-${it.minecraft_version}-${project.version}.jar"])
     })
     filesMatching("fabric.mod.json") {
-        expand(["mod_version" : project.version,
-                "mod_id"      : project.mod_id,
-                "mod_name"    : project.mod_name,
-                "mod_homepage": project.mod_homepage,
-                "mod_sources" : project.mod_sources,
-                "mod_license" : project.mod_license,
-                "sub_jars"    : new JsonBuilder(jars).toPrettyString(),
+        expand(["mod_version"     : project.version,
+                "mod_id"          : project.mod_id,
+                "mod_name"        : project.mod_name,
+                "mod_homepage"    : project.mod_homepage,
+                "mod_sources"     : project.mod_sources,
+                "mod_license"     : project.mod_license,
+                "magiclib_version": project.magiclib_version,
+                "sub_jars"        : new JsonBuilder(jars).toPrettyString(),
         ])
     }
 }

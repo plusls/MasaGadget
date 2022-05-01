@@ -165,24 +165,43 @@ public class MixinWorldUtils {
         return side;
     }
 
-    //#if MC <= 11802
     @Redirect(method = "doEasyPlaceAction", at = @At(value = "INVOKE",
+            //#if MC > 11802
+            //$$ target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;useItemOn(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;",
+            //#else
             target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;useItemOn(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;",
+            //#endif
             ordinal = 0, remap = true))
-    private static InteractionResult myInteractBlock(MultiPlayerGameMode clientPlayerInteractionManager, LocalPlayer player, ClientLevel world, InteractionHand hand, BlockHitResult hitResult) {
-        InteractionResult ret = clientPlayerInteractionManager.useItemOn(player, world, hand, hitResult);
+    private static InteractionResult myInteractBlock(MultiPlayerGameMode clientPlayerInteractionManager, LocalPlayer player,
+                                                     //#if MC <= 11802
+                                                     ClientLevel world,
+                                                     //#endif
+                                                     InteractionHand hand, BlockHitResult hitResult) {
+        InteractionResult ret = clientPlayerInteractionManager.useItemOn(player,
+                //#if MC <= 11802
+                world,
+                //#endif
+                hand, hitResult);
         if (!Configs.fixAccurateProtocol || interactBlockCount.get() == null) {
             return ret;
         }
         for (int i = 0; i < interactBlockCount.get(); ++i) {
-            clientPlayerInteractionManager.useItemOn(player, world, hand, hitResult);
+            clientPlayerInteractionManager.useItemOn(player,
+                    //#if MC <= 11802
+                    world,
+                    //#endif
+                    hand, hitResult);
         }
         interactBlockCount.set(null);
         return ret;
     }
 
     @Inject(method = "doEasyPlaceAction", at = @At(value = "INVOKE",
+            //#if MC > 11802
+            //$$ target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;useItemOn(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;",
+            //#else
             target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;useItemOn(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;",
+            //#endif
             shift = At.Shift.AFTER, ordinal = 0, remap = true))
     private static void fixDoEasyPlaceAction1(Minecraft mc, CallbackInfoReturnable<InteractionResult> cir) {
         if (!Configs.fixAccurateProtocol) {
@@ -195,5 +214,4 @@ public class MixinWorldUtils {
             mc.player.connection.send(new ServerboundMovePlayerPacket.Rot(mc.player.getYRot(), mc.player.getXRot(), mc.player.isOnGround()));
         }
     }
-    //#endif
 }

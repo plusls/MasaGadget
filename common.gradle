@@ -80,7 +80,8 @@ processResources {
                 "mod_license"         : project.mod_license,
                 "minecraft_dependency": project.minecraft_dependency,
                 "minecraft_version_id": project.minecraft_version.replace(".", "_"),
-                "minecraft_version"   : project.minecraft_version
+                "minecraft_version"   : project.minecraft_version,
+                "magiclib_version"    : project.magiclib_version
         ])
     }
 }
@@ -102,8 +103,6 @@ java {
 jar {
     from("../../LICENSE")
 }
-
-import groovy.util.Node
 
 publishing {
     publications {
