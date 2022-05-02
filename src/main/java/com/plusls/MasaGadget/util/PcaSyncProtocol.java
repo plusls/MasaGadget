@@ -36,6 +36,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import top.hendrixshen.magiclib.compat.minecraft.nbt.TagCompatApi;
 
+//#if MC <= 11802 && MC > 11502
+import net.earthcomputer.multiconnect.api.MultiConnectAPI;
+//#endif
+
 public class PcaSyncProtocol {
     private static final String NAMESPACE = "pca";
     // send
@@ -48,10 +52,6 @@ public class PcaSyncProtocol {
     private static final ResourceLocation DISABLE_PCA_SYNC_PROTOCOL = id("disable_pca_sync_protocol");
     private static final ResourceLocation UPDATE_ENTITY = id("update_entity");
     private static final ResourceLocation UPDATE_BLOCK_ENTITY = id("update_block_entity");
-    //    private static final ClientboundIdentifierCustomPayloadListener clientboundIdentifierCustomPayloadListener =
-//            new ClientboundIdentifierCustomPayloadListener();
-//    private static final ServerboundIdentifierCustomPayloadListener serverboundIdentifierCustomPayloadListener =
-//            new ServerboundIdentifierCustomPayloadListener();
     public static boolean enable = false;
     private static BlockPos lastBlockPos = null;
     private static int lastEntityId = -1;
@@ -68,9 +68,32 @@ public class PcaSyncProtocol {
         // 该事件仅在服务器主动断开客户端发生
         // ClientPlayConnectionEvents.DISCONNECT.register(PcaSyncProtocol::onDisconnect);
         DisconnectEvent.register(PcaSyncProtocol::onDisconnect);
-        // TODO
-        //MultiConnectAPI.instance().addClientboundIdentifierCustomPayloadListener(clientboundIdentifierCustomPayloadListener);
-        //MultiConnectAPI.instance().addServerboundIdentifierCustomPayloadListener(serverboundIdentifierCustomPayloadListener);
+        //#if MC <= 11802 && MC > 11502
+        MultiConnectAPI.instance().addClientboundIdentifierCustomPayloadListener(event -> {
+            ResourceLocation channel = event.getChannel();
+            if (channel.equals(ENABLE_PCA_SYNC_PROTOCOL)) {
+                enablePcaSyncProtocolHandle(Minecraft.getInstance(), null, event.getData(), null);
+            } else if (channel.equals(DISABLE_PCA_SYNC_PROTOCOL)) {
+                disablePcaSyncProtocolHandle(Minecraft.getInstance(), null, event.getData(), null);
+            } else if (channel.equals(UPDATE_ENTITY)) {
+                updateEntityHandler(Minecraft.getInstance(), null, event.getData(), null);
+            } else if (channel.equals(UPDATE_BLOCK_ENTITY)) {
+                updateBlockEntityHandler(Minecraft.getInstance(), null, event.getData(), null);
+            }
+        });
+        MultiConnectAPI.instance().addServerboundIdentifierCustomPayloadListener(event -> {
+            ResourceLocation channel = event.getChannel();
+            if (channel.equals(SYNC_BLOCK_ENTITY)) {
+                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
+            } else if (channel.equals(SYNC_ENTITY)) {
+                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
+            } else if (channel.equals(CANCEL_SYNC_REQUEST_BLOCK_ENTITY)) {
+                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
+            } else if (channel.equals(CANCEL_SYNC_ENTITY)) {
+                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
+            }
+        });
+        //#endif
     }
 
     private static void onDisconnect() {
@@ -209,35 +232,4 @@ public class PcaSyncProtocol {
         ClientPlayNetworking.send(CANCEL_SYNC_ENTITY, buf);
     }
 
-//    private static class ServerboundIdentifierCustomPayloadListener implements ICustomPayloadListener<ResourceLocation> {
-//        @Override
-//        public void onCustomPayload(ICustomPayloadEvent<ResourceLocation> event) {
-//            ResourceLocation channel = event.getChannel();
-//            if (channel.equals(SYNC_BLOCK_ENTITY)) {
-//                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
-//            } else if (channel.equals(SYNC_ENTITY)) {
-//                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
-//            } else if (channel.equals(CANCEL_SYNC_REQUEST_BLOCK_ENTITY)) {
-//                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
-//            } else if (channel.equals(CANCEL_SYNC_ENTITY)) {
-//                MultiConnectAPI.instance().forceSendCustomPayload(event.getNetworkHandler(), event.getChannel(), event.getData());
-//            }
-//        }
-//    }
-//
-//    private static class ClientboundIdentifierCustomPayloadListener implements ICustomPayloadListener<ResourceLocation> {
-//        @Override
-//        public void onCustomPayload(ICustomPayloadEvent<ResourceLocation> event) {
-//            ResourceLocation channel = event.getChannel();
-//            if (channel.equals(ENABLE_PCA_SYNC_PROTOCOL)) {
-//                enablePcaSyncProtocolHandle(Minecraft.getInstance(), null, event.getData(), null);
-//            } else if (channel.equals(DISABLE_PCA_SYNC_PROTOCOL)) {
-//                disablePcaSyncProtocolHandle(Minecraft.getInstance(), null, event.getData(), null);
-//            } else if (channel.equals(UPDATE_ENTITY)) {
-//                updateEntityHandler(Minecraft.getInstance(), null, event.getData(), null);
-//            } else if (channel.equals(UPDATE_BLOCK_ENTITY)) {
-//                updateBlockEntityHandler(Minecraft.getInstance(), null, event.getData(), null);
-//            }
-//        }
-//    }
 }

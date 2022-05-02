@@ -33,8 +33,9 @@ dependencies {
     modImplementation("curse.maven:litematica-308892:${project.litematica_version}")
     modImplementation("curse.maven:itemscroller-242064:${project.itemscroller_version}")
 
-    if (project.minecraft_version != "1.15.2" &&
-            project.minecraft_version != "1.14.4") {
+    if (project.name != "snapshot" &&
+            project.name != "1.15.2" &&
+            project.name != "1.14.4") {
         modImplementation("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}") {
             transitive = false
         }
