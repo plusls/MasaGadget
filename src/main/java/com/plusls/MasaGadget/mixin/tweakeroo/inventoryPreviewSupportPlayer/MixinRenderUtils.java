@@ -2,7 +2,7 @@ package com.plusls.MasaGadget.mixin.tweakeroo.inventoryPreviewSupportPlayer;
 
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
-import com.plusls.MasaGadget.tweakeroo.TraceUtil;
+import com.plusls.MasaGadget.util.TraceUtil;
 import fi.dy.masa.malilib.render.InventoryOverlay;
 import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.tweakeroo.renderer.RenderUtils;

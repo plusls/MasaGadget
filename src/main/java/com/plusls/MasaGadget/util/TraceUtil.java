@@ -1,4 +1,4 @@
-package com.plusls.MasaGadget.tweakeroo;
+package com.plusls.MasaGadget.util;
 
 import fi.dy.masa.malilib.util.WorldUtils;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;

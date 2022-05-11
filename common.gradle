@@ -33,15 +33,6 @@ dependencies {
     modImplementation("curse.maven:litematica-308892:${project.litematica_version}")
     modImplementation("curse.maven:itemscroller-242064:${project.itemscroller_version}")
 
-    if (project.name != "snapshot" &&
-            project.name != "1.15.2" &&
-            project.name != "1.14.4") {
-        modImplementation("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}") {
-            transitive = false
-        }
-        include("net.earthcomputer.multiconnect:multiconnect-api:${project.multiconnect_version}")
-    }
-
     modImplementation("top.hendrixshen:magiclib-${project.minecraft_version.replace(".", "_")}:${project.magiclib_version}")
     runtimeOnly(project(path: ":fabricWrapper"))
 }

@@ -17,6 +17,8 @@
   "masa_gadget_mod.message.syncAllEntityDataSuccess": "成功同步所有实体数据",
   "masa_gadget_mod.config.generic.autoSyncEntityData.name": "自动同步实体数据",
   "masa_gadget_mod.config.generic.autoSyncEntityData.comment": "自动使用 PCA 同步协议来同步实体数据（如村民补货时间，僵尸村民转换时间，怪物是否消失）",
+  "masa_gadget_mod.config.generic.cacheContainerMenu.name": "缓存容器数据",
+  "masa_gadget_mod.config.generic.cacheContainerMenu.comment": "在打开容器的时候会自动缓存容器数据到本地",
   "masa_gadget_mod.config.generic.debug.name": "调试模式",
   "masa_gadget_mod.config.generic.debug.comment": "开启后将会打印调试日志",
   "masa_gadget_mod.config.generic.openConfigGui.name": "打开设置界面",
@@ -65,10 +67,6 @@
   "masa_gadget_mod.config.minihud.minihudI18n.comment": "Minihud 显示的文本可以被翻译",
   "masa_gadget_mod.config.minihud.pcaSyncProtocolSyncBeehive.name": "PCA同步协议同步蜂巢数据",
   "masa_gadget_mod.config.minihud.pcaSyncProtocolSyncBeehive.comment": "按下 §6容器预览§r 的快捷键将会使用 PCA 同步协议来 同步蜂巢，蜂箱数据",
-  "masa_gadget_mod.config.tweakeroo.restockWithCrafting.name": "自动补货允许 2x2 合成",
-  "masa_gadget_mod.config.tweakeroo.restockWithCrafting.comment": "当背包内没有自动物品而 Tweakeroo 需要自动补货时，\n通过预先定义的合成表自动合成相应物品。此功能需要 ItemScroller。",
-  "masa_gadget_mod.config.tweakeroo.restockWithCraftingRecipes.name": "自动补货合成配方",
-  "masa_gadget_mod.config.tweakeroo.restockWithCraftingRecipes.comment": "ItemScroller 存储的配方编号，只支持 2x2 配方",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportComparator.name": "容器预览支持比较器",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportComparator.comment": "对比较器使用容器预览时将会显示比较器应该输出的信号",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportFreeCamera.name": "容器预览支持 Free Camera",
@@ -82,5 +80,11 @@
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportTradeOfferList.name": "容器预览显示交易列表",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSupportTradeOfferList.comment": "容器预览村民时会显示出当前的交易列表",
   "masa_gadget_mod.config.tweakeroo.inventoryPreviewSyncData.name": "容器预览时同步数据",
-  "masa_gadget_mod.config.tweakeroo.inventoryPreviewSyncData.comment": "容器预览时使用 PCA 同步协议来从服务器同步方块实体信息和实体信息，比如箱子内的物品，村民背包"
+  "masa_gadget_mod.config.tweakeroo.inventoryPreviewSyncData.comment": "容器预览时使用 PCA 同步协议来从服务器同步方块实体信息和实体信息，比如箱子内的物品，村民背包",
+  "masa_gadget_mod.config.tweakeroo.inventoryPreviewSyncDataClientOnly.name": "容器预览时同步数据（仅客户端）",
+  "masa_gadget_mod.config.tweakeroo.inventoryPreviewSyncDataClientOnly.comment": "容器预览时模拟开启容器来同步容器的信息",
+  "masa_gadget_mod.config.tweakeroo.restockWithCrafting.name": "自动补货允许 2x2 合成",
+  "masa_gadget_mod.config.tweakeroo.restockWithCrafting.comment": "当背包内没有自动物品而 Tweakeroo 需要自动补货时，\n通过预先定义的合成表自动合成相应物品。此功能需要 ItemScroller。",
+  "masa_gadget_mod.config.tweakeroo.restockWithCraftingRecipes.name": "自动补货合成配方",
+  "masa_gadget_mod.config.tweakeroo.restockWithCraftingRecipes.comment": "ItemScroller 存储的配方编号，只支持 2x2 配方"
 }

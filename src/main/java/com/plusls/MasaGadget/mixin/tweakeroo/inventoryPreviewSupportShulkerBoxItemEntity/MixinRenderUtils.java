@@ -2,7 +2,7 @@ package com.plusls.MasaGadget.mixin.tweakeroo.inventoryPreviewSupportShulkerBoxI
 
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
-import com.plusls.MasaGadget.tweakeroo.TraceUtil;
+import com.plusls.MasaGadget.util.TraceUtil;
 import fi.dy.masa.tweakeroo.renderer.RenderUtils;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;

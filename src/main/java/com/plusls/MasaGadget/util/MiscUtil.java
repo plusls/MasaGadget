@@ -2,11 +2,19 @@ package com.plusls.MasaGadget.util;
 
 import fi.dy.masa.malilib.util.WorldUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.language.I18n;
 
-import javax.annotation.Nullable;
+import java.util.Objects;
 
 public class MiscUtil {
 
@@ -52,5 +60,24 @@ public class MiscUtil {
     public static String getTranslatedOrFallback(String key, @Nullable String fallback, Object... objects) {
         String translated = I18n.get(key, objects);
         return !key.equals(translated) ? translated : fallback;
+    }
+
+    @Nullable
+    public static Container getContainer(BlockPos blockPos) {
+        ClientLevel clientLevel = Objects.requireNonNull(Minecraft.getInstance().level);
+        BlockEntity blockEntity = clientLevel.getBlockEntity(blockPos);
+        if (blockEntity instanceof Container) {
+            if (blockEntity instanceof ChestBlockEntity) {
+                BlockState blockState = clientLevel.getBlockState(blockPos);
+                return ChestBlock.getContainer(
+                        //#if MC > 11404
+                        (ChestBlock) blockState.getBlock(),
+                        //#endif
+                        blockState, clientLevel, blockPos, true);
+            } else {
+                return (Container) blockEntity;
+            }
+        }
+        return null;
     }
 }

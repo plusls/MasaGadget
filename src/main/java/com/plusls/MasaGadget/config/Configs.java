@@ -37,6 +37,10 @@ public class Configs {
     @Config(category = ConfigCategory.GENERIC)
     public static boolean autoSyncEntityData = true;
 
+    @Hotkey
+    @Config(category = ConfigCategory.GENERIC)
+    public static boolean cacheContainerMenu = true;
+
     @Config(category = ConfigCategory.GENERIC)
     public static boolean debug = false;
 
@@ -158,6 +162,10 @@ public class Configs {
     @Hotkey
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
     public static boolean inventoryPreviewSyncData = true;
+
+    @Hotkey
+    @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
+    public static boolean inventoryPreviewSyncDataClientOnly = false;
 
     @Hotkey
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = {@Dependency(ModInfo.TWEAKEROO_MOD_ID), @Dependency(ModInfo.ITEMSCROLLER_MOD_ID)}))

@@ -16,6 +16,9 @@
     "generic.autoSyncEntityData.MixinClientPlayNetworkHandler",
     "generic.autoSyncEntityData.MixinVillagerEntity",
     "generic.autoSyncEntityData.MixinZombieVillagerEntity",
+    "generic.cacheContainerMenu.MixinClientPacketListener",
+    "generic.cacheContainerMenu.MixinLocalPlayer",
+    "generic.cacheContainerMenu.MixinMultiPlayerGameMode",
     "litematica.betterEasyPlaceMode.MixinWorldUtils",
     "litematica.disableLitematicaEasyPlaceFailTip.MixinWorldUtils",
     "litematica.fixCarpetAccurateProtocol.MixinBlockItem",
@@ -38,6 +41,7 @@
     "malilib.showOriginalConfigName.MixinWidgetConfigOption",
     "malilib.showOriginalConfigName.MixinWidgetListConfigOptions",
     "minihud.minihudI18n.MixinRenderHandler",
+    "tweakeroo.MixinMinecraft",
     "tweakeroo.handRestockCrafting.MixinInventoryUtils",
     "tweakeroo.inventoryPreviewSupportComparator.MixinGameRenderer",
     "tweakeroo.inventoryPreviewSupportComparator.MixinWorldRenderer",
@@ -48,8 +52,9 @@
     "tweakeroo.inventoryPreviewSupportSelect.MixinRenderHandler",
     "tweakeroo.inventoryPreviewSupportShulkerBoxItemEntity.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportTradeOfferList.MixinRenderUtils",
-    "tweakeroo.inventoryPreviewSyncData.MixinRenderHandler",
-    "tweakeroo.inventoryPreviewSyncData.MixinRenderUtils"
+    "tweakeroo.inventoryPreviewSyncData.MixinRenderUtils",
+    "tweakeroo.inventoryPreviewSyncDataClientOnly.MixinClientPacketListener",
+    "tweakeroo.inventoryPreviewSyncDataClientOnly.MixinRenderUtils"
   ],
   "injectors": {
     "defaultRequire": 1
