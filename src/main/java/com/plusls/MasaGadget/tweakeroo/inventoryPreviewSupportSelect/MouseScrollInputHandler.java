@@ -2,6 +2,7 @@ package com.plusls.MasaGadget.tweakeroo.inventoryPreviewSupportSelect;
 
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
+import com.plusls.MasaGadget.tweakeroo.InventoryPreviewUtil;
 import fi.dy.masa.malilib.event.InputEventHandler;
 import fi.dy.masa.malilib.hotkeys.IMouseInputHandler;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
@@ -18,7 +19,7 @@ public class MouseScrollInputHandler implements IMouseInputHandler {
         if (ModInfo.isModLoaded(ModInfo.TWEAKEROO_MOD_ID) &&
                 Configs.inventoryPreviewSupportSelect &&
                 FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue() &&
-                Hotkeys.INVENTORY_PREVIEW.getKeybind().isKeybindHeld()) {
+                InventoryPreviewUtil.getLastInventoryPreviewStatus()) {
             if (amount < 0) {
                 InventoryOverlayRenderHandler.instance.addSelectedIdx(1);
             } else if (amount > 0) {

@@ -108,10 +108,14 @@ public class Configs {
     @Config(category = ConfigCategory.MALILIB)
     public static boolean favoritesSupport = false;
 
+    @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(value = "minecraft", versionPredicate = "<=1.17.1")))
     public static boolean fixConfigWidgetWidth = true;
 
     @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(value = "minecraft", versionPredicate = "<=1.17.1")))
     public static boolean fixGetInventoryType = true;
+
+    @Config(category = ConfigCategory.MALILIB)
+    public static boolean fixSearchbarHotkeyInput = true;
 
     @Config(category = ConfigCategory.MALILIB, dependencies = @Dependencies(and = @Dependency(value = "minecraft", versionPredicate = "<=1.17.1")))
     public static boolean optimizeConfigWidgetSearch = true;

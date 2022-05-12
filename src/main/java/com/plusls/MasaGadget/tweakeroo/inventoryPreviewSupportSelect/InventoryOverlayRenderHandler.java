@@ -8,9 +8,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.math.Matrix4f;
 import com.plusls.MasaGadget.ModInfo;
+import com.plusls.MasaGadget.config.Configs;
 import fi.dy.masa.malilib.render.RenderUtils;
 import fi.dy.masa.malilib.util.Color4f;
 import fi.dy.masa.malilib.util.GuiUtils;
+import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -18,6 +20,8 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
+import net.minecraft.world.phys.HitResult;
+import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.compat.minecraft.blaze3d.vertex.VertexFormatCompatApi;
 
 import java.util.ArrayList;
@@ -44,6 +48,17 @@ public class InventoryOverlayRenderHandler {
     private int subRenderX = -1;
     private int subRenderY = -1;
     private ItemStack subItemStack = null;
+
+    public static void onTraceCallback(@Nullable HitResult hitResult, boolean oldStatus, boolean stateChanged) {
+        if (!FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue() || !Configs.inventoryPreviewSupportSelect) {
+            return;
+        }
+        if (!oldStatus) {
+            // 重置预览选择槽
+            InventoryOverlayRenderHandler.instance.resetSelectedIdx();
+        }
+    }
+
 
     private static void fillGradient(PoseStack matrices, Collection<GradientData> gradientDataCollection) {
         RenderSystem.disableTexture();

@@ -61,6 +61,8 @@
   "masa_gadget_mod.config.malilib.fixConfigWidgetWidth.comment": "Use the length of getTranslatedGuiDisplayName as widget width",
   "masa_gadget_mod.config.malilib.fixGetInventoryType.name": "fixGetInventoryType",
   "masa_gadget_mod.config.malilib.fixGetInventoryType.comment": "Fix AbstractFurnaceBlock inventory type",
+  "masa_gadget_mod.config.malilib.fixSearchbarHotkeyInput.name": "fixSearchbarHotkeyInput",
+  "masa_gadget_mod.config.malilib.fixSearchbarHotkeyInput.comment": "Fix searchbar input when press hotkey to open config gui.",
   "masa_gadget_mod.config.malilib.optimizeConfigWidgetSearch.name": "optimizeConfigWidgetSearch",
   "masa_gadget_mod.config.malilib.optimizeConfigWidgetSearch.comment": "Make search support uppercase, translate text, and can use §6modified§r to search modified config",
   "masa_gadget_mod.config.minihud.minihudI18n.name": "minihudI18n",
