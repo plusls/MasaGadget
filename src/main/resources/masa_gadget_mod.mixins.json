@@ -41,7 +41,6 @@
     "malilib.showOriginalConfigName.MixinWidgetConfigOption",
     "malilib.showOriginalConfigName.MixinWidgetListConfigOptions",
     "minihud.minihudI18n.MixinRenderHandler",
-    "tweakeroo.MixinMinecraft",
     "tweakeroo.handRestockCrafting.MixinInventoryUtils",
     "tweakeroo.inventoryPreviewSupportComparator.MixinGameRenderer",
     "tweakeroo.inventoryPreviewSupportComparator.MixinWorldRenderer",
@@ -52,9 +51,7 @@
     "tweakeroo.inventoryPreviewSupportSelect.MixinRenderHandler",
     "tweakeroo.inventoryPreviewSupportShulkerBoxItemEntity.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportTradeOfferList.MixinRenderUtils",
-    "tweakeroo.inventoryPreviewSyncData.MixinRenderUtils",
-    "tweakeroo.inventoryPreviewSyncDataClientOnly.MixinClientPacketListener",
-    "tweakeroo.inventoryPreviewSyncDataClientOnly.MixinRenderUtils"
+    "tweakeroo.inventoryPreviewSyncDataClientOnly.MixinClientPacketListener"
   ],
   "injectors": {
     "defaultRequire": 1

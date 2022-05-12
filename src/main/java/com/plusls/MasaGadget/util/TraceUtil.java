@@ -44,8 +44,12 @@ public class TraceUtil {
             player = mc.player;
         }
         try {
-            return RayTraceUtils.getRayTraceFromEntity(world, FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue() && cameraEntity != null ?
+            HitResult hitResult = RayTraceUtils.getRayTraceFromEntity(world, FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue() && cameraEntity != null ?
                     cameraEntity : player, false);
+            if (hitResult.getType() == HitResult.Type.MISS) {
+                return null;
+            }
+            return hitResult;
         } catch (ConcurrentModificationException e) {
             // 不知道为啥，在容器预览时调用该函数有概率崩溃（在实体频繁生成死亡的时候，比如刷石机）
             return null;
