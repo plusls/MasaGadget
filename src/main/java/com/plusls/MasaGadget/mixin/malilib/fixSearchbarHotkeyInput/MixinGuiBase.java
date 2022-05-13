@@ -17,7 +17,7 @@ public class MixinGuiBase {
     @Unique
     private long openTime;
 
-    @Inject(method = "init", at = @At(value = "HEAD"))
+    @Inject(method = "init", at = @At(value = "HEAD"), remap = true)
     private void preInit(CallbackInfo ci) {
         if (!Configs.fixSearchbarHotkeyInput) {
             return;
@@ -26,7 +26,7 @@ public class MixinGuiBase {
         this.keyInputCount = 0;
     }
 
-    @Inject(method = "charTyped", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(method = "charTyped", at = @At(value = "HEAD"), cancellable = true, remap = true)
     private void preCharTyped(char charIn, int modifiers, CallbackInfoReturnable<Boolean> cir) {
         if (!Configs.fixSearchbarHotkeyInput) {
             return;

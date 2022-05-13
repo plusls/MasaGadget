@@ -16,7 +16,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(MultiPlayerGameMode.class)
 public class MixinMultiPlayerGameMode {
     @Inject(method = "useItemOn", at = @At(value = "HEAD"))
-    private void prevUseItemOn(LocalPlayer localPlayer, ClientLevel clientLevel, InteractionHand interactionHand, BlockHitResult blockHitResult, CallbackInfoReturnable<InteractionResult> cir) {
+    private void prevUseItemOn(LocalPlayer localPlayer,
+                               //#if MC <= 11802
+                               ClientLevel clientLevel,
+                               //#endif
+                               InteractionHand interactionHand, BlockHitResult blockHitResult, CallbackInfoReturnable<InteractionResult> cir) {
         if (!Configs.cacheContainerMenu) {
             return;
         }
