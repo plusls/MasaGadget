@@ -20,6 +20,8 @@ fabric_subprojects.collect {
 }
 
 jar {
+    // disable cache
+    outputs.upToDateWhen { false }
     dependsOn(fabric_subprojects.collect {
         it.tasks.remapJar
     })
