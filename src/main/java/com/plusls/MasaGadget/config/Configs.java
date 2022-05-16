@@ -145,11 +145,6 @@ public class Configs {
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
     public static boolean inventoryPreviewSupportComparator = true;
 
-    @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = {
-            @Dependency(ModInfo.TWEAKEROO_MOD_ID),
-            @Dependency(value = "minecraft", versionPredicate = "<=1.16.5")}))
-    public static boolean inventoryPreviewSupportFreeCamera = true;
-
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
     public static boolean inventoryPreviewSupportPlayer = true;
 
@@ -170,6 +165,9 @@ public class Configs {
     @Hotkey
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
     public static boolean inventoryPreviewSyncDataClientOnly = false;
+
+    @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
+    public static boolean inventoryPreviewUseCache = true;
 
     @Hotkey
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = {@Dependency(ModInfo.TWEAKEROO_MOD_ID), @Dependency(ModInfo.ITEMSCROLLER_MOD_ID)}))

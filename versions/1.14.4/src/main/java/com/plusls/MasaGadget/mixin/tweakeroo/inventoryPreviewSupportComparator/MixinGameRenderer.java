@@ -4,8 +4,8 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
+import com.plusls.MasaGadget.util.HitResultUtil;
 import com.plusls.MasaGadget.util.RenderUtil;
-import com.plusls.MasaGadget.util.TraceUtil;
 import fi.dy.masa.malilib.util.WorldUtils;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.config.Hotkeys;
@@ -43,18 +43,16 @@ public class MixinGameRenderer {
         }
 
         // 开始渲染
-        BlockPos pos = TraceUtil.getTraceBlockPos();
-        if (pos != null) {
-            // 绕过线程检查
-            BlockEntity blockEntity = world.getChunkAt(pos).getBlockEntity(pos);
-            if (blockEntity instanceof ComparatorBlockEntity) {
-                TextComponent literalText = new TextComponent(((ComparatorBlockEntity) blockEntity).getOutputSignal() + "");
-                literalText.withStyle(ChatFormatting.GREEN);
-                GlStateManager.disableDepthTest();
-                PoseStack poseStackCompat = new PoseStack();
-                RenderUtil.renderTextOnWorld(poseStackCompat, camera, pos, literalText, true);
-                GlStateManager.enableDepthTest();
-            }
+        BlockPos pos = HitResultUtil.getHitBlockPos();
+        BlockEntity blockEntity = HitResultUtil.getLastHitBlockEntity();
+
+        if (pos != null && blockEntity instanceof ComparatorBlockEntity) {
+            TextComponent literalText = new TextComponent(((ComparatorBlockEntity) blockEntity).getOutputSignal() + "");
+            literalText.withStyle(ChatFormatting.GREEN);
+            GlStateManager.disableDepthTest();
+            PoseStack poseStackCompat = new PoseStack();
+            RenderUtil.renderTextOnWorld(poseStackCompat, camera, pos, literalText, true);
+            GlStateManager.enableDepthTest();
         }
     }
 }

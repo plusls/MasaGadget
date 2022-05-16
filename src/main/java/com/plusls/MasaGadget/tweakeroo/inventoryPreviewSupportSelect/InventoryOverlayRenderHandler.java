@@ -49,7 +49,7 @@ public class InventoryOverlayRenderHandler {
     private int subRenderY = -1;
     private ItemStack subItemStack = null;
 
-    public static void onTraceCallback(@Nullable HitResult hitResult, boolean oldStatus, boolean stateChanged) {
+    public static void onHitCallback(@Nullable HitResult hitResult, boolean oldStatus, boolean stateChanged) {
         if (!FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue() || !Configs.inventoryPreviewSupportSelect) {
             return;
         }

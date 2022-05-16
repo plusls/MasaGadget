@@ -2,7 +2,7 @@ package com.plusls.MasaGadget.mixin.tweakeroo.inventoryPreviewSupportShulkerBoxI
 
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
-import com.plusls.MasaGadget.util.TraceUtil;
+import com.plusls.MasaGadget.util.HitResultUtil;
 import fi.dy.masa.tweakeroo.renderer.RenderUtils;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -32,7 +32,7 @@ public abstract class MixinRenderUtils {
                     ordinal = 0, remap = false), ordinal = 0)
     private static Container modifyInv(Container inv) {
         Container ret = inv;
-        Entity traceEntity = TraceUtil.getTraceEntity();
+        Entity traceEntity = HitResultUtil.getHitEntity();
 
         if (Configs.inventoryPreviewSupportShulkerBoxItemEntity && ret == null &&
                 traceEntity instanceof ItemEntity) {

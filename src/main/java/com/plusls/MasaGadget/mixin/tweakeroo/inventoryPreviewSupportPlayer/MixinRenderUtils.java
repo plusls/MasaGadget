@@ -2,7 +2,7 @@ package com.plusls.MasaGadget.mixin.tweakeroo.inventoryPreviewSupportPlayer;
 
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
-import com.plusls.MasaGadget.util.TraceUtil;
+import com.plusls.MasaGadget.util.HitResultUtil;
 import fi.dy.masa.malilib.render.InventoryOverlay;
 import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.tweakeroo.renderer.RenderUtils;
@@ -27,7 +27,7 @@ public abstract class MixinRenderUtils {
                     ordinal = 0, remap = false), ordinal = 0)
     private static Container modifyInv(Container inv) {
         Container ret = inv;
-        Entity traceEntity = TraceUtil.getTraceEntity();
+        Entity traceEntity = HitResultUtil.getHitEntity();
         if (Configs.inventoryPreviewSupportPlayer && ret == null &&
                 traceEntity instanceof Player) {
             Player playerEntity = (Player) traceEntity;

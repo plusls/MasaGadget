@@ -2,8 +2,8 @@ package com.plusls.MasaGadget.util;
 
 import fi.dy.masa.malilib.util.WorldUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.CompoundContainer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -11,10 +11,11 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.ChestType;
+import net.minecraft.world.level.chunk.LevelChunk;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.language.I18n;
-
-import java.util.Objects;
 
 public class MiscUtil {
 
@@ -62,22 +63,40 @@ public class MiscUtil {
         return !key.equals(translated) ? translated : fallback;
     }
 
+    // Only call in main thread!
     @Nullable
-    public static Container getContainer(BlockPos blockPos) {
-        ClientLevel clientLevel = Objects.requireNonNull(Minecraft.getInstance().level);
-        BlockEntity blockEntity = clientLevel.getBlockEntity(blockPos);
-        if (blockEntity instanceof Container) {
-            if (blockEntity instanceof ChestBlockEntity) {
-                BlockState blockState = clientLevel.getBlockState(blockPos);
-                return ChestBlock.getContainer(
-                        //#if MC > 11404
-                        (ChestBlock) blockState.getBlock(),
-                        //#endif
-                        blockState, clientLevel, blockPos, true);
+    public static Container getContainer(@NotNull Level level, BlockPos pos) {
+        LevelChunk levelChunk = level.getChunkAt(pos);
+        if (levelChunk == null) {
+            return null;
+        } else {
+            BlockEntity blockEntity = levelChunk.getBlockEntity(pos);
+            if (blockEntity instanceof Container) {
+                Container container = (Container) blockEntity;
+                BlockState state = level.getBlockState(pos);
+                if (state.getBlock() instanceof ChestBlock && blockEntity instanceof ChestBlockEntity) {
+                    ChestType type = state.getValue(ChestBlock.TYPE);
+                    if (type != ChestType.SINGLE) {
+                        BlockPos posAdj = pos.relative(ChestBlock.getConnectedDirection(state));
+                        LevelChunk levelChunkAdj = level.getChunkAt(posAdj);
+                        if (levelChunkAdj != null) {
+                            BlockState stateAdj = level.getBlockState(posAdj);
+                            BlockEntity te2 = levelChunkAdj.getBlockEntity(posAdj);
+                            if (stateAdj.getBlock() == state.getBlock()
+                                    && te2 instanceof ChestBlockEntity
+                                    && stateAdj.getValue(ChestBlock.TYPE) != ChestType.SINGLE
+                                    && stateAdj.getValue(ChestBlock.FACING) == state.getValue(ChestBlock.FACING)) {
+                                Container invRight = type == ChestType.RIGHT ? container : (Container) te2;
+                                Container invLeft = type == ChestType.RIGHT ? (Container) te2 : container;
+                                container = new CompoundContainer(invRight, invLeft);
+                            }
+                        }
+                    }
+                }
+                return container;
             } else {
-                return (Container) blockEntity;
+                return null;
             }
         }
-        return null;
     }
 }

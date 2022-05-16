@@ -37,7 +37,7 @@ public class CacheContainerMenuHandler {
     @Nullable
     public static Container getLastClickContainer() {
         if (lastClickBlockPos != null) {
-            return MiscUtil.getContainer(lastClickBlockPos);
+            return MiscUtil.getContainer(Objects.requireNonNull(Minecraft.getInstance().level), lastClickBlockPos);
         }
         return null;
     }

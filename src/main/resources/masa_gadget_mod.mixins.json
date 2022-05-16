@@ -45,7 +45,7 @@
     "tweakeroo.handRestockCrafting.MixinInventoryUtils",
     "tweakeroo.inventoryPreviewSupportComparator.MixinGameRenderer",
     "tweakeroo.inventoryPreviewSupportComparator.MixinWorldRenderer",
-    "tweakeroo.inventoryPreviewSupportFreeCamera.MixinMixinRenderUtils",
+    "tweakeroo.inventoryPreviewUseCache.MixinMixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportPlayer.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportSelect.MixinInGameHud",
     "tweakeroo.inventoryPreviewSupportSelect.MixinInventoryOverlay",

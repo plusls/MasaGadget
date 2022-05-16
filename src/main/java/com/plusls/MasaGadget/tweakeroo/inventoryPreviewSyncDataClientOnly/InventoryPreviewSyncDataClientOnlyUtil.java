@@ -2,6 +2,7 @@ package com.plusls.MasaGadget.tweakeroo.inventoryPreviewSyncDataClientOnly;
 
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.generic.cacheContainerMenu.cacheContainerMenu.CacheContainerMenuHandler;
+import com.plusls.MasaGadget.util.HitResultUtil;
 import com.plusls.MasaGadget.util.PcaSyncProtocol;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import net.minecraft.client.Minecraft;
@@ -21,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class InventoryPreviewSyncDataClientOnlyUtil {
-    public static void onTraceCallback(@Nullable HitResult hitResult, boolean oldStatus, boolean stateChanged) {
+    public static void onHitCallback(@Nullable HitResult hitResult, boolean oldStatus, boolean stateChanged) {
         Minecraft mc = Minecraft.getInstance();
         if (!Configs.inventoryPreviewSyncDataClientOnly ||
                 (Configs.inventoryPreviewSyncData && PcaSyncProtocol.enable) ||
@@ -49,7 +50,7 @@ public class InventoryPreviewSyncDataClientOnlyUtil {
         if (hitResult.getType() == HitResult.Type.BLOCK) {
             BlockHitResult blockHitResult = (BlockHitResult) hitResult;
             BlockPos pos = blockHitResult.getBlockPos();
-            BlockEntity blockEntity = world.getChunkAt(pos).getBlockEntity(pos);
+            BlockEntity blockEntity = HitResultUtil.getLastHitBlockEntity();
             if (blockEntity instanceof Container && !pos.equals(CacheContainerMenuHandler.lastClickBlockPos)) {
                 player.closeContainer();
                 Objects.requireNonNull(mc.gameMode).useItemOn(player,

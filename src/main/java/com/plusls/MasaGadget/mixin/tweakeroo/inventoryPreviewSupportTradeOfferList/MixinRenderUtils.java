@@ -2,7 +2,7 @@ package com.plusls.MasaGadget.mixin.tweakeroo.inventoryPreviewSupportTradeOfferL
 
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
-import com.plusls.MasaGadget.util.TraceUtil;
+import com.plusls.MasaGadget.util.HitResultUtil;
 import fi.dy.masa.malilib.render.InventoryOverlay;
 import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.tweakeroo.renderer.RenderUtils;
@@ -35,7 +35,7 @@ public class MixinRenderUtils {
         if (!Configs.inventoryPreviewSupportTradeOfferList) {
             return inv;
         }
-        Entity entity = TraceUtil.getTraceEntity();
+        Entity entity = HitResultUtil.getHitEntity();
         if (!(entity instanceof AbstractVillager)) {
             return inv;
         }
