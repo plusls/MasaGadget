@@ -35,7 +35,7 @@ public class HitResultUtil {
     private static HitResult lastHitResult = null;
 
     @Nullable
-    private static BlockEntity lastHitBlockEntity = null;
+    private static Object lastHitBlockEntity = null;
 
     private static Supplier<Player> getCamera = () -> null;
 
@@ -47,7 +47,7 @@ public class HitResultUtil {
 
 
     @Nullable
-    public static BlockEntity getLastHitBlockEntity() {
+    public static Object getLastHitBlockEntity() {
         return lastHitBlockEntity;
     }
 
@@ -182,7 +182,7 @@ public class HitResultUtil {
             BlockPos pos = getHitBlockPos();
             if (pos != null) {
                 // 绕过线程检查
-                lastHitBlockEntity = (BlockEntity) MiscUtil.getContainer(world, pos);
+                lastHitBlockEntity = MiscUtil.getContainer(world, pos);
                 if (lastHitBlockEntity == null) {
                     LevelChunk levelChunk = world.getChunkAt(pos);
                     if (levelChunk != null) {

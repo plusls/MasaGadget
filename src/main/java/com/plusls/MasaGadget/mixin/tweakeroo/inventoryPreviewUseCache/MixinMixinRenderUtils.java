@@ -42,7 +42,7 @@ public class MixinMixinRenderUtils {
         if (!Configs.inventoryPreviewUseCache) {
             return InventoryUtils.getInventory(world, pos);
         } else {
-            BlockEntity blockEntity = HitResultUtil.getLastHitBlockEntity();
+            Object blockEntity = HitResultUtil.getLastHitBlockEntity();
             if (blockEntity instanceof Container) {
                 return (Container) blockEntity;
             }

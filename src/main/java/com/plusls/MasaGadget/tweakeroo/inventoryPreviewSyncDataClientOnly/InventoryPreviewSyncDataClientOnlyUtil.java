@@ -50,7 +50,7 @@ public class InventoryPreviewSyncDataClientOnlyUtil {
         if (hitResult.getType() == HitResult.Type.BLOCK) {
             BlockHitResult blockHitResult = (BlockHitResult) hitResult;
             BlockPos pos = blockHitResult.getBlockPos();
-            BlockEntity blockEntity = HitResultUtil.getLastHitBlockEntity();
+            Object blockEntity = HitResultUtil.getLastHitBlockEntity();
             if (blockEntity instanceof Container && !pos.equals(CacheContainerMenuHandler.lastClickBlockPos)) {
                 player.closeContainer();
                 Objects.requireNonNull(mc.gameMode).useItemOn(player,

@@ -6,6 +6,7 @@ import com.plusls.MasaGadget.util.PcaSyncProtocol;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.CompoundContainer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
@@ -47,7 +48,7 @@ public class InventoryPreviewSyncDataUtil {
 
         if (hitResult.getType() == HitResult.Type.BLOCK) {
             BlockPos pos = ((BlockHitResult) hitResult).getBlockPos();
-            BlockEntity blockEntity = HitResultUtil.getLastHitBlockEntity();
+            Object blockEntity = HitResultUtil.getLastHitBlockEntity();
             if (blockEntity instanceof AbstractFurnaceBlockEntity ||
                     blockEntity instanceof DispenserBlockEntity ||
                     blockEntity instanceof HopperBlockEntity ||
@@ -55,6 +56,7 @@ public class InventoryPreviewSyncDataUtil {
                     blockEntity instanceof BarrelBlockEntity ||
                     blockEntity instanceof BrewingStandBlockEntity ||
                     blockEntity instanceof ChestBlockEntity ||
+                    blockEntity instanceof CompoundContainer ||
                     (blockEntity instanceof ComparatorBlockEntity && Configs.inventoryPreviewSupportComparator) ||
                     //#if MC > 11404
                     (blockEntity instanceof BeehiveBlockEntity && Configs.pcaSyncProtocolSyncBeehive)

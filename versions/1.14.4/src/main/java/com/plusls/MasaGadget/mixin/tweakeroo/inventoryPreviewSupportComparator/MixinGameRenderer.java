@@ -44,7 +44,7 @@ public class MixinGameRenderer {
 
         // 开始渲染
         BlockPos pos = HitResultUtil.getHitBlockPos();
-        BlockEntity blockEntity = HitResultUtil.getLastHitBlockEntity();
+        Object blockEntity = HitResultUtil.getLastHitBlockEntity();
 
         if (pos != null && blockEntity instanceof ComparatorBlockEntity) {
             TextComponent literalText = new TextComponent(((ComparatorBlockEntity) blockEntity).getOutputSignal() + "");
