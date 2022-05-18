@@ -11,6 +11,8 @@ import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.AbstractVillager;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -39,8 +41,13 @@ public class MixinRenderUtils {
         if (!(entity instanceof AbstractVillager)) {
             return inv;
         }
+        AbstractVillager abstractVillager = (AbstractVillager) entity;
+        if (abstractVillager instanceof Villager &&
+                ((Villager)abstractVillager).getVillagerData().getProfession() == VillagerProfession.NONE) {
+            return inv;
+        }
         SimpleContainer simpleInventory = new SimpleContainer(MAX_TRADE_OFFER_SIZE);
-        for (MerchantOffer tradeOffer : ((AbstractVillager) entity).getOffers()) {
+        for (MerchantOffer tradeOffer : abstractVillager.getOffers()) {
             for (int i = 0; i < simpleInventory.getContainerSize(); ++i) {
                 ItemStack itemStack = simpleInventory.getItem(i);
                 if (itemStack.isEmpty()) {

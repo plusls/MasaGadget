@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.trading.MerchantOffer;
 import top.hendrixshen.magiclib.compat.minecraft.network.chat.ComponentCompatApi;
 
@@ -74,9 +75,11 @@ public class NextRestockTimeRenderer {
 
     // 因为刁民的需要补货的函数，会检查当前货物是否被消耗，从使用的角度只需要关心当前货物是否用完
     private static boolean needsRestock(Villager villagerEntity) {
-        for (MerchantOffer offer : villagerEntity.getOffers()) {
-            if (offer.isOutOfStock()) {
-                return true;
+        if (villagerEntity.getVillagerData().getProfession() != VillagerProfession.NONE) {
+            for (MerchantOffer offer : villagerEntity.getOffers()) {
+                if (offer.isOutOfStock()) {
+                    return true;
+                }
             }
         }
         return false;

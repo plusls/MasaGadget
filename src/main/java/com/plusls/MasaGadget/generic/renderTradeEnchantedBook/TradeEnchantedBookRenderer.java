@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.network.chat.*;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -31,7 +32,9 @@ public class TradeEnchantedBookRenderer {
             return;
         }
         Villager villagerEntity = MiscUtil.getBestEntity((Villager) entity);
-
+        if (villagerEntity.getVillagerData().getProfession() != VillagerProfession.LIBRARIAN) {
+            return;
+        }
         Component text = null;
         Component price = null;
 
