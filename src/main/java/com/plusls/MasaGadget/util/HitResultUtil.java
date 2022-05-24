@@ -7,7 +7,6 @@ import com.plusls.MasaGadget.tweakeroo.inventoryPreviewSyncDataClientOnly.Invent
 import fi.dy.masa.malilib.util.WorldUtils;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.config.Hotkeys;
-import fi.dy.masa.tweakeroo.util.CameraEntity;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -16,7 +15,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.*;
 import org.jetbrains.annotations.Nullable;
@@ -24,7 +22,6 @@ import top.hendrixshen.magiclib.util.FabricUtil;
 
 import javax.annotation.Nonnull;
 import java.util.*;
-import java.util.function.Supplier;
 
 public class HitResultUtil {
 
@@ -37,15 +34,6 @@ public class HitResultUtil {
     @Nullable
     private static Object lastHitBlockEntity = null;
 
-    private static Supplier<Player> getCamera = () -> null;
-
-    static {
-        if (FabricUtil.isModLoaded(ModInfo.TWEAKEROO_MOD_ID) && FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue()) {
-            getCamera = CameraEntity::getCamera;
-        }
-    }
-
-
     @Nullable
     public static Object getLastHitBlockEntity() {
         return lastHitBlockEntity;
@@ -54,6 +42,16 @@ public class HitResultUtil {
     @Nullable
     public static HitResult getLastHitResult() {
         return lastHitResult;
+    }
+
+    public static Entity getCameraEntity() {
+        Minecraft mc = Minecraft.getInstance();
+        Entity entity = mc.getCameraEntity();
+        if (!ModInfo.isModLoaded(ModInfo.TWEAKEROO_MOD_ID) || !FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue() || entity == null) {
+            entity = mc.player;
+        }
+
+        return entity;
     }
 
     @Nullable
@@ -81,7 +79,7 @@ public class HitResultUtil {
             player = mc.player;
         }
 
-        Player cameraEntity = getCamera.get();
+        Player cameraEntity = (Player) getCameraEntity();
         if (cameraEntity != null) {
             player = cameraEntity;
         }
