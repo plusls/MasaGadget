@@ -17,10 +17,10 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.*;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.util.FabricUtil;
 
-import javax.annotation.Nonnull;
 import java.util.*;
 
 public class HitResultUtil {
@@ -44,14 +44,23 @@ public class HitResultUtil {
         return lastHitResult;
     }
 
+    @Nullable
     public static Entity getCameraEntity() {
         Minecraft mc = Minecraft.getInstance();
-        Entity entity = mc.getCameraEntity();
-        if (!ModInfo.isModLoaded(ModInfo.TWEAKEROO_MOD_ID) || !FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue() || entity == null) {
-            entity = mc.player;
+        Level world = WorldUtils.getBestWorld(mc);
+        if (world == null || mc.player == null) {
+            return null;
+        }
+        Player player = world.getPlayerByUUID(mc.player.getUUID());
+        if (player == null) {
+            player = mc.player;
+        }
+        Entity cameraEntity = mc.getCameraEntity();
+        if (!ModInfo.isModLoaded(ModInfo.TWEAKEROO_MOD_ID) || !FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue() || cameraEntity == null) {
+            cameraEntity = player;
         }
 
-        return entity;
+        return cameraEntity;
     }
 
     @Nullable
@@ -71,22 +80,18 @@ public class HitResultUtil {
         Minecraft mc = Minecraft.getInstance();
         Level world = WorldUtils.getBestWorld(mc);
 
-        if (world == null || mc.player == null) {
+        if (world == null) {
             return null;
         }
-        Player player = world.getPlayerByUUID(mc.player.getUUID());
-        if (player == null) {
-            player = mc.player;
-        }
 
-        Player cameraEntity = (Player) getCameraEntity();
-        if (cameraEntity != null) {
-            player = cameraEntity;
+        Entity cameraEntity = getCameraEntity();
+        if (cameraEntity == null) {
+            return null;
         }
 
         try {
             HitResult hitResult;
-            hitResult = getRayTraceFromEntity(world, player, false);
+            hitResult = getRayTraceFromEntity(world, cameraEntity, false);
             if (hitResult.getType() == HitResult.Type.MISS) {
                 return null;
             }
@@ -111,13 +116,13 @@ public class HitResultUtil {
 
 
     // code from tweakeroo RayTraceUtils.getRayTraceFromEntity
-    @Nonnull
+    @NotNull
     public static HitResult getRayTraceFromEntity(Level worldIn, Entity entityIn, boolean useLiquids) {
         double reach = 5.0;
         return getRayTraceFromEntity(worldIn, entityIn, useLiquids, reach);
     }
 
-    @Nonnull
+    @NotNull
     public static HitResult getRayTraceFromEntity(Level worldIn, Entity entityIn, boolean useLiquids, double range) {
         Vec3 eyesVec = new Vec3(entityIn.getX(), entityIn.getY() + (double) entityIn.getEyeHeight(), entityIn.getZ());
         Vec3 rangedLookRot = entityIn.getViewVector(1.0F).scale(range);
