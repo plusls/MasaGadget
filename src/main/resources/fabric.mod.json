@@ -39,7 +39,7 @@
   ],
   "depends": {
     "minecraft": "${minecraft_dependency}",
-    "magiclib-${minecraft_version_id}": ">=${magiclib_version}"
+    "magiclib": ">=${magiclib_version}"
   },
   "custom": {
     "modmenu:clientsideOnly": true,
