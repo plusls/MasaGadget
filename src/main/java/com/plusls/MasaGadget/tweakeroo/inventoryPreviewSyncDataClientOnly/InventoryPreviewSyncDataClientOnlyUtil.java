@@ -6,20 +6,22 @@ import com.plusls.MasaGadget.util.HitResultUtil;
 import com.plusls.MasaGadget.util.PcaSyncProtocol;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+
+//#if MC <= 11802
+//$$ import net.minecraft.client.multiplayer.ClientLevel;
+//#endif
 
 public class InventoryPreviewSyncDataClientOnlyUtil {
     public static void onHitCallback(@Nullable HitResult hitResult, boolean oldStatus, boolean stateChanged) {
@@ -40,8 +42,6 @@ public class InventoryPreviewSyncDataClientOnlyUtil {
         } else {
             return;
         }
-
-        ClientLevel world = Objects.requireNonNull(mc.level);
         if (hitResult == null) {
             Objects.requireNonNull(Minecraft.getInstance().player).closeContainer();
             return;
@@ -55,7 +55,7 @@ public class InventoryPreviewSyncDataClientOnlyUtil {
                 player.closeContainer();
                 Objects.requireNonNull(mc.gameMode).useItemOn(player,
                         //#if MC <= 11802
-                        world,
+                        //$$ Objects.requireNonNull(mc.level),
                         //#endif
                         InteractionHand.MAIN_HAND, blockHitResult);
             }

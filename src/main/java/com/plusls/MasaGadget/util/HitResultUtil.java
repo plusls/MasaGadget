@@ -56,7 +56,7 @@ public class HitResultUtil {
             player = mc.player;
         }
         Entity cameraEntity = mc.getCameraEntity();
-        if (!ModInfo.isModLoaded(ModInfo.TWEAKEROO_MOD_ID) || !FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue() || cameraEntity == null) {
+        if (!FabricUtil.isModLoaded(ModInfo.TWEAKEROO_MOD_ID) || !FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue() || cameraEntity == null) {
             cameraEntity = player;
         }
 

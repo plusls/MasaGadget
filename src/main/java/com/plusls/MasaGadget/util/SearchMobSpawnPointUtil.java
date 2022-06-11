@@ -23,7 +23,6 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import top.hendrixshen.magiclib.compat.minecraft.network.chat.ComponentCompatApi;
 import top.hendrixshen.magiclib.compat.minecraft.network.chat.StyleCompatApi;
 
 import java.util.Objects;
@@ -38,7 +37,7 @@ public class SearchMobSpawnPointUtil {
                     ret = (ShapeDespawnSphere) shapeBase;
                 } else {
                     Objects.requireNonNull(Minecraft.getInstance().player).displayClientMessage(
-                            ComponentCompatApi.literal(ModInfo.translate("message.onlySupportOneDespawnShape"))
+                            ModInfo.translatable("message.onlySupportOneDespawnShape")
                                     .withStyle(ChatFormatting.RED), false);
                     return null;
                 }
@@ -46,7 +45,7 @@ public class SearchMobSpawnPointUtil {
         }
         if (ret == null) {
             Objects.requireNonNull(Minecraft.getInstance().player).displayClientMessage(
-                    ComponentCompatApi.literal(ModInfo.translate("message.canNotFindDespawnShape"))
+                    ModInfo.translatable("message.canNotFindDespawnShape")
                             .withStyle(ChatFormatting.RED), false);
         }
         return ret;
@@ -70,7 +69,7 @@ public class SearchMobSpawnPointUtil {
         int maxX = pos.getX() + 129;
         int maxZ = pos.getZ() + 129;
         BlockPos.MutableBlockPos currentPos = new BlockPos.MutableBlockPos();
-        //#if MC >= 11800
+        //#if MC > 11701
         int maxSpawnLightLevel = fi.dy.masa.minihud.config.Configs.Generic.LIGHT_LEVEL_THRESHOLD_SAFE.getIntegerValue();
         //#else
         //$$ int maxSpawnLightLevel = fi.dy.masa.minihud.config.Configs.Generic.LIGHT_LEVEL_THRESHOLD.getIntegerValue();
@@ -116,11 +115,11 @@ public class SearchMobSpawnPointUtil {
         }
         Component text;
         if (spawnPos == null) {
-            text = ComponentCompatApi.literal(ModInfo.translate("message.noBlockCanSpawn"))
+            text = ModInfo.translatable("message.noBlockCanSpawn")
                     .withStyle(StyleCompatApi.empty().withColor(ChatFormatting.GREEN));
         } else {
             // for ommc parser
-            text = ComponentCompatApi.literal(ModInfo.translate("message.spawnPos", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()));
+            text = ModInfo.translatable("message.spawnPos", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
             player.chat(String.format("/highlightWaypoint %d %d %d", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()));
         }
         Objects.requireNonNull(Minecraft.getInstance().player).displayClientMessage(text, false);

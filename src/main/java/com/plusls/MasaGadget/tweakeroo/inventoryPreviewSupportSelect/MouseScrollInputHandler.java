@@ -10,6 +10,7 @@ import fi.dy.masa.tweakeroo.config.Hotkeys;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.world.entity.player.Player;
+import top.hendrixshen.magiclib.util.FabricUtil;
 
 public class MouseScrollInputHandler implements IMouseInputHandler {
     public static void register() {
@@ -20,7 +21,7 @@ public class MouseScrollInputHandler implements IMouseInputHandler {
     @Override
     public boolean onMouseScroll(int mouseX, int mouseY, double amount) {
         Player player = Minecraft.getInstance().player;
-        if (ModInfo.isModLoaded(ModInfo.TWEAKEROO_MOD_ID) &&
+        if (FabricUtil.isModLoaded(ModInfo.TWEAKEROO_MOD_ID) &&
                 Configs.inventoryPreviewSupportSelect &&
                 FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue() &&
                 HitResultUtil.getLastInventoryPreviewStatus()) {
@@ -29,7 +30,7 @@ public class MouseScrollInputHandler implements IMouseInputHandler {
             } else if (amount > 0) {
                 InventoryOverlayRenderHandler.instance.addSelectedIdx(-1);
             }
-            if (ModInfo.isModLoaded(ModInfo.LITEMATICA_MOD_ID) &&
+            if (FabricUtil.isModLoaded(ModInfo.LITEMATICA_MOD_ID) &&
                     fi.dy.masa.litematica.config.Configs.Generic.TOOL_ITEM_ENABLED.getBooleanValue() &&
                     player != null && Registry.ITEM.getKey(player.getMainHandItem().getItem()).toString().contains(fi.dy.masa.litematica.config.Configs.Generic.TOOL_ITEM.getStringValue())) {
                 return false;
@@ -42,7 +43,7 @@ public class MouseScrollInputHandler implements IMouseInputHandler {
     @Override
     public boolean onMouseClick(int mouseX, int mouseY, int eventButton, boolean eventButtonState) {
         // 左右中 -> 0 1 2 以此类推
-        if (ModInfo.isModLoaded(ModInfo.TWEAKEROO_MOD_ID) &&
+        if (FabricUtil.isModLoaded(ModInfo.TWEAKEROO_MOD_ID) &&
                 Configs.inventoryPreviewSupportSelect &&
                 FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue() &&
                 Hotkeys.INVENTORY_PREVIEW.getKeybind().isKeybindHeld()

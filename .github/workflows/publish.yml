@@ -42,13 +42,21 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
           files-primary: fabricWrapper/build/libs/!(*-@(dev|sources)).jar
-          files-secondary: ''
+          files-secondary: fabricWrapper/build/tmp/submods/META-INF/jars/!(*-@(dev|sources)).jar
 
+          name: ''
           version-type: release
           changelog: ${{ github.event.release.body }}
 
           loaders: fabric
-          game-versions: "1.14.4\n1.15.2\n1.16.5\n1.17.1\n1.18.2"
+          game-versions: |
+            1.14.4
+            1.15.2
+            1.16.5
+            1.17.1
+            1.18.2
+            1.19
+
           version-resolver: exact
 
           retry-attempts: 3

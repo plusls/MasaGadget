@@ -9,6 +9,7 @@ import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.Nullable;
+import top.hendrixshen.magiclib.util.FabricUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -84,7 +85,7 @@ public class MasaGuiUtil {
         }
         initialized = true;
         Minecraft client = Minecraft.getInstance();
-        if (!ModInfo.isModLoaded(ModInfo.MODMENU_MOD_ID)) {
+        if (!FabricUtil.isModLoaded(ModInfo.MODMENU_MOD_ID)) {
             return;
         }
         FabricLoader.getInstance().getEntrypointContainers("modmenu", Object.class).forEach(entrypoint -> {

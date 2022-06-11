@@ -15,13 +15,13 @@ preprocess {
     def mc116 = createNode("1.16.5", 1_16_05, "mojang")
     def mc117 = createNode("1.17.1", 1_17_01, "mojang")
     def mc118 = createNode("1.18.2", 1_18_02, "mojang") // root
-    def mcSnapshot = createNode("snapshot", 1_19_00, "mojang")
+    def mc119 = createNode("1.19", 1_19_00, "mojang")
 
     mc114.link(mc115, null)
     mc115.link(mc116, null)
     mc116.link(mc117, null)
     mc117.link(mc118, null)
-    mc118.link(mcSnapshot, null)
+    mc118.link(mc119, null)
 }
 
 String realVersion = "${project.mod_version}"
@@ -32,3 +32,12 @@ if (project.pre_release != "") {
 }
 
 version = realVersion
+
+task cleanPreprocessSources {
+    doFirst {
+        subprojects {
+            def path = project.projectDir.toPath().resolve('build/preprocessed')
+            path.toFile().deleteDir()
+        }
+    }
+}

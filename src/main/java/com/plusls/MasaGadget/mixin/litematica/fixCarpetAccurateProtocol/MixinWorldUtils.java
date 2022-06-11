@@ -9,7 +9,6 @@ import fi.dy.masa.litematica.util.WorldUtils;
 import fi.dy.masa.litematica.world.SchematicWorldHandler;
 import fi.dy.masa.malilib.util.BlockUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -44,6 +43,9 @@ import java.util.Objects;
 //$$ import net.minecraft.world.item.UseOnContext;
 //#endif
 
+//#if MC <= 11802
+//$$ import net.minecraft.client.multiplayer.ClientLevel;
+//#endif
 
 @SuppressWarnings("DefaultAnnotationParam")
 @Dependencies(and = @Dependency(ModInfo.LITEMATICA_MOD_ID))
@@ -167,19 +169,19 @@ public class MixinWorldUtils {
 
     @Redirect(method = "doEasyPlaceAction", at = @At(value = "INVOKE",
             //#if MC > 11802
-            //$$ target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;useItemOn(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;",
+            target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;useItemOn(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;",
             //#else
-            target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;useItemOn(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;",
+            //$$ target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;useItemOn(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;",
             //#endif
             ordinal = 0, remap = true))
     private static InteractionResult myInteractBlock(MultiPlayerGameMode clientPlayerInteractionManager, LocalPlayer player,
                                                      //#if MC <= 11802
-                                                     ClientLevel world,
+                                                     //$$ ClientLevel world,
                                                      //#endif
                                                      InteractionHand hand, BlockHitResult hitResult) {
         InteractionResult ret = clientPlayerInteractionManager.useItemOn(player,
                 //#if MC <= 11802
-                world,
+                //$$ world,
                 //#endif
                 hand, hitResult);
         if (!Configs.fixAccurateProtocol || interactBlockCount.get() == null) {
@@ -188,7 +190,7 @@ public class MixinWorldUtils {
         for (int i = 0; i < interactBlockCount.get(); ++i) {
             clientPlayerInteractionManager.useItemOn(player,
                     //#if MC <= 11802
-                    world,
+                    //$$ world,
                     //#endif
                     hand, hitResult);
         }
@@ -198,9 +200,9 @@ public class MixinWorldUtils {
 
     @Inject(method = "doEasyPlaceAction", at = @At(value = "INVOKE",
             //#if MC > 11802
-            //$$ target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;useItemOn(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;",
+            target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;useItemOn(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;",
             //#else
-            target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;useItemOn(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;",
+            //$$ target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;useItemOn(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;",
             //#endif
             shift = At.Shift.AFTER, ordinal = 0, remap = true))
     private static void fixDoEasyPlaceAction1(Minecraft mc, CallbackInfoReturnable<InteractionResult> cir) {

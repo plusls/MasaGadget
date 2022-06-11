@@ -18,7 +18,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
-import top.hendrixshen.magiclib.compat.minecraft.network.chat.ComponentCompatApi;
 import top.hendrixshen.magiclib.config.ConfigHandler;
 import top.hendrixshen.magiclib.config.ConfigManager;
 import top.hendrixshen.magiclib.config.Option;
@@ -27,6 +26,7 @@ import top.hendrixshen.magiclib.config.annotation.Hotkey;
 import top.hendrixshen.magiclib.config.annotation.Numeric;
 import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.annotation.Dependency;
+import top.hendrixshen.magiclib.util.FabricUtil;
 
 import java.util.*;
 
@@ -230,7 +230,7 @@ public class Configs {
         });
 
         searchMobSpawnPoint.getKeybind().setCallback((keyAction, iKeybind) -> {
-            if (ModInfo.isModLoaded(ModInfo.MINIHUD_MOD_ID)) {
+            if (FabricUtil.isModLoaded(ModInfo.MINIHUD_MOD_ID)) {
                 SearchMobSpawnPointUtil.search();
             }
             return true;
@@ -246,7 +246,7 @@ public class Configs {
                 PcaSyncProtocol.syncEntity(entity.getId());
             }
             Objects.requireNonNull(mc.player).displayClientMessage(
-                    ComponentCompatApi.literal((ModInfo.translate("message.syncAllEntityDataSuccess")))
+                    ModInfo.translatable("message.syncAllEntityDataSuccess")
                             .withStyle(ChatFormatting.GREEN), false);
             return true;
         });

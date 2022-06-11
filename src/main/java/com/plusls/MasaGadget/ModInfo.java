@@ -4,8 +4,15 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import top.hendrixshen.magiclib.compat.minecraft.network.chat.ComponentCompatApi;
 import top.hendrixshen.magiclib.config.ConfigHandler;
 import top.hendrixshen.magiclib.language.I18n;
+
+//#if MC > 11502
+import net.minecraft.network.chat.MutableComponent;
+//#else
+//$$ import net.minecraft.network.chat.BaseComponent;
+//#endif
 
 public class ModInfo {
 
@@ -17,9 +24,9 @@ public class ModInfo {
     public static String MOD_ID = "masa_gadget_mod";
 
     //#if MC > 11802
-    //$$ public static final String CURRENT_MOD_ID = MOD_ID + "-22w19a";
+    public static final String CURRENT_MOD_ID = MOD_ID + "-1_19";
     //#elseif MC > 11701
-    public static final String CURRENT_MOD_ID = MOD_ID + "-1_18_2";
+    //$$ public static final String CURRENT_MOD_ID = MOD_ID + "-1_18_2";
     //#elseif MC > 11605
     //$$ public static final String CURRENT_MOD_ID = MOD_ID + "-1_17_1";
     //#elseif MC > 11502
@@ -40,9 +47,14 @@ public class ModInfo {
         return I18n.get(ModInfo.MOD_ID + "." + key, objects);
     }
 
-
-    public static boolean isModLoaded(String modid) {
-        return FabricLoader.getInstance().isModLoaded(modid);
+    public static
+    //#if MC > 11502
+    MutableComponent
+    //#else
+    //$$ BaseComponent
+    //#endif
+    translatable(String key, Object... objects) {
+        return ComponentCompatApi.translatable(ModInfo.MOD_ID + "." + key, objects);
     }
 
     public static ResourceLocation id(String path) {
