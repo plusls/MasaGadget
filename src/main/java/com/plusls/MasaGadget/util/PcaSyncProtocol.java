@@ -36,6 +36,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import top.hendrixshen.magiclib.compat.minecraft.nbt.TagCompatApi;
 
+import java.util.Objects;
+
 public class PcaSyncProtocol {
     private static final String NAMESPACE = "pca";
     // send
@@ -151,10 +153,11 @@ public class PcaSyncProtocol {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         if (Configs.saveInventoryToSchematicInServer && pos.equals(PcaSyncUtil.lastUpdatePos)) {
             InfoUtils.showGuiOrInGameMessage(Message.MessageType.SUCCESS, ModInfo.MOD_ID + ".message.loadInventoryToLocalSuccess");
+            PcaSyncUtil.lastUpdatePos = null;
         }
         if (blockEntity != null) {
             ModInfo.LOGGER.debug("update blockEntity!");
-            blockEntity.load(tag);
+            blockEntity.load(Objects.requireNonNull(tag));
         }
     }
 
