@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
@@ -47,14 +48,10 @@ public class HitResultUtil {
     @Nullable
     public static Entity getCameraEntity() {
         Minecraft mc = Minecraft.getInstance();
-        Level world = WorldUtils.getBestWorld(mc);
-        if (world == null || mc.player == null) {
+        if (mc.player == null) {
             return null;
         }
-        Player player = world.getPlayerByUUID(mc.player.getUUID());
-        if (player == null) {
-            player = mc.player;
-        }
+        Player player = mc.player;
         Entity cameraEntity = mc.getCameraEntity();
         if (!FabricUtil.isModLoaded(ModInfo.TWEAKEROO_MOD_ID) || !FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue() || cameraEntity == null) {
             cameraEntity = player;
@@ -78,7 +75,7 @@ public class HitResultUtil {
     @Nullable
     public static HitResult getHitResult() {
         Minecraft mc = Minecraft.getInstance();
-        Level world = WorldUtils.getBestWorld(mc);
+        Level world = mc.level;
 
         if (world == null) {
             return null;
@@ -94,6 +91,10 @@ public class HitResultUtil {
             hitResult = getRayTraceFromEntity(world, cameraEntity, false);
             if (hitResult.getType() == HitResult.Type.MISS) {
                 return null;
+            } else if (hitResult.getType() == HitResult.Type.ENTITY) {
+                EntityHitResult entityHitResult = (EntityHitResult) hitResult;
+                hitResult = new EntityHitResult(MiscUtil.getBestEntity(entityHitResult.getEntity()),
+                        entityHitResult.getLocation());
             }
             return hitResult;
         } catch (ConcurrentModificationException e) {
@@ -161,7 +162,7 @@ public class HitResultUtil {
     }
 
     public static void init() {
-        ClientTickEvents.END_WORLD_TICK.register(world -> HitResultUtil.endWorldTickCallback());
+        ClientTickEvents.END_CLIENT_TICK.register(minecraft -> HitResultUtil.endClientTickCallback());
         if (FabricUtil.isModLoaded(ModInfo.TWEAKEROO_MOD_ID)) {
             registerOnHitCallback(InventoryPreviewSyncDataUtil::onHitCallback);
             registerOnHitCallback(InventoryPreviewSyncDataClientOnlyUtil::onHitCallback);
@@ -173,31 +174,45 @@ public class HitResultUtil {
         return lastHitResult != null && lastInventoryPreviewStatus;
     }
 
-    public static void endWorldTickCallback() {
-        Level world = Objects.requireNonNull(WorldUtils.getBestWorld(Minecraft.getInstance()));
+    public static void endClientTickCallback() {
+        final ProfilerFiller profiler = Minecraft.getInstance().getProfiler();
+        Level world = WorldUtils.getBestWorld(Minecraft.getInstance());
+        if (world == null) {
+            return;
+        }
         boolean currentStatus = false;
         if (FabricUtil.isModLoaded(ModInfo.TWEAKEROO_MOD_ID)) {
             currentStatus = Hotkeys.INVENTORY_PREVIEW.getKeybind().isKeybindHeld();
         }
+        profiler.push("HitResultUtil.getHitResult");
         lastHitResult = getHitResult();
+        profiler.pop();
         lastHitBlockEntity = null;
         if (lastHitResult != null && lastHitResult.getType() == HitResult.Type.BLOCK) {
             BlockPos pos = getHitBlockPos();
             if (pos != null) {
                 // 绕过线程检查
+                profiler.push("MiscUtil.getContainer");
                 lastHitBlockEntity = MiscUtil.getContainer(world, pos);
+                profiler.pop();
                 if (lastHitBlockEntity == null) {
+                    profiler.push("world.getChunkAt");
                     LevelChunk levelChunk = world.getChunkAt(pos);
+                    profiler.pop();
                     if (levelChunk != null) {
+                        profiler.push("levelChunk.getBlockEntity");
                         lastHitBlockEntity = levelChunk.getBlockEntity(pos);
+                        profiler.pop();
                     }
                 }
             }
         }
+        profiler.push("MiscUtil: run callbacks");
         for (HitResultCallback callback : hitCallbacks) {
             callback.onHit(lastHitResult, lastInventoryPreviewStatus,
                     currentStatus != lastInventoryPreviewStatus);
         }
+        profiler.pop();
         lastInventoryPreviewStatus = currentStatus;
     }
 
