@@ -120,7 +120,11 @@ public class SearchMobSpawnPointUtil {
         } else {
             // for ommc parser
             text = ModInfo.translatable("message.spawnPos", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
-            player.chat(String.format("/highlightWaypoint %d %d %d", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()));
+            //#if MC > 11802
+            player.chatSigned(String.format("/highlightWaypoint %d %d %d", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()), null);
+            //#else
+            //$$ player.chat(String.format("/highlightWaypoint %d %d %d", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()));
+            //#endif
         }
         Objects.requireNonNull(Minecraft.getInstance().player).displayClientMessage(text, false);
     }
