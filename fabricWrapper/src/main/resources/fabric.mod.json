@@ -32,7 +32,7 @@
     ]
   },
   "depends": {
-    "magiclib": ">=${magiclib_version}"
+    "magiclib": ">=${magiclib_dependency}"
   },
   "custom": {
     "modmenu:clientsideOnly": true
