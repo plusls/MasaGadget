@@ -7,6 +7,10 @@ import fi.dy.masa.minihud.renderer.shapes.ShapeDespawnSphere;
 import fi.dy.masa.minihud.renderer.shapes.ShapeManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+//#if MC > 11802
+import net.minecraft.Util;
+import net.minecraft.client.gui.chat.ClientChatPreview;
+//#endif
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -120,10 +124,13 @@ public class SearchMobSpawnPointUtil {
         } else {
             // for ommc parser
             text = ModInfo.translatable("message.spawnPos", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
+            String message = String.format("/highlightWaypoint %d %d %d", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
             //#if MC > 11802
-            player.chatSigned(String.format("/highlightWaypoint %d %d %d", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()), null);
+            ClientChatPreview chatPreview = new ClientChatPreview(Minecraft.getInstance());
+            Component component = Util.mapNullable(chatPreview.pull(message), ClientChatPreview.Preview::response);
+            player.chatSigned(message, component);
             //#else
-            //$$ player.chat(String.format("/highlightWaypoint %d %d %d", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()));
+            //$$ player.chat(message);
             //#endif
         }
         Objects.requireNonNull(Minecraft.getInstance().player).displayClientMessage(text, false);
