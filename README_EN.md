@@ -24,6 +24,7 @@ The default hotkey to open the in-game config GUI is **G + C**.
 | MiniHUD                | Optional | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/minihud) &#124; [Masa WebSite](https://masa.dy.fi/mcmods/client_mods/?mod=minihud)        |
 | Plusls-Carpet-Addition | Optional | [Github](https://github.com/plusls/plusls-carpet-addition)                                                                                          |
 | Tweakeroo              | Optional | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/tweakeroo) &#124; [Masa WebSite](https://masa.dy.fi/mcmods/client_mods/?mod=tweakeroo)    |
+| Magiclib | Required | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/magiclib) &#124; [Github](https://github.com/Hendrix-Shen/Magiclib)|
 
 
 ## Feature
