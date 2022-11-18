@@ -24,6 +24,7 @@
 | MiniHUD                | 可选 | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/minihud) &#124; [Masa WebSite](https://masa.dy.fi/mcmods/client_mods/?mod=minihud)        |
 | Plusls-Carpet-Addition | 可选 | [Github](https://github.com/plusls/plusls-carpet-addition)                                                                                          |
 | Tweakeroo              | 可选 | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/tweakeroo) &#124; [Masa WebSite](https://masa.dy.fi/mcmods/client_mods/?mod=tweakeroo)    |
+| Magiclib              | 必须 | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/magiclib) &#124; [Github](https://github.com/Hendrix-Shen/Magiclib)|
 
 ## 特性
 
