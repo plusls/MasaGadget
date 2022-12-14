@@ -6,9 +6,8 @@ import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.gui.MyWidgetDropDownList;
 import com.plusls.MasaGadget.malilib.fastSwitchMasaConfigGui.MasaGuiUtil;
 import fi.dy.masa.malilib.gui.GuiBase;
-//#if MC >= 11903;
 import fi.dy.masa.malilib.gui.GuiListBase;
-//#else
+//#if MC < 11903
 //$$ import fi.dy.masa.malilib.gui.GuiConfigsBase;
 //$$ import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
 //$$ import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
