@@ -54,7 +54,11 @@ public class RestockUtil {
                         //#else
                         //$$ if(player.getInventory().getCarried()
                         //#endif
-                        .sameItemStackIgnoreDurability(itemStack)) {
+                        //#if MC >= 11903
+                        .sameItem(itemStack)) {
+                        //#else
+                        //$$ .sameItemStackIgnoreDurability(itemStack)) {
+                        //#endif
                     mc.gameMode.handleInventoryMouseClick(player.inventoryMenu.containerId,
                             hand == InteractionHand.MAIN_HAND ? player.getInventory().selected + 36 : 45,
                             0, ClickType.PICKUP, player);

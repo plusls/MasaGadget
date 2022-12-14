@@ -22,7 +22,11 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
         super(listX, listY);
     }
 
-    @Inject(method = "initGui", at = @At(value = "RETURN"))
+    //#if MC >= 11903
+    @Inject(method = "<init>", at = @At(value = "RETURN"))
+    //#else
+    //$$ @Inject(method = "initGui", at = @At(value = "RETURN"))
+    //#endif
     public void postInitGui(CallbackInfo ci) {
         favoritesButton = new WidgetIconToggleButton(GuiUtils.getScaledWindowWidth() - 175, 13,
                 MasaGadgetIcons.FAVORITE, Configs.favoritesFilter,

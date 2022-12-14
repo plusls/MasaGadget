@@ -7,14 +7,14 @@ import fi.dy.masa.minihud.renderer.shapes.ShapeDespawnSphere;
 import fi.dy.masa.minihud.renderer.shapes.ShapeManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-//#if MC > 11802
-import net.minecraft.Util;
-import net.minecraft.client.gui.chat.ClientChatPreview;
-//#endif
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
+//#if MC >= 11903
+import net.minecraft.core.registries.BuiltInRegistries;
+//#else
+//$$ import net.minecraft.core.Registry;
+//#endif
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -104,7 +104,11 @@ public class SearchMobSpawnPointUtil {
                     if (NaturalSpawner.isSpawnPositionOk(SpawnPlacements.getPlacementType(entityType), world, currentPos, entityType) &&
                             lightingProvider.getLayerListener(LightLayer.BLOCK).getLightValue(currentPos) < maxSpawnLightLevel) {
                         Block block = world.getBlockState(currentPos.below()).getBlock();
-                        String blockId = Registry.BLOCK.getKey(world.getBlockState(currentPos.below()).getBlock()).toString();
+                        //#if MC >= 11903
+                        String blockId = BuiltInRegistries.BLOCK.getKey(world.getBlockState(currentPos.below()).getBlock()).toString();
+                        //#else
+                        //$$ String blockId = Registry.BLOCK.getKey(world.getBlockState(currentPos.below()).getBlock()).toString();
+                        //#endif
                         String blockName = block.getName().getString();
                         if (Configs.searchMobSpawnPointBlackList.stream().noneMatch(s -> blockId.contains(s) || blockName.contains(s))) {
                             if (world.noCollision(entityType.getAABB(currentPos.getX() + 0.5D, currentPos.getY(), currentPos.getZ() + 0.5D))) {
@@ -125,10 +129,8 @@ public class SearchMobSpawnPointUtil {
             // for ommc parser
             text = ModInfo.translatable("message.spawnPos", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
             String message = String.format("/highlightWaypoint %d %d %d", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
-            //#if MC > 11802
-            ClientChatPreview chatPreview = new ClientChatPreview(Minecraft.getInstance());
-            Component component = Util.mapNullable(chatPreview.pull(message), ClientChatPreview.Preview::response);
-            player.chatSigned(message, component);
+            //#if MC >= 11903
+            player.connection.sendChat(message);
             //#else
             //$$ player.chat(message);
             //#endif

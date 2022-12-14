@@ -8,7 +8,11 @@ import fi.dy.masa.malilib.hotkeys.IMouseInputHandler;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.config.Hotkeys;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.Registry;
+//#if MC >= 11903
+import net.minecraft.core.registries.BuiltInRegistries;
+//#else
+//$$ import net.minecraft.core.Registry;
+//#endif
 import net.minecraft.world.entity.player.Player;
 import top.hendrixshen.magiclib.util.FabricUtil;
 
@@ -32,7 +36,11 @@ public class MouseScrollInputHandler implements IMouseInputHandler {
             }
             if (FabricUtil.isModLoaded(ModInfo.LITEMATICA_MOD_ID) &&
                     fi.dy.masa.litematica.config.Configs.Generic.TOOL_ITEM_ENABLED.getBooleanValue() &&
-                    player != null && Registry.ITEM.getKey(player.getMainHandItem().getItem()).toString().contains(fi.dy.masa.litematica.config.Configs.Generic.TOOL_ITEM.getStringValue())) {
+                    //#if MC >= 11903
+                    player != null && BuiltInRegistries.ITEM.getKey(player.getMainHandItem().getItem()).toString().contains(fi.dy.masa.litematica.config.Configs.Generic.TOOL_ITEM.getStringValue())) {
+                    //#else
+                    //$$ player != null && Registry.ITEM.getKey(player.getMainHandItem().getItem()).toString().contains(fi.dy.masa.litematica.config.Configs.Generic.TOOL_ITEM.getStringValue())) {
+                    //#endif
                 return false;
             }
             return true;
