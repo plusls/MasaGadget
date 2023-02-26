@@ -32,6 +32,7 @@
     "malilib.backportI18nSupport.MixinInfoToggle",
     "malilib.backportI18nSupport.MixinRendererToggle",
     "malilib.fastSwitchMasaConfigGui.MixinGuiConfigBase",
+    "malilib.fastSwitchMasaConfigGui.MixinWidgetDropDownList",
     "malilib.favorites.MixinGuiConfigBase",
     "malilib.favorites.MixinWidgetConfigOption",
     "malilib.favorites.MixinWidgetListConfigOptions",
@@ -45,13 +46,13 @@
     "tweakeroo.handRestockCrafting.MixinInventoryUtils",
     "tweakeroo.inventoryPreviewSupportComparator.MixinGameRenderer",
     "tweakeroo.inventoryPreviewSupportComparator.MixinWorldRenderer",
-    "tweakeroo.inventoryPreviewUseCache.MixinMixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportPlayer.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportSelect.MixinInGameHud",
     "tweakeroo.inventoryPreviewSupportSelect.MixinInventoryOverlay",
     "tweakeroo.inventoryPreviewSupportShulkerBoxItemEntity.MixinRenderUtils",
     "tweakeroo.inventoryPreviewSupportTradeOfferList.MixinRenderUtils",
-    "tweakeroo.inventoryPreviewSyncDataClientOnly.MixinClientPacketListener"
+    "tweakeroo.inventoryPreviewSyncDataClientOnly.MixinClientPacketListener",
+    "tweakeroo.inventoryPreviewUseCache.MixinMixinRenderUtils"
   ],
   "injectors": {
     "defaultRequire": 1

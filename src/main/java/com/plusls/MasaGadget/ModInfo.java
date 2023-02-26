@@ -4,6 +4,8 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.compat.minecraft.network.chat.ComponentCompatApi;
 import top.hendrixshen.magiclib.config.ConfigHandler;
 import top.hendrixshen.magiclib.language.I18n;
@@ -47,7 +49,7 @@ public class ModInfo {
         return I18n.get(ModInfo.MOD_ID + "." + key, objects);
     }
 
-    public static
+    public static @NotNull
     //#if MC > 11502
     MutableComponent
     //#else
@@ -57,7 +59,8 @@ public class ModInfo {
         return ComponentCompatApi.translatable(ModInfo.MOD_ID + "." + key, objects);
     }
 
-    public static ResourceLocation id(String path) {
+    @Contract("_ -> new")
+    public static @NotNull ResourceLocation id(String path) {
         return new ResourceLocation(MOD_ID, path);
     }
 }

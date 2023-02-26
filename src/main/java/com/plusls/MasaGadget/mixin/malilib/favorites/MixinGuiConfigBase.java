@@ -9,6 +9,9 @@ import fi.dy.masa.malilib.gui.GuiListBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.util.GuiUtils;
+//#if MC > 11902
+import org.spongepowered.asm.mixin.Intrinsic;
+//#endif
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,11 +25,21 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
         super(listX, listY);
     }
 
-    //#if MC >= 11903
-    @Inject(method = "<init>", at = @At(value = "RETURN"))
-    //#else
-    //$$ @Inject(method = "initGui", at = @At(value = "RETURN"))
+    //#if MC > 11902
+    @Intrinsic
+    @Override
+    public void initGui() {
+        super.initGui();
+    }
     //#endif
+
+    @SuppressWarnings({"MixinAnnotationTarget" ,"UnresolvedMixinReference"})
+    @Inject(
+            method = "initGui",
+            at = @At(
+                    value = "RETURN"
+            )
+    )
     public void postInitGui(CallbackInfo ci) {
         favoritesButton = new WidgetIconToggleButton(GuiUtils.getScaledWindowWidth() - 175, 13,
                 MasaGadgetIcons.FAVORITE, Configs.favoritesFilter,
