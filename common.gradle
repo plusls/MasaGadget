@@ -1,6 +1,7 @@
 apply(plugin: "maven-publish")
 apply(plugin: "fabric-loom")
 apply(plugin: "io.github.juuxel.loom-quiltflower")
+apply(plugin: "net.kyori.blossom")
 apply(plugin: "com.replaymod.preprocess")
 
 int mcVersion = 1
@@ -12,41 +13,97 @@ preprocess {
 
 repositories {
     maven {
-        url 'https://www.cursemaven.com/'
+        name("CurseForge Maven")
+        url("https://www.cursemaven.com")
     }
+
     maven {
-        url = "https://api.modrinth.com/maven"
+        name("Nyan Maven")
+        url("https://maven.hendrixshen.top")
     }
-    maven {
-        url 'https://maven.hendrixshen.top'
-    }
+
     mavenCentral()
     mavenLocal()
 }
 
 dependencies {
+    // Development environment
     minecraft("com.mojang:minecraft:${project.minecraft_version}")
     mappings(loom.officialMojangMappings())
+
+    // Annotation processor
+    modApi("org.projectlombok:lombok:${project.lombok_version}")
+    annotationProcessor("org.projectlombok:lombok:${project.lombok_version}")
+
+    // Dependency
+    modImplementation("top.hendrixshen:magiclib-${project.minecraft_version.replace(".", "_")}:${project.magiclib_version}")
 
     modImplementation("curse.maven:minihud-244260:${project.minihud_version}")
     modImplementation("curse.maven:tweakeroo-297344:${project.tweakeroo_version}")
     modImplementation("curse.maven:litematica-308892:${project.litematica_version}")
     modImplementation("curse.maven:itemscroller-242064:${project.itemscroller_version}")
 
-    modImplementation("top.hendrixshen:magiclib-${project.minecraft_version.replace(".", "_")}:${project.magiclib_version}")
+    // Misc
     runtimeOnly(project(path: ":fabricWrapper"))
 }
 
 loom {
-//    mixin {
-//        // 如果使用 Legacy Mixin Ap，有时候 Mixin class remap 会有问题，该 remap 的不 remap
-//        useLegacyMixinAp = false
-//    }
-    runConfigs.all {
-        // to make sure it generates all "Minecraft Client (:subproject_name)" applications
-        // ideConfigGenerated = true
+    interfaceInjection {
+        enableDependencyInterfaceInjection = true
+    }
+
+    runConfigs.configureEach {
+        // Dump modified classes automatically.
         property("mixin.debug.export", "true")
-        runDir "../../run"
+    }
+
+    // We need large window.
+    runConfigs.client {
+        programArgs([
+                "--width",
+                "1920",
+                "--height",
+                "1080",
+        ])
+        runDir("run/client")
+    }
+
+    // Useless, but we write here.
+    runConfigs.server {
+        runDir("run/server")
+    }
+
+    // Setup client default settings.
+    runClient {
+        defaultCharacterEncoding("UTF-8")
+        if (!new File("${projectDir}/run/client/options.txt").exists()) {
+            new File("${projectDir}/run/client").mkdirs()
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("${projectDir}/run/client/options.txt"))
+            bufferedWriter.writeLine("autoJump:false")
+            bufferedWriter.writeLine("enableVsync:false")
+            bufferedWriter.writeLine("forceUnicodeFont:true")
+            bufferedWriter.writeLine("fov:1.0")
+            bufferedWriter.writeLine("gamma:16.0")
+            bufferedWriter.writeLine("guiScale:3")
+            bufferedWriter.writeLine("lang:${Locale.getDefault().toString()}")
+            bufferedWriter.writeLine("maxFps:260")
+            bufferedWriter.writeLine("renderDistance:10")
+            bufferedWriter.writeLine("soundCategory_master:0.0")
+            bufferedWriter.close()
+        }
+    }
+
+    // Useless, but we write here.
+    // Setup server default settings.
+    runServer {
+        defaultCharacterEncoding("UTF-8")
+        // Agree eula before server init.
+        if (!new File("${projectDir}/run/server/eula.txt").exists()) {
+            new File("${projectDir}/run/server").mkdirs()
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("${projectDir}/run/server/eula.txt"))
+            bufferedWriter.writeLine("eula=true")
+            bufferedWriter.close()
+        }
     }
 }
 
@@ -54,12 +111,11 @@ remapJar {
     remapperIsolation = true
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
-archivesBaseName = project.archives_base_name + "-" + project.minecraft_version
-version = project.parent.version
-group = project.maven_group
+setArchivesBaseName("${project.archives_base_name}-${project.minecraft_version}")
+setVersion(project.parent.version)
+setGroup(project.maven_group)
+setSourceCompatibility(JavaVersion.VERSION_1_8)
+setTargetCompatibility(JavaVersion.VERSION_1_8)
 
 processResources {
     inputs.property("version", version)
@@ -78,17 +134,17 @@ processResources {
     }
 }
 
-// ensure that the encoding is set to UTF-8, no matter what the system default is
-// this fixes some edge cases with special characters not displaying correctly
-// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-tasks.withType(JavaCompile) {
+blossom {
+    replaceToken("\${mod_id}", project.mod_id)
+    replaceToken("\${mod_name}", project.mod_name)
+    replaceToken("\${minecraft_version_id}", project.minecraft_version.replace(".", "_"))
+}
+
+tasks.withType(JavaCompile).configureEach {
     options.encoding = "UTF-8"
 }
 
 java {
-    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-    // if it is present.
-    // If you remove this line, sources will not be generated.
     withSourcesJar()
 }
 
@@ -99,8 +155,7 @@ jar {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifactId = "${project.mod_id}-${project.minecraft_version.replace(".", "_")}"
-            version = project.version
+            artifactId("${project.mod_id}-${project.minecraft_version.replace(".", "_")}")
             from(components.java)
         }
     }

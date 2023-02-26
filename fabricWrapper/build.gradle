@@ -3,13 +3,11 @@ plugins {
 }
 apply(plugin: "maven-publish")
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
-archivesBaseName = project.archives_base_name
-version = project.parent.version
-group = project.maven_group
-
+setArchivesBaseName(project.archives_base_name)
+setVersion(project.parent.version)
+setGroup(project.maven_group)
+setSourceCompatibility(JavaVersion.VERSION_1_8)
+setTargetCompatibility(JavaVersion.VERSION_1_8)
 
 def fabric_subprojects = project.parent.subprojects.findAll({
     it.name != "fabricWrapper"
