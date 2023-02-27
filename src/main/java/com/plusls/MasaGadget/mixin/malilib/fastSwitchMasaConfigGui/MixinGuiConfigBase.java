@@ -1,8 +1,12 @@
 package com.plusls.MasaGadget.mixin.malilib.fastSwitchMasaConfigGui;
 
+//#if MC > 11404
+import com.mojang.blaze3d.vertex.PoseStack;
+//#endif
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.compat.modmenu.ConfigScreenFactoryCompat;
 import com.plusls.MasaGadget.config.Configs;
+import com.plusls.MasaGadget.gui.IDropdownRenderer;
 import com.plusls.MasaGadget.gui.MyWidgetDropDownList;
 import com.plusls.MasaGadget.malilib.fastSwitchMasaConfigGui.MasaGuiUtil;
 import fi.dy.masa.malilib.gui.GuiBase;
@@ -12,9 +16,7 @@ import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
 import fi.dy.masa.malilib.gui.widgets.WidgetDropDownList;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.util.GuiUtils;
-//#if MC > 11902
 import org.spongepowered.asm.mixin.Intrinsic;
-//#endif
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,21 +25,13 @@ import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.annotation.Dependency;
 
 @Dependencies(and = @Dependency(ModInfo.MODMENU_MOD_ID))
-@Mixin(value = GuiConfigsBase.class, remap = false)
-public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.ConfigOptionWrapper, WidgetConfigOption, WidgetListConfigOptions> {
+@Mixin(value = GuiConfigsBase.class, remap = false, priority = 1100)
+public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.ConfigOptionWrapper, WidgetConfigOption, WidgetListConfigOptions> implements IDropdownRenderer {
     protected MixinGuiConfigBase(int listX, int listY) {
         super(listX, listY);
     }
 
-    private WidgetDropDownList<ConfigScreenFactoryCompat<?>> masaModGuiList;
-
-    //#if MC > 11902
-    @Intrinsic
-    @Override
-    public void initGui() {
-        super.initGui();
-    }
-    //#endif
+    private WidgetDropDownList<ConfigScreenFactoryCompat<?>> masa_gadget$masaModGuiList;
 
     @SuppressWarnings({"MixinAnnotationTarget" ,"UnresolvedMixinReference"})
     @Inject(
@@ -49,15 +43,38 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
     public void postInitGui(CallbackInfo ci) {
         // 在其他地方初始化会导致其它 mod 爆炸
         MasaGuiUtil.initMasaModScreenList();
-
-        this.masaModGuiList = new MyWidgetDropDownList<>(
+        this.masa_gadget$masaModGuiList = new MyWidgetDropDownList<>(
                 GuiUtils.getScaledWindowWidth() - 155, 13, 130, 18, 200, 10,
                 MasaGuiUtil.masaGuiConfigScreenFactorys,
                 MasaGuiUtil.masaGuiData::get,
                 configScreenFactory -> GuiBase.openGui(configScreenFactory.create(this.getParent())),
                 configScreenFactory -> Configs.fastSwitchMasaConfigGui);
+        this.masa_gadget$masaModGuiList.setSelectedEntry(MasaGuiUtil.masaGuiClassData.get(this.getClass()));
 
-        masaModGuiList.setSelectedEntry(MasaGuiUtil.masaGuiClassData.get(this.getClass()));
-        this.addWidget(masaModGuiList);
+        this.addWidget(this.masa_gadget$masaModGuiList);
+    }
+
+    @Override
+    //#if MC > 11502
+    public void masa_gad_get$renderHovered(PoseStack poseStack, int mouseX, int mouseY) {
+    //#else
+    //$$ public void masa_gad_get$renderHovered(int mouseX, int mouseY) {
+    //#endif
+        if (this.masa_gadget$masaModGuiList == null) {
+            return;
+        }
+        //#if MC > 11502
+        this.masa_gadget$masaModGuiList.render(mouseX, mouseY, false, poseStack);
+        //#else
+        //$$ this.masa_gadget$masaModGuiList.render(mouseX, mouseY, false);
+        //#endif
+        if (this.masa_gadget$masaModGuiList.isMouseOver(mouseX, mouseY)) {
+            this.hoveredWidget = this.masa_gadget$masaModGuiList;
+        }
+        //#if MC > 11502
+        this.drawHoveredWidget(mouseX, mouseY, poseStack);
+        //#else
+        //$$ this.drawHoveredWidget(mouseX, mouseY);
+        //#endif
     }
 }
