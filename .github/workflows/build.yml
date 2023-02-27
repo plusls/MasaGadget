@@ -12,12 +12,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: validate gradle wrapper
         uses: gradle/wrapper-validation-action@v1
       - name: setup jdk ${{ matrix.java }}
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
+          distribution: 'adopt'
           java-version: ${{ matrix.java }}
       - name: Set pre_release
         run: |
@@ -29,15 +30,9 @@ jobs:
         run: ./gradlew preprocessResources
       - name: build
         run: ./gradlew build
-      - name: Find correct JAR
-        id: findjar
-        if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
-        run: |
-          output="$(find fabricWrapper/build/libs/ ! -name "*-dev.jar" ! -name "*-sources.jar" -type f -printf "%f\n")"
-          echo "::set-output name=jarname::$output"
       - name: capture build artifacts
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ steps.findjar.outputs.jarname }}
-          path: fabricWrapper/build/libs/${{ steps.findjar.outputs.jarname }}
+          path: fabricWrapper/build/libs/*
