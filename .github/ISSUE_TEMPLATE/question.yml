@@ -7,7 +7,7 @@ body:
     attributes:
       value: "**Note: Please search for existing issues before reporting where possible to avoid duplicate reporting.**"
   - type: dropdown
-    id: question_yype
+    id: question_type
     attributes:
       label: Question Type
       options:
