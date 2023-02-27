@@ -35,4 +35,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ steps.findjar.outputs.jarname }}
-          path: fabricWrapper/build/libs/*
+          path: |
+            fabricWrapper/build/libs/*.jar
