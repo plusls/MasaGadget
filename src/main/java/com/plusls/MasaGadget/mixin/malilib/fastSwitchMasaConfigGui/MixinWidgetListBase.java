@@ -5,11 +5,13 @@ import com.plusls.MasaGadget.gui.IDropdownRenderer;
 import com.plusls.MasaGadget.mixin.accessor.AccessorWidgetListConfigOptions;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetListBase;
+import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.gui.widgets.WidgetListEntryBase;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import top.hendrixshen.magiclib.util.MiscUtil;
 
 /*
  * Modified from TweakerMore
@@ -62,12 +64,16 @@ public abstract class MixinWidgetListBase<TYPE, WIDGET extends WidgetListEntryBa
     //#endif
     }
 
+    @SuppressWarnings("ConstantConditions")
     //#if MC > 11502
     private void masa_gadget$renderDropdownListAgain(PoseStack poseStack, int mouseX, int mouseY) {
     //#else
     //$$ private void masa_gadget$renderDropdownListAgain(int mouseX, int mouseY) {
     //#endif
         if (this.masa_gadget$shouldRenderDropdownListAgain) {
+            if (!(MiscUtil.cast(this) instanceof WidgetListConfigOptions)) {
+                return;
+            }
             GuiConfigsBase guiConfig = ((AccessorWidgetListConfigOptions) this).getParent();
 
             //#if MC > 11502
