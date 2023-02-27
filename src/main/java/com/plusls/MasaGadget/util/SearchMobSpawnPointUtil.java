@@ -31,6 +31,12 @@ import top.hendrixshen.magiclib.compat.minecraft.network.chat.StyleCompatApi;
 
 import java.util.Objects;
 
+//#if MC >= 11902 && MC < 11903
+//$$ import net.minecraft.Util;
+//$$ import net.minecraft.client.gui.chat.ClientChatPreview;
+//$$ import net.minecraft.network.chat.Component;
+//#endif
+
 public class SearchMobSpawnPointUtil {
     @Nullable
     private static ShapeDespawnSphere getShapeDespawnSphere() {
@@ -131,6 +137,10 @@ public class SearchMobSpawnPointUtil {
             String message = String.format("/highlightWaypoint %d %d %d", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
             //#if MC >= 11903
             player.connection.sendChat(message);
+            //#elseif MC >= 11902
+            //$$ ClientChatPreview ccp = new ClientChatPreview(Minecraft.getInstance());
+            //$$ Component component = Util.mapNullable(ccp.pull(message), ClientChatPreview.Preview::response);
+            //$$ player.chatSigned(message, component);
             //#else
             //$$ player.chat(message);
             //#endif
