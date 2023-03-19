@@ -6,9 +6,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.compat.minecraft.network.chat.ComponentCompatApi;
-import top.hendrixshen.magiclib.config.ConfigHandler;
-import top.hendrixshen.magiclib.language.I18n;
+import top.hendrixshen.magiclib.compat.minecraft.api.network.chat.ComponentCompatApi;
+import top.hendrixshen.magiclib.malilib.impl.ConfigHandler;
+import top.hendrixshen.magiclib.language.api.I18n;
 
 //#if MC > 11502
 import net.minecraft.network.chat.MutableComponent;
@@ -23,21 +23,8 @@ public class ModInfo {
     public static final String LITEMATICA_MOD_ID = "litematica";
     public static final String ITEMSCROLLER_MOD_ID = "itemscroller";
     public static final String MODMENU_MOD_ID = "modmenu";
-    public static String MOD_ID = "masa_gadget_mod";
-
-    //#if MC > 11802
-    public static final String CURRENT_MOD_ID = MOD_ID + "-1_19_3";
-    //#elseif MC > 11701
-    //$$ public static final String CURRENT_MOD_ID = MOD_ID + "-1_18_2";
-    //#elseif MC > 11605
-    //$$ public static final String CURRENT_MOD_ID = MOD_ID + "-1_17_1";
-    //#elseif MC > 11502
-    //$$ public static final String CURRENT_MOD_ID = MOD_ID + "-1_16_5";
-    //#elseif MC > 11404
-    //$$ public static final String CURRENT_MOD_ID = MOD_ID + "-1_15_2";
-    //#else
-    //$$ public static final String CURRENT_MOD_ID = MOD_ID + "-1_14_4";
-    //#endif
+    public static String MOD_ID = "@MOD_IDENTIFIER@";
+    public static final String CURRENT_MOD_ID = "@MOD_IDENTIFIER@-@MINECRAFT_VERSION_IDENTIFY@";
     public static final String MOD_NAME = FabricLoader.getInstance().getModContainer(CURRENT_MOD_ID)
             .orElseThrow(RuntimeException::new).getMetadata().getName();
     public static final String MOD_VERSION = FabricLoader.getInstance().getModContainer(CURRENT_MOD_ID)

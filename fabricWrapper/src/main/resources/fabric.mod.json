@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "id": "${mod_id}",
   "version": "${mod_version}",
-  "icon": "assets/${mod_id}/icon.jpg",
+  "icon": "assets/${mod_id}/icon.png",
   "name": "${mod_name}",
-  "description": "${mod_name}",
+  "description": "${mod_description}",
   "authors": [
     {
       "name": "Hendrix-Shen",
@@ -32,7 +32,8 @@
     ]
   },
   "depends": {
-    "magiclib": ">=${magiclib_dependency}"
+    "magiclib": ">=${magiclib_dependency}",
+    "malilib": "*"
   },
   "custom": {
     "modmenu:clientsideOnly": true

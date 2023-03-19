@@ -1,7 +1,6 @@
 package com.plusls.MasaGadget.malilib.fastSwitchMasaConfigGui;
 
 import com.plusls.MasaGadget.ModInfo;
-import com.plusls.MasaGadget.compat.modmenu.ConfigScreenFactoryCompat;
 import com.plusls.MasaGadget.util.MiscUtil;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import net.fabricmc.loader.api.FabricLoader;
@@ -9,6 +8,7 @@ import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import org.jetbrains.annotations.Nullable;
+import top.hendrixshen.magiclib.compat.modmenu.ModMenuCompatApi;
 import top.hendrixshen.magiclib.util.FabricUtil;
 
 import java.lang.reflect.InvocationTargetException;
@@ -19,9 +19,9 @@ import java.util.Map;
 import java.util.function.Function;
 
 public class MasaGuiUtil {
-    public final static Map<ConfigScreenFactoryCompat<?>, String> masaGuiData = new HashMap<>();
-    public final static ArrayList<ConfigScreenFactoryCompat<?>> masaGuiConfigScreenFactorys = new ArrayList<>();
-    public final static Map<Class<?>, ConfigScreenFactoryCompat<?>> masaGuiClassData = new HashMap<>();
+    public final static Map<ModMenuCompatApi.ConfigScreenFactoryCompat<?>, String> masaGuiData = new HashMap<>();
+    public final static ArrayList<ModMenuCompatApi.ConfigScreenFactoryCompat<?>> masaGuiConfigScreenFactorys = new ArrayList<>();
+    public final static Map<Class<?>, ModMenuCompatApi.ConfigScreenFactoryCompat<?>> masaGuiClassData = new HashMap<>();
 
     @Nullable
     private static final Class<?> modMenuApiClass;
@@ -92,7 +92,7 @@ public class MasaGuiUtil {
             ModMetadata metadata = entrypoint.getProvider().getMetadata();
             try {
                 Object api = entrypoint.getEntrypoint();
-                ConfigScreenFactoryCompat<?> configScreenFactoryCompat;
+                ModMenuCompatApi.ConfigScreenFactoryCompat<?> configScreenFactoryCompat;
                 if (modMenuApiClass != null && modMenuApiClass.isAssignableFrom(api.getClass())) {
                     // >= 1.16
                     Object modConfigScreenFactory = getModConfigScreenFactoryMethod.invoke(api);
@@ -133,7 +133,7 @@ public class MasaGuiUtil {
                         masaGuiConfigScreenFactorys.add(configScreenFactoryCompat);
                         masaGuiClassData.put(screen.getClass(), configScreenFactoryCompat);
                     } else {
-                        ConfigScreenFactoryCompat<?> savedConfigScreenFactoryCompat = masaGuiClassData.get(screen.getClass());
+                        ModMenuCompatApi.ConfigScreenFactoryCompat<?> savedConfigScreenFactoryCompat = masaGuiClassData.get(screen.getClass());
                         String savedName = masaGuiData.get(savedConfigScreenFactoryCompat);
                         if (savedName.length() > modName.length()) {
                             masaGuiData.put(savedConfigScreenFactoryCompat, modName);

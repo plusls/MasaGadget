@@ -8,10 +8,10 @@ import com.plusls.MasaGadget.util.HitResultUtil;
 import com.plusls.MasaGadget.tweakeroo.inventoryPreviewSupportSelect.MouseScrollInputHandler;
 import com.plusls.MasaGadget.util.PcaSyncProtocol;
 import net.fabricmc.api.ClientModInitializer;
-import top.hendrixshen.magiclib.config.ConfigHandler;
-import top.hendrixshen.magiclib.config.ConfigManager;
-import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
-import top.hendrixshen.magiclib.dependency.annotation.Dependency;
+import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
+import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
+import top.hendrixshen.magiclib.malilib.impl.ConfigHandler;
+import top.hendrixshen.magiclib.malilib.impl.ConfigManager;
 
 public class MasaGadgetMod implements ClientModInitializer {
     private static final int CONFIG_VERSION = 1;

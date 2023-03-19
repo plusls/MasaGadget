@@ -18,5 +18,4 @@ public class ModMenuApiImpl implements ModMenuCompatApi {
     public String getModIdCompat() {
         return ModInfo.CURRENT_MOD_ID;
     }
-
 }

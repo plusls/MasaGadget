@@ -18,14 +18,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
-import top.hendrixshen.magiclib.config.ConfigHandler;
-import top.hendrixshen.magiclib.config.ConfigManager;
-import top.hendrixshen.magiclib.config.Option;
-import top.hendrixshen.magiclib.config.annotation.Config;
-import top.hendrixshen.magiclib.config.annotation.Hotkey;
-import top.hendrixshen.magiclib.config.annotation.Numeric;
-import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
-import top.hendrixshen.magiclib.dependency.annotation.Dependency;
+import org.jetbrains.annotations.NotNull;
+import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
+import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
+import top.hendrixshen.magiclib.malilib.api.annotation.Config;
+import top.hendrixshen.magiclib.malilib.api.annotation.Hotkey;
+import top.hendrixshen.magiclib.malilib.api.annotation.Numeric;
+import top.hendrixshen.magiclib.malilib.impl.ConfigHandler;
+import top.hendrixshen.magiclib.malilib.impl.ConfigManager;
+import top.hendrixshen.magiclib.malilib.impl.ConfigOption;
 import top.hendrixshen.magiclib.util.FabricUtil;
 
 import java.util.*;
@@ -33,6 +34,7 @@ import java.util.*;
 public class Configs {
     public static final HashMap<String, HashSet<String>> FAVORITES = new HashMap<>();
     public static boolean favoritesFilter = false;
+
     // GENERIC
     @Config(category = ConfigCategory.GENERIC)
     public static boolean autoSyncEntityData = true;
@@ -129,7 +131,6 @@ public class Configs {
     public static double showOriginalConfigNameScale = 0.65;
 
     // MINIHUD
-
     @Hotkey
     @Config(category = ConfigCategory.MINIHUD, dependencies = @Dependencies(and = @Dependency(ModInfo.MINIHUD_MOD_ID)))
     public static boolean minihudI18n = true;
@@ -140,8 +141,8 @@ public class Configs {
             @Dependency(value = "minecraft", versionPredicate = ">1.14.4")
     }))
     public static boolean pcaSyncProtocolSyncBeehive = true;
-    // TWEAKEROO
 
+    // TWEAKEROO
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
     public static boolean inventoryPreviewSupportComparator = true;
 
@@ -176,8 +177,7 @@ public class Configs {
     @Config(category = ConfigCategory.TWEAKEROO, dependencies = @Dependencies(and = {@Dependency(ModInfo.TWEAKEROO_MOD_ID), @Dependency(ModInfo.ITEMSCROLLER_MOD_ID)}))
     public static ArrayList<String> restockWithCraftingRecipes = new ArrayList<>();
 
-    public static void preDeserialize(ConfigHandler configHandler) {
-
+    public static void preDeserialize(@NotNull ConfigHandler configHandler) {
         JsonObject obj = Objects.requireNonNull(JsonUtils.getNestedObject(configHandler.jsonObject,
                 ConfigCategory.MALILIB, true));
         JsonObject favoriteObj = Objects.requireNonNull(JsonUtils.getNestedObject(obj, "favorites", true));
@@ -189,7 +189,7 @@ public class Configs {
         favoritesFilter = JsonUtils.getBooleanOrDefault(obj, "favoritesFilter", false);
     }
 
-    public static void postSerialize(ConfigHandler configHandler) {
+    public static void postSerialize(@NotNull ConfigHandler configHandler) {
         JsonObject obj = Objects.requireNonNull(JsonUtils.getNestedObject(configHandler.jsonObject,
                 ConfigCategory.MALILIB, true));
         JsonObject favoriteObj = new JsonObject();
@@ -207,7 +207,6 @@ public class Configs {
     }
 
     public static void init(ConfigManager cm) {
-
         // GENERIC
         cm.setValueChangeCallback("debug", option -> {
             if (debug) {
@@ -257,7 +256,7 @@ public class Configs {
         cm.setValueChangeCallback("showOriginalConfigNameScale", Configs::refreshOptions);
     }
 
-    private static void refreshOptions(Option option) {
+    private static void refreshOptions(ConfigOption option) {
         if (Minecraft.getInstance().screen instanceof GuiConfigsBase) {
             GuiConfigsBase guiConfigsBase = (GuiConfigsBase) Minecraft.getInstance().screen;
             WidgetListConfigOptions widgetListConfigOptions =

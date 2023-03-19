@@ -5,7 +5,6 @@ import fi.dy.masa.malilib.gui.widgets.WidgetListBase;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-//@Mixin(GuiListBase.class)
 @Mixin(value = GuiListBase.class, remap = false)
 public interface AccessorGuiListBase {
     @Invoker

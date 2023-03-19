@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "id": "${mod_id}-${minecraft_version_id}",
   "version": "${mod_version}",
-  "icon": "assets/${mod_id}/icon.jpg",
+  "icon": "assets/${mod_id}/icon.png",
   "name": "${mod_name} for ${minecraft_version}",
-  "description": "${mod_name} for ${minecraft_version}",
+  "description": "${mod_description}",
   "authors": [
     {
       "name": "Hendrix-Shen",
@@ -38,8 +38,9 @@
     "${mod_id}.mixins.json"
   ],
   "depends": {
-    "minecraft": "${minecraft_dependency}",
-    "magiclib-${minecraft_version_id}": ">=${magiclib_dependency}"
+    "magiclib-${minecraft_version_id}": ">=${magiclib_dependency}",
+    "malilib": "*",
+    "minecraft": "${minecraft_dependency}"
   },
   "custom": {
     "modmenu:clientsideOnly": true,

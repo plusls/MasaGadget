@@ -4,7 +4,6 @@ package com.plusls.MasaGadget.mixin.malilib.fastSwitchMasaConfigGui;
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 import com.plusls.MasaGadget.ModInfo;
-import com.plusls.MasaGadget.compat.modmenu.ConfigScreenFactoryCompat;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.gui.IDropdownRenderer;
 import com.plusls.MasaGadget.gui.MyWidgetDropDownList;
@@ -16,13 +15,13 @@ import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
 import fi.dy.masa.malilib.gui.widgets.WidgetDropDownList;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.util.GuiUtils;
-import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import top.hendrixshen.magiclib.dependency.annotation.Dependencies;
-import top.hendrixshen.magiclib.dependency.annotation.Dependency;
+import top.hendrixshen.magiclib.compat.modmenu.ModMenuCompatApi;
+import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
+import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
 
 @Dependencies(and = @Dependency(ModInfo.MODMENU_MOD_ID))
 @Mixin(value = GuiConfigsBase.class, remap = false, priority = 1100)
@@ -31,7 +30,7 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
         super(listX, listY);
     }
 
-    private WidgetDropDownList<ConfigScreenFactoryCompat<?>> masa_gadget$masaModGuiList;
+    private WidgetDropDownList<ModMenuCompatApi.ConfigScreenFactoryCompat<?>> masa_gadget$masaModGuiList;
 
     @SuppressWarnings({"MixinAnnotationTarget" ,"UnresolvedMixinReference"})
     @Inject(

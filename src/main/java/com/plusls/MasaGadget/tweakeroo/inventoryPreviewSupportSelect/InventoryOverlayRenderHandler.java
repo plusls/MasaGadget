@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
-import top.hendrixshen.magiclib.compat.minecraft.blaze3d.vertex.VertexFormatCompatApi;
+import top.hendrixshen.magiclib.compat.minecraft.api.blaze3d.vertex.VertexFormatCompatApi;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -61,7 +61,9 @@ public class InventoryOverlayRenderHandler {
 
 
     private static void fillGradient(PoseStack matrices, Collection<GradientData> gradientDataCollection) {
-        RenderSystem.disableTexture();
+        //#if MC < 11904
+        //$$ RenderSystem.disableTexture();
+        //#endif
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         //#if MC > 11605
@@ -83,7 +85,9 @@ public class InventoryOverlayRenderHandler {
         //#endif
 
         RenderSystem.disableBlend();
-        RenderSystem.enableTexture();
+        //#if MC < 11904
+        //$$ RenderSystem.enableTexture();
+        //#endif
     }
 
     private static void fillGradient(Matrix4f matrix, BufferBuilder bufferBuilder, GradientData gradientData) {
@@ -268,8 +272,10 @@ public class InventoryOverlayRenderHandler {
         matrices.pushPose();
 
 
-        float oldBlitOffset = mc.getItemRenderer().blitOffset;
-        mc.getItemRenderer().blitOffset = 400.0F;
+        //#if MC < 11904
+        //$$ float oldBlitOffset = mc.getItemRenderer().blitOffset;
+        //$$ mc.getItemRenderer().blitOffset = 400.0F;
+        //#endif
 
         Color4f colorA = Color4f.fromColor(0xf0100010);
 
@@ -297,12 +303,16 @@ public class InventoryOverlayRenderHandler {
         gradientDataArrayList.add(new GradientData(colorC, colorC, renderX - 3, renderY + yOffset + 2,
                 renderX + xOffset + 3, renderY + yOffset + 3, 400));
 
-        RenderSystem.disableTexture();
+        //#if MC < 11904
+        //$$ RenderSystem.disableTexture();
+        //#endif
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         fillGradient(matrices, gradientDataArrayList);
         RenderSystem.disableBlend();
-        RenderSystem.enableTexture();
+        //#if MC < 11904
+        //$$ RenderSystem.enableTexture();
+        //#endif
         matrices.translate(0.0D, 0.0D, 400.0D);
 
         for (int i = 0; i < components.size(); i++) {
@@ -311,7 +321,9 @@ public class InventoryOverlayRenderHandler {
             renderY += 10 + ((i == 0) ? 2 : 0);
         }
         matrices.popPose();
-        mc.getItemRenderer().blitOffset = oldBlitOffset;
+        //#if MC < 11904
+        //$$ mc.getItemRenderer().blitOffset = oldBlitOffset;
+        //#endif
         RenderSystem.enableDepthTest();
     }
 

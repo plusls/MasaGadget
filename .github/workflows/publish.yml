@@ -20,18 +20,19 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: ${{ matrix.java }}
-      - name: Set pre_release
-        run: |
-          sed -i "s/pre_release=alpha/pre_release=/g" gradle.properties
       - name: make gradle wrapper executable
         if: ${{ runner.os != 'Windows' }}
         run: chmod +x ./gradlew
       - name: preprocessResources
+        env:
+          BUILD_TYPE: "RELEASE"
         run: ./gradlew preprocessResources
       - name: build
+        env:
+          BUILD_TYPE: "RELEASE"
         run: ./gradlew build
       - name: Publish Minecraft Mods
-        uses: Kir-Antipov/mc-publish@v2.1
+        uses: Kir-Antipov/mc-publish@v3.2
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }}
         with:
           modrinth-id: SFO4Ca80
@@ -58,6 +59,7 @@ jobs:
             1.18.2
             1.19.2
             1.19.3
+            1.19.4
 
           version-resolver: exact
 

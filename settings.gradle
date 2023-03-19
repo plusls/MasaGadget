@@ -1,21 +1,27 @@
 pluginManagement {
     repositories {
+        mavenLocal()
+
         maven {
             name("Fabric")
             url("https://maven.fabricmc.net")
         }
+
         maven {
             name("Jitpack")
             url("https://jitpack.io")
         }
+
         maven {
             name("Nyan Maven")
             url("https://maven.hendrixshen.top")
         }
+
         maven {
             name("Cotton")
             url("https://server.bbkr.space/artifactory/libs-release")
         }
+
         mavenCentral()
         gradlePluginPortal()
     }
@@ -29,12 +35,14 @@ def versions = Arrays.asList(
         "1.18.2",
         "1.19.2",
         "1.19.3",
+        "1.19.4",
 )
+
 for (String version : versions) {
     include(":$version")
-
     def proj = project(":$version")
     proj.projectDir = file("versions/$version")
     proj.buildFileName = "../../common.gradle"
 }
+
 include(":fabricWrapper")

@@ -3,7 +3,7 @@
   "minVersion": "0.8",
   "package": "com.plusls.MasaGadget.mixin",
   "compatibilityLevel": "JAVA_8",
-  "plugin": "top.hendrixshen.magiclib.MagicMixinPlugin",
+  "plugin": "top.hendrixshen.magiclib.dependency.impl.MagicMixinPlugin",
   "client": [
     "MixinConnection",
     "accessor.AccessorAbstractMinecartContainer",

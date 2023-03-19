@@ -1,13 +1,15 @@
-plugins {
-    id('java-library')
-}
-apply(plugin: "maven-publish")
+import groovy.json.JsonBuilder
 
-setArchivesBaseName(project.archives_base_name)
-setVersion(project.parent.version)
-setGroup(project.maven_group)
-setSourceCompatibility(JavaVersion.VERSION_1_8)
-setTargetCompatibility(JavaVersion.VERSION_1_8)
+plugins {
+    id("java-library")
+    id("maven-publish")
+}
+
+archivesBaseName("${project.mod_archives_base_name}")
+group(project.mod_maven_group)
+sourceCompatibility(JavaVersion.VERSION_1_8)
+targetCompatibility(JavaVersion.VERSION_1_8)
+version(project.parent.version)
 
 def fabric_subprojects = project.parent.subprojects.findAll({
     it.name != "fabricWrapper"
@@ -20,43 +22,52 @@ fabric_subprojects.collect {
 jar {
     // disable cache
     outputs.upToDateWhen { false }
+
     dependsOn(fabric_subprojects.collect {
         it.tasks.remapJar
     })
 
     doFirst {
         delete fileTree("build/tmp/submods/META-INF/jars")
+
         copy {
             from {
                 fabric_subprojects.collect {
                     it.remapJar.outputs.files
                 }
             }
+
             into("build/tmp/submods/META-INF/jars")
         }
     }
 
-    from("../LICENSE")
+    from("${rootDir}/LICENSE")
     from("build/tmp/submods")
 }
-
-import groovy.json.JsonBuilder
 
 processResources {
     // disable cache
     outputs.upToDateWhen { false }
     var jars = []
+
     fabric_subprojects.each({
-        jars.add(["file": "META-INF/jars/${project.archives_base_name}-${it.minecraft_version}-${project.version}.jar"])
+        jars.add(["file": "META-INF/jars/${project.mod_archives_base_name}-${it.minecraft_version}-${project.version}.jar"])
     })
+
+    from("${rootDir}/icon.png") {
+        into("assets/${project.mod_id}")
+    }
+
     filesMatching("fabric.mod.json") {
-        expand(["mod_version"         : project.version,
-                "mod_id"              : project.mod_id,
-                "mod_name"            : project.mod_name,
-                "mod_homepage"        : project.mod_homepage,
-                "mod_sources"         : project.mod_sources,
-                "mod_license"         : project.mod_license,
+        expand([
                 "magiclib_dependency" : project.magiclib_dependency,
+                "mod_description"     : project.mod_description,
+                "mod_homepage"        : project.mod_homepage,
+                "mod_id"              : project.mod_id,
+                "mod_license"         : project.mod_license,
+                "mod_name"            : project.mod_name,
+                "mod_version"         : project.version,
+                "mod_sources"         : project.mod_sources,
                 "sub_jars"            : new JsonBuilder(jars).toPrettyString(),
         ])
     }
@@ -64,15 +75,16 @@ processResources {
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
-            artifactId = project.mod_id
-            version = project.version
+        create("mavenJava", MavenPublication) {
+            artifactId("${project.mod_id}")
+            version("${rootProject.getMavenArtifactVersion()}")
             from(components.java)
         }
     }
 
     repositories {
         mavenLocal()
+
         maven {
             url("$rootDir/publish")
         }

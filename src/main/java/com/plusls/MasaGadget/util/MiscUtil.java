@@ -15,15 +15,9 @@ import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.chunk.LevelChunk;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import top.hendrixshen.magiclib.language.I18n;
+import top.hendrixshen.magiclib.language.api.I18n;
 
-public class MiscUtil {
-
-    @SuppressWarnings("unchecked")
-    public static <T> T cast(Object obj) {
-        return (T) obj;
-    }
-
+public class MiscUtil extends top.hendrixshen.magiclib.util.MiscUtil {
     public static <T extends Entity> T getBestEntity(T entity) {
         // Only try to fetch the corresponding server world if the entity is in the actual client world.
         // Otherwise the entity may be for example in Litematica's schematic world.

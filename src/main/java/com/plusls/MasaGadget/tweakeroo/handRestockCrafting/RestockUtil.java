@@ -15,7 +15,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import top.hendrixshen.magiclib.compat.minecraft.world.item.ItemStackCompatApi;
+import top.hendrixshen.magiclib.compat.minecraft.api.world.item.ItemStackCompatApi;
 
 import java.util.List;
 import java.util.stream.Collectors;

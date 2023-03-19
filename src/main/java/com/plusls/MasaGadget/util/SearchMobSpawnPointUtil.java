@@ -27,7 +27,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import top.hendrixshen.magiclib.compat.minecraft.network.chat.StyleCompatApi;
+import top.hendrixshen.magiclib.compat.minecraft.api.network.chat.StyleCompatApi;
 
 import java.util.Objects;
 
