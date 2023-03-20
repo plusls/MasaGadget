@@ -29,18 +29,15 @@ preprocess {
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def apiDependencies = [
-        ["curse.maven:minihud-244260"     , "minihud"     , mcVersion < 11904, false],
-        ["curse.maven:tweakeroo-297344"   , "tweakeroo"   , mcVersion < 11904, false],
-        ["curse.maven:litematica-308892"  , "litematica"  , mcVersion < 11904, false],
-        ["curse.maven:itemscroller-242064", "itemscroller", mcVersion < 11904, false],
-        ["fi.dy.masa:minihud"             , "minihud"     , mcVersion > 11903, false],
-        ["fi.dy.masa:litematica"          , "litematica"  , mcVersion > 11903, false],
-        ["fi.dy.masa:itemscroller"        , "itemscroller", mcVersion > 11903, false]
+        ["curse.maven:minihud-244260"     , "minihud"     , true, false],
+        ["curse.maven:tweakeroo-297344"   , "tweakeroo"   , true, false],
+        ["curse.maven:litematica-308892"  , "litematica"  , true, false],
+        ["curse.maven:itemscroller-242064", "itemscroller", true, false]
 ]
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def compileOnlyDependencies = [
-        ["curse.maven:tweakeroo-297344", "tweakeroo", mcVersion > 11903, false]
+        ["curse.maven:tweakeroo-297344", "tweakeroo", false, false]
 ]
 
 dependencies {
