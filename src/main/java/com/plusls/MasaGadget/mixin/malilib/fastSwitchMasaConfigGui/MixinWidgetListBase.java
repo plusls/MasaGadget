@@ -1,6 +1,7 @@
 package com.plusls.MasaGadget.mixin.malilib.fastSwitchMasaConfigGui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.gui.IDropdownRenderer;
 import com.plusls.MasaGadget.mixin.accessor.AccessorWidgetListConfigOptions;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
@@ -11,12 +12,15 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
+import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
 import top.hendrixshen.magiclib.util.MiscUtil;
 
 /*
  * Modified from TweakerMore
  * https://github.com/Fallen-Breath/tweakermore/blob/stable/src/main/java/me/fallenbreath/tweakermore/mixins/core/gui/WidgetListBaseMixin.java
  */
+@Dependencies(and = @Dependency(ModInfo.MODMENU_MOD_ID))
 @Mixin(value = WidgetListBase.class, priority = 1100)
 public abstract class MixinWidgetListBase<TYPE, WIDGET extends WidgetListEntryBase<TYPE>> {
     private boolean masa_gadget$shouldRenderDropdownListAgain = false;
