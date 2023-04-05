@@ -17,12 +17,12 @@ import net.minecraft.network.chat.MutableComponent;
 //#endif
 
 public class ModInfo {
-
-    public static final String TWEAKEROO_MOD_ID = "tweakeroo";
-    public static final String MINIHUD_MOD_ID = "minihud";
-    public static final String LITEMATICA_MOD_ID = "litematica";
     public static final String ITEMSCROLLER_MOD_ID = "itemscroller";
+    public static final String LITEMATICA_MOD_ID = "litematica";
+    public static final String MINIHUD_MOD_ID = "minihud";
     public static final String MODMENU_MOD_ID = "modmenu";
+    public static final String OMMC_MOD_ID = "ommc";
+    public static final String TWEAKEROO_MOD_ID = "tweakeroo";
     public static String MOD_ID = "@MOD_IDENTIFIER@";
     public static final String CURRENT_MOD_ID = "@MOD_IDENTIFIER@-@MINECRAFT_VERSION_IDENTIFY@";
     public static final String MOD_NAME = FabricLoader.getInstance().getModContainer(CURRENT_MOD_ID)

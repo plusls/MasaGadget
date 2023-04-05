@@ -28,6 +28,8 @@ import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.compat.minecraft.api.network.chat.StyleCompatApi;
+import top.hendrixshen.magiclib.util.FabricUtil;
+import top.hendrixshen.magiclib.util.InfoUtil;
 
 import java.util.Objects;
 
@@ -134,18 +136,11 @@ public class SearchMobSpawnPointUtil {
         } else {
             // for ommc parser
             text = ModInfo.translatable("message.spawnPos", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
-            String message = String.format("/highlightWaypoint %d %d %d", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
-            //#if MC >= 11903
-            player.connection.sendChat(message);
-            //#elseif MC >= 11902
-            //$$ ClientChatPreview ccp = new ClientChatPreview(Minecraft.getInstance());
-            //$$ Component component = Util.mapNullable(ccp.pull(message), ClientChatPreview.Preview::response);
-            //$$ player.chatSigned(message, component);
-            //#else
-            //$$ player.chat(message);
-            //#endif
+            if (FabricUtil.isModLoaded(ModInfo.OMMC_MOD_ID)) {
+                InfoUtil.sendCommand(String.format("/highlightWaypoint %d %d %d", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()));
+            }
         }
-        Objects.requireNonNull(Minecraft.getInstance().player).displayClientMessage(text, false);
+        InfoUtil.displayChatMessage(text);
     }
 
     private static double squaredDistanceTo(int x, int y, int z, Vec3 vec3d) {
