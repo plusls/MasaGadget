@@ -137,7 +137,7 @@ public class SearchMobSpawnPointUtil {
             // for ommc parser
             text = ModInfo.translatable("message.spawnPos", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
             if (FabricUtil.isModLoaded(ModInfo.OMMC_MOD_ID)) {
-                InfoUtil.sendCommand(String.format("/highlightWaypoint %d %d %d", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()));
+                InfoUtil.sendCommand(String.format("highlightWaypoint %d %d %d", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()));
             }
         }
         InfoUtil.displayChatMessage(text);
