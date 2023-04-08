@@ -41,7 +41,7 @@ jar {
         }
     }
 
-    from("${rootDir}/LICENSE")
+    from("../LICENSE")
     from("build/tmp/submods")
 }
 
@@ -75,7 +75,7 @@ processResources {
 
 publishing {
     publications {
-        create("mavenJava", MavenPublication) {
+        register("mavenJava", MavenPublication) {
             artifactId("${project.mod_id}")
             version("${rootProject.getMavenArtifactVersion()}")
             from(components.java)
