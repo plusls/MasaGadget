@@ -5,7 +5,9 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Position;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import org.joml.Matrix4f;
 
@@ -20,11 +22,14 @@ public class RenderUtil {
                                           EntityRenderDispatcher entityRenderDispatcher,
                                           Component text, float height, boolean seeThrough) {
         if (entityRenderDispatcher.distanceToSqr(entity) <= 4096.0D) {
+            Position camPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+            Position eysPos = entity.getEyePosition(0);
+            float xAngle = (float) Mth.atan2(camPos.z() - eysPos.z(), camPos.x() - eysPos.x());
+            float YAngle = (float) Mth.atan2(camPos.x() - eysPos.x(), camPos.z() - eysPos.z());
             matrixStack.pushPose();
-            matrixStack.translate(0, height, 0);
+            matrixStack.translate(0.6 * Mth.cos(xAngle), height, 0.6 * Mth.cos(YAngle));
             matrixStack.mulPose(entityRenderDispatcher.cameraOrientation());
             matrixStack.scale(-0.018F, -0.018F, -0.018F);
-            matrixStack.translate(0, 0, 33);
             renderText(matrixStack, text, seeThrough);
             matrixStack.popPose();
         }
