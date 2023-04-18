@@ -13,7 +13,6 @@
     "accessor.AccessorWidgetListConfigOptions",
     "accessor.AccessorZombieVillager",
     "event.disconnect.MixinMinecraftClient",
-    "event.render.MixinEntityRenderer",
     "generic.autoSyncEntityData.MixinClientPlayNetworkHandler",
     "generic.autoSyncEntityData.MixinVillagerEntity",
     "generic.autoSyncEntityData.MixinZombieVillagerEntity",
