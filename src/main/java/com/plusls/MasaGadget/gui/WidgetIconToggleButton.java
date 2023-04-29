@@ -8,6 +8,10 @@ import fi.dy.masa.malilib.render.RenderUtils;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+//#if MC > 11904
+//$$ import net.minecraft.client.gui.GuiGraphics;
+//#endif
+
 public class WidgetIconToggleButton extends WidgetHoverInfo {
     protected final TooltipSupplier tooltipSupplier;
     protected final Consumer<Boolean> onPress;
@@ -26,13 +30,14 @@ public class WidgetIconToggleButton extends WidgetHoverInfo {
         this.icon = icon;
     }
 
-
     @Override
-    //#if MC > 11502
-    public void render(int mouseX, int mouseY, boolean selected, PoseStack matrixStack) {
+    //#if MC > 11904
+    //$$ public void render(int mouseX, int mouseY, boolean selected, GuiGraphics gui) {
+    //#elseif MC > 11502
+    public void render(int mouseX, int mouseY, boolean selected, PoseStack poseStack) {
         //#else
         //$$ public void render(int mouseX, int mouseY, boolean selected) {
-        //$$ PoseStack matrixStack = new PoseStack();
+        //$$ PoseStack poseStack = new PoseStack();
         //#endif
         if (!shouldEnable.test(this)) {
             return;
@@ -42,7 +47,7 @@ public class WidgetIconToggleButton extends WidgetHoverInfo {
         icon.renderAt(this.x, this.y, (float) this.zLevel, this.status, this.isMouseOver(mouseX, mouseY));
 
         if (this.isMouseOver(mouseX, mouseY)) {
-            RenderUtils.drawOutlinedBox(this.x, this.y, this.width, this.height, 549503168, -520093697);
+            RenderUtils.drawOutlinedBox(this.x, this.y, this.width, this.height, 0x20C0C0C0, -520093697);
         }
     }
 
@@ -58,14 +63,18 @@ public class WidgetIconToggleButton extends WidgetHoverInfo {
     }
 
     @Override
-    //#if MC > 11502
-    public void postRenderHovered(int mouseX, int mouseY, boolean selected, PoseStack matrixStack) {
+    //#if MC > 11904
+    //$$ public void postRenderHovered(int mouseX, int mouseY, boolean selected, GuiGraphics gui) {
+    //#elseif MC > 11502
+    public void postRenderHovered(int mouseX, int mouseY, boolean selected, PoseStack poseStack) {
         //#else
         //$$ public void postRenderHovered(int mouseX, int mouseY, boolean selected) {
         //#endif
         if (shouldEnable.test(this)) {
-            //#if MC > 11502
-            super.postRenderHovered(mouseX, mouseY, selected, matrixStack);
+            //#if MC > 11904
+            //$$ super.postRenderHovered(mouseX, mouseY, selected, gui);
+            //#elseif MC > 11502
+            super.postRenderHovered(mouseX, mouseY, selected, poseStack);
             //#else
             //$$ super.postRenderHovered(mouseX, mouseY, selected);
             //#endif

@@ -93,7 +93,7 @@ public class PcaSyncProtocol {
         if (player == null) {
             return;
         }
-        Level world = player.level;
+        Level world = player.getLevelCompat();
         if (!world.getDimensionLocation().equals(buf.readResourceLocation())) {
             return;
         }
@@ -144,7 +144,7 @@ public class PcaSyncProtocol {
         if (player == null) {
             return;
         }
-        Level world = player.level;
+        Level world = player.getLevelCompat();
         if (!world.getDimensionLocation().equals(buf.readResourceLocation())) {
             return;
         }

@@ -13,11 +13,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
 
+//#if MC > 11904
+//$$ import net.minecraft.client.gui.GuiGraphics;
+//#endif
+
 @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID))
 @Mixin(value = InventoryOverlay.class, remap = false)
 public class MixinInventoryOverlay {
     @Inject(method = "renderStackAt", at = @At(value = "RETURN"))
+    //#if MC > 11904
+    //$$ private static void addStackToolTip(ItemStack stack, float x, float y, float scale, Minecraft mc, GuiGraphics gui, CallbackInfo ci) {
+    //#else
     private static void addStackToolTip(ItemStack stack, float x, float y, float scale, Minecraft mc, CallbackInfo ci) {
+    //#endif
         if (Configs.inventoryPreviewSupportSelect) {
             InventoryOverlayRenderHandler.instance.updateState((int) x, (int) y, stack);
         }

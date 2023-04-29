@@ -1,6 +1,5 @@
 package com.plusls.MasaGadget.mixin.malilib.fastSwitchMasaConfigGui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.gui.IDropdownRenderer;
 import com.plusls.MasaGadget.mixin.accessor.AccessorWidgetListConfigOptions;
@@ -15,6 +14,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
 import top.hendrixshen.magiclib.util.MiscUtil;
+
+//#if MC > 11904
+//$$ import net.minecraft.client.gui.GuiGraphics;
+//#elseif MC > 11502
+import com.mojang.blaze3d.vertex.PoseStack;
+//#endif
 
 /*
  * Modified from TweakerMore
@@ -33,7 +38,10 @@ public abstract class MixinWidgetListBase<TYPE, WIDGET extends WidgetListEntryBa
             method = "drawContents",
             at = @At(
                     value = "INVOKE",
-                    //#if MC > 11502
+                    //#if MC > 11904
+                    //$$ target = "Lfi/dy/masa/malilib/gui/widgets/WidgetBase;postRenderHovered(IIZLnet/minecraft/client/gui/GuiGraphics;)V",
+                    //$$ remap = true
+                    //#elseif MC > 11502
                     target = "Lfi/dy/masa/malilib/gui/widgets/WidgetBase;postRenderHovered(IIZLcom/mojang/blaze3d/vertex/PoseStack;)V",
                     remap = true
                     //#else
@@ -43,7 +51,10 @@ public abstract class MixinWidgetListBase<TYPE, WIDGET extends WidgetListEntryBa
             ),
             remap = false
     )
-    //#if MC > 11502
+    //#if MC > 11904
+    //$$ private void drawDropDownListAgainBeforeHover(GuiGraphics gui, int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
+    //$$     this.masa_gadget$renderDropdownListAgain(gui, mouseX, mouseY);
+    //#elseif MC > 11502
     private void drawDropDownListAgainBeforeHover(PoseStack poseStack, int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
         this.masa_gadget$renderDropdownListAgain(poseStack, mouseX, mouseY);
     //#else
@@ -59,7 +70,10 @@ public abstract class MixinWidgetListBase<TYPE, WIDGET extends WidgetListEntryBa
             ),
             remap = false
     )
-    //#if MC > 11502
+    //#if MC > 11904
+    //$$ private void drawDropDownListAgainAfterHover(GuiGraphics gui, int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
+    //$$     this.masa_gadget$renderDropdownListAgain(gui, mouseX, mouseY);
+    //#elseif MC > 11502
     private void drawDropDownListAgainAfterHover(PoseStack poseStack, int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
         this.masa_gadget$renderDropdownListAgain(poseStack, mouseX, mouseY);
     //#else
@@ -69,7 +83,9 @@ public abstract class MixinWidgetListBase<TYPE, WIDGET extends WidgetListEntryBa
     }
 
     @SuppressWarnings("ConstantConditions")
-    //#if MC > 11502
+    //#if MC > 11904
+    //$$ private void masa_gadget$renderDropdownListAgain(GuiGraphics gui, int mouseX, int mouseY) {
+    //#elseif MC > 11502
     private void masa_gadget$renderDropdownListAgain(PoseStack poseStack, int mouseX, int mouseY) {
     //#else
     //$$ private void masa_gadget$renderDropdownListAgain(int mouseX, int mouseY) {
@@ -80,7 +96,9 @@ public abstract class MixinWidgetListBase<TYPE, WIDGET extends WidgetListEntryBa
             }
             GuiConfigsBase guiConfig = ((AccessorWidgetListConfigOptions) this).getParent();
 
-            //#if MC > 11502
+            //#if MC > 11904
+            //$$ ((IDropdownRenderer)guiConfig).masa_gad_get$renderHovered(gui ,mouseX, mouseY);
+            //#elseif MC > 11502
             ((IDropdownRenderer)guiConfig).masa_gad_get$renderHovered(poseStack ,mouseX, mouseY);
             //#else
             //$$ ((IDropdownRenderer)guiConfig).masa_gad_get$renderHovered(mouseX, mouseY);

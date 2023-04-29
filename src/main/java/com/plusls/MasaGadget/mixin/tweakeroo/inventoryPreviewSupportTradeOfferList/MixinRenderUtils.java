@@ -22,9 +22,23 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
 
+//#if MC > 11904
+//$$ import net.minecraft.client.gui.GuiGraphics;
+//$$ import org.spongepowered.asm.mixin.injection.Inject;
+//$$ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+//#endif
+
 @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID))
 @Mixin(value = RenderUtils.class, remap = false)
 public class MixinRenderUtils {
+    //#if MC > 11904
+    //$$ private static GuiGraphics masa_gadget$gui;
+    //$$
+    //$$ @Inject(method = "renderInventoryOverlay", at = @At("HEAD"))
+    //$$ private static void intercept(Minecraft mc, GuiGraphics gui, CallbackInfo ci) {
+    //$$     masa_gadget$gui = gui;
+    //$$ }
+    //#endif
 
     private static final int MAX_TRADE_OFFER_SIZE = 9;
 
@@ -67,7 +81,11 @@ public class MixinRenderUtils {
         fi.dy.masa.malilib.render.RenderUtils.color(colors[0], colors[1], colors[2], 1.0F);
         InventoryOverlay.renderInventoryBackground(type, x, y, MAX_TRADE_OFFER_SIZE, MAX_TRADE_OFFER_SIZE, Minecraft.getInstance());
         InventoryOverlay.renderInventoryStacks(type, simpleInventory, x + slotOffsetX,
+                //#if MC > 11904
+                //$$ y + slotOffsetY, MAX_TRADE_OFFER_SIZE, 0, MAX_TRADE_OFFER_SIZE, Minecraft.getInstance(), masa_gadget$gui);
+                //#else
                 y + slotOffsetY, MAX_TRADE_OFFER_SIZE, 0, MAX_TRADE_OFFER_SIZE, Minecraft.getInstance());
+                //#endif
         fi.dy.masa.malilib.render.RenderUtils.color(1.0F, 1.0F, 1.0F, 1.0F);
         return inv;
     }

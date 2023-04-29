@@ -5,6 +5,10 @@ import fi.dy.masa.malilib.gui.widgets.WidgetLabel;
 import fi.dy.masa.malilib.render.RenderUtils;
 import net.minecraft.client.Minecraft;
 
+//#if MC > 11904
+//$$ import net.minecraft.client.gui.GuiGraphics;
+//#endif
+
 public class ScalableWidgetLabel extends WidgetLabel {
     public float scale;
 
@@ -14,14 +18,17 @@ public class ScalableWidgetLabel extends WidgetLabel {
     }
 
     @Override
-    //#if MC > 11502
-    public void render(int mouseX, int mouseY, boolean selected, PoseStack matrixStack) {
+    //#if MC > 11904
+    //$$ public void render(int mouseX, int mouseY, boolean selected, GuiGraphics gui) {
+    //$$     PoseStack poseStack = gui.pose();
+    //#elseif MC > 11502
+    public void render(int mouseX, int mouseY, boolean selected, PoseStack poseStack) {
         //#else
         //$$ public void render(int mouseX, int mouseY, boolean selected) {
-        //$$ PoseStack matrixStack = new PoseStack();
+        //$$ PoseStack poseStack = new PoseStack();
         //#endif
         if (this.visible) {
-            matrixStack.pushPose();
+            poseStack.pushPose();
             RenderUtils.setupBlend();
             this.drawLabelBackground();
 
@@ -32,15 +39,15 @@ public class ScalableWidgetLabel extends WidgetLabel {
             for (int i = 0; i < this.labels.size(); ++i) {
                 String text = this.labels.get(i);
                 if (this.centered) {
-                    matrixStack.translate(this.x + this.width / 2.0f - this.getStringWidth(text) / 2.0f, yTextStart + i * fontHeight, 0);
+                    poseStack.translate(this.x + this.width / 2.0f - this.getStringWidth(text) / 2.0f, yTextStart + i * fontHeight, 0);
                 } else {
-                    matrixStack.translate(this.x, yTextStart + i * fontHeight, 0);
+                    poseStack.translate(this.x, yTextStart + i * fontHeight, 0);
                 }
-                matrixStack.scale(scale, scale, scale);
-                Minecraft.getInstance().font.drawInBatch(text, 0, 0, this.textColor, true, matrixStack.last().pose(),
+                poseStack.scale(scale, scale, scale);
+                Minecraft.getInstance().font.drawInBatch(text, 0, 0, this.textColor, true, poseStack.last().pose(),
                         false, 0, 0xf000f0);
             }
-            matrixStack.popPose();
+            poseStack.popPose();
         }
     }
 }

@@ -28,6 +28,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+//#if MC > 11904
+//$$ import net.minecraft.client.gui.GuiGraphics;
+//#endif
+
 //#if MC <= 11605
 //$$ import org.lwjgl.opengl.GL11;
 //#endif
@@ -102,11 +106,16 @@ public class InventoryOverlayRenderHandler {
     }
 
     public <T> void render(T obj) {
-        PoseStack matrixStack = (PoseStack) obj;
+        //#if MC > 11904
+        //$$ GuiGraphics gui = (GuiGraphics) obj;
+        //$$ PoseStack poseStack = gui.pose();
+        //#else
+        PoseStack poseStack = (PoseStack) obj;
+        //#endif
         // fuck mojang
         // for 1.18
         // 不添加会渲染错误，不知道麻将哪里 pop 了没有 apply
-        //#if MC > 11605
+        //#if MC > 11605 && MC < 12000
         RenderSystem.applyModelViewMatrix();
         //#endif
 
@@ -125,12 +134,20 @@ public class InventoryOverlayRenderHandler {
                     if (selectInventory) {
                         if (itemStack.getItem() instanceof BlockItem &&
                                 ((BlockItem) itemStack.getItem()).getBlock() instanceof ShulkerBoxBlock) {
-                            renderSelectedRect(matrixStack, renderX, renderY);
+                            //#if MC > 11904
+                            //$$ gui.fill(renderX, renderY, renderX + 16, renderY + 16, 0x80ffffff, 0x80ffffff);
+                            //#else
+                            renderSelectedRect(poseStack, renderX, renderY);
+                            //#endif
                             // 盒子预览
                             renderingSubInventory = true;
                             RenderUtils.renderShulkerBoxPreview(itemStack,
                                     GuiUtils.getScaledWindowWidth() / 2 - 96,
+                                    //#if MC > 11904
+                                    //$$ GuiUtils.getScaledWindowHeight() / 2 + 30, true, gui);
+                                    //#else
                                     GuiUtils.getScaledWindowHeight() / 2 + 30, true);
+                                    //#endif
                             renderingSubInventory = false;
                             if (subSelectedIdx != UN_SELECTED) {
                                 if (subCurrentIdx != 0) {
@@ -142,12 +159,17 @@ public class InventoryOverlayRenderHandler {
                                         }
                                     } else {
                                         if (subItemStack != null) {
-                                            matrixStack.pushPose();
-                                            matrixStack.translate(0, 0, 400);
+                                            poseStack.pushPose();
+                                            poseStack.translate(0, 0, 400);
                                             ModInfo.LOGGER.debug("subRenderX: {} subRenderY: {}", subRenderX, subRenderY);
-                                            renderSelectedRect(matrixStack, subRenderX, subRenderY);
-                                            renderOrderedTooltip(matrixStack, subItemStack, subRenderX, subRenderY + 8);
-                                            matrixStack.popPose();
+                                            //#if MC > 11904
+                                            //$$ gui.fill(subRenderX, subRenderY, subRenderX + 16, subRenderY + 16, 0x80ffffff, 0x80ffffff);
+                                            //$$ gui.renderTooltip(Minecraft.getInstance().font, subItemStack, subRenderX, subRenderY + 8);
+                                            //#else
+                                            renderSelectedRect(poseStack, subRenderX, subRenderY);
+                                            renderOrderedTooltip(poseStack, subItemStack, subRenderX, subRenderY + 8);
+                                            //#endif
+                                            poseStack.popPose();
 
                                         } else {
                                             ModInfo.LOGGER.debug("InventoryOverlayRenderHandler sub wtf???");
@@ -164,8 +186,13 @@ public class InventoryOverlayRenderHandler {
                     }
                     if (!selectInventory) {
                         ModInfo.LOGGER.debug("renderX: {} renderY: {}", renderX, renderY);
-                        renderSelectedRect(matrixStack, renderX, renderY);
-                        renderOrderedTooltip(matrixStack, itemStack, renderX, renderY + 8);
+                        //#if MC > 11904
+                        //$$ gui.fill(renderX, renderY, renderX + 16, renderY + 16, 0x80ffffff, 0x80ffffff);
+                        //$$ gui.renderTooltip(Minecraft.getInstance().font, itemStack, renderX, renderY + 8);
+                        //#else
+                        renderSelectedRect(poseStack, renderX, renderY);
+                        renderOrderedTooltip(poseStack, itemStack, renderX, renderY + 8);
+                        //#endif
                     }
 
                 } else {
