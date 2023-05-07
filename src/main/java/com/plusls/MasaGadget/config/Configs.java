@@ -223,7 +223,11 @@ public class Configs {
 
         openConfigGui.getKeybind().setCallback((keyAction, iKeybind) -> {
             GuiConfigs screen = GuiConfigs.getInstance();
-            screen.setParentGui(Minecraft.getInstance().screen);
+            //#if MC > 11903 && MC < 12000
+            screen.setParent(Minecraft.getInstance().screen);
+            //#else
+            //$$ screen.setParentGui(Minecraft.getInstance().screen);
+            //#endif
             Minecraft.getInstance().setScreen(screen);
             return true;
         });

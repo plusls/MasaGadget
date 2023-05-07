@@ -34,34 +34,37 @@ public abstract class MixinWidgetListBase<TYPE, WIDGET extends WidgetListEntryBa
     private void drawTweakerMoreConfigGuiDropDownListSetFlag(CallbackInfo ci) {
         this.masa_gadget$shouldRenderDropdownListAgain = true;
     }
-    @Inject(
-            method = "drawContents",
-            at = @At(
-                    value = "INVOKE",
-                    //#if MC > 11904
-                    //$$ target = "Lfi/dy/masa/malilib/gui/widgets/WidgetBase;postRenderHovered(IIZLnet/minecraft/client/gui/GuiGraphics;)V",
-                    //$$ remap = true
-                    //#elseif MC > 11502
-                    target = "Lfi/dy/masa/malilib/gui/widgets/WidgetBase;postRenderHovered(IIZLcom/mojang/blaze3d/vertex/PoseStack;)V",
-                    remap = true
-                    //#else
-                    //$$ target = "Lfi/dy/masa/malilib/gui/widgets/WidgetBase;postRenderHovered(IIZ)V",
-                    //$$ remap = false
-                    //#endif
-            ),
-            remap = false
-    )
+
+    //#if MC > 11903 && MC < 12000
+    //$$ @Inject(
+    //$$         method = "drawContents",
+    //$$         at = @At(
+    //$$                 value = "INVOKE",
+    //#if MC > 11904
+    //$$                 target = "Lfi/dy/masa/malilib/gui/widgets/WidgetBase;postRenderHovered(IIZLnet/minecraft/client/gui/GuiGraphics;)V",
+    //$$                 remap = true
+    //#elseif MC > 11502
+    //$$                 target = "Lfi/dy/masa/malilib/gui/widgets/WidgetBase;postRenderHovered(IIZLcom/mojang/blaze3d/vertex/PoseStack;)V",
+    //$$                 remap = true
+    //#else
+    //$$                 target = "Lfi/dy/masa/malilib/gui/widgets/WidgetBase;postRenderHovered(IIZ)V",
+    //$$                 remap = false
+    //#endif
+    //$$         ),
+    //$$         remap = false
+    //$$ )
     //#if MC > 11904
     //$$ private void drawDropDownListAgainBeforeHover(GuiGraphics gui, int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
     //$$     this.masa_gadget$renderDropdownListAgain(gui, mouseX, mouseY);
     //#elseif MC > 11502
-    private void drawDropDownListAgainBeforeHover(PoseStack poseStack, int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
-        this.masa_gadget$renderDropdownListAgain(poseStack, mouseX, mouseY);
+    //$$ private void drawDropDownListAgainBeforeHover(PoseStack poseStack, int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
+    //$$     this.masa_gadget$renderDropdownListAgain(poseStack, mouseX, mouseY);
     //#else
     //$$ private void drawTweakerMoreConfigGuiDropDownListAgainBeforeHover(int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
     //$$     this.masa_gadget$renderDropdownListAgain(mouseX, mouseY);
     //#endif
-    }
+    //$$ }
+    //#endif
 
     @Inject(
             method = "drawContents",
