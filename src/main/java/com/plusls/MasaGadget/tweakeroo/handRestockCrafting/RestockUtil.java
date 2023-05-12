@@ -49,16 +49,15 @@ public class RestockUtil {
             if (ItemStackCompatApi.isSameItemSameTags(recipe.getResult(), itemStack)) {
                 InventoryUtils.tryMoveItemsToFirstCraftingGrid(recipe, gui, false);
                 mc.gameMode.handleInventoryMouseClick(player.inventoryMenu.containerId, 0, 0, ClickType.PICKUP, player);
-                //#if MC > 11605
-                if (player.inventoryMenu.getCarried()
-                        //#else
-                        //$$ if(player.getInventory().getCarried()
-                        //#endif
-                        //#if MC >= 11903
-                        .sameItem(itemStack)) {
-                        //#else
-                        //$$ .sameItemStackIgnoreDurability(itemStack)) {
-                        //#endif
+                //#if MC > 11904
+                //$$ if (ItemStack.isSameItem(player.inventoryMenu.getCarried(), itemStack)) {
+                //#elseif MC > 11902
+                if (player.inventoryMenu.getCarried().sameItem(itemStack)) {
+                //#elseif MC > 11605
+                //$$ if (player.inventoryMenu.getCarried().sameItemStackIgnoreDurability(itemStack)) {
+                //#else
+                //$$ if (player.getInventory().getCarried().sameItemStackIgnoreDurability(itemStack)) {
+                //#endif
                     mc.gameMode.handleInventoryMouseClick(player.inventoryMenu.containerId,
                             hand == InteractionHand.MAIN_HAND ? player.getInventory().selected + 36 : 45,
                             0, ClickType.PICKUP, player);

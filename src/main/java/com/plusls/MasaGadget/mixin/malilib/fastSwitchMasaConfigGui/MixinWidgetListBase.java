@@ -35,7 +35,7 @@ public abstract class MixinWidgetListBase<TYPE, WIDGET extends WidgetListEntryBa
         this.masa_gadget$shouldRenderDropdownListAgain = true;
     }
 
-    //#if MC > 11903 && MC < 12000
+    //#if MC < 11904
     //$$ @Inject(
     //$$         method = "drawContents",
     //$$         at = @At(
