@@ -10,6 +10,8 @@
 
 [中文](./README.md)
 
+❗Before reporting a problem, be sure to try the latest [beta version](https://github.com/plusls/MasaGadget/actions) to check if the problem still exists.
+
 Added some features to the Masa collection of mods.
 
 The default hotkey to open the in-game config GUI is **G + C**.

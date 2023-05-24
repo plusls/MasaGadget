@@ -10,6 +10,8 @@
 
 [English](./README_EN.md)
 
+❗在报告问题前，请务必尝试最新[测试版](https://github.com/plusls/MasaGadget/actions)，检查问题是否依然存在。
+
 为 Masa 系列模组添加了一些特性。
 
 默认使用 **G + C** 打开设置界面。
