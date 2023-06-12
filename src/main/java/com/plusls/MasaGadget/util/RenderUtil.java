@@ -51,7 +51,7 @@ public class RenderUtil {
     public static void renderText(PoseStack matrixStack, Component text, boolean seeThrough) {
 
         //#if MC <= 11502
-        // 不加的话 minihud 渲染球体时会导致 bug
+        //$$ // 不加的话 minihud 渲染球体时会导致 bug
         //$$ RenderSystem.disableLighting();
         //#endif
         matrixStack.pushPose();

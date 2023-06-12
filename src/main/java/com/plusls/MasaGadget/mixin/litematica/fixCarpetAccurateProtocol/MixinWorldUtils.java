@@ -147,7 +147,7 @@ public class MixinWorldUtils {
                     mc.player.setYRot(newSide.toYRot());
                 }
             }
-            mc.player.connection.send(new ServerboundMovePlayerPacket.Rot(mc.player.getYRot(), mc.player.getXRot(), mc.player.isOnGround()));
+            mc.player.connection.send(new ServerboundMovePlayerPacket.Rot(mc.player.getYRot(), mc.player.getXRot(), mc.player.onGround()));
         }
 
         if (stateSchematic.getBlock() instanceof FenceGateBlock && stateSchematic.getValue(BlockStateProperties.OPEN)) {
@@ -213,7 +213,7 @@ public class MixinWorldUtils {
         // 让玩家看回原来的位置
         if (easyPlaceActionOldYaw.get() != null) {
             Objects.requireNonNull(mc.player).setYRot(easyPlaceActionOldYaw.get());
-            mc.player.connection.send(new ServerboundMovePlayerPacket.Rot(mc.player.getYRot(), mc.player.getXRot(), mc.player.isOnGround()));
+            mc.player.connection.send(new ServerboundMovePlayerPacket.Rot(mc.player.getYRot(), mc.player.getXRot(), mc.player.onGround()));
         }
     }
 }

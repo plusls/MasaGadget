@@ -18,21 +18,21 @@ import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
 
 //#if MC > 11904
-//$$ import net.minecraft.client.gui.GuiGraphics;
-//$$ import org.spongepowered.asm.mixin.injection.Inject;
-//$$ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import net.minecraft.client.gui.GuiGraphics;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //#endif
 
 @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID))
 @Mixin(value = RenderUtils.class, remap = false)
 public abstract class MixinRenderUtils {
     //#if MC > 11904
-    //$$ private static GuiGraphics masa_gadget$gui;
-    //$$
-    //$$ @Inject(method = "renderInventoryOverlay", at = @At("HEAD"))
-    //$$ private static void intercept(Minecraft mc, GuiGraphics gui, CallbackInfo ci) {
-    //$$     masa_gadget$gui = gui;
-    //$$ }
+    private static GuiGraphics masa_gadget$gui;
+
+    @Inject(method = "renderInventoryOverlay", at = @At("HEAD"))
+    private static void intercept(Minecraft mc, GuiGraphics gui, CallbackInfo ci) {
+        masa_gadget$gui = gui;
+    }
     //#endif
 
     @ModifyVariable(method = "renderInventoryOverlay",
@@ -59,9 +59,9 @@ public abstract class MixinRenderUtils {
             InventoryOverlay.renderInventoryBackground(type, x, y, 9, 27, Minecraft.getInstance());
             InventoryOverlay.renderInventoryStacks(type, playerEntity.getEnderChestInventory(), x + slotOffsetX,
                     //#if MC > 11904
-                    //$$ y + slotOffsetY, 9, 0, 27, Minecraft.getInstance(), masa_gadget$gui);
+                    y + slotOffsetY, 9, 0, 27, Minecraft.getInstance(), masa_gadget$gui);
                     //#else
-                    y + slotOffsetY, 9, 0, 27, Minecraft.getInstance());
+                    //$$ y + slotOffsetY, 9, 0, 27, Minecraft.getInstance());
                     //#endif
             fi.dy.masa.malilib.render.RenderUtils.color(1.0F, 1.0F, 1.0F, 1.0F);
         }

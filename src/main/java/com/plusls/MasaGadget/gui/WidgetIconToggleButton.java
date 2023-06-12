@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 //#if MC > 11904
-//$$ import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphics;
 //#endif
 
 public class WidgetIconToggleButton extends WidgetHoverInfo {
@@ -32,9 +32,9 @@ public class WidgetIconToggleButton extends WidgetHoverInfo {
 
     @Override
     //#if MC > 11904
-    //$$ public void render(int mouseX, int mouseY, boolean selected, GuiGraphics gui) {
+    public void render(int mouseX, int mouseY, boolean selected, GuiGraphics gui) {
     //#elseif MC > 11502
-    public void render(int mouseX, int mouseY, boolean selected, PoseStack poseStack) {
+    //$$ public void render(int mouseX, int mouseY, boolean selected, PoseStack poseStack) {
         //#else
         //$$ public void render(int mouseX, int mouseY, boolean selected) {
         //$$ PoseStack poseStack = new PoseStack();
@@ -64,17 +64,17 @@ public class WidgetIconToggleButton extends WidgetHoverInfo {
 
     @Override
     //#if MC > 11904
-    //$$ public void postRenderHovered(int mouseX, int mouseY, boolean selected, GuiGraphics gui) {
+    public void postRenderHovered(int mouseX, int mouseY, boolean selected, GuiGraphics gui) {
     //#elseif MC > 11502
-    public void postRenderHovered(int mouseX, int mouseY, boolean selected, PoseStack poseStack) {
+    //$$ public void postRenderHovered(int mouseX, int mouseY, boolean selected, PoseStack poseStack) {
         //#else
         //$$ public void postRenderHovered(int mouseX, int mouseY, boolean selected) {
         //#endif
         if (shouldEnable.test(this)) {
             //#if MC > 11904
-            //$$ super.postRenderHovered(mouseX, mouseY, selected, gui);
+            super.postRenderHovered(mouseX, mouseY, selected, gui);
             //#elseif MC > 11502
-            super.postRenderHovered(mouseX, mouseY, selected, poseStack);
+            //$$ super.postRenderHovered(mouseX, mouseY, selected, poseStack);
             //#else
             //$$ super.postRenderHovered(mouseX, mouseY, selected);
             //#endif

@@ -50,9 +50,9 @@ public class RestockUtil {
                 InventoryUtils.tryMoveItemsToFirstCraftingGrid(recipe, gui, false);
                 mc.gameMode.handleInventoryMouseClick(player.inventoryMenu.containerId, 0, 0, ClickType.PICKUP, player);
                 //#if MC > 11904
-                //$$ if (ItemStack.isSameItem(player.inventoryMenu.getCarried(), itemStack)) {
+                if (ItemStack.isSameItem(player.inventoryMenu.getCarried(), itemStack)) {
                 //#elseif MC > 11902
-                if (player.inventoryMenu.getCarried().sameItem(itemStack)) {
+                //$$ if (player.inventoryMenu.getCarried().sameItem(itemStack)) {
                 //#elseif MC > 11605
                 //$$ if (player.inventoryMenu.getCarried().sameItemStackIgnoreDurability(itemStack)) {
                 //#else

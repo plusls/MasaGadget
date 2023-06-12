@@ -6,7 +6,7 @@ import fi.dy.masa.malilib.render.RenderUtils;
 import net.minecraft.client.Minecraft;
 
 //#if MC > 11904
-//$$ import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphics;
 //#endif
 
 public class ScalableWidgetLabel extends WidgetLabel {
@@ -19,10 +19,10 @@ public class ScalableWidgetLabel extends WidgetLabel {
 
     @Override
     //#if MC > 11904
-    //$$ public void render(int mouseX, int mouseY, boolean selected, GuiGraphics gui) {
-    //$$     PoseStack poseStack = gui.pose();
+    public void render(int mouseX, int mouseY, boolean selected, GuiGraphics gui) {
+        PoseStack poseStack = gui.pose();
     //#elseif MC > 11502
-    public void render(int mouseX, int mouseY, boolean selected, PoseStack poseStack) {
+    //$$ public void render(int mouseX, int mouseY, boolean selected, PoseStack poseStack) {
         //#else
         //$$ public void render(int mouseX, int mouseY, boolean selected) {
         //$$ PoseStack poseStack = new PoseStack();

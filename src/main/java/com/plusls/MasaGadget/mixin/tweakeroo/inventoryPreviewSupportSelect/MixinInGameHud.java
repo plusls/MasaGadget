@@ -12,9 +12,9 @@ import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
 
 //#if MC > 11904
-//$$ import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphics;
 //#else
-import com.mojang.blaze3d.vertex.PoseStack;
+//$$ import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
 // 自己实现是为了调低优先级保证最后执行保证渲染在最上层
@@ -23,17 +23,17 @@ import com.mojang.blaze3d.vertex.PoseStack;
 public abstract class MixinInGameHud {
     @Inject(method = "render", at = @At("RETURN"))
     //#if MC > 11904
-    //$$ private void onGameOverlayPost(GuiGraphics gui, float f, CallbackInfo ci) {
+    private void onGameOverlayPost(GuiGraphics gui, float f, CallbackInfo ci) {
     //#elseif MC > 11502
-    private void onGameOverlayPost(PoseStack poseStack, float partialTicks, CallbackInfo ci) {
+    //$$ private void onGameOverlayPost(PoseStack poseStack, float partialTicks, CallbackInfo ci) {
         //#else
         //$$ private void onGameOverlayPost(float partialTicks, CallbackInfo ci) {
         //#endif
         if (Configs.inventoryPreviewSupportSelect) {
             //#if MC > 11904
-            //$$ InventoryOverlayRenderHandler.instance.render(gui);
+            InventoryOverlayRenderHandler.instance.render(gui);
             //#elseif MC > 11502
-            InventoryOverlayRenderHandler.instance.render(poseStack);
+            //$$ InventoryOverlayRenderHandler.instance.render(poseStack);
             //#else
             //$$ InventoryOverlayRenderHandler.instance.render(new PoseStack());
             //#endif

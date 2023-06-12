@@ -14,7 +14,7 @@ import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
 
 //#if MC > 11904
-//$$ import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphics;
 //#endif
 
 @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID))
@@ -22,9 +22,9 @@ import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
 public class MixinInventoryOverlay {
     @Inject(method = "renderStackAt", at = @At(value = "RETURN"))
     //#if MC > 11904
-    //$$ private static void addStackToolTip(ItemStack stack, float x, float y, float scale, Minecraft mc, GuiGraphics gui, CallbackInfo ci) {
+    private static void addStackToolTip(ItemStack stack, float x, float y, float scale, Minecraft mc, GuiGraphics gui, CallbackInfo ci) {
     //#else
-    private static void addStackToolTip(ItemStack stack, float x, float y, float scale, Minecraft mc, CallbackInfo ci) {
+    //$$ private static void addStackToolTip(ItemStack stack, float x, float y, float scale, Minecraft mc, CallbackInfo ci) {
     //#endif
         if (Configs.inventoryPreviewSupportSelect) {
             InventoryOverlayRenderHandler.instance.updateState((int) x, (int) y, stack);

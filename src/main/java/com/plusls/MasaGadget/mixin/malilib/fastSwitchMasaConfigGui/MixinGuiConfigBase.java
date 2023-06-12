@@ -21,9 +21,9 @@ import top.hendrixshen.magiclib.dependency.api.annotation.Dependencies;
 import top.hendrixshen.magiclib.dependency.api.annotation.Dependency;
 
 //#if MC > 11904
-//$$ import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11404
-import com.mojang.blaze3d.vertex.PoseStack;
+//$$ import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
 @Dependencies(and = @Dependency(ModInfo.MODMENU_MOD_ID))
@@ -58,9 +58,9 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
 
     @Override
     //#if MC > 11904
-    //$$ public void masa_gad_get$renderHovered(GuiGraphics gui, int mouseX, int mouseY) {
+    public void masa_gad_get$renderHovered(GuiGraphics gui, int mouseX, int mouseY) {
     //#elseif MC > 11502
-    public void masa_gad_get$renderHovered(PoseStack poseStack, int mouseX, int mouseY) {
+    //$$ public void masa_gad_get$renderHovered(PoseStack poseStack, int mouseX, int mouseY) {
     //#else
     //$$ public void masa_gad_get$renderHovered(int mouseX, int mouseY) {
     //#endif
@@ -68,9 +68,9 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
             return;
         }
         //#if MC > 11904
-        //$$ this.masa_gadget$masaModGuiList.render(mouseX, mouseY, false, gui);
+        this.masa_gadget$masaModGuiList.render(mouseX, mouseY, false, gui);
         //#elseif MC > 11502
-        this.masa_gadget$masaModGuiList.render(mouseX, mouseY, false, poseStack);
+        //$$ this.masa_gadget$masaModGuiList.render(mouseX, mouseY, false, poseStack);
         //#else
         //$$ this.masa_gadget$masaModGuiList.render(mouseX, mouseY, false);
         //#endif
@@ -78,9 +78,9 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
             this.hoveredWidget = this.masa_gadget$masaModGuiList;
         }
         //#if MC > 11904
-        //$$ this.drawHoveredWidget(mouseX, mouseY, gui);
+        this.drawHoveredWidget(mouseX, mouseY, gui);
         //#elseif MC > 11502
-        this.drawHoveredWidget(mouseX, mouseY, poseStack);
+        //$$ this.drawHoveredWidget(mouseX, mouseY, poseStack);
         //#else
         //$$ this.drawHoveredWidget(mouseX, mouseY);
         //#endif

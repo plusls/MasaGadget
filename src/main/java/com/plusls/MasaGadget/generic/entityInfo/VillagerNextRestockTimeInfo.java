@@ -13,7 +13,7 @@ public class VillagerNextRestockTimeInfo {
     public static Component getInfo(@NotNull Villager villager) {
         long nextRestockTime;
         long nextWorkTime;
-        long timeOfDay = villager.getLevel().getDayTime() % 24000;
+        long timeOfDay = villager.level().getDayTime() % 24000;
 
         if (timeOfDay >= 2000 && timeOfDay <= 9000) {
             nextWorkTime = 0;
@@ -27,12 +27,12 @@ public class VillagerNextRestockTimeInfo {
         if (numberOfRestocksToday == 0) {
             nextRestockTime = 0;
         } else if (numberOfRestocksToday < 2) {
-            nextRestockTime = Math.max(lastRestockGameTime + 2400 - villager.getLevel().getGameTime(), 0);
+            nextRestockTime = Math.max(lastRestockGameTime + 2400 - villager.level().getGameTime(), 0);
         } else {
             nextRestockTime = 0x7fffffffffffffffL;
         }
 
-        nextRestockTime = Math.min(nextRestockTime, Math.max(lastRestockGameTime + 12000L - villager.getLevel().getGameTime(), 0));
+        nextRestockTime = Math.min(nextRestockTime, Math.max(lastRestockGameTime + 12000L - villager.level().getGameTime(), 0));
 
         if (needsRestock(villager)) {
             if (timeOfDay + nextRestockTime > 8000) {
