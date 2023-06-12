@@ -12,6 +12,9 @@
 
 ❗在报告问题前，请务必尝试最新[测试版](https://github.com/plusls/MasaGadget/actions)，检查问题是否依然存在。
 
+♻注意: Minecraft 1.20 需要使用第三方的 [Malilib](https://github.com/Nyan-Work/malilib/releases/tag/1.20), [Tweakeroo](https://github.com/Nyan-Work/tweakeroo/releases/tag/1.20),
+[Litematica](https://github.com/Nyan-Work/litematica/releases/tag/1.20), [MiniHud](https://github.com/Nyan-Work/minihud/releases/tag/1.20), [ItemScroller](https://github.com/Nyan-Work/itemscroller/releases/tag/1.20).
+
 为 Masa 系列模组添加了一些特性。
 
 默认使用 **G + C** 打开设置界面。
@@ -400,7 +403,7 @@ ItemScroller 存储的配方编号，只支持 2x2 配方
 
 ### 支持
 
-当前主开发版本：1.19.4
+当前主开发版本：1.20
 
 并且使用 `预处理` 来兼容各版本。
 
@@ -414,6 +417,7 @@ ItemScroller 存储的配方编号，只支持 2x2 配方
 - Minecraft 1.19.2
 - Minecraft 1.19.3
 - Minecraft 1.19.4
+- Minecraft 1.20
 
 ### 混淆映射表
 

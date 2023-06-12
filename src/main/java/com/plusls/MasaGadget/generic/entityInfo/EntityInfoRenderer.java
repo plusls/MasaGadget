@@ -36,7 +36,7 @@ public class EntityInfoRenderer {
         for (Entity entity : EntityInfoRenderer.list) {
             if (entity instanceof Villager) {
                 Villager villager = ((Villager) entity);
-                TextRenderer renderer = new TextRenderer();
+                TextRenderer renderer = TextRenderer.create();
 
                 if (Configs.renderNextRestockTime) {
                     renderer.addLine(VillagerNextRestockTimeInfo.getInfo(villager));
@@ -47,15 +47,15 @@ public class EntityInfoRenderer {
                 }
 
                 EntityInfoRenderer.rotationAround(renderer, villager.getEyePosition(tickDelta), 0.7)
-                        .fontSize(0.015)
                         .bgColor((int) (Minecraft.getInstance().options.getBackgroundOpacity(0.25F) * 255.0F) << 24)
+                        .fontScale(0.015F)
                         .render(context);
             } else if (entity instanceof ZombieVillager) {
                 ZombieVillager zombieVillager = (ZombieVillager) entity;
-                EntityInfoRenderer.rotationAround(new TextRenderer(), zombieVillager.getEyePosition(tickDelta), 0.6)
+                EntityInfoRenderer.rotationAround(TextRenderer.create(), zombieVillager.getEyePosition(tickDelta), 0.6)
                         .text(ZombieVillagerConvertTimeInfo.getInfo(zombieVillager))
-                        .fontSize(0.015)
                         .bgColor((int) (Minecraft.getInstance().options.getBackgroundOpacity(0.25F) * 255.0F) << 24)
+                        .fontScale(0.015F)
                         .render(context);
             }
         }
