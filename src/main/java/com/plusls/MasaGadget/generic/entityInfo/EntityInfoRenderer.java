@@ -36,6 +36,18 @@ public class EntityInfoRenderer {
         for (Entity entity : EntityInfoRenderer.list) {
             if (entity instanceof Villager) {
                 Villager villager = ((Villager) entity);
+
+                // temp fix: fix wrong enhancement book render
+                if (Minecraft.getInstance().hasSingleplayerServer()) {
+                    try {
+                        Villager temp = (Villager) Minecraft.getInstance().getSingleplayerServer().getLevel(level.dimension()).getEntity(entity.getId());
+                        if (temp != null) {
+                            villager = temp;
+                        }
+                    } catch (Exception ignore) {
+                    }
+                }
+
                 TextRenderer renderer = TextRenderer.create();
 
                 if (Configs.renderNextRestockTime) {

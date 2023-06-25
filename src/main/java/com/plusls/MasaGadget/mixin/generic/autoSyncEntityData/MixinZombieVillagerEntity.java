@@ -22,7 +22,9 @@ public abstract class MixinZombieVillagerEntity extends Zombie {
 
     @Inject(method = "handleEntityEvent", at = @At(value = "RETURN"))
     private void syncVillagerData(byte status, CallbackInfo ci) {
-        if (!Configs.autoSyncEntityData || Minecraft.getInstance().hasSingleplayerServer() || !PcaSyncProtocol.enable) {
+        if (!Configs.autoSyncEntityData ||
+                Minecraft.getInstance().hasSingleplayerServer() ||
+                !PcaSyncProtocol.enable) {
             return;
         }
         if (status == 16) {

@@ -40,7 +40,9 @@ public class MixinClientPlayNetworkHandler {
 
     @Inject(method = "handleSoundEvent", at = @At(value = "RETURN"))
     private void syncVillagerData(ClientboundSoundPacket packet, CallbackInfo ci) {
-        if (!Configs.autoSyncEntityData || Minecraft.getInstance().hasSingleplayerServer() || !PcaSyncProtocol.enable) {
+        if (!Configs.autoSyncEntityData ||
+                Minecraft.getInstance().hasSingleplayerServer() ||
+                !PcaSyncProtocol.enable) {
             return;
         }
         ClientLevel clientWorld = Minecraft.getInstance().level;
