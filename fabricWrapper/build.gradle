@@ -5,11 +5,12 @@ plugins {
     id("maven-publish")
 }
 
-archivesBaseName("${project.mod_archives_base_name}")
 group(project.mod_maven_group)
-sourceCompatibility(JavaVersion.VERSION_1_8)
-targetCompatibility(JavaVersion.VERSION_1_8)
 version(project.parent.version)
+
+base {
+    archivesBaseName("${project.mod_archives_base_name}-all")
+}
 
 def fabric_subprojects = project.parent.subprojects.findAll({
     it.name != "fabricWrapper"
@@ -48,9 +49,11 @@ jar {
 processResources {
     // disable cache
     outputs.upToDateWhen { false }
-    var jars = []
+    ArrayList<?> mc_condition = []
+    ArrayList<?> jars = []
 
     fabric_subprojects.each({
+        mc_condition.add("${it.minecraft_dependency}")
         jars.add(["file": "META-INF/jars/${project.mod_archives_base_name}-${it.minecraft_version}-${project.version}.jar"])
     })
 
@@ -60,6 +63,7 @@ processResources {
 
     filesMatching("fabric.mod.json") {
         expand([
+                "minecraft_dependency": new JsonBuilder(mc_condition),
                 "magiclib_dependency" : project.magiclib_dependency,
                 "mod_description"     : project.mod_description,
                 "mod_homepage"        : project.mod_homepage,
@@ -71,6 +75,11 @@ processResources {
                 "sub_jars"            : new JsonBuilder(jars).toPrettyString(),
         ])
     }
+}
+
+java {
+    sourceCompatibility(JavaVersion.VERSION_1_8)
+    targetCompatibility(JavaVersion.VERSION_1_8)
 }
 
 publishing {

@@ -33,6 +33,7 @@
   },
   "depends": {
     "magiclib": ">=${magiclib_dependency}",
+    "minecraft": ${minecraft_dependency},
     "malilib": "*"
   },
   "custom": {

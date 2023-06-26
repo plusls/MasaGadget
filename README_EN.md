@@ -12,9 +12,6 @@
 
 ❗Before reporting a problem, be sure to try the latest [beta version](https://github.com/plusls/MasaGadget/actions) to check if the problem still exists.
 
-♻️Note: Minecraft 1.20 requires the use of a third-party port [Malilib](https://github.com/Nyan-Work/malilib/releases/tag/1.20), [Tweakeroo](https://github.com/Nyan-Work/tweakeroo/releases/tag/1.20),
-[Litematica](https://github.com/Nyan-Work/litematica/releases/tag/1.20), [MiniHud](https://github.com/Nyan-Work/minihud/releases/tag/1.20), [ItemScroller](https://github.com/Nyan-Work/itemscroller/releases/tag/1.20).
-
 Added some features to the Masa collection of mods.
 
 The default hotkey to open the in-game config GUI is **G + C**.
@@ -403,7 +400,7 @@ Recipe indexes in ItemScroller recipe storage. Note: only 2x2 recipes are suppor
 
 ### Support
 
-Current main development for Minecraft version: 1.20
+Current main development for Minecraft version: 1.20.1
 
 And use `preprocess` to be compatible with all versions.
 
@@ -417,7 +414,7 @@ And use `preprocess` to be compatible with all versions.
 - Minecraft 1.19.2
 - Minecraft 1.19.3
 - Minecraft 1.19.4
-- Minecraft 1.20
+- Minecraft 1.20.1
 
 ### Mappings
 

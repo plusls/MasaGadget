@@ -3,7 +3,9 @@ package com.plusls.MasaGadget.generic.entityInfo;
 import com.google.common.collect.Lists;
 import com.plusls.MasaGadget.config.Configs;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.core.Position;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.ZombieVillager;
@@ -35,7 +37,7 @@ public class EntityInfoRenderer {
     public static void render(Level level, RenderContext context, float tickDelta) {
         for (Entity entity : EntityInfoRenderer.list) {
             if (entity instanceof Villager) {
-                Villager villager = ((Villager) entity);
+                Villager villager = (Villager) EntityInfoRenderer.getEntityDataFromIntegratedServer(entity);
                 TextRenderer renderer = TextRenderer.create();
 
                 if (Configs.renderNextRestockTime) {
@@ -51,7 +53,7 @@ public class EntityInfoRenderer {
                         .fontScale(0.015F)
                         .render(context);
             } else if (entity instanceof ZombieVillager) {
-                ZombieVillager zombieVillager = (ZombieVillager) entity;
+                ZombieVillager zombieVillager = (ZombieVillager) EntityInfoRenderer.getEntityDataFromIntegratedServer(entity);
                 EntityInfoRenderer.rotationAround(TextRenderer.create(), zombieVillager.getEyePosition(tickDelta), 0.6)
                         .text(ZombieVillagerConvertTimeInfo.getInfo(zombieVillager))
                         .bgColor((int) (Minecraft.getInstance().options.getBackgroundOpacity(0.25F) * 255.0F) << 24)
@@ -68,5 +70,20 @@ public class EntityInfoRenderer {
         float xAngle = (float) Mth.atan2(camPos.z() - centerPos.z(), camPos.x() - centerPos.x());
         float yAngle = (float) Mth.atan2(camPos.x() - centerPos.x(), camPos.z() - centerPos.z());
         return renderer.pos(range * Mth.cos(xAngle) + centerPos.x(), centerPos.y(), range * Mth.cos(yAngle) + centerPos.z());
+    }
+
+    private static Entity getEntityDataFromIntegratedServer(Entity entity) {
+        IntegratedServer server = Minecraft.getInstance().getSingleplayerServer();
+
+        if (server == null) {
+            return entity;
+        }
+
+        //#if MC > 11502
+        ServerLevel level = server.getLevel(entity.getLevelCompat().dimension());
+        //#else
+        //$$ ServerLevel level = server.getLevel(entity.dimension);
+        //#endif
+        return level == null ? entity : level.getEntity(entity.getId());
     }
 }
