@@ -52,14 +52,10 @@ preprocess {
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def apiDependencies = [
-        ["curse.maven:itemscroller-242064"                   , "itemscroller", mcVersion < 12000, false],
-        ["curse.maven:litematica-308892"                     , "litematica"  , mcVersion < 12000, false],
-        ["curse.maven:minihud-244260"                        , "minihud"     , mcVersion < 12000, false],
-        ["curse.maven:tweakeroo-297344"                      , "tweakeroo"   , mcVersion < 12000, false],
-//        ["fi.dy.masa.itemscroller:itemscroller-fabric-1.20.1", "itemscroller", mcVersion > 11904, false],
-//        ["fi.dy.masa.litematica:litematica-fabric-1.20.1"    , "litematica"  , mcVersion > 11904, false],
-//        ["fi.dy.masa.minihud:minihud-fabric-1.20.1"          , "minihud"     , mcVersion > 11904, false],
-//        ["fi.dy.masa.tweakeroo:tweakeroo-fabric-1.20.1"      , "tweakeroo"   , mcVersion > 11904, false],
+        ["curse.maven:itemscroller-242064"                   , "itemscroller", true, false],
+        ["curse.maven:litematica-308892"                     , "litematica"  , true, false],
+        ["curse.maven:minihud-244260"                        , "minihud"     , true, false],
+        ["curse.maven:tweakeroo-297344"                      , "tweakeroo"   , true, false],
 ]
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
