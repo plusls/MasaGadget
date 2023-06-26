@@ -38,6 +38,7 @@ public class EntityInfoRenderer {
                 Villager villager = ((Villager) entity);
 
                 // temp fix: fix wrong enhancement book render
+                //#if MC>11920
                 if (Minecraft.getInstance().hasSingleplayerServer()) {
                     try {
                         Villager temp = (Villager) Minecraft.getInstance().getSingleplayerServer().getLevel(level.dimension()).getEntity(entity.getId());
@@ -47,6 +48,7 @@ public class EntityInfoRenderer {
                     } catch (Exception ignore) {
                     }
                 }
+                //#endif
 
                 TextRenderer renderer = TextRenderer.create();
 

@@ -27,6 +27,16 @@ repositories {
 
     maven {
         name("Nyan Maven")
+        //url("https://maven.hendrixshen.top")
+        url("https://s01.oss.sonatype.org/content/repositories/snapshots")
+
+        content {
+            includeGroup("top.hendrixshen.magiclib")
+        }
+    }
+
+    maven {
+        name("Magiclib")
         url("https://maven.hendrixshen.top")
     }
 
@@ -46,10 +56,10 @@ def apiDependencies = [
         ["curse.maven:litematica-308892"                     , "litematica"  , mcVersion < 12000, false],
         ["curse.maven:minihud-244260"                        , "minihud"     , mcVersion < 12000, false],
         ["curse.maven:tweakeroo-297344"                      , "tweakeroo"   , mcVersion < 12000, false],
-        ["fi.dy.masa.itemscroller:itemscroller-fabric-1.20.0", "itemscroller", mcVersion > 11904, false],
-        ["fi.dy.masa.litematica:litematica-fabric-1.20.0"    , "litematica"  , mcVersion > 11904, false],
-        ["fi.dy.masa.minihud:minihud-fabric-1.20.0"          , "minihud"     , mcVersion > 11904, false],
-        ["fi.dy.masa.tweakeroo:tweakeroo-fabric-1.20.0"      , "tweakeroo"   , mcVersion > 11904, false],
+//        ["fi.dy.masa.itemscroller:itemscroller-fabric-1.20.1", "itemscroller", mcVersion > 11904, false],
+//        ["fi.dy.masa.litematica:litematica-fabric-1.20.1"    , "litematica"  , mcVersion > 11904, false],
+//        ["fi.dy.masa.minihud:minihud-fabric-1.20.1"          , "minihud"     , mcVersion > 11904, false],
+//        ["fi.dy.masa.tweakeroo:tweakeroo-fabric-1.20.1"      , "tweakeroo"   , mcVersion > 11904, false],
 ]
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
@@ -67,7 +77,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:${project.lombok_version}")
 
     // Dependency
-    modImplementation("top.hendrixshen:magiclib-${project.minecraft_version.replace(".", "_")}:${project.magiclib_version}") {
+    modImplementation("top.hendrixshen.magiclib:magiclib-${project.minecraft_version.replace(".", "_")}:${project.magiclib_version}") {
         exclude(group: "curse.maven", module: "carpet-349239")
     }
 
