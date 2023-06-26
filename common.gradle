@@ -27,17 +27,16 @@ repositories {
 
     maven {
         name("Nyan Maven")
-        //url("https://maven.hendrixshen.top")
-        url("https://s01.oss.sonatype.org/content/repositories/snapshots")
-
-        content {
-            includeGroup("top.hendrixshen.magiclib")
-        }
+        url("https://maven.hendrixshen.top")
     }
 
     maven {
         name("Magiclib")
-        url("https://maven.hendrixshen.top")
+        url("https://repo.maven.apache.org/maven2")
+
+        content {
+            includeGroup("top.hendrixshen.magiclib")
+        }
     }
 
     mavenCentral()
