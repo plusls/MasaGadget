@@ -36,33 +36,34 @@
 - 分类: `通用`
 - 类型: `开关`
 - 默认值: `true`
+
 ## 缓存容器数据 (cacheContainerMenu)
 在打开容器的时候会自动缓存容器数据到本地
 
 - 分类: `通用`
 - 类型: `带快捷键开关`
 - 默认值: `true`, `无快捷键`
+
 ## 调试模式 (debug)
 开启后将会打印调试日志
 
 - 分类: `通用`
 - 类型: `开关`
 - 默认值: `false`
+
 ## 打开设置界面 (openConfigGui)
 打开设置界面的快捷键
 
 - 分类: `通用`
 - 类型: `快捷键`
 - 默认值: `G,C`
+
 ## 渲染村民交易补货冷却 (renderNextRestockTime)
 渲染距离村民下一次补货还需要多长时间
 
 - 分类: `通用`
 - 类型: `带快捷键开关`
 - 默认值: `true`, `无快捷键`
-- 依赖:
-  - 与 (需要满足全部条件):
-    - tweakeroo: *
 
 ## 渲染村民交易的第一本附魔书 (renderTradeEnchantedBook)
 渲染村民交易的第一本附魔书，如果是满级附魔则会显示金色文本，同时还会显示出价格，
@@ -72,9 +73,6 @@
 - 分类: `通用`
 - 类型: `带快捷键开关`
 - 默认值: `true`, `无快捷键`
-- 依赖:
-  - 与 (需要满足全部条件):
-    - tweakeroo: *
 
 良商:
 
@@ -88,15 +86,40 @@
 
 ![bad trader](./docs/img/bad_trader.png)
 
+## 渲染村民绑定床 (renderVillageHomeTracer)
+渲染村民到床的追踪线.
+
+- 分类: `通用`
+- 类型: `带快捷键开关`
+- 默认值: `true`, `无快捷键`
+
+## 渲染村民绑定床颜色 (renderVillageHomeTracerColor)
+渲染村民绑定床追踪线颜色.
+
+- 分类: `通用`
+- 类型: `颜色`
+- 默认值: `#500000FF`
+
+## 渲染村民绑定工作方块 (renderVillageJobSiteTracer)
+渲染村民到工作方块的追踪线
+
+- 分类: `通用`
+- 类型: `带快捷键开关`
+- 默认值: `true`, `无快捷键`
+
+## 渲染村民绑定工作方块颜色 (renderVillageJobSiteTracerColor)
+渲染村民绑定工作方块追踪线颜色.
+
+- 分类: `通用`
+- 类型: `颜色`
+- 默认值: `#50FF0000`
+
 ## 渲染僵尸村民转换时间 (renderZombieVillagerConvertTime)
 渲染距离僵尸村民转换完成还需要多长时间
 
 - 分类: `通用`
 - 类型: `带快捷键开关`
 - 默认值: `true`, `无快捷键`
-- 依赖:
-  - 与 (需要满足全部条件):
-    - tweakeroo: *
 
 ## 搜寻可刷怪的地方 (searchMobSpawnPoint)
 搜寻可刷怪的地方。需要在 minihud 中设置 §6怪物立刻消失范围球体§r，
@@ -126,6 +149,7 @@
 - 分类: `通用`
 - 类型: `快捷键`
 - 默认值: `无快捷键`
+
 ## Litematica
 ## 更好的轻松放置模式 (betterEasyPlaceMode)
 轻松放置时可以打开容器（比如箱子，漏斗等等），以及可以使用信标
@@ -190,6 +214,7 @@ Litematica 本身的精准放置协议实现的有问题，修复后可以在服
 - 依赖:
   - 与 (需要满足全部条件):
     - litematica: *
+
 ## Malilib
 ## 移植 i18n 支持 (backportI18nSupport)
 让 masa 系 mod 支持 malilib 的 1.18.x 的 i18n 移植
@@ -217,6 +242,7 @@ Litematica 本身的精准放置协议实现的有问题，修复后可以在服
 - 分类: `Malilib`
 - 类型: `带快捷键开关`
 - 默认值: `false`, `无快捷键`
+
 ## 修复 Masa 配置文本的宽度 (fixConfigWidgetWidth)
 在使用汉化包后现在的界面会根据汉化后的文本长度自动调节
 
@@ -243,6 +269,7 @@ Litematica 本身的精准放置协议实现的有问题，修复后可以在服
 - 分类: `Malilib`
 - 类型: `开关`
 - 默认值: `true`
+
 ## Masa 搜索优化 (optimizeConfigWidgetSearch)
 在 Masa 家的搜索栏中可以使用中文搜索，还能使用 §6modified§r 来搜索修改过的配置项
 
@@ -259,6 +286,7 @@ Litematica 本身的精准放置协议实现的有问题，修复后可以在服
 - 分类: `Malilib`
 - 类型: `带快捷键开关`
 - 默认值: `false`, `无快捷键`
+
 ## 显示原始的配置选项名字体大小 (showOriginalConfigNameScale)
 原始的配置选项名字体大小
 
@@ -267,6 +295,7 @@ Litematica 本身的精准放置协议实现的有问题，修复后可以在服
 - 默认值: `0.65`
 - 最小值: `0.0`
 - 最大值: `2.0`
+
 ## Minihud
 ## Minihud 支持翻译 (minihudI18n)
 Minihud 显示的文本可以被翻译
@@ -289,6 +318,7 @@ Minihud 显示的文本可以被翻译
     - minihud: *
     - tweakeroo: *
     - minecraft: >1.14.4
+
 ## Tweakeroo
 ## 容器预览支持比较器 (inventoryPreviewSupportComparator)
 对比较器使用容器预览时将会显示比较器应该输出的信号

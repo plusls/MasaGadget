@@ -9,6 +9,7 @@
     "accessor.AccessorAbstractMinecartContainer",
     "accessor.AccessorAbstractVillager",
     "accessor.AccessorGuiListBase",
+    "accessor.AccessorLivingEntity",
     "accessor.AccessorVillager",
     "accessor.AccessorWidgetListConfigOptions",
     "accessor.AccessorZombieVillager",

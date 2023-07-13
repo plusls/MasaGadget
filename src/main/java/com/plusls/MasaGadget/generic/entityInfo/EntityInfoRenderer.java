@@ -3,10 +3,9 @@ package com.plusls.MasaGadget.generic.entityInfo;
 import com.google.common.collect.Lists;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.util.MiscUtil;
+import com.plusls.MasaGadget.util.SyncUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.core.Position;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.ZombieVillager;
@@ -38,7 +37,7 @@ public class EntityInfoRenderer {
     public static void render(Level level, RenderContext context, float tickDelta) {
         for (Entity entity : EntityInfoRenderer.list) {
             if (entity instanceof Villager) {
-                Villager villager = MiscUtil.cast(EntityInfoRenderer.syncEntityDataFromIntegratedServer(entity));
+                Villager villager = MiscUtil.cast(SyncUtil.syncEntityDataFromIntegratedServer(entity));
                 TextRenderer renderer = TextRenderer.create();
 
                 if (Configs.renderNextRestockTime) {
@@ -49,12 +48,18 @@ public class EntityInfoRenderer {
                     VillageTradeEnchantedBookInfo.getInfo(villager).forEach(renderer::addLine);
                 }
 
-                EntityInfoRenderer.rotationAround(renderer, entity.getEyePosition(tickDelta), 0.7)
-                        .bgColor((int) (Minecraft.getInstance().options.getBackgroundOpacity(0.25F) * 255.0F) << 24)
+                if (villager.isSleeping()) {
+                    Position position = entity.getEyePosition(tickDelta);
+                    renderer.pos(position.x(), position.y() + 0.4F, position.z());
+                } else {
+                    EntityInfoRenderer.rotationAround(renderer, entity.getEyePosition(tickDelta), 0.6);
+                }
+
+                renderer.bgColor((int) (Minecraft.getInstance().options.getBackgroundOpacity(0.25F) * 255.0F) << 24)
                         .fontScale(0.015F)
                         .render(context);
             } else if (entity instanceof ZombieVillager) {
-                ZombieVillager zombieVillager = MiscUtil.cast(EntityInfoRenderer.syncEntityDataFromIntegratedServer(entity));
+                ZombieVillager zombieVillager = MiscUtil.cast(SyncUtil.syncEntityDataFromIntegratedServer(entity));
                 EntityInfoRenderer.rotationAround(TextRenderer.create(), entity.getEyePosition(tickDelta), 0.6)
                         .text(ZombieVillagerConvertTimeInfo.getInfo(zombieVillager))
                         .bgColor((int) (Minecraft.getInstance().options.getBackgroundOpacity(0.25F) * 255.0F) << 24)
@@ -71,31 +76,5 @@ public class EntityInfoRenderer {
         float xAngle = (float) Mth.atan2(camPos.z() - centerPos.z(), camPos.x() - centerPos.x());
         float yAngle = (float) Mth.atan2(camPos.x() - centerPos.x(), camPos.z() - centerPos.z());
         return renderer.pos(range * Mth.cos(xAngle) + centerPos.x(), centerPos.y(), range * Mth.cos(yAngle) + centerPos.z());
-    }
-
-    /**
-     * Try to get entity data from the integrated server.
-     *
-     * @return Return synced data if the access is successful, otherwise return input entity.
-     */
-    private static Entity syncEntityDataFromIntegratedServer(Entity entity) {
-        IntegratedServer server = Minecraft.getInstance().getSingleplayerServer();
-
-        if (server == null) {
-            return entity;
-        }
-
-        //#if MC > 11502
-        ServerLevel level = server.getLevel(entity.getLevelCompat().dimension());
-        //#else
-        //$$ ServerLevel level = server.getLevel(entity.dimension);
-        //#endif
-
-        if (level == null) {
-            return entity;
-        }
-
-        Entity localEntity = level.getEntity(entity.getId());
-        return localEntity == null ? entity : localEntity;
     }
 }

@@ -1,13 +1,11 @@
 package com.plusls.MasaGadget.util;
 
+import com.mojang.serialization.Dynamic;
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.event.DisconnectEvent;
 import com.plusls.MasaGadget.litematica.saveInventoryToSchematicInServer.PcaSyncUtil;
-import com.plusls.MasaGadget.mixin.accessor.AccessorAbstractMinecartContainer;
-import com.plusls.MasaGadget.mixin.accessor.AccessorAbstractVillager;
-import com.plusls.MasaGadget.mixin.accessor.AccessorVillager;
-import com.plusls.MasaGadget.mixin.accessor.AccessorZombieVillager;
+import com.plusls.MasaGadget.mixin.accessor.*;
 import fi.dy.masa.malilib.gui.Message;
 import fi.dy.masa.malilib.util.InfoUtils;
 import io.netty.buffer.Unpooled;
@@ -19,6 +17,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.ContainerHelper;
@@ -120,6 +119,7 @@ public class PcaSyncProtocol {
                 if (entity instanceof Villager) {
                     ((AccessorVillager) entity).setNumberOfRestocksToday(tag.getInt("RestocksToday"));
                     ((AccessorVillager) entity).setLastRestockGameTime(tag.getLong("LastRestock"));
+                    ((AccessorLivingEntity) entity).setBrain(((AccessorLivingEntity) entity).invokeMakeBrain(new Dynamic<>(NbtOps.INSTANCE, tag.get("Brain"))));
                 }
             } else if (entity instanceof AbstractHorse) {
                 // TODO 写的更优雅一些

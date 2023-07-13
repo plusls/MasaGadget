@@ -2,6 +2,7 @@ package com.plusls.MasaGadget;
 
 import com.plusls.MasaGadget.config.Configs;
 import com.plusls.MasaGadget.generic.entityInfo.EntityInfoRenderer;
+import com.plusls.MasaGadget.generic.entityTrace.EntityTraceRenderer;
 import com.plusls.MasaGadget.util.HitResultUtil;
 import com.plusls.MasaGadget.tweakeroo.inventoryPreviewSupportSelect.MouseScrollInputHandler;
 import com.plusls.MasaGadget.util.PcaSyncProtocol;
@@ -54,6 +55,7 @@ public class MasaGadgetMod implements ClientModInitializer {
         PcaSyncProtocol.init();
         MouseScrollInputHandler.register();
         EntityInfoRenderer.init();
+        EntityTraceRenderer.init();
         HitResultUtil.init();
     }
 }

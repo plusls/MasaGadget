@@ -19,7 +19,7 @@ preprocess {
     def mc1201 = createNode("1.20.1", 1_20_01, "mojang") // root
 
     mc1144.link(mc1152, null)
-    mc1152.link(mc1165, null)
+    mc1152.link(mc1165, file("versions/mapping-1.15.2-1.16.5.txt"))
     mc1165.link(mc1171, null)
     mc1171.link(mc1182, null)
     mc1182.link(mc1192, null)

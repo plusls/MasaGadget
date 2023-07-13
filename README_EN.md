@@ -36,33 +36,34 @@ Auto use pcaSyncProtocol to sync entity data
 - Category: `Generic`
 - Type: `boolean`
 - Default value: `true`
+
 ## cacheContainerMenu
 Cache container menu, minecraft will cache inventory data from server when open inventory
 
 - Category: `Generic`
 - Type: `boolean with hotkey`
 - Default value: `true`, `no hotkey`
+
 ## debug
 Display debug message
 
 - Category: `Generic`
 - Type: `boolean`
 - Default value: `false`
+
 ## openConfigGui
 A hotkey to open the in-game Config GUI
 
 - Category: `Generic`
 - Type: `hotkey`
 - Default value: `G,C`
+
 ## renderNextRestockTime
 Render next restock time on villager.
 
 - Category: `Generic`
 - Type: `boolean with hotkey`
 - Default value: `true`, `no hotkey`
-- Dependencies:
-  - And (All conditions need to be satisfied):
-    - tweakeroo: *
 
 ## renderTradeEnchantedBook
 Render trade enchanted book text on villager.
@@ -72,9 +73,6 @@ Render trade enchanted book text on villager.
 - Category: `Generic`
 - Type: `boolean with hotkey`
 - Default value: `true`, `no hotkey`
-- Dependencies:
-  - And (All conditions need to be satisfied):
-    - tweakeroo: *
 
 good trader:
 
@@ -88,15 +86,40 @@ bad trader:
 
 ![bad trader](./docs/img/bad_trader.png)
 
-## renderZombieVillagerConvertTime
-Render zombie villager convert time on zombie villager.
+## renderVillageHomeTracer
+Render the tracking line of the villager to the home.
 
 - Category: `Generic`
 - Type: `boolean with hotkey`
 - Default value: `true`, `no hotkey`
-- Dependencies:
-  - And (All conditions need to be satisfied):
-    - tweakeroo: *
+
+## renderVillageHomeTracerColor
+renderVillageHomeTracer track line color.
+
+- Category: `Generic`
+- Type: `color`
+- Default value: `#500000FF`
+
+## renderVillageJobSiteTracer
+Render tracking line of villager to the job site.
+
+- Category: `Generic`
+- Type: `boolean with hotkey`
+- Default value: `true`, `no hotkey`
+
+## renderVillageJobSiteTracerColor
+renderVillageJobSiteTracer track line color.
+
+- Category: `Generic`
+- Type: `color`
+- Default value: `#50FF0000`
+
+## renderVillageHomeTracer
+Render the tracking line of the villager to the home.
+
+- Category: `Generic`
+- Type: `boolean with hotkey`
+- Default value: `true`, `no hotkey`
 
 ## searchMobSpawnPoint
 Search mob spawn point. Need set §6Despawn Sphere§r in minihud,
@@ -126,6 +149,7 @@ Use pcaSyncProtocol to sync all entity data.
 - Category: `Generic`
 - Type: `hotkey`
 - Default value: `no hotkey`
+
 ## Litematica
 ## betterEasyPlaceMode
 Easy place mode can open inventory (such as chest, hopper, etc.),
@@ -190,6 +214,7 @@ Save and load schematic use relative path
 - Dependencies:
   - And (All conditions need to be satisfied):
     - litematica: *
+
 ## Malilib
 ## backportI18nSupport
 Backport masa mod i18n support from 1.18.x
@@ -217,6 +242,7 @@ Users can favorite and filter their frequently used options.
 - Category: `Malilib`
 - Type: `boolean with hotkey`
 - Default value: `false`, `no hotkey`
+
 ## fixConfigWidgetWidth
 Use the length of getTranslatedGuiDisplayName as widget width
 
@@ -243,6 +269,7 @@ Fix searchbar input when press hotkey to open config gui.
 - Category: `Malilib`
 - Type: `boolean`
 - Default value: `true`
+
 ## optimizeConfigWidgetSearch
 Make search support uppercase, translate text, and can use §6modified§r to search modified config
 
@@ -259,6 +286,7 @@ Show original config name when config gui display name no the same as original c
 - Category: `Malilib`
 - Type: `boolean with hotkey`
 - Default value: `false`, `no hotkey`
+
 ## showOriginalConfigNameScale
 Original config name font scale.
 
@@ -267,6 +295,7 @@ Original config name font scale.
 - Default value: `0.65`
 - Min value: `0.0`
 - Max value: `2.0`
+
 ## Minihud
 ## minihudI18n
 Minihud display text support i18n translate.
@@ -289,6 +318,7 @@ Press §6inventoryPreview§r hotkey to use PCA sync protocol to sync Beehive
     - minihud: *
     - tweakeroo: *
     - minecraft: >1.14.4
+
 ## Tweakeroo
 ## inventoryPreviewSupportComparator
 Inventory preview will render the output of comparator.

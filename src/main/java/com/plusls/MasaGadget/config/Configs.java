@@ -12,7 +12,9 @@ import com.plusls.MasaGadget.util.SearchMobSpawnPointUtil;
 import fi.dy.masa.malilib.config.options.ConfigHotkey;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
+import fi.dy.masa.malilib.util.Color4f;
 import fi.dy.masa.malilib.util.JsonUtils;
+import fi.dy.masa.malilib.util.StringUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
@@ -51,15 +53,29 @@ public class Configs {
     public static ConfigHotkey openConfigGui;
 
     @Hotkey
-    @Config(category = ConfigCategory.GENERIC, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
+    @Config(category = ConfigCategory.GENERIC)
     public static boolean renderNextRestockTime = true;
 
     @Hotkey
-    @Config(category = ConfigCategory.GENERIC, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
+    @Config(category = ConfigCategory.GENERIC)
     public static boolean renderTradeEnchantedBook = true;
 
     @Hotkey
-    @Config(category = ConfigCategory.GENERIC, dependencies = @Dependencies(and = @Dependency(ModInfo.TWEAKEROO_MOD_ID)))
+    @Config(category = ConfigCategory.GENERIC)
+    public static boolean renderVillageHomeTracer = true;
+
+    @Config(category = ConfigCategory.GENERIC)
+    public static Color4f renderVillageHomeTracerColor = Color4f.fromColor(StringUtils.getColor("#500000FF", 0));
+
+    @Hotkey
+    @Config(category = ConfigCategory.GENERIC)
+    public static boolean renderVillageJobSiteTracer = true;
+
+    @Config(category = ConfigCategory.GENERIC)
+    public static Color4f renderVillageJobSiteTracerColor = Color4f.fromColor(StringUtils.getColor("#50FF0000", 0));
+
+    @Hotkey
+    @Config(category = ConfigCategory.GENERIC)
     public static boolean renderZombieVillagerConvertTime = true;
 
     @Hotkey
@@ -72,8 +88,8 @@ public class Configs {
     @Hotkey
     @Config(category = ConfigCategory.GENERIC)
     public static ConfigHotkey syncAllEntityData;
-    // LITEMATICA
 
+    // LITEMATICA
     @Hotkey
     @Config(category = ConfigCategory.LITEMATICA, dependencies = @Dependencies(and = @Dependency(ModInfo.LITEMATICA_MOD_ID)))
     public static boolean betterEasyPlaceMode = false;

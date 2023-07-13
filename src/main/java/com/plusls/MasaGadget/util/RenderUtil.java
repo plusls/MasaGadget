@@ -1,15 +1,24 @@
 package com.plusls.MasaGadget.util;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
+import fi.dy.masa.malilib.render.RenderUtils;
+import fi.dy.masa.malilib.util.Color4f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Position;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
+
+//#if MC < 11700
+//$$ import org.lwjgl.opengl.GL11;
+//#endif
 
 //#if MC <= 11502
 //$$ import com.mojang.blaze3d.systems.RenderSystem;
@@ -77,6 +86,40 @@ public class RenderUtil {
         matrixStack.popPose();
         //#if MC <= 11502
         //$$ RenderSystem.enableLighting();
+        //#endif
+    }
+
+    public static void drawConnectLine(Vec3 pos1, Vec3 pos2, double boxLength, Color4f pos1Color, Color4f pos2Color, Color4f lineColor) {
+        Vec3 camPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+        pos1 = pos1.subtract(camPos);
+        pos2 = pos2.subtract(camPos);
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder builder = tesselator.getBuilder();
+        // Box1
+        RenderUtil.beginLines(builder);
+        RenderUtils.drawBoxAllEdgesBatchedLines(
+                pos1.x() - boxLength, pos1.y() - boxLength, pos1.z() - boxLength,
+                pos1.x() + boxLength, pos1.y() + boxLength, pos1.z() + boxLength, pos1Color, builder);
+        tesselator.end();
+        // Box2
+        RenderUtil.beginLines(builder);
+        RenderUtils.drawBoxAllEdgesBatchedLines(
+                pos2.x() - boxLength, pos2.y() - boxLength, pos2.z() - boxLength,
+                pos2.x() + boxLength, pos2.y() + boxLength, pos2.z() + boxLength, pos2Color, builder);
+        tesselator.end();
+        // Line
+        RenderUtil.beginLines(builder);
+        builder.vertex(pos1.x(), pos1.y(), pos1.z()).color(lineColor.r, lineColor.g, lineColor.b, lineColor.a).endVertex();
+        builder.vertex(pos2.x(), pos2.y(), pos2.z()).color(lineColor.r, lineColor.g, lineColor.b, lineColor.a).endVertex();
+        tesselator.end();
+    }
+
+    private static void beginLines(BufferBuilder builder) {
+        //#if MC > 11700
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        builder.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+        //#else
+        //$$ builder.begin(GL11.GL_LINES, DefaultVertexFormat.POSITION_COLOR);
         //#endif
     }
 }
