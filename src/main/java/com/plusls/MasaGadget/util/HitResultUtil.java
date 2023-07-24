@@ -188,7 +188,7 @@ public class HitResultUtil {
         lastHitResult = getHitResult();
         profiler.pop();
         lastHitBlockEntity = null;
-        if (lastHitResult != null && lastHitResult.getType() == HitResult.Type.BLOCK) {
+        if (lastHitResult != null && lastHitResult.getType() == HitResult.Type.BLOCK && currentStatus) {
             BlockPos pos = getHitBlockPos();
             if (pos != null) {
                 // 绕过线程检查
