@@ -27,6 +27,7 @@ public class InventoryPreviewSyncDataClientOnlyUtil {
     public static void onHitCallback(@Nullable HitResult hitResult, boolean oldStatus, boolean stateChanged) {
         Minecraft mc = Minecraft.getInstance();
         if (!Configs.inventoryPreviewSyncDataClientOnly ||
+                mc.player == null || mc.player.isShiftKeyDown() ||
                 (Configs.inventoryPreviewSyncData && PcaSyncProtocol.enable) ||
                 mc.hasSingleplayerServer() ||
                 !FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue()
