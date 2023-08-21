@@ -62,14 +62,14 @@ public class Configs {
 
     @Hotkey
     @Config(category = ConfigCategory.GENERIC)
-    public static boolean renderVillageHomeTracer = true;
+    public static boolean renderVillageHomeTracer = false;
 
     @Config(category = ConfigCategory.GENERIC)
     public static Color4f renderVillageHomeTracerColor = Color4f.fromColor(StringUtils.getColor("#500000FF", 0));
 
     @Hotkey
     @Config(category = ConfigCategory.GENERIC)
-    public static boolean renderVillageJobSiteTracer = true;
+    public static boolean renderVillageJobSiteTracer = false;
 
     @Config(category = ConfigCategory.GENERIC)
     public static Color4f renderVillageJobSiteTracerColor = Color4f.fromColor(StringUtils.getColor("#50FF0000", 0));
