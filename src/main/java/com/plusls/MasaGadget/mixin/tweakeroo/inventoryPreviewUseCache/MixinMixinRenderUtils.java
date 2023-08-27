@@ -7,10 +7,13 @@ import fi.dy.masa.malilib.util.InventoryUtils;
 import fi.dy.masa.tweakeroo.renderer.RenderUtils;
 import fi.dy.masa.tweakeroo.util.RayTraceUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -29,7 +32,8 @@ public class MixinMixinRenderUtils {
         if (!Configs.inventoryPreviewUseCache) {
             return RayTraceUtils.getRayTraceFromEntity(worldIn, entityIn, useLiquids);
         } else {
-            return HitResultUtil.getLastHitResult();
+            HitResult ret = HitResultUtil.getLastHitResult();
+            return ret == null ? BlockHitResult.miss(Vec3.ZERO, Direction.UP, BlockPos.ZERO) : ret;
         }
     }
 
