@@ -441,10 +441,11 @@ And use `preprocess` to be compatible with all versions.
 - Minecraft 1.16.5
 - Minecraft 1.17.1
 - Minecraft 1.18.2
-- Minecraft 1.19.2
-- Minecraft 1.19.3
+- Minecraft 1.19.2 (Ending support soon)
+- Minecraft 1.19.3 (Ending support soon)
 - Minecraft 1.19.4
-- Minecraft 1.20.1
+- Minecraft 1.20.1 (Ending support soon)
+- Minecraft 1.20.2
 
 ### Mappings
 

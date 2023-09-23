@@ -1,4 +1,5 @@
 import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
 
 plugins {
     id("java-library")
@@ -49,13 +50,6 @@ jar {
 processResources {
     // disable cache
     outputs.upToDateWhen { false }
-    ArrayList<?> mc_condition = []
-    ArrayList<?> jars = []
-
-    fabric_subprojects.each({
-        mc_condition.add("${it.minecraft_dependency}")
-        jars.add(["file": "META-INF/jars/${project.mod_archives_base_name}-${it.minecraft_version}-${project.version}.jar"])
-    })
 
     from("${rootDir}/icon.png") {
         into("assets/${project.mod_id}")
@@ -63,7 +57,6 @@ processResources {
 
     filesMatching("fabric.mod.json") {
         expand([
-                "minecraft_dependency": new JsonBuilder(mc_condition),
                 "magiclib_dependency" : project.magiclib_dependency,
                 "mod_description"     : project.mod_description,
                 "mod_homepage"        : project.mod_homepage,
@@ -71,9 +64,28 @@ processResources {
                 "mod_license"         : project.mod_license,
                 "mod_name"            : project.mod_name,
                 "mod_version"         : project.version,
-                "mod_sources"         : project.mod_sources,
-                "sub_jars"            : new JsonBuilder(jars).toPrettyString(),
+                "mod_sources"         : project.mod_sources
         ])
+    }
+
+    doLast {
+        ArrayList<?> mc_condition = []
+        ArrayList<?> jars = []
+
+        fabric_subprojects.each({
+            mc_condition.add("${it.minecraft_dependency}")
+            jars.add(["file": "META-INF/jars/${project.mod_archives_base_name}-${it.minecraft_version}-${project.version}.jar"])
+        })
+
+        File file = file("build/resources/main/fabric.mod.json")
+        JsonSlurper slurper = new JsonSlurper()
+        JsonBuilder builder = new JsonBuilder(slurper.parse(file))
+        builder.content.depends.minecraft = mc_condition
+        builder.content.jars = jars
+        BufferedWriter writer = file.newWriter()
+        writer.append(builder.toPrettyString())
+        writer.flush()
+        writer.close()
     }
 }
 

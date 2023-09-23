@@ -67,8 +67,9 @@ jobs:
             1.19.3
             1.19.4
             1.20.1
+            1.20.2
 
-          version-resolver: exact
+          version-resolver: any
 
           retry-attempts: 3
           retry-delay: 10000
