@@ -10,7 +10,7 @@ group(project.mod_maven_group)
 version(project.parent.version)
 
 base {
-    archivesBaseName("${project.mod_archives_base_name}-all")
+    archivesName.set("${project.mod_archives_base_name}-all")
 }
 
 def fabric_subprojects = project.parent.subprojects.findAll({

@@ -117,7 +117,7 @@ group(project.mod_maven_group)
 version(project.parent.version)
 
 base {
-    archivesBaseName("${project.mod_archives_base_name}-${project.minecraft_version}")
+    archivesName.set("${project.mod_archives_base_name}-${project.minecraft_version}")
 }
 
 loom {
