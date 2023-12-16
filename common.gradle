@@ -6,7 +6,6 @@ import org.objectweb.asm.tree.ClassNode
 import org.objectweb.asm.tree.LdcInsnNode
 
 apply(plugin: "fabric-loom")
-apply(plugin: "io.github.juuxel.loom-vineflower")
 apply(plugin: "maven-publish")
 apply(plugin: "com.replaymod.preprocess")
 
