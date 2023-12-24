@@ -1,5 +1,6 @@
 package com.plusls.MasaGadget.tweakeroo.handRestockCrafting;
 
+import com.google.common.collect.Lists;
 import com.plusls.MasaGadget.ModInfo;
 import com.plusls.MasaGadget.config.Configs;
 import fi.dy.masa.itemscroller.recipes.CraftingHandler;
@@ -21,16 +22,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class RestockUtil {
-    private static List<RecipePattern> recipes;
+    private static final List<RecipePattern> recipes = Lists.newArrayList();
 
     public static void updateRecipes() {
         RecipeStorage storage = RecipeStorage.getInstance();
+
         try {
-            RestockUtil.recipes = Configs.restockWithCraftingRecipes.stream()
+            RestockUtil.recipes.clear();
+            RestockUtil.recipes.addAll(Configs.restockWithCraftingRecipes.stream()
                     .mapToInt(Integer::valueOf)
                     .mapToObj(storage::getRecipe)
                     .filter(recipe -> recipe.getRecipeLength() == 4)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList()));
         } catch (NumberFormatException exception) {
             ModInfo.LOGGER.error(exception);
         }
