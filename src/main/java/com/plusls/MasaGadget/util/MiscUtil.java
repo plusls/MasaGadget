@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.chunk.LevelChunk;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import top.hendrixshen.magiclib.language.api.I18n;
+import top.hendrixshen.magiclib.api.i18n.I18n;
 
 public class MiscUtil extends top.hendrixshen.magiclib.util.MiscUtil {
     public static <T extends Entity> T getBestEntity(T entity) {
@@ -53,7 +53,7 @@ public class MiscUtil extends top.hendrixshen.magiclib.util.MiscUtil {
 
     @Nullable
     public static String getTranslatedOrFallback(String key, @Nullable String fallback, Object... objects) {
-        String translated = I18n.get(key, objects);
+        String translated = I18n.tr(key, objects);
         return !key.equals(translated) ? translated : fallback;
     }
 

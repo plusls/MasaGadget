@@ -1,0 +1,419 @@
+plugins {
+    id("maven-publish")
+
+    id("top.hendrixshen.replace-token").version("${replace_token_version}")
+}
+
+apply(plugin: "dev.architectury.loom")
+apply(plugin: "com.replaymod.preprocess")
+apply(plugin: "me.fallenbreath.yamlang")
+
+String modPlatform = loom.platform.get().toString().toLowerCase()
+boolean fabricLike = modPlatform == "fabric" || modPlatform == "quilt"
+boolean forgeLike = modPlatform == "forge" || modPlatform == "neoforge"
+int mcVersion = 0
+
+preprocess {
+    mcVersion = vars.get().get("MC")
+    vars.put("MC", mcVersion)
+    vars.put("FABRIC", modPlatform == "fabric" ? 1 : 0)
+    vars.put("FORGE", modPlatform == "forge" ? 1 : 0)
+    vars.put("NEO_FORGE", modPlatform == "neoforge" ? 1 : 0)
+    vars.put("FABRIC_LIKE", fabricLike ? 1 : 0)
+    vars.put("FORGE_LIKE", forgeLike ? 1 : 0)
+}
+
+loom {
+    silentMojangMappingsLicense()
+}
+
+repositories {
+    mavenLocal()
+
+    maven {
+        name("NeoForge")
+        url("https://maven.neoforged.net/releases/")
+    }
+
+    maven {
+        name("Curse Maven")
+        url("https://www.cursemaven.com")
+    }
+
+    maven {
+        name("Modrinth Maven")
+        url("https://api.modrinth.com/maven")
+    }
+
+    maven {
+        name("Jitpack Maven")
+        url("https://jitpack.io")
+    }
+
+    mavenCentral()
+}
+
+// Module, Property prefix, Resolve condition, Transitive dependencies.
+def apiDependencies = [
+        ["curse.maven:itemscroller-242064"     , "itemscroller", mcVersion < 12100, false],
+        ["curse.maven:litematica-308892"       , "litematica"  , mcVersion < 12100, false],
+        ["curse.maven:minihud-244260"          , "minihud"     , mcVersion < 12100, false],
+        ["curse.maven:tweakeroo-297344"        , "tweakeroo"   , mcVersion < 12100, false],
+        ["com.github.sakura-ryoko:itemscroller", "itemscroller", mcVersion > 12006, false],
+        ["com.github.sakura-ryoko:litematica"  , "litematica"  , mcVersion > 12006, false],
+        ["com.github.sakura-ryoko:minihud"     , "minihud"     , mcVersion > 12006, false],
+        ["com.github.sakura-ryoko:tweakeroo"   , "tweakeroo"   , mcVersion > 12006, false],
+]
+
+// Module, Property prefix, Resolve condition, Transitive dependencies.
+def runtimeDependencies = [
+        ["", "", false, false]
+]
+
+dependencies {
+    // Development environment
+    minecraft("com.mojang:minecraft:${project.property("dependencies.minecraft_version")}")
+    mappings(loom.officialMojangMappings())
+
+    // Lombok
+    compileOnly("org.projectlombok:lombok:${project.property("dependencies.lombok_version")}")
+    annotationProcessor("org.projectlombok:lombok:${project.property("dependencies.lombok_version")}")
+
+    // Dependency
+    modApi(annotationProcessor("top.hendrixshen.magiclib:magiclib-all-${project.name}:${project.property("dependencies.magiclib_version")}"))
+
+    switch (modPlatform) {
+        case "fabric":
+            break
+        case "forge":
+            forge("net.minecraftforge:forge:${project.property("dependencies.minecraft_version")}-${project.property("dependencies.forge_version")}")
+            break
+        case "neoforge":
+            neoForge("net.neoforged:neoforge:${project.property("dependencies.neoforge_version")}")
+            break
+    }
+
+    // API
+    apiDependencies.forEach { item ->
+        String dependencyNotation = item[0]
+        String dependencyVersion = project.findProperty("dependencies.api.${item[1]}_version")
+        boolean shouldResolve = item[2] && dependencyVersion != "0"
+        boolean shouldTransitive = item[3]
+
+        if (shouldResolve) {
+            if (!dependencyVersion) {
+                throw new RuntimeException("Could not get unknown property 'dependencies.api.${item[1]}_version' for dependency ${item[0]} in project ${project.name}")
+            }
+
+            modApi("${dependencyNotation}:${dependencyVersion}") {
+                transitive(shouldTransitive)
+            }
+        }
+    }
+
+    // Runtime Library - Make development environment comfortable.
+    runtimeDependencies.forEach { item ->
+        String dependencyNotation = item[0]
+        String dependencyVersion = project.findProperty("dependencies.runtime.${item[1]}_version")
+        boolean shouldResolve = item[2] && dependencyVersion != "0"
+        boolean shouldTransitive = item[3]
+
+        if (shouldResolve) {
+            if (!dependencyVersion) {
+                throw new RuntimeException("Could not get unknown property 'dependencies.api.${item[1]}_version' for dependency ${item[0]} in project ${project.name}")
+            }
+
+            modRuntimeOnly("${dependencyNotation}:${dependencyVersion}") {
+                transitive(shouldTransitive)
+            }
+        }
+    }
+}
+
+loom {
+    // accessWidenerPath.set(file("src/main/resources/${project.parent.property("mod.id")}.accesswidener"))
+    enableTransitiveAccessWideners.set(true)
+
+    if (modPlatform == "forge") {
+        forge {
+            convertAccessWideners.set(true)
+            mixinConfig("${project.parent.property("mod.id")}.mixins.json")
+        }
+    }
+
+    runConfigs.configureEach {
+        // Dump modified classes automatically.
+        property("mixin.debug.export", "true")
+    }
+
+    runConfigs.named("client") {
+        programArgs([
+                "--width",
+                project.getOrDefault("ow.game.window.width", "1920"),
+                "--height",
+                project.getOrDefault("ow.game.window.height", "1080"),
+                "--username",
+                project.getOrDefault("ow.game.window.username", "dev")
+        ])
+        vmArgs("-Dmagiclib.debug=true")
+        vmArgs("-Dmagiclib.dev.qol=true")
+        vmArgs("-Dmagiclib.dev.qol.dfu.destroy=true")
+        runDir("run/client")
+    }
+
+    runConfigs.named("server") {
+        vmArgs("-Dmagiclib.debug=true")
+        vmArgs("-Dmagiclib.dev.qol=true")
+        vmArgs("-Dmagiclib.dev.qol.dfu.destroy=true")
+        runDir("run/server")
+    }
+
+    if (fabricLike) {
+        runs {
+            mixinAuditClient {
+                inherit(client)
+                vmArgs("-Dmagiclib.debug.mixinAuditor.enable=true")
+                ideConfigGenerated(false)
+                runDir("run/client")
+            }
+
+            mixinAuditServer {
+                inherit(server)
+                vmArgs("-Dmagiclib.debug.mixinAuditor.enable=true")
+                ideConfigGenerated(false)
+                runDir("run/server")
+            }
+        }
+    }
+
+    // Setup client default settings.
+    runClient {
+        defaultCharacterEncoding("UTF-8")
+
+        doFirst {
+            file("${projectDir}/run/client/config").mkdirs()
+            file("${projectDir}/run/client/options.txt").with { File f ->
+                {
+                    if (!f.exists()) {
+                        f.parentFile.mkdirs()
+                        f.withWriter { BufferedWriter writer ->
+                            writer.writeLine("autoJump:false")
+                            writer.writeLine("enableVsync:false")
+                            writer.writeLine("forceUnicodeFont:true")
+                            writer.writeLine("fov:1.0")
+                            writer.writeLine("gamma:16.0")
+                            writer.writeLine("guiScale:3")
+                            writer.writeLine("lang:${Locale.getDefault().toString().toLowerCase()}")
+                            writer.writeLine("maxFps:260")
+                            writer.writeLine("renderDistance:10")
+                            writer.writeLine("soundCategory_master:0.0")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Setup server default settings.
+    runServer {
+        defaultCharacterEncoding("UTF-8")
+
+        doFirst {
+            // Agree eula before server init.
+            file("${projectDir}/run/server/eula.txt").with { File f ->
+                {
+                    if (!f.exists()) {
+                        f.parentFile.mkdirs()
+                        f.withWriter { BufferedWriter writer ->
+                            writer.writeLine("#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).")
+                            writer.writeLine("#${new Date()}")
+                            writer.writeLine("eula=true")
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+base {
+    setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${project.property("dependencies.minecraft_version")}-${modPlatform}")
+    group("${project.property("mod.maven_group")}")
+    version(project.getModVersion(project.parent))
+}
+
+java {
+    if (mcVersion > 11204) {
+        sourceCompatibility(JavaVersion.VERSION_21)
+        targetCompatibility(JavaVersion.VERSION_21)
+    } else if (mcVersion > 11701) {
+        sourceCompatibility(JavaVersion.VERSION_17)
+        targetCompatibility(JavaVersion.VERSION_17)
+    } else if (mcVersion > 11605) {
+        sourceCompatibility(JavaVersion.VERSION_16)
+        targetCompatibility(JavaVersion.VERSION_16)
+    } else {
+        sourceCompatibility(JavaVersion.VERSION_1_8)
+        targetCompatibility(JavaVersion.VERSION_1_8)
+    }
+
+    withSourcesJar()
+}
+
+remapJar {
+    if (forgeLike) {
+        if (modPlatform == "neoforge") {
+            atAccessWideners.add("${project.parent.property("mod.id")}.accesswidener")
+        }
+
+        exclude("${project.parent.property("mod.id")}.accesswidener")
+    }
+
+    setRemapperIsolation(true)
+}
+
+replaceToken {
+    targetSourceSets.set([sourceSets.main])
+    replace("@MOD_IDENTIFIER@", project.parent.property("mod.id").toString().replace("-", "_"))
+    replace("@MOD_NAME@"      , project.parent.property("mod.name"))
+    replace("@MOD_VERSION@"   , project.getVersionWithCommitHash(this.project.parent) as String)
+    replaceIn("com/plusls/MasaGadget/SharedConstants")
+}
+
+processResources {
+    outputs.upToDateWhen { false }
+
+    [
+            "fabric.mod.json"            : ["fabric"],
+            "META-INF"                   : ["forge", "neoforge"],
+            "META-INF/mods.toml"         : ["forge", "neoforge", mcVersion < 12005 ? "neoforge": "none"],
+            "META-INF/neoforge.mods.toml": [mcVersion > 12004 ? "neoforge" : "none"]
+    ].forEach { file, platforms ->
+        if (platforms.contains(modPlatform)) {
+            filesMatching(file) {
+                expand([
+                        "magiclib_dependency" : project.property("dependencies.magiclib_dependency"),
+                        "minecraft_dependency": project.property("dependencies.minecraft_dependency"),
+                        "mod_alias"           : project.parent.property("mod.id"),
+                        "mod_description"     : project.parent.property("mod.description"),
+                        "mod_homepage"        : project.parent.property("mod.homepage"),
+                        "mod_id"              : project.parent.property("mod.id").toString().replace("-", "_"),
+                        "mod_license"         : project.parent.property("mod.license"),
+                        "mod_name"            : project.parent.property("mod.name"),
+                        "mod_sources"         : project.parent.property("mod.sources"),
+                        "mod_version"         : project.getVersionWithCommitHash(this.project.parent)
+                ])
+            }
+        } else {
+            exclude(file)
+        }
+    }
+
+    from("${rootDir}/LICENSE")
+    from("${rootDir}/icon.png") {
+        if (fabricLike) {
+            into("assets/${project.parent.property("mod.id")}")
+        }
+    }
+}
+
+yamlang {
+    targetSourceSets.set([sourceSets.main])
+    inputDir.set("assets/${project.parent.property("mod.id")}/lang")
+}
+
+publishing {
+    publications {
+        create("release", MavenPublication) {
+            artifactId("${this.project.parent.property("mod.artifact_name")}-${project.name}")
+            from(this.project.components.java)
+            version("${this.project.getMavenArtifactVersion(this.project.parent)}")
+        }
+
+        register("snapshot", MavenPublication) { MavenPublication publication ->
+            artifactId("${this.project.parent.property("mod.artifact_name")}-${project.name}")
+            from(this.project.components.java)
+            version("${this.project.parent.property("mod.version")}-SNAPSHOT")
+        }
+    }
+
+    repositories {
+        mavenLocal {
+            name("mavenLocal")
+        }
+
+        maven {
+            name("projectLocalSnapshot")
+            url("${rootDir}/publish/snapshot")
+        }
+
+        maven {
+            name("projectLocalRelease")
+            url("${rootDir}/publish/release")
+        }
+    }
+}
+
+tasks.withType(PublishToMavenRepository).configureEach {
+    Provider<Boolean> predicate = provider {
+        repository == publishing.repositories.mavenLocal ||
+                (repository == publishing.repositories.projectLocalSnapshot && publication == publishing.publications.snapshot) ||
+                (repository == publishing.repositories.projectLocalRelease && publication == publishing.publications.release)
+    }
+
+    onlyIf {
+        predicate.get()
+    }
+}
+
+tasks.withType(Javadoc).configureEach { Javadoc task ->
+    include("**/api/**")
+    task.options.encoding("UTF-8")
+    (task.options as CoreJavadocOptions).addStringOption("Xdoclint:none", "-quiet")
+}
+
+tasks.withType(JavaCompile).configureEach { JavaCompile task ->
+    task.options.encoding("UTF-8")
+
+    if (mcVersion > 12005) {
+        task.options.release.set(21)
+    } else if (mcVersion > 11701) {
+        task.options.release.set(17)
+    } else if (mcVersion > 11605) {
+        task.options.release.set(16)
+    } else {
+        task.options.release.set(8)
+    }
+}
+
+tasks.register("cleanRuns", DefaultTask.class) {
+    doLast {
+        file(loom.runConfigs.client.runDir).parentFile.deleteDir()
+    }
+}
+
+tasks.register("cleanRunClient", DefaultTask.class) {
+    doLast {
+        file(loom.runConfigs.client.runDir).deleteDir()
+    }
+}
+
+tasks.register("cleanRunServer", DefaultTask.class) {
+    doLast {
+        file(loom.runConfigs.server.runDir).deleteDir()
+    }
+}
+
+[
+        "cleanRuns", "cleanRunClient", "cleanRunServer",
+        "runClient", "runServer",
+        "runMixinAuditClient", "runMixinAuditServer",
+        "preprocessCode", "preprocessResources",
+        "preprocessTestCode", "preprocessTestResources"
+].forEach { taskName ->
+    if (tasks.getNames().contains(taskName)) {
+        tasks.named(taskName) {
+            it.group("${project.property("mod.id")}")
+        }
+    }
+}

@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "${mod_id}-${minecraft_version_id}",
+  "id": "${mod_id}",
   "version": "${mod_version}",
   "icon": "assets/${mod_id}/icon.png",
-  "name": "${mod_name} for ${minecraft_version}",
+  "name": "${mod_name}",
   "description": "${mod_description}",
   "authors": [
     {
@@ -31,22 +31,18 @@
       "com.plusls.MasaGadget.MasaGadgetMod"
     ],
     "modmenu": [
-      "com.plusls.MasaGadget.compat.modmenu.ModMenuApiImpl"
+      "com.plusls.MasaGadget.impl.compat.modmenu.ModMenuApiImpl"
     ]
   },
   "mixins": [
     "${mod_id}.mixins.json"
   ],
   "depends": {
-    "magiclib-${minecraft_version_id}": ">=${magiclib_dependency}",
+    "magiclib": ">=${magiclib_dependency}",
     "malilib": "*",
     "minecraft": "${minecraft_dependency}"
   },
   "custom": {
-    "modmenu:clientsideOnly": true,
-    "modmenu:parent": "${mod_id}",
-    "modmenu": {
-      "parent": "${mod_id}"
-    }
+    "modmenu:clientsideOnly": true
   }
 }

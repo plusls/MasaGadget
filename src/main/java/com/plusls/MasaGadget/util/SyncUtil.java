@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.EntityCompat;
 
 public class SyncUtil {
     /**
@@ -18,11 +19,15 @@ public class SyncUtil {
             return entity;
         }
 
-        //#if MC > 11502
-        ServerLevel level = server.getLevel(entity.getLevelCompat().dimension());
-        //#else
-        //$$ ServerLevel level = server.getLevel(entity.dimension);
-        //#endif
+        EntityCompat entityCompat = EntityCompat.of(entity);
+
+        ServerLevel level = server.getLevel(
+                //#if MC > 11502
+                entityCompat.getLevel().get().dimension()
+                //#else
+                //$$ entity.dimension
+                //#endif
+        );
 
         if (level == null) {
             return entity;

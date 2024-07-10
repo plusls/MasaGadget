@@ -1,40 +1,77 @@
+import com.replaymod.gradle.preprocess.Node
+
 plugins {
-    id("fabric-loom").version("1.4-SNAPSHOT").apply(false)
-    id("maven-publish")
-    id("org.ajoberstar.grgit").version("5.2.0")
-    id("com.replaymod.preprocess").version("SNAPSHOT")
+    id("dev.architectury.loom").version("${architectury_loom_version}").apply(false)
+    id("org.ajoberstar.grgit").version("${grgit_version}")
+    id("com.replaymod.preprocess").version("${preprocessor_version}")
+    id("me.fallenbreath.yamlang").version("${yamlang_version}").apply(false)
 }
 
 preprocess {
-    def mc1144 = createNode("1.14.4", 1_14_04, "mojang")
-    def mc1152 = createNode("1.15.2", 1_15_02, "mojang")
-    def mc1165 = createNode("1.16.5", 1_16_05, "mojang")
-    def mc1171 = createNode("1.17.1", 1_17_01, "mojang")
-    def mc1182 = createNode("1.18.2", 1_18_02, "mojang")
-    def mc1192 = createNode("1.19.2", 1_19_02, "mojang")
-    def mc1193 = createNode("1.19.3", 1_19_03, "mojang")
-    def mc1194 = createNode("1.19.4", 1_19_04, "mojang")
-    def mc1201 = createNode("1.20.1", 1_20_01, "mojang")
-    def mc1202 = createNode("1.20.2", 1_20_02, "mojang")
-    def mc1204 = createNode("1.20.4", 1_20_04, "mojang")
+    // Fabric
+    Node mc11404_fabric = createNode("1.14.4-fabric", 1_14_04, "mojang")
+    Node mc11502_fabric = createNode("1.15.2-fabric", 1_15_02, "mojang")
+    Node mc11605_fabric = createNode("1.16.5-fabric", 1_16_05, "mojang")
+    Node mc11701_fabric = createNode("1.17.1-fabric", 1_17_01, "mojang")
+    Node mc11802_fabric = createNode("1.18.2-fabric", 1_18_02, "mojang")
+    Node mc11902_fabric = createNode("1.19.2-fabric", 1_19_02, "mojang")
+    Node mc11903_fabric = createNode("1.19.3-fabric", 1_19_03, "mojang")
+    Node mc11904_fabric = createNode("1.19.4-fabric", 1_19_04, "mojang")
+    Node mc12001_fabric = createNode("1.20.1-fabric", 1_20_01, "mojang")
+    Node mc12002_fabric = createNode("1.20.2-fabric", 1_20_02, "mojang")
+    Node mc12004_fabric = createNode("1.20.4-fabric", 1_20_04, "mojang")
+    Node mc12006_fabric = createNode("1.20.6-fabric", 1_20_06, "mojang")
+    Node mc12100_fabric = createNode("1.21.0-fabric", 1_21_00, "mojang")
 
-    mc1144.link(mc1152, null)
-    mc1152.link(mc1165, file("versions/mapping-1.15.2-1.16.5.txt"))
-    mc1165.link(mc1171, null)
-    mc1171.link(mc1182, null)
-    mc1182.link(mc1192, null)
-    mc1192.link(mc1193, file("versions/mapping-1.19.2-1.19.3.txt"))
-    mc1193.link(mc1194, null)
-    mc1194.link(mc1201, null)
-    mc1201.link(mc1202, null)
-    mc1202.link(mc1204, null)
+    mc11404_fabric.link(mc11502_fabric, null)
+    mc11502_fabric.link(mc11605_fabric, file("versions/mapping-fabric-1.15.2-1.16.5.txt"))
+    mc11605_fabric.link(mc11701_fabric, null)
+    mc11701_fabric.link(mc11802_fabric, null)
+    mc11802_fabric.link(mc11902_fabric, null)
+    mc11902_fabric.link(mc11903_fabric, file("versions/mapping-fabric-1.19.2-1.19.3.txt"))
+    mc11903_fabric.link(mc11904_fabric, null)
+    mc11904_fabric.link(mc12001_fabric, null)
+    mc12001_fabric.link(mc12002_fabric, null)
+    mc12002_fabric.link(mc12004_fabric, null)
+    mc12004_fabric.link(mc12006_fabric, null)
+    mc12006_fabric.link(mc12100_fabric, null)
 }
 
 ext {
-    def environmentMap = System.getenv()
+    Map env = System.getenv()
+    File localPropsFile = file("${rootDir}/local.properties")
+
+    if (localPropsFile.exists()) {
+        Properties p = new Properties()
+        p.load(new FileInputStream(localPropsFile))
+        p.each { key, value ->
+            ext[key as String] = value
+        }
+    }
+
+    getEnv = {
+        return env
+    }
+
+    getOrDefault = { String key, String defaultValue ->
+        String value
+        (value = project.findProperty(key)) && !value.isEmpty() ? value : defaultValue
+    }
+
+    isGithubCI = {
+        return env.get("GITHUB_ACTION") != null
+    }
+
+    isJitpack = {
+        return env.get("JITPACK") != null
+    }
+
+    getBuildNumber = {
+        return env.GITHUB_RUN_NUMBER ? env.GITHUB_RUN_NUMBER : 0
+    }
 
     getVersionGit = { List paths ->
-        if (grgit == null) {
+        if (grgit == null || grgit.head() == null) {
             return "nogit"
         }
 
@@ -42,23 +79,33 @@ ext {
         return latestCommits.isEmpty() ? "uncommited" : "${latestCommits.get(0).id.substring(0, 7)}"
     }
 
-    getBuildNumber = {
-        return environmentMap.GITHUB_RUN_NUMBER ? environmentMap.GITHUB_RUN_NUMBER : Integer.MAX_VALUE
-    }
-
     getVersionType = {
-        switch (environmentMap.BUILD_TYPE) {
+        String type = getOrDefault("ow.build.environment.buildType", null)
+
+        if (type != null) {
+            return type
+        }
+
+        if (isJitpack()) {
+            return "jitpack"
+        }
+
+        type = env.BUILD_TYPE
+
+        switch (type) {
             case "RELEASE":
                 return "stable"
             case "BETA":
                 return "beta"
+            case "PULL_REQUEST":
+                return "pull_request"
             default:
                 return "dev"
         }
     }
 
     getVersionPatch = { List paths ->
-        if (grgit == null) {
+        if (grgit == null || grgit.head() == null) {
             return 0
         }
 
@@ -66,12 +113,51 @@ ext {
         return latestCommits.size()
     }
 
-    getMavenArtifactVersion = {
-        return ext.getVersionType() == "stable" ? "${project.mod_version}.${ext.getVersionPatch([])}" : project.version
+    getVersion = { Project proj ->
+        return "${proj.property("mod.version")}.${getVersionPatch(proj == rootProject ? [] : [proj.projectDir.name])}"
+    }
+
+    getVersionWithCommitHash = { Project proj ->
+        return "${getVersion(proj)}+${getVersionGit(proj == rootProject ? [] : [proj.projectDir.name])}-${getVersionType()}"
+    }
+
+    getModVersion = { Project proj ->
+        return "${getVersion(proj)}-${getVersionType()}"
+    }
+
+    getMavenArtifactVersion = { Project proj ->
+        return project.getVersionType() == "stable" ? "${getVersion(proj)}" : "${getModVersion(proj)}"
     }
 }
 
-setVersion("${project.mod_version}.${project.getVersionPatch([])}+${project.getVersionGit([])}-${project.getVersionType()}")
+tasks.register("genLocalProperties") {
+    it.group("${project.property("mod.id")}")
+
+    doFirst {
+        File localPropsFile = file("${rootDir}/local.properties")
+
+        if (localPropsFile.exists()) {
+            throw new IllegalStateException("local.properties file already generated. If you want to regenerate it, please delete it manually first")
+        } else {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(localPropsFile))
+            bufferedWriter.writeLine("# Secrets")
+            bufferedWriter.writeLine("secrets.gpg.signingKey=")
+            bufferedWriter.writeLine("secrets.gpg.signingPassword=")
+            bufferedWriter.writeLine("secrets.mavenCentral.username=")
+            bufferedWriter.writeLine("secrets.mavenCentral.password=")
+            bufferedWriter.writeLine("")
+            bufferedWriter.writeLine("# Overwritten configurations")
+            bufferedWriter.writeLine("ow.build.environment.local=")
+            bufferedWriter.writeLine("ow.build.environment.buildType=")
+            bufferedWriter.writeLine("ow.game.window.width=")
+            bufferedWriter.writeLine("ow.game.window.height=")
+            bufferedWriter.writeLine("ow.game.window.username=")
+            bufferedWriter.close()
+
+            project.getLogger().info("local.properties generated successfully!")
+        }
+    }
+}
 
 tasks.register("cleanPreprocessSources") {
     it.group("${project.mod_id}")
