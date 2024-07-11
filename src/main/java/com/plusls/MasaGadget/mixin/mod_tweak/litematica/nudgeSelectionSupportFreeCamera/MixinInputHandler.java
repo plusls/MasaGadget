@@ -13,9 +13,8 @@ import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 
 @Dependencies(require = {
-        @Dependency(ModId.litematica),
-        @Dependency(ModId.tweakeroo),
-        @Dependency(value = "minecraft", versionPredicates = "<=1.15.2")
+        @Dependency(value = ModId.litematica, versionPredicates = "<0.0.0-dev.20210917.192300"),
+        @Dependency(value = ModId.tweakeroo)
 })
 @Mixin(value = InputHandler.class, remap = false)
 public class MixinInputHandler {

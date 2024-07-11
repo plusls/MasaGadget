@@ -83,9 +83,8 @@ public class Configs {
     public static MagicConfigBooleanHotkeyed fixAccurateProtocol = Configs.cf.newConfigBooleanHotkeyed("fixAccurateProtocol", false);
 
     @Dependencies(require = {
-            @Dependency(ModId.litematica),
-            @Dependency(ModId.tweakeroo),
-            @Dependency(value = "minecraft", versionPredicates = "<=1.15.2")
+            @Dependency(value = ModId.litematica, versionPredicates = "<0.0.0-dev.20210917.192300"),
+            @Dependency(value = ModId.tweakeroo)
     })
     @Config(category = ConfigCategory.LITEMATICA)
     public static MagicConfigBoolean nudgeSelectionSupportFreeCamera = Configs.cf.newConfigBoolean("nudgeSelectionSupportFreeCamera", false);
@@ -99,7 +98,9 @@ public class Configs {
     public static MagicConfigBoolean useRelativePath = Configs.cf.newConfigBoolean("useRelativePath", false);
 
     // MALILIB
-    @Dependencies(require = @Dependency(value = "minecraft", versionPredicates = "<=1.17.1"))
+    @Dependencies(require = @Dependency(value = ModId.malilib, versionPredicates = "<0.11.0"))
+    @Dependencies(require = @Dependency(value = ModId.minihud, versionPredicates = "<0.20.0"))
+    @Dependencies(require = @Dependency(value = ModId.tweakeroo, versionPredicates = "<0.11.1"))
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean backportI18nSupport = Configs.cf.newConfigBoolean("backportI18nSupport", false);
 
@@ -110,19 +111,19 @@ public class Configs {
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBooleanHotkeyed favoritesSupport = Configs.cf.newConfigBooleanHotkeyed("favoritesSupport", false);
 
-    @Dependencies(require = @Dependency(value = "minecraft", versionPredicates = "<=1.17.1"))
+    @Dependencies(require = @Dependency(value = ModId.malilib, versionPredicates = "<0.11.0"))
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean fixConfigWidgetWidth = Configs.cf.newConfigBoolean("fixConfigWidgetWidth", false);
 
-    @Dependencies(require = @Dependency(value = "minecraft", versionPredicates = "<=1.17.1"))
+    @Dependencies(require = @Dependency(value = ModId.malilib, versionPredicates = "<0.11.0"))
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean fixGetInventoryType = Configs.cf.newConfigBoolean("fixGetInventoryType", false);
 
-    @Dependencies(require = @Dependency(value = "minecraft", versionPredicates = "<=1.17.1"))
+    @Dependencies(require = @Dependency(value = ModId.malilib, versionPredicates = "<0.11.6"))
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean fixSearchbarHotkeyInput = Configs.cf.newConfigBoolean("fixSearchbarHotkeyInput", false);
 
-    @Dependencies(require = @Dependency(value = "minecraft", versionPredicates = "<=1.17.1"))
+    @Dependencies(require = @Dependency(value = ModId.malilib, versionPredicates = "<0.11.0"))
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean optimizeConfigWidgetSearch = Configs.cf.newConfigBoolean("optimizeConfigWidgetSearch", false);
 
@@ -140,7 +141,7 @@ public class Configs {
     @Dependencies(require = {
             @Dependency(ModId.minihud),
             @Dependency(ModId.tweakeroo),
-            @Dependency(value = "minecraft", versionPredicates = ">1.14.4")
+            @Dependency(value = ModId.minecraft, versionPredicates = ">1.14.4")
     })
     @Config(category = ConfigCategory.MINIHUD)
     public static MagicConfigBoolean pcaSyncProtocolSyncBeehive = Configs.cf.newConfigBoolean("pcaSyncProtocolSyncBeehive", false);

@@ -2,6 +2,7 @@ package com.plusls.MasaGadget.mixin.mod_tweak.malilib.backportI18nSupport;
 
 import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.util.MiscUtil;
+import com.plusls.MasaGadget.util.ModId;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.options.ConfigBase;
 import org.spongepowered.asm.mixin.Intrinsic;
@@ -16,7 +17,7 @@ import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.util.ReflectionUtil;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
-@Dependencies(require = @Dependency(value = "minecraft", versionPredicates = "<=1.17.1"))
+@Dependencies(require = @Dependency(value = ModId.malilib, versionPredicates = "<0.11.0"))
 @Mixin(value = ConfigBase.class, remap = false)
 public abstract class MixinConfigBase implements IConfigBase {
     @Unique

@@ -1,6 +1,7 @@
 package com.plusls.MasaGadget.mixin.mod_tweak.malilib.fixGetInventoryType;
 
 import com.plusls.MasaGadget.game.Configs;
+import com.plusls.MasaGadget.util.ModId;
 import fi.dy.masa.malilib.render.InventoryOverlay;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.BlockItem;
@@ -16,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 
-@Dependencies(require = @Dependency(value = "minecraft", versionPredicates = "<=1.17.1"))
+@Dependencies(require = @Dependency(value = ModId.malilib, versionPredicates = "<0.11.0"))
 @Mixin(value = InventoryOverlay.class, remap = false)
 public class MixinInventoryOverlay {
     @Inject(

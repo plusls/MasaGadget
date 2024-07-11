@@ -2,6 +2,7 @@ package com.plusls.MasaGadget.mixin.mod_tweak.malilib.optimizeConfigWidgetSearch
 
 import com.google.common.collect.ImmutableList;
 import com.plusls.MasaGadget.game.Configs;
+import com.plusls.MasaGadget.util.ModId;
 import fi.dy.masa.malilib.config.IConfigBase;
 import fi.dy.masa.malilib.config.IConfigResettable;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
@@ -17,7 +18,7 @@ import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 
 import java.util.List;
 
-@Dependencies(require = @Dependency(value = "minecraft", versionPredicates = "<=1.17.1"))
+@Dependencies(require = @Dependency(value = ModId.malilib, versionPredicates = "<0.11.0"))
 @Mixin(value = WidgetListConfigOptions.class, remap = false)
 public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptionsBase<GuiConfigsBase.ConfigOptionWrapper, WidgetConfigOption> {
     public MixinWidgetListConfigOptions(int x, int y, int width, int height, int configWidth) {

@@ -13,10 +13,7 @@ import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.api.i18n.I18n;
 
-@Dependencies(require = {
-        @Dependency(ModId.minihud),
-        @Dependency(value = "minecraft", versionPredicates = "<=1.17.1")
-})
+@Dependencies(require = @Dependency(value = ModId.minihud, versionPredicates = "<0.20.0"))
 @Mixin(value = RendererToggle.class, remap = false)
 public abstract class MixinRendererToggle implements IHotkeyTogglable {
     @Inject(

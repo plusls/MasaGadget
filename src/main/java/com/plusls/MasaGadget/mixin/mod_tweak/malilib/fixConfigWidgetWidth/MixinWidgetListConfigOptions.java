@@ -1,6 +1,7 @@
 package com.plusls.MasaGadget.mixin.mod_tweak.malilib.fixConfigWidgetWidth;
 
 import com.plusls.MasaGadget.game.Configs;
+import com.plusls.MasaGadget.util.ModId;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
@@ -21,7 +22,7 @@ import top.hendrixshen.magiclib.util.collect.ValueContainer;
 import java.util.List;
 import java.util.Objects;
 
-@Dependencies(require = @Dependency(value = "minecraft", versionPredicates = "<=1.17.1"))
+@Dependencies(require = @Dependency(value = ModId.malilib, versionPredicates = "<0.11.0"))
 @Mixin(value = WidgetListConfigOptions.class, remap = false)
 public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptionsBase<GuiConfigsBase.ConfigOptionWrapper, WidgetConfigOption> {
     @Unique

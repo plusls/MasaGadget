@@ -1,6 +1,8 @@
 package com.plusls.MasaGadget.util;
 
 public class ModId {
+    public static final String minecraft = "minecraft";
+
     public static final String malilib = "malilib";
     public static final String tweakeroo = "tweakeroo";
     public static final String itemscroller = "itemscroller";

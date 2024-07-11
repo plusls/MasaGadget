@@ -11,10 +11,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 
-@Dependencies(require = {
-        @Dependency(ModId.tweakeroo),
-        @Dependency(value = "minecraft", versionPredicates = "<=1.17.1")
-})
+@Dependencies(require = @Dependency(value = ModId.tweakeroo, versionPredicates = "<0.11.1"))
 @Mixin(value = ConfigBooleanClient.class, remap = false)
 public class MixinConfigBooleanClient {
     @Dynamic
