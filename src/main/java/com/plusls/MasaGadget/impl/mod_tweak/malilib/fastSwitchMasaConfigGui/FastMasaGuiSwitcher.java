@@ -49,9 +49,9 @@ public class FastMasaGuiSwitcher {
         this.getModConfigScreenFactoryMethod = ReflectionUtil.getMethod(this.modMenuApiClass, "getModConfigScreenFactory");
         this.createMethod = ReflectionUtil.getMethod("com.terraformersmc.modmenu.api.ConfigScreenFactory", "create", Screen.class);
         this.legacyModMenuApiClass = ReflectionUtil.getClass("io.github.prospector.modmenu.api.ModMenuApi");
-        this.legacyGetConfigScreenFactory = ReflectionUtil.getMethod(this.legacyModMenuApiClass, "getModConfigScreenFactory");
+        this.legacyGetConfigScreenFactory = ReflectionUtil.getMethod(this.legacyModMenuApiClass, "getConfigScreenFactory");
         this.legacyCreateMethod = ReflectionUtil.getMethod("io.github.prospector.modmenu.api.ConfigScreenFactory", "create", Screen.class);
-        this.legacyGetModConfigScreenFactoryMethod = ReflectionUtil.getMethod(this.legacyModMenuApiClass, "getConfigScreenFactory");
+        this.legacyGetModConfigScreenFactoryMethod = ReflectionUtil.getMethod(this.legacyModMenuApiClass, "getModConfigScreenFactory");
     }
 
     @ApiStatus.Internal
@@ -120,7 +120,7 @@ public class FastMasaGuiSwitcher {
                     this.guiClass.put(screen.getClass(), configScreenFactoryCompat);
                 } else {
                     ModMenuApiCompat.ConfigScreenFactoryCompat<?> savedConfigScreenFactoryCompat = this.guiClass.get(screen.getClass());
-                    String savedName = guiModName.get(savedConfigScreenFactoryCompat).getStringValue();
+                    String savedName = this.guiModName.get(savedConfigScreenFactoryCompat).getStringValue();
 
                     if (savedName.length() > modName.length()) {
                         this.guiModName.put(savedConfigScreenFactoryCompat, () -> modName);
