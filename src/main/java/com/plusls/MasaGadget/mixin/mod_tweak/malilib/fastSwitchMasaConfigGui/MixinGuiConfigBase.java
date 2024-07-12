@@ -19,6 +19,10 @@ import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.SelectorDropDownList;
 
+//#if MC > 11902
+//$$ import org.spongepowered.asm.mixin.Intrinsic;
+//#endif
+
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11404
@@ -26,7 +30,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
 @Dependencies(require = @Dependency(ModId.mod_menu))
-@Mixin(value = GuiConfigsBase.class, remap = false, priority = 1100)
+@Mixin(value = GuiConfigsBase.class, remap = false)
 public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.ConfigOptionWrapper, WidgetConfigOption, WidgetListConfigOptions> implements MasaGadgetDropdownList {
     protected MixinGuiConfigBase(int listX, int listY) {
         super(listX, listY);
@@ -35,7 +39,15 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
     @Unique
     private SelectorDropDownList<IStringValue> masa_gadget$masaModGuiList;
 
-    @SuppressWarnings({"MixinAnnotationTarget", "UnresolvedMixinReference"})
+    //#if MC > 11902
+    //$$ //@Intrinsic
+    //$$ //@Override
+    //$$ //public void initGui() {
+    //$$ //    super.initGui();
+    //$$ //}
+    //$$
+    //$$ @SuppressWarnings({"MixinAnnotationTarget", "UnresolvedMixinReference"})
+    //#endif
     @Inject(
             method = "initGui",
             at = @At(

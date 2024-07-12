@@ -50,7 +50,7 @@ public abstract class MixinZombieVillagerEntity extends Zombie {
         //$$ if (this.getLevel().isClientSide() && this.isAlive() && this.isConverting()) {
         //#else
         if (this.level.isClientSide() && this.isAlive() && this.isConverting()) {
-        //#endif
+            //#endif
             int i = this.getConversionProgress();
             this.villagerConversionTime -= i;
             if (this.villagerConversionTime <= 0) {

@@ -47,19 +47,19 @@ public class InventoryPreviewSyncDataUtil {
         if (hitResult.getType() == HitResult.Type.BLOCK) {
             BlockPos pos = ((BlockHitResult) hitResult).getBlockPos();
             Object blockEntity = HitResultHandler.getInstance().getLastHitBlockEntity().orElse(null);
-            
+
             if (
                     blockEntity instanceof AbstractFurnaceBlockEntity ||
-                    blockEntity instanceof DispenserBlockEntity ||
-                    blockEntity instanceof HopperBlockEntity ||
-                    blockEntity instanceof ShulkerBoxBlockEntity ||
-                    blockEntity instanceof BarrelBlockEntity ||
-                    blockEntity instanceof BrewingStandBlockEntity ||
-                    blockEntity instanceof ChestBlockEntity ||
-                    blockEntity instanceof CompoundContainer ||
-                    (blockEntity instanceof ComparatorBlockEntity && Configs.inventoryPreviewSupportComparator.getBooleanValue()) ||
-                    //#if MC > 11404
-                    (blockEntity instanceof BeehiveBlockEntity && Configs.pcaSyncProtocolSyncBeehive.getBooleanValue())
+                            blockEntity instanceof DispenserBlockEntity ||
+                            blockEntity instanceof HopperBlockEntity ||
+                            blockEntity instanceof ShulkerBoxBlockEntity ||
+                            blockEntity instanceof BarrelBlockEntity ||
+                            blockEntity instanceof BrewingStandBlockEntity ||
+                            blockEntity instanceof ChestBlockEntity ||
+                            blockEntity instanceof CompoundContainer ||
+                            (blockEntity instanceof ComparatorBlockEntity && Configs.inventoryPreviewSupportComparator.getBooleanValue()) ||
+                            //#if MC > 11404
+                            (blockEntity instanceof BeehiveBlockEntity && Configs.pcaSyncProtocolSyncBeehive.getBooleanValue())
                 //#else
                 //$$ true
                 //#endif
@@ -71,9 +71,9 @@ public class InventoryPreviewSyncDataUtil {
 
             if (
                     entity instanceof Container ||
-                    entity instanceof AbstractVillager ||
-                    entity instanceof AbstractHorse ||
-                    entity instanceof Player
+                            entity instanceof AbstractVillager ||
+                            entity instanceof AbstractHorse ||
+                            entity instanceof Player
             ) {
                 PcaSyncProtocol.syncEntity(entity.getId());
             }

@@ -1,6 +1,6 @@
 {
-  "masa_gadget_mod.config.category.generic.name": "Generic",
-  "masa_gadget_mod.config.category.all.name": "All",
+  "masa_gadget_mod.config.category.generic.name": "通用",
+  "masa_gadget_mod.config.category.all.name": "全部",
   "masa_gadget_mod.config.category.litematica.name": "Litematica",
   "masa_gadget_mod.config.category.malilib.name": "Malilib",
   "masa_gadget_mod.config.category.minihud.name": "MiniHud",

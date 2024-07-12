@@ -33,7 +33,9 @@ public class MixinWorldUtils {
     private static InteractionResult checkInventory(InteractionResult interactionResult) {
         Minecraft mc = Minecraft.getInstance();
 
-        if (!Configs.betterEasyPlaceMode || mc.level == null || interactionResult != InteractionResult.FAIL) {
+        if (!Configs.betterEasyPlaceMode.getBooleanValue() ||
+                mc.level == null ||
+                interactionResult != InteractionResult.FAIL) {
             return interactionResult;
         }
 

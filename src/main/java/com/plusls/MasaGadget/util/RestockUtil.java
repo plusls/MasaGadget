@@ -64,7 +64,7 @@ public class RestockUtil {
                     //#elseif MC > 11605
                     //$$ player.inventoryMenu.getCarried().sameItemStackIgnoreDurability(itemStack)
                     //#else
-                    PlayerCompat.of(player).getInventory().getCarried().sameItemStackIgnoreDurability(itemStack)
+                        PlayerCompat.of(player).getInventory().getCarried().sameItemStackIgnoreDurability(itemStack)
                     //#endif
                 ) {
                     mc.gameMode.handleInventoryMouseClick(player.inventoryMenu.containerId,

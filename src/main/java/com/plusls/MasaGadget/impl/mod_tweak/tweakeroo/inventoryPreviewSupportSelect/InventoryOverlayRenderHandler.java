@@ -20,9 +20,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.TooltipFlag;
 import top.hendrixshen.magiclib.api.compat.minecraft.client.gui.FontCompat;
 import top.hendrixshen.magiclib.impl.render.context.RenderGlobal;
+
 import java.util.List;
 //#if MC > 11605
 //$$ import com.mojang.blaze3d.systems.RenderSystem;
+//#endif
+//#if MC > 11404
+import net.minecraft.client.renderer.MultiBufferSource;
+import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 //#endif
 //#endif
 
@@ -36,8 +41,6 @@ import java.util.List;
 
 //#if MC > 11404
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
-import net.minecraft.client.renderer.MultiBufferSource;
 //#endif
 
 public class InventoryOverlayRenderHandler {
@@ -45,16 +48,17 @@ public class InventoryOverlayRenderHandler {
     private static final InventoryOverlayRenderHandler instance = new InventoryOverlayRenderHandler();
     private static final int UN_SELECTED = 114514;
 
-    private int selectedIdx = InventoryOverlayRenderHandler.UN_SELECTED;
-    private int currentIdx = -1;
+    // Main Container
+    private int selectedSlot = InventoryOverlayRenderHandler.UN_SELECTED;
+    private int currentSlot = -1;
     private int renderX = -1;
     private int renderY = -1;
     private ItemStack itemStack = null;
-    // 支持显示盒子在箱子里
+    // Internal ShulkerBox
     private boolean selectInventory = false;
     private boolean renderingSubInventory = false;
-    private int subSelectedIdx = UN_SELECTED;
-    private int subCurrentIdx = -1;
+    private int subSelectedSlot = InventoryOverlayRenderHandler.UN_SELECTED;
+    private int subCurrentSlot = -1;
     private int subRenderX = -1;
     private int subRenderY = -1;
     private ItemStack subItemStack = null;
@@ -67,94 +71,112 @@ public class InventoryOverlayRenderHandler {
 
         if (!oldStatus) {
             // Reset preview selection slot.
-            InventoryOverlayRenderHandler.getInstance().resetSelectedIdx();
+            InventoryOverlayRenderHandler.getInstance().resetSelectedSlot();
         }
     }
 
     public void render(@NotNull RenderContext renderContext) {
-        //#if MC > 11904
-        //$$ GuiGraphics gui = renderContext.getGuiComponent();
-        //#elseif MC > 11502
-        //#endif
-
         //#if MC > 11605 && MC < 12000
         //$$ RenderSystem.applyModelViewMatrix();
         //#endif
 
-        if (this.currentIdx == 0) {
+        if (this.currentSlot == 0) {
             return;
         }
 
-        if (this.selectedIdx != InventoryOverlayRenderHandler.UN_SELECTED) {
-            if (this.selectedIdx >= this.currentIdx) {
-                this.selectedIdx %= this.currentIdx;
-            } else if (this.selectedIdx < 0) {
-                while (this.selectedIdx < 0) {
-                    this.selectedIdx += this.currentIdx;
-                }
-            } else if (this.itemStack != null) {
-                if (this.selectInventory) {
-                    if (this.itemStack.getItem() instanceof BlockItem &&
-                            ((BlockItem) this.itemStack.getItem()).getBlock() instanceof ShulkerBoxBlock) {
-                        this.renderSelectedRect(renderContext, this.renderX, this.renderY);
-                        // 盒子预览
-                        this.renderingSubInventory = true;
-                        RenderUtils.renderShulkerBoxPreview(this.itemStack,
-                                GuiUtils.getScaledWindowWidth() / 2 - 96,
-                                GuiUtils.getScaledWindowHeight() / 2 + 30,
-                                true
-                                //#if MC > 11904
-                                //$$ , gui
-                                //#endif
-                        );
-                        this.renderingSubInventory = false;
-
-                        if (this.subSelectedIdx != InventoryOverlayRenderHandler.UN_SELECTED) {
-                            if (this.subCurrentIdx != 0) {
-                                if (this.subSelectedIdx >= this.subCurrentIdx) {
-                                    this.subSelectedIdx %= this.subCurrentIdx;
-                                } else if (this.subSelectedIdx < 0) {
-                                    while (this.subSelectedIdx < 0) {
-                                        this.subSelectedIdx += this.subCurrentIdx;
-                                    }
-                                } else if (this.subItemStack != null) {
-                                    this.renderSelectedRect(renderContext, this.renderX, this.renderY);
-                                }
-                            }
-                        }
-                    } else {
-                        // 激活预览但是被预览的物品不是盒子
-                        this.switchSelectInventory();
-                    }
-                }
-
-                if (!this.selectInventory) {
-                    this.renderSelectedRect(renderContext, this.renderX, this.renderY);
-                    this.renderTooltip(renderContext, this.itemStack, this.renderX, this.renderY);
-                }
-            }
+        if (this.selectedSlot != InventoryOverlayRenderHandler.UN_SELECTED &&
+                this.adjustSelectedSlot() &&
+                this.itemStack != null) {
+            this.attachToSubShulkerBoxView(renderContext);
+            this.attachToMainInventoryView(renderContext);
         }
 
-        this.currentIdx = 0;
-        this.itemStack = null;
-        this.renderX = -1;
-        this.renderY = -1;
-        this.subCurrentIdx = 0;
-        this.subItemStack = null;
-        this.subRenderX = -1;
-        this.subRenderY = -1;
+        this.dropState();
     }
 
-    // for 1.14
+    private void attachToMainInventoryView(RenderContext renderContext) {
+        if (!this.selectInventory) {
+            this.renderSlotHighlight(renderContext, this.renderX, this.renderY);
+            this.renderTooltip(renderContext, this.itemStack, this.renderX, this.renderY);
+        }
+    }
+
+    private void attachToSubShulkerBoxView(RenderContext renderContext) {
+        if (!this.selectInventory) {
+            return;
+        }
+
+        if (!(this.itemStack.getItem() instanceof BlockItem) ||
+                !(((BlockItem) this.itemStack.getItem()).getBlock() instanceof ShulkerBoxBlock)) {
+            this.switchSelectInventory();
+            return;
+        }
+
+        //#if MC > 11904
+        //$$ GuiGraphics gui = renderContext.getGuiComponent();
+        //#endif
+
+        this.renderSlotHighlight(renderContext, this.renderX, this.renderY);
+        this.renderingSubInventory = true;
+        RenderUtils.renderShulkerBoxPreview(this.itemStack,
+                GuiUtils.getScaledWindowWidth() / 2 - 96,
+                GuiUtils.getScaledWindowHeight() / 2 + 30,
+                true
+                //#if MC > 11904
+                //$$ , gui
+                //#endif
+        );
+        this.renderingSubInventory = false;
+
+        if (this.subSelectedSlot != InventoryOverlayRenderHandler.UN_SELECTED &&
+                this.adjustSubSelectedSlot() &&
+                this.subItemStack != null
+        ) {
+            renderContext.pushMatrix();
+            renderContext.translate(0, 0, 400);
+            this.renderSlotHighlight(renderContext, this.subRenderX, this.subRenderY);
+            this.renderTooltip(renderContext, this.subItemStack, this.subRenderX, this.subRenderY);
+            renderContext.popMatrix();
+        }
+    }
+
+    private boolean adjustSelectedSlot() {
+        int oldSelectedSlot = this.selectedSlot;
+
+        if (this.currentSlot > 0) {
+            while (this.selectedSlot < 0) {
+                this.selectedSlot += this.currentSlot;
+            }
+
+            this.selectedSlot %= this.currentSlot;
+        }
+
+        return oldSelectedSlot == this.selectedSlot;
+    }
+
+    private boolean adjustSubSelectedSlot() {
+        int oldSelectedSlot = this.subSelectedSlot;
+
+        if (this.subCurrentSlot > 0) {
+            while (this.subSelectedSlot < 0) {
+                this.subSelectedSlot += this.subCurrentSlot;
+            }
+
+            this.subSelectedSlot %= this.subCurrentSlot;
+        }
+
+        return oldSelectedSlot == this.subSelectedSlot;
+    }
+
     public void updateState(int x, int y, ItemStack stack) {
         if (this.renderingSubInventory) {
-            if (this.subCurrentIdx++ == this.subSelectedIdx) {
+            if (this.subCurrentSlot++ == this.subSelectedSlot) {
                 this.subRenderX = x;
                 this.subRenderY = y;
                 this.subItemStack = stack;
             }
         } else {
-            if (this.currentIdx++ == this.selectedIdx) {
+            if (this.currentSlot++ == this.selectedSlot) {
                 this.renderX = x;
                 this.renderY = y;
                 this.itemStack = stack;
@@ -162,36 +184,55 @@ public class InventoryOverlayRenderHandler {
         }
     }
 
-    public void switchSelectInventory() {
-        this.selectInventory = !this.selectInventory;
-        this.subSelectedIdx = InventoryOverlayRenderHandler.UN_SELECTED;
+    private void dropState() {
+        this.currentSlot = 0;
+        this.itemStack = null;
+        this.renderX = 0;
+        this.renderY = 0;
+        this.subCurrentSlot = 0;
+        this.subItemStack = null;
+        this.subRenderX = 0;
+        this.subRenderY = 0;
     }
 
-    public void resetSelectedIdx() {
-        this.selectedIdx = InventoryOverlayRenderHandler.UN_SELECTED;
+    public void switchSelectInventory() {
+        this.selectInventory = !this.selectInventory;
+        this.subSelectedSlot = InventoryOverlayRenderHandler.UN_SELECTED;
+    }
+
+    private void resetSelectedSlot() {
+        this.selectedSlot = InventoryOverlayRenderHandler.UN_SELECTED;
 
         if (this.selectInventory) {
             this.switchSelectInventory();
         }
     }
 
-    public void addSelectedIdx(int n) {
+    public void scrollerUp() {
+        this.moveSelectedSlot(1);
+    }
+
+    public void scrollerDown() {
+        this.moveSelectedSlot(-1);
+    }
+
+    private void moveSelectedSlot(int n) {
         if (this.selectInventory) {
-            if (this.subSelectedIdx == InventoryOverlayRenderHandler.UN_SELECTED) {
-                this.subSelectedIdx = 0;
+            if (this.subSelectedSlot == InventoryOverlayRenderHandler.UN_SELECTED) {
+                this.subSelectedSlot = 0;
             } else {
-                this.subSelectedIdx += n;
+                this.subSelectedSlot += n;
             }
         } else {
-            if (this.selectedIdx == InventoryOverlayRenderHandler.UN_SELECTED) {
-                this.selectedIdx = 0;
+            if (this.selectedSlot == InventoryOverlayRenderHandler.UN_SELECTED) {
+                this.selectedSlot = 0;
             } else {
-                this.selectedIdx += n;
+                this.selectedSlot += n;
             }
         }
     }
 
-    public void renderSelectedRect(RenderContext renderContext, int x, int y) {
+    private void renderSlotHighlight(@NotNull RenderContext renderContext, int x, int y) {
         //#if MC > 11605
         //$$ AbstractContainerScreen.renderSlotHighlight(
         //#if MC > 11904
@@ -204,15 +245,14 @@ public class InventoryOverlayRenderHandler {
         //$$         400
         //$$ );
         //#else
-        RenderGlobal.disableLighting();
         RenderGlobal.disableDepthTest();
         RenderGlobal.colorMask(true, true, true, false);
         renderContext.pushMatrix();
-        renderContext.translate(x, y, 1);
+        renderContext.translate(0, 0, 400);
         ((AccessorGuiComponent) renderContext.getGuiComponent()).masa_gadget_mod$fillGradient(
-        //#if MC > 11502
+                //#if MC > 11502
                 renderContext.getMatrixStack().getPoseStack(),
-        //#endif
+                //#endif
                 x,
                 y,
                 x + 16,
@@ -222,12 +262,11 @@ public class InventoryOverlayRenderHandler {
         );
         renderContext.popMatrix();
         RenderGlobal.colorMask(true, true, true, true);
-        RenderGlobal.enableLighting();
         RenderGlobal.enableDepthTest();
         //#endif
     }
 
-    private void renderTooltip(RenderContext renderContext, ItemStack itemStack, int x, int y) {
+    private void renderTooltip(RenderContext renderContext, @NotNull ItemStack itemStack, int x, int y) {
         //#if MC > 11904
         //$$ renderContext.getGuiComponent().renderTooltip(Minecraft.getInstance().font, itemStack, x, y);
         //#else
@@ -264,32 +303,29 @@ public class InventoryOverlayRenderHandler {
         }
 
         renderContext.pushMatrix();
-        renderContext.translate(0, 0, 1);
+        renderContext.translate(0, 0, 400);
 
         //#if MC < 11904
         float backupBlitOffset = mc.getItemRenderer().blitOffset;
         mc.getItemRenderer().blitOffset = 400.0F;
-        RenderGlobal.disableTexture();
         //#endif
-
-        RenderGlobal.enableBlend();
-        RenderGlobal.defaultBlendFunc();
 
         AccessorGuiComponent guiComponent = (AccessorGuiComponent) renderContext.getGuiComponent();
         guiComponent.masa_gadget_mod$fillGradient(
-        //#if MC > 11502
+                //#if MC > 11502
                 renderContext.getMatrixStack().getPoseStack(),
-        //#endif
+                //#endif
                 renderX - 3,
                 renderY - 4,
                 renderX + xOffset + 3,
-                renderY - 3, 0xF0100010,
+                renderY - 3,
+                0xF0100010,
                 0xF0100010
         );
         guiComponent.masa_gadget_mod$fillGradient(
-        //#if MC > 11502
+                //#if MC > 11502
                 renderContext.getMatrixStack().getPoseStack(),
-        //#endif
+                //#endif
                 renderX - 3,
                 renderY + yOffset + 3,
                 renderX + xOffset + 3,
@@ -298,9 +334,9 @@ public class InventoryOverlayRenderHandler {
                 0xF0100010
         );
         guiComponent.masa_gadget_mod$fillGradient(
-        //#if MC > 11502
+                //#if MC > 11502
                 renderContext.getMatrixStack().getPoseStack(),
-        //#endif
+                //#endif
                 renderX - 3,
                 renderY - 3,
                 renderX + xOffset + 3,
@@ -309,9 +345,9 @@ public class InventoryOverlayRenderHandler {
                 0xF0100010
         );
         guiComponent.masa_gadget_mod$fillGradient(
-        //#if MC > 11502
+                //#if MC > 11502
                 renderContext.getMatrixStack().getPoseStack(),
-        //#endif
+                //#endif
                 renderX - 4,
                 renderY - 3,
                 renderX - xOffset,
@@ -320,9 +356,9 @@ public class InventoryOverlayRenderHandler {
                 0xF0100010
         );
         guiComponent.masa_gadget_mod$fillGradient(
-        //#if MC > 11502
+                //#if MC > 11502
                 renderContext.getMatrixStack().getPoseStack(),
-        //#endif
+                //#endif
                 renderX + xOffset + 3,
                 renderY - 3,
                 renderX + xOffset + 4,
@@ -331,9 +367,9 @@ public class InventoryOverlayRenderHandler {
                 0xF0100010
         );
         guiComponent.masa_gadget_mod$fillGradient(
-        //#if MC > 11502
+                //#if MC > 11502
                 renderContext.getMatrixStack().getPoseStack(),
-        //#endif
+                //#endif
                 renderX - 3,
                 renderY - 3 + 1,
                 renderX - 3 + 1,
@@ -342,9 +378,9 @@ public class InventoryOverlayRenderHandler {
                 0x5028007F
         );
         guiComponent.masa_gadget_mod$fillGradient(
-        //#if MC > 11502
+                //#if MC > 11502
                 renderContext.getMatrixStack().getPoseStack(),
-        //#endif
+                //#endif
                 renderX + xOffset + 2,
                 renderY - 3 + 1,
                 renderX + xOffset + 3,
@@ -353,9 +389,9 @@ public class InventoryOverlayRenderHandler {
                 0x5028007F
         );
         guiComponent.masa_gadget_mod$fillGradient(
-        //#if MC > 11502
+                //#if MC > 11502
                 renderContext.getMatrixStack().getPoseStack(),
-        //#endif
+                //#endif
                 renderX - 3,
                 renderY - 3,
                 renderX + xOffset + 3,
@@ -364,9 +400,9 @@ public class InventoryOverlayRenderHandler {
                 0x505000FF
         );
         guiComponent.masa_gadget_mod$fillGradient(
-        //#if MC > 11502
+                //#if MC > 11502
                 renderContext.getMatrixStack().getPoseStack(),
-        //#endif
+                //#endif
                 renderX - 3,
                 renderY + yOffset + 2,
                 renderX + xOffset + 3,
@@ -374,30 +410,31 @@ public class InventoryOverlayRenderHandler {
                 0x5028007F,
                 0x5028007F
         );
-        RenderGlobal.disableBlend();
-
-        //#if MC < 11904
-        RenderGlobal.enableTexture();
-        //#endif
 
         renderContext.translate(0, 0, 1);
         FontCompat fontCompat = FontCompat.of(mc.font);
 
         for (int i = 0; i < tooltipLines.size(); i++) {
+            //#if MC > 11404
+            MultiBufferSource.BufferSource immediate = RenderUtil.getBufferSource();
+            //#endif
             fontCompat.drawInBatch(
                     tooltipLines.get(i),
                     renderX,
                     renderY,
                     0xFFFFFFFF,
                     true,
-        //#if MC > 11404
+                    //#if MC > 11404
                     new PoseStack().last().pose(),
-                    MultiBufferSource.immediate(Tesselator.getInstance().getBuilder()),
-        //#endif
+                    immediate,
+                    //#endif
                     FontCompat.DisplayMode.NORMAL,
                     0,
                     0xF000F0
             );
+            //#if MC > 11404
+            immediate.endBatch();
+            //#endif
             renderY += 10 + ((i == 0) ? 2 : 0);
         }
 

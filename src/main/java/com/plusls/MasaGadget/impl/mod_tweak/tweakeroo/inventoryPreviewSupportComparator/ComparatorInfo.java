@@ -21,7 +21,7 @@ import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
 
 public class ComparatorInfo implements RenderLevelListener {
     @Getter
-    private static final EntityInfoRenderer instance = new EntityInfoRenderer();
+    private static final ComparatorInfo instance = new ComparatorInfo();
 
     @ApiStatus.Internal
     public void init() {
@@ -35,8 +35,7 @@ public class ComparatorInfo implements RenderLevelListener {
 
     @Override
     public void postRenderLevel(Level entity, RenderContext renderContext, float partialTicks) {
-        if (
-                !MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.tweakeroo) ||
+        if (!MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.tweakeroo) ||
                 !FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue() ||
                 !Hotkeys.INVENTORY_PREVIEW.getKeybind().isKeybindHeld() ||
                 !Configs.inventoryPreviewSupportComparator.getBooleanValue()) {
@@ -51,7 +50,8 @@ public class ComparatorInfo implements RenderLevelListener {
                     .text(ComponentUtil.simple(((ComparatorBlockEntity) blockEntity).getOutputSignal())
                             .withStyle(ChatFormatting.GREEN).get())
                     .atCenter(pos.get())
-                    .seeThrough();
+                    .seeThrough()
+                    .render();
         }
     }
 }

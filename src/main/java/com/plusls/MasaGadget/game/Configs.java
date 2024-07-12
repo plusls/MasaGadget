@@ -72,7 +72,7 @@ public class Configs {
     // Litematica
     @Dependencies(require = @Dependency(ModId.litematica))
     @Config(category = ConfigCategory.LITEMATICA)
-    public static boolean betterEasyPlaceMode = false;
+    public static MagicConfigBooleanHotkeyed betterEasyPlaceMode = Configs.cf.newConfigBooleanHotkeyed("betterEasyPlaceMode", false);
 
     @Dependencies(require = @Dependency(ModId.litematica))
     @Config(category = ConfigCategory.LITEMATICA)

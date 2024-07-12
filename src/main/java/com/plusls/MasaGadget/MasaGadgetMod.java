@@ -29,6 +29,7 @@ public class MasaGadgetMod implements ClientModInitializer, MinecraftListener {
         InputEventHandler.getKeybindManager().registerKeybindProvider(
                 (IKeybindProvider) SharedConstants.getConfigManager());
         PcaSyncProtocol.init();
+        ComparatorInfo.getInstance().init();
         MouseScrollInputHandler.getInstance().init();
         EntityInfoRenderer.getInstance().init();
         EntityTraceRenderer.getInstance().init();

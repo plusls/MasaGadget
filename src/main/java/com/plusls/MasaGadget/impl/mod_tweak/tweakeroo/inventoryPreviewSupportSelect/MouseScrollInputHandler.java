@@ -32,31 +32,29 @@ public class MouseScrollInputHandler implements IMouseInputHandler {
     public boolean onMouseScroll(int mouseX, int mouseY, double amount) {
         Player player = Minecraft.getInstance().player;
 
-        if (MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.tweakeroo) &&
-                Configs.inventoryPreviewSupportSelect.getBooleanValue() &&
-                FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue() &&
-                HitResultHandler.getInstance().getLastInventoryPreviewStatus()) {
-            if (amount < 0) {
-                InventoryOverlayRenderHandler.getInstance().addSelectedIdx(1);
-            } else if (amount > 0) {
-                InventoryOverlayRenderHandler.getInstance().addSelectedIdx(-1);
-            }
-
-            if (MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.litematica) &&
-                    fi.dy.masa.litematica.config.Configs.Generic.TOOL_ITEM_ENABLED.getBooleanValue() &&
-                    player != null &&
-                    //#if MC > 11902
-                    //$$ BuiltInRegistries.ITEM.getKey(player.getMainHandItem().getItem()).toString().contains(fi.dy.masa.litematica.config.Configs.Generic.TOOL_ITEM.getStringValue())) {
-                //#else
-                Registry.ITEM.getKey(player.getMainHandItem().getItem()).toString().contains(fi.dy.masa.litematica.config.Configs.Generic.TOOL_ITEM.getStringValue())) {
-                //#endif
-                return false;
-            }
-
-            return true;
+        if (!MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.tweakeroo) ||
+                !Configs.inventoryPreviewSupportSelect.getBooleanValue() ||
+                !FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue() ||
+                !HitResultHandler.getInstance().getLastInventoryPreviewStatus()) {
+            return false;
         }
 
-        return false;
+        if (amount < 0) {
+            InventoryOverlayRenderHandler.getInstance().scrollerUp();
+        } else if (amount > 0) {
+            InventoryOverlayRenderHandler.getInstance().scrollerDown();
+        }
+
+        return !MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.litematica) ||
+                !fi.dy.masa.litematica.config.Configs.Generic.TOOL_ITEM_ENABLED.getBooleanValue() ||
+                player == null ||
+                //#if MC > 11902
+                //$$ !BuiltInRegistries.ITEM.getKey(player.getMainHandItem().getItem()).toString()
+                //$$         .contains(fi.dy.masa.litematica.config.Configs.Generic.TOOL_ITEM.getStringValue());
+                //#else
+                !Registry.ITEM.getKey(player.getMainHandItem().getItem()).toString()
+                        .contains(fi.dy.masa.litematica.config.Configs.Generic.TOOL_ITEM.getStringValue());
+        //#endif
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.plusls.MasaGadget.impl.feature.entityInfo;
 
-import com.google.common.collect.Lists;
 import com.plusls.MasaGadget.mixin.accessor.AccessorVillager;
 import com.plusls.MasaGadget.util.PcaSyncProtocol;
 import net.minecraft.ChatFormatting;
