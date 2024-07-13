@@ -24,6 +24,7 @@ public class MixinInventoryOverlay {
             //#if MC > 12006
             // Inject the final call.
             //$$ method = "renderStackAt(Lnet/minecraft/world/item/ItemStack;FFFLnet/minecraft/client/Minecraft;Lnet/minecraft/client/gui/GuiGraphics;DD)V",
+            //$$ remap = true,
             //#else
             method = "renderStackAt",
             //#endif
