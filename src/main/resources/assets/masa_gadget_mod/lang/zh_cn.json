@@ -96,6 +96,7 @@
 
   "masa_gadget_mod.message.canNotFindDespawnShape": "找不到怪物消失图形",
   "masa_gadget_mod.message.cancelFavorite": "取消收藏",
+  "masa_gadget_mod.message.no_data": "无数据",
   "masa_gadget_mod.message.loadInventoryToLocalSuccess": "从服务同步容器数据成功",
   "masa_gadget_mod.message.noBlockCanSpawn": "找不到能刷怪的方块",
   "masa_gadget_mod.message.onlySupportOneDespawnShape": "只支持一个怪物消失图形",

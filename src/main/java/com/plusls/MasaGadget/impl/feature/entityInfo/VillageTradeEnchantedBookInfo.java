@@ -38,7 +38,7 @@ public class VillageTradeEnchantedBookInfo {
         }
 
         if (!Minecraft.getInstance().hasSingleplayerServer() && !PcaSyncProtocol.enable) {
-            return Lists.newArrayList(ComponentUtil.simple("Waiting for PCA").withStyle(ChatFormatting.YELLOW).get());
+            return Lists.newArrayList(ComponentUtil.tr("masa_gadget_mod.message.no_data").withStyle(ChatFormatting.YELLOW).get());
         }
 
         List<Component> ret = Lists.newArrayList();

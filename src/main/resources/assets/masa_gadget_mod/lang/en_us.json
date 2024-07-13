@@ -96,6 +96,7 @@
 
   "masa_gadget_mod.message.canNotFindDespawnShape": "Can't find despawn shape.",
   "masa_gadget_mod.message.cancelFavorite": "Cancel favorite.",
+  "masa_gadget_mod.message.no_data": "no data",
   "masa_gadget_mod.message.loadInventoryToLocalSuccess": "Load inventory to local success",
   "masa_gadget_mod.message.noBlockCanSpawn": "No block can spawn monster.",
   "masa_gadget_mod.message.onlySupportOneDespawnShape": "Only support one despawn shape.",

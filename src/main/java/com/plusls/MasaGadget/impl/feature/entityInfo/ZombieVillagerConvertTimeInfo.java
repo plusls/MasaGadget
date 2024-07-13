@@ -12,7 +12,7 @@ import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
 public class ZombieVillagerConvertTimeInfo {
     public static @NotNull Component getInfo(ZombieVillager zombieVillager) {
         if (!Minecraft.getInstance().hasSingleplayerServer() && !PcaSyncProtocol.enable) {
-            return ComponentUtil.simple("Waiting for PCA").withStyle(ChatFormatting.YELLOW).get();
+            return ComponentUtil.tr("masa_gadget_mod.message.no_data").withStyle(ChatFormatting.YELLOW).get();
         }
 
         int villagerConversionTime = ((AccessorZombieVillager) zombieVillager).getVillagerConversionTime();

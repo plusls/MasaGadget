@@ -18,7 +18,7 @@ public class VillagerNextRestockTimeInfo {
         long timeOfDay = villager.getLevel().getDayTime() % 24000;
 
         if (!Minecraft.getInstance().hasSingleplayerServer() && !PcaSyncProtocol.enable) {
-            return ComponentUtil.simple("Waiting for PCA").withStyle(ChatFormatting.YELLOW).get();
+            return ComponentUtil.tr("masa_gadget_mod.message.no_data").withStyle(ChatFormatting.YELLOW).get();
         }
 
         if (timeOfDay >= 2000 && timeOfDay <= 9000) {
