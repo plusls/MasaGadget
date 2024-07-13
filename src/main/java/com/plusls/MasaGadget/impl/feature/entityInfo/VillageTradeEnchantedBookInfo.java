@@ -113,7 +113,7 @@ public class VillageTradeEnchantedBookInfo {
                 }
 
                 //#if MC > 12006
-                //$$ ret.add(((MutableComponent) entry.getKey().value().getFullname(entry.getKey(), entry.getIntValue())).withStyle(enchantment_level_color));
+                //$$ ret.add(((MutableComponent) Enchantment.getFullname(entry.getKey(), entry.getIntValue())).withStyle(enchantment_level_color));
                 //#elseif MC > 12004
                 //$$ ret.add(((MutableComponent) entry.getKey().value().getFullname(entry.getIntValue())).withStyle(enchantment_level_color));
                 //#elseif MC > 11502
