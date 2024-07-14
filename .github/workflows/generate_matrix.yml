@@ -1,0 +1,29 @@
+name: step.generate_matrix
+on:
+  workflow_call:
+    inputs:
+      target_subproject:
+        description: see CI.yml, for generating matrix entries
+        type: string
+        required: false
+        default: ''
+    outputs:
+      matrix:
+        description: The generated run matrix
+        value: ${{ jobs.generate_matrix.outputs.matrix }}
+jobs:
+  generate_matrix:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout the sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Generate matrix
+        id: generate_matrix
+        # ubuntu-22.04 uses Python 3.10.6
+        run: python3 .github/workflows/scripts/matrix.py
+        env:
+          TARGET_SUBPROJECT: ${{ inputs.target_subproject }}
+    outputs:
+      matrix: ${{ steps.generate_matrix.outputs.matrix }}
