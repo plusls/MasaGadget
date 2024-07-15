@@ -115,6 +115,8 @@ jobs:
             ${{ inputs.publish_mc_ver }}
           game-version-filter: any
           dependencies: |
-            malilib(optional)
+            fabric(required)
+            magiclib(required)
+            malilib(required)
           retry-attempts: 2
           retry-delay: 10000
