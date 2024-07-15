@@ -76,7 +76,7 @@ jobs:
       - name: Prepare changelog
         if: ${{ inputs.publish_channel == 'stable' }}
         uses: actions/github-script@v7
-        id: changelog_release
+        id: changelog
         with:
           script: return process.env.CHANGELOG
           result-encoding: string
@@ -115,7 +115,7 @@ jobs:
             ${{ inputs.publish_mc_ver }}
           game-version-filter: any
           dependencies: |
-            fabric(required)
+            fabric(required){modrinth:P7dR8mSH}{curseforge:306612}#(ignore:github)
             magiclib(required)
             malilib(required)
           retry-attempts: 2
