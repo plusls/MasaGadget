@@ -111,9 +111,13 @@ public class Configs {
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBooleanHotkeyed favoritesSupport = Configs.cf.newConfigBooleanHotkeyed("favoritesSupport", false);
 
-    @Dependencies(require = @Dependency(value = ModId.malilib, versionPredicates = "<0.11.0"))
+    @Dependencies(require = @Dependency(ModId.malilib))
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean fixConfigWidgetWidth = Configs.cf.newConfigBoolean("fixConfigWidgetWidth", false);
+
+    @Dependencies(require = @Dependency(ModId.malilib))
+    @Config(category = ConfigCategory.MALILIB)
+    public static MagicConfigBoolean fixConfigWidgetWidthExpand = Configs.cf.newConfigBoolean("fixConfigWidgetWidthExpand", false);
 
     @Dependencies(require = @Dependency(value = ModId.malilib, versionPredicates = "<0.11.0"))
     @Config(category = ConfigCategory.MALILIB)

@@ -6,6 +6,7 @@ import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptionsBase;
+import fi.dy.masa.malilib.util.StringUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -22,7 +23,7 @@ import top.hendrixshen.magiclib.util.collect.ValueContainer;
 import java.util.List;
 import java.util.Objects;
 
-@Dependencies(require = @Dependency(value = ModId.malilib, versionPredicates = "<0.11.0"))
+@Dependencies(require = @Dependency(ModId.malilib))
 @Mixin(value = WidgetListConfigOptions.class, remap = false)
 public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptionsBase<GuiConfigsBase.ConfigOptionWrapper, WidgetConfigOption> {
     @Unique
@@ -65,8 +66,9 @@ public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptio
 
         for (GuiConfigsBase.ConfigOptionWrapper wrapper : wrappers) {
             if (wrapper.getType() == GuiConfigsBase.ConfigOptionWrapper.Type.CONFIG) {
-                maxWidth = Math.max(maxWidth, this.getStringWidth(
-                        Objects.requireNonNull(wrapper.getConfig()).getConfigGuiDisplayName()));
+                String label = Objects.requireNonNull(wrapper.getConfig()).getConfigGuiDisplayName();
+                maxWidth = Math.max(maxWidth, this.getStringWidth(Configs.fixConfigWidgetWidthExpand.getBooleanValue() ?
+                        StringUtils.translate(label) : label));
             }
         }
 
