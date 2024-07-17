@@ -29,7 +29,12 @@ import top.hendrixshen.magiclib.impl.malilib.config.gui.SelectorDropDownList;
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
-@Dependencies(require = @Dependency(ModId.mod_menu))
+@Dependencies(
+        require = {
+                @Dependency(ModId.malilib),
+                @Dependency(ModId.mod_menu)
+        }
+)
 @Mixin(value = GuiConfigsBase.class, remap = false)
 public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.ConfigOptionWrapper, WidgetConfigOption, WidgetListConfigOptions> implements MasaGadgetDropdownList {
     protected MixinGuiConfigBase(int listX, int listY) {
