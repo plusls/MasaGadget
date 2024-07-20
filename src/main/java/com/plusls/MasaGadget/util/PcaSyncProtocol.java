@@ -72,14 +72,18 @@ public class PcaSyncProtocol {
 
     public static void init() {
         //#if MC > 12004
+        //$$ PayloadTypeRegistry.playC2S().register(ServerboundCancelSyncBlockEntityPacket.TYPE, ServerboundCancelSyncBlockEntityPacket.CODEC);
+        //$$ PayloadTypeRegistry.playC2S().register(ServerboundCancelSyncEntityPacket.TYPE, ServerboundCancelSyncEntityPacket.CODEC);
+        //$$ PayloadTypeRegistry.playC2S().register(ServerboundSyncBlockEntityPacket.TYPE, ServerboundSyncBlockEntityPacket.CODEC);
+        //$$ PayloadTypeRegistry.playC2S().register(ServerboundSyncEntityPacket.TYPE, ServerboundSyncEntityPacket.CODEC);
         //$$ PayloadTypeRegistry.playS2C().register(ClientboundDisablePcaSyncProtocolPacket.TYPE, ClientboundDisablePcaSyncProtocolPacket.CODEC);
         //$$ PayloadTypeRegistry.playS2C().register(ClientboundEnablePcaSyncProtocolPacket.TYPE, ClientboundEnablePcaSyncProtocolPacket.CODEC);
         //$$ PayloadTypeRegistry.playS2C().register(ClientboundUpdateBlockEntityPacket.TYPE, ClientboundUpdateBlockEntityPacket.CODEC);
         //$$ PayloadTypeRegistry.playS2C().register(ClientboundUpdateEntityPacket.TYPE, ClientboundUpdateEntityPacket.CODEC);
-        //$$ ClientPlayNetworking.registerGlobalReceiver(ClientboundDisablePcaSyncProtocolPacket.TYPE, ClientboundDisablePcaSyncProtocolPacket::handle);
-        //$$ ClientPlayNetworking.registerGlobalReceiver(ClientboundEnablePcaSyncProtocolPacket.TYPE, ClientboundEnablePcaSyncProtocolPacket::handle);
-        //$$ ClientPlayNetworking.registerGlobalReceiver(ClientboundUpdateBlockEntityPacket.TYPE, ClientboundUpdateBlockEntityPacket::handle);
-        //$$ ClientPlayNetworking.registerGlobalReceiver(ClientboundUpdateEntityPacket.TYPE, ClientboundUpdateEntityPacket::handle);
+        //$$ ClientPlayNetworking.registerGlobalReceiver(ClientboundDisablePcaSyncProtocolPacket.TYPE, PcaSyncProtocol::disablePcaSyncProtocolHandler);
+        //$$ ClientPlayNetworking.registerGlobalReceiver(ClientboundEnablePcaSyncProtocolPacket.TYPE, PcaSyncProtocol::enablePcaSyncProtocolHandler);
+        //$$ ClientPlayNetworking.registerGlobalReceiver(ClientboundUpdateBlockEntityPacket.TYPE, PcaSyncProtocol::updateBlockEntityHandler);
+        //$$ ClientPlayNetworking.registerGlobalReceiver(ClientboundUpdateEntityPacket.TYPE, PcaSyncProtocol::updateEntityHandler);
         //#else
         ClientPlayNetworking.registerGlobalReceiver(ENABLE_PCA_SYNC_PROTOCOL, PcaSyncProtocol::enablePcaSyncProtocolHandler);
         ClientPlayNetworking.registerGlobalReceiver(DISABLE_PCA_SYNC_PROTOCOL, PcaSyncProtocol::disablePcaSyncProtocolHandler);
@@ -94,25 +98,55 @@ public class PcaSyncProtocol {
         enable = false;
     }
 
-    public static void enablePcaSyncProtocolHandler(Minecraft client, ClientPacketListener handler,
-                                                    FriendlyByteBuf buf, PacketSender responseSender) {
-        if (!client.hasSingleplayerServer()) {
+    private static void enablePcaSyncProtocolHandler(
+            //#if MC > 12004
+            //$$ ClientboundEnablePcaSyncProtocolPacket packet,
+            //$$ ClientPlayNetworking.Context context
+            //#else
+            Minecraft client,
+            ClientPacketListener handler,
+            FriendlyByteBuf buf,
+            PacketSender responseSender
+            //#endif
+    ) {
+        if (!Minecraft.getInstance().hasSingleplayerServer()) {
             SharedConstants.getLogger().info("pcaSyncProtocol enable.");
             enable = true;
         }
     }
 
-    public static void disablePcaSyncProtocolHandler(Minecraft client, ClientPacketListener handler,
-                                                     FriendlyByteBuf buf, PacketSender responseSender) {
-        if (!client.hasSingleplayerServer()) {
+    public static void disablePcaSyncProtocolHandler(
+            //#if MC > 12004
+            //$$ ClientboundDisablePcaSyncProtocolPacket packet,
+            //$$ ClientPlayNetworking.Context context
+            //#else
+            Minecraft client,
+            ClientPacketListener handler,
+            FriendlyByteBuf buf,
+            PacketSender responseSender
+            //#endif
+    ) {
+        if (!Minecraft.getInstance().hasSingleplayerServer()) {
             SharedConstants.getLogger().info("pcaSyncProtocol disable.");
             enable = false;
         }
     }
 
     // 反序列化实体数据
-    public static void updateEntityHandler(Minecraft client, ClientPacketListener handler,
-                                           FriendlyByteBuf buf, PacketSender responseSender) {
+    public static void updateEntityHandler(
+            //#if MC > 12004
+            //$$ ClientboundUpdateEntityPacket packet,
+            //$$ ClientPlayNetworking.Context context
+            //#else
+            Minecraft client,
+            ClientPacketListener handler,
+            FriendlyByteBuf buf,
+            PacketSender responseSender
+            //#endif
+    ) {
+        //#if MC > 12004
+        //$$ Minecraft client = context.client();
+        //#endif
         LocalPlayer player = client.player;
 
         if (player == null) {
@@ -123,12 +157,23 @@ public class PcaSyncProtocol {
         LevelCompat levelCompat = playerCompat.getLevel();
         Level level = levelCompat.get();
 
-        if (!levelCompat.getDimensionLocation().equals(buf.readResourceLocation())) {
+        if (!levelCompat.getDimensionLocation().equals(
+                //#if MC > 12004
+                //$$ packet.dimension()
+                //#else
+                buf.readResourceLocation()
+                //#endif
+        )) {
             return;
         }
 
+        //#if MC > 12004
+        //$$ int entityId = packet.entityId();
+        //$$ CompoundTag tag = packet.tag();
+        //#else
         int entityId = buf.readInt();
         CompoundTag tag = NetworkUtil.readNbt(buf);
+        //#endif
         Entity entity = level.getEntity(entityId);
 
         if (entity != null) {
@@ -166,7 +211,7 @@ public class PcaSyncProtocol {
                 //$$ if (tag.contains("Offers")) {
                 //$$     MerchantOffers.CODEC
                 //$$             .parse(client.level.registryAccess().createSerializationContext(NbtOps.INSTANCE),
-                //$$                     tag.getCompound("Offers").get("Offers"))
+                //$$                     tag.get("Offers"))
                 //$$             .resultOrPartial(Util.prefix("Failed to load offers: ", MagicLib.getLogger()::warn))
                 //$$             .ifPresent(merchantOffers -> ((AccessorAbstractVillager) entity).setOffers(merchantOffers));
                 //$$ }
@@ -209,8 +254,20 @@ public class PcaSyncProtocol {
     }
 
     // 反序列化 blockEntity 数据
-    public static void updateBlockEntityHandler(Minecraft client, ClientPacketListener handler,
-                                                FriendlyByteBuf buf, PacketSender responseSender) {
+    public static void updateBlockEntityHandler(
+            //#if MC > 12004
+            //$$ ClientboundUpdateBlockEntityPacket packet,
+            //$$ ClientPlayNetworking.Context context
+            //#else
+            Minecraft client,
+            ClientPacketListener handler,
+            FriendlyByteBuf buf,
+            PacketSender responseSender
+            //#endif
+    ) {
+        //#if MC > 12004
+        //$$ Minecraft client = context.client();
+        //#endif
         LocalPlayer player = client.player;
 
         if (player == null) {
@@ -220,12 +277,23 @@ public class PcaSyncProtocol {
         LevelCompat levelCompat = PlayerCompat.of(player).getLevel();
         Level level = levelCompat.get();
 
-        if (!levelCompat.getDimensionLocation().equals(buf.readResourceLocation())) {
+        if (!levelCompat.getDimensionLocation().equals(
+                //#if MC > 12004
+                //$$ packet.dimension()
+                //#else
+                buf.readResourceLocation()
+                //#endif
+        )) {
             return;
         }
 
+        //#if MC > 12004
+        //$$ BlockPos pos = packet.blockPos();
+        //$$ CompoundTag tag = packet.tag();
+        //#else
         BlockPos pos = buf.readBlockPos();
         CompoundTag tag = buf.readNbt();
+        //#endif
         BlockEntity blockEntity = level.getBlockEntity(pos);
 
         if (Configs.saveInventoryToSchematicInServer.getBooleanValue() && pos.equals(PcaSyncUtil.lastUpdatePos)) {
@@ -252,11 +320,13 @@ public class PcaSyncProtocol {
         SharedConstants.getLogger().debug("syncBlockEntity: {}", pos);
         lastBlockPos = pos;
         lastEntityId = -1;
+        //#if MC < 12005
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         buf.writeBlockPos(pos);
+        //#endif
         ClientPlayNetworking.send(
                 //#if MC > 12004
-                //$$ new ServerboundSyncBlockEntityPacket(buf)
+                //$$ new ServerboundSyncBlockEntityPacket(pos)
                 //#else
                 SYNC_BLOCK_ENTITY,
                 buf
@@ -272,11 +342,13 @@ public class PcaSyncProtocol {
         SharedConstants.getLogger().debug("syncEntity: {}", entityId);
         lastEntityId = entityId;
         lastBlockPos = null;
+        //#if MC < 12005
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         buf.writeInt(entityId);
+        //#endif
         ClientPlayNetworking.send(
                 //#if MC > 12004
-                //$$ new ServerboundSyncEntityPacket(buf)
+                //$$ new ServerboundSyncEntityPacket(entityId)
                 //#else
                 SYNC_ENTITY,
                 buf
@@ -294,7 +366,7 @@ public class PcaSyncProtocol {
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         ClientPlayNetworking.send(
                 //#if MC > 12004
-                //$$ new ServerboundCancelSyncBlockEntityPacket(buf)
+                //$$ new ServerboundCancelSyncBlockEntityPacket()
                 //#else
                 CANCEL_SYNC_REQUEST_BLOCK_ENTITY,
                 buf
@@ -312,7 +384,7 @@ public class PcaSyncProtocol {
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         ClientPlayNetworking.send(
                 //#if MC > 12004
-                //$$ new ServerboundCancelSyncEntityPacket(buf)
+                //$$ new ServerboundCancelSyncEntityPacket()
                 //#else
                 CANCEL_SYNC_ENTITY,
                 buf
