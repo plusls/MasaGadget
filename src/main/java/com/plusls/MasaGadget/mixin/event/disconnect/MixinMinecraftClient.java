@@ -11,7 +11,11 @@ import top.hendrixshen.magiclib.impl.event.EventManager;
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraftClient {
     @Inject(
+            //#if MC > 12004
+            //$$ method = "disconnect(Lnet/minecraft/client/gui/screens/Screen;Z)V",
+            //#else
             method = "clearLevel(Lnet/minecraft/client/gui/screens/Screen;)V",
+            //#endif
             at = @At(
                     value = "HEAD"
             )
