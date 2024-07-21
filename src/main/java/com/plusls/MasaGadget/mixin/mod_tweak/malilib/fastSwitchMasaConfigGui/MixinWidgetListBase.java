@@ -95,7 +95,8 @@ public abstract class MixinWidgetListBase<TYPE, WIDGET extends WidgetListEntryBa
             at = @At(
                     value = "INVOKE",
                     //#if MC > 11502
-                    target = "Lfi/dy/masa/malilib/gui/widgets/WidgetBase;postRenderHovered(IIZLcom/mojang/blaze3d/vertex/PoseStack;)V"
+                    target = "Lfi/dy/masa/malilib/gui/widgets/WidgetBase;postRenderHovered(IIZLcom/mojang/blaze3d/vertex/PoseStack;)V",
+                    remap = true
                     //#else
                     //$$ target = "Lfi/dy/masa/malilib/gui/widgets/WidgetBase;postRenderHovered(IIZ)V"
                     //#endif
