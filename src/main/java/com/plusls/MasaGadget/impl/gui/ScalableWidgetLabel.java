@@ -15,8 +15,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
 //#if MC < 12000 && MC > 11404
-import com.mojang.blaze3d.vertex.Tesselator;
 import net.minecraft.client.renderer.MultiBufferSource;
+import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 //#endif
 
 @Getter
@@ -69,6 +69,9 @@ public class ScalableWidgetLabel extends WidgetLabel {
                 }
 
                 renderContext.scale(scale, scale, scale);
+                //#if MC > 11404
+                MultiBufferSource.BufferSource immediate = RenderUtil.getBufferSource();
+                //#endif
                 FontCompat.of(Minecraft.getInstance().font)
                         .drawInBatch(
                                 text,
@@ -85,13 +88,16 @@ public class ScalableWidgetLabel extends WidgetLabel {
                                 //#if MC > 11904
                                 //$$ renderContext.getGuiComponent().bufferSource(),
                                 //#else
-                                MultiBufferSource.immediate(Tesselator.getInstance().getBuilder()),
+                                immediate,
                                 //#endif
                                 //#endif
                                 FontCompat.DisplayMode.NORMAL,
                                 0,
                                 0xf000f0
                         );
+                //#if MC > 11404
+                immediate.endBatch();
+                //#endif
             }
 
             renderContext.popMatrix();
