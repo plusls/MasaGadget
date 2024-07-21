@@ -14,9 +14,12 @@ import top.hendrixshen.magiclib.api.render.context.RenderContext;
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
-//#if MC < 12000 && MC > 11404
-import net.minecraft.client.renderer.MultiBufferSource;
+//#if MC > 11404
 import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
+import net.minecraft.client.renderer.MultiBufferSource;
+//#endif
+
+//#if MC < 12000 && MC > 11404
 //#endif
 
 @Getter
@@ -85,11 +88,7 @@ public class ScalableWidgetLabel extends WidgetLabel {
                                 //#else
                                 //$$ new PoseStack().last().pose(),
                                 //#endif
-                                //#if MC > 11904
-                                //$$ renderContext.getGuiComponent().bufferSource(),
-                                //#else
                                 immediate,
-                                //#endif
                                 //#endif
                                 FontCompat.DisplayMode.NORMAL,
                                 0,
