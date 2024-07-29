@@ -21,6 +21,7 @@
 package com.plusls.MasaGadget.mixin.mod_tweak.malilib.fastSwitchMasaConfigGui;
 
 import com.plusls.MasaGadget.api.gui.MasaGadgetDropdownList;
+import com.plusls.MasaGadget.util.ModId;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetListBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
@@ -30,6 +31,8 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.mixin.malilib.accessor.WidgetListConfigOptionsAccessor;
 import top.hendrixshen.magiclib.util.MiscUtil;
 
@@ -42,6 +45,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 /**
  * Reference to <a href="https://github.com/Fallen-Breath/tweakermore/blob/10e1a937aadcefb1f2d9d9bab8badc873d4a5b3d/src/main/java/me/fallenbreath/tweakermore/mixins/core/gui/panel/dropDownListRedraw/WidgetListBaseMixin.java">TweakerMore</a>
  */
+@Dependencies(
+        require = {
+                @Dependency(ModId.malilib),
+                @Dependency(ModId.mod_menu)
+        }
+)
 @Mixin(value = WidgetListBase.class, remap = false, priority = 1100)
 public abstract class MixinWidgetListBase<TYPE, WIDGET extends WidgetListEntryBase<TYPE>> {
     // To make sure it only once gets rendered
