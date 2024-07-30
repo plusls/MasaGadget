@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "plugin": "top.hendrixshen.magiclib.impl.mixin.MagicMixinPlugin",
   "client": [
+    "MixinAbstractVillager",
     "MixinConnection",
     "accessor.AccessorAbstractMinecartContainer",
     "accessor.AccessorAbstractVillager",
@@ -50,7 +51,6 @@
     "mod_tweak.tweakeroo.inventoryPreviewSupportSelect.MixinInGameHud",
     "mod_tweak.tweakeroo.inventoryPreviewSupportSelect.MixinInventoryOverlay",
     "mod_tweak.tweakeroo.inventoryPreviewSupportShulkerBoxItemEntity.MixinRenderUtils",
-    "mod_tweak.tweakeroo.inventoryPreviewSupportTradeOfferList.MixinAbstractVillager",
     "mod_tweak.tweakeroo.inventoryPreviewSupportTradeOfferList.MixinRenderUtils",
     "mod_tweak.tweakeroo.inventoryPreviewSyncDataClientOnly.MixinClientPacketListener",
     "mod_tweak.tweakeroo.inventoryPreviewUseCache.MixinMixinRenderUtils"

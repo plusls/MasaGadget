@@ -1,5 +1,6 @@
 package com.plusls.MasaGadget.impl.feature.entityInfo;
 
+import com.plusls.MasaGadget.api.fake.AbstractVillagerAccessor;
 import com.plusls.MasaGadget.mixin.accessor.AccessorVillager;
 import com.plusls.MasaGadget.util.PcaSyncProtocol;
 import net.minecraft.ChatFormatting;
@@ -61,7 +62,7 @@ public class VillagerNextRestockTimeInfo {
     // 因为刁民的需要补货的函数，会检查当前货物是否被消耗，从使用的角度只需要关心当前货物是否用完
     private static boolean needsRestock(@NotNull Villager villagerEntity) {
         if (villagerEntity.getVillagerData().getProfession() != VillagerProfession.NONE) {
-            for (MerchantOffer offer : villagerEntity.getOffers()) {
+            for (MerchantOffer offer : ((AbstractVillagerAccessor) (villagerEntity)).masa_gadget$safeGetOffers()) {
                 if (offer.isOutOfStock()) {
                     return true;
                 }

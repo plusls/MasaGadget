@@ -1,6 +1,7 @@
 package com.plusls.MasaGadget.impl.feature.entityInfo;
 
 import com.google.common.collect.Lists;
+import com.plusls.MasaGadget.api.fake.AbstractVillagerAccessor;
 import com.plusls.MasaGadget.util.PcaSyncProtocol;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -43,7 +44,7 @@ public class VillageTradeEnchantedBookInfo {
 
         List<Component> ret = Lists.newArrayList();
 
-        for (MerchantOffer tradeOffer : villager.getOffers()) {
+        for (MerchantOffer tradeOffer : ((AbstractVillagerAccessor) (villager)).masa_gadget$safeGetOffers()) {
             ItemStack sellItem = tradeOffer.getResult();
             ItemStackCompat sellItemCompat = ItemStackCompat.of(sellItem);
 
