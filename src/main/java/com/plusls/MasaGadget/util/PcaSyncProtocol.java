@@ -292,7 +292,7 @@ public class PcaSyncProtocol {
         //$$ CompoundTag tag = packet.tag();
         //#else
         BlockPos pos = buf.readBlockPos();
-        CompoundTag tag = buf.readNbt();
+        CompoundTag tag = NetworkUtil.readNbt(buf);
         //#endif
         BlockEntity blockEntity = level.getBlockEntity(pos);
 
