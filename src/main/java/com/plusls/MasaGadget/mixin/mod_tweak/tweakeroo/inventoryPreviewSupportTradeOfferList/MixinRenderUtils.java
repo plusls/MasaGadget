@@ -1,6 +1,5 @@
 package com.plusls.MasaGadget.mixin.mod_tweak.tweakeroo.inventoryPreviewSupportTradeOfferList;
 
-import com.plusls.MasaGadget.api.fake.AbstractVillagerAccessor;
 import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.impl.generic.HitResultHandler;
 import com.plusls.MasaGadget.util.ModId;
@@ -75,12 +74,12 @@ public class MixinRenderUtils {
 
         SimpleContainer simpleInventory = new SimpleContainer(MixinRenderUtils.masa_gadget$maxTradeOfferSize);
 
-        for (MerchantOffer tradeOffer : ((AbstractVillagerAccessor) (abstractVillager)).masa_gadget$safeGetOffers()) {
-            for (int i = 0; i < simpleInventory.getContainerSize(); i++) {
+        for (MerchantOffer tradeOffer : abstractVillager.getOffers()) {
+            for (int i = 0; i < simpleInventory.getContainerSize(); ++i) {
                 ItemStack itemStack = simpleInventory.getItem(i);
 
                 if (itemStack.isEmpty()) {
-                    simpleInventory.setItem(i, tradeOffer.getResult());
+                    simpleInventory.setItem(i, tradeOffer.getResult().copy());
                     break;
                 }
             }
