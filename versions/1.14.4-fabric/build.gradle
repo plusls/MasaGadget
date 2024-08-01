@@ -31,8 +31,13 @@ repositories {
     mavenLocal()
 
     maven {
+        name("NyanMaven Release")
+        url("https://maven.hendrixshen.top/releases")
+    }
+
+    maven {
         name("NeoForge")
-        url("https://maven.neoforged.net/releases/")
+        url("https://maven.neoforged.net/releases")
     }
 
     maven {
@@ -120,7 +125,7 @@ dependencies {
 
         if (shouldResolve) {
             if (!dependencyVersion) {
-                throw new RuntimeException("Could not get unknown property 'dependencies.api.${item[1]}_version' for dependency ${item[0]} in project ${project.name}")
+                throw new RuntimeException("Could not get unknown property 'dependencies.runtime.${item[1]}_version' for dependency ${item[0]} in project ${project.name}")
             }
 
             modRuntimeOnly("${dependencyNotation}:${dependencyVersion}") {
