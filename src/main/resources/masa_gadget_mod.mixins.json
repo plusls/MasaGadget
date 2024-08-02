@@ -12,7 +12,6 @@
     "accessor.AccessorGuiListBase",
     "accessor.AccessorLivingEntity",
     "accessor.AccessorVillager",
-    "accessor.AccessorWidgetListConfigOptions",
     "accessor.AccessorZombieVillager",
     "event.disconnect.MixinMinecraftClient",
     "feature.autoSyncEntityData.MixinClientPlayNetworkHandler",

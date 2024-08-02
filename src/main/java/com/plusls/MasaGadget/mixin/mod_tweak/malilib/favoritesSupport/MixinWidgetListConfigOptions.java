@@ -27,9 +27,7 @@ public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptio
 
     @Inject(
             method = "getEntryStringsForFilter*",
-            at = @At(
-                    value = "HEAD"
-            ),
+            at = @At("HEAD"),
             cancellable = true
     )
     private void filterFavorites(GuiConfigsBase.ConfigOptionWrapper entry, CallbackInfoReturnable<List<String>> cir) {

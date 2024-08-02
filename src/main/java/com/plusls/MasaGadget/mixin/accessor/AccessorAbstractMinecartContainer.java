@@ -8,6 +8,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(AbstractMinecartContainer.class)
 public interface AccessorAbstractMinecartContainer {
-    @Accessor
-    NonNullList<ItemStack> getItemStacks();
+    @Accessor("itemStacks")
+    NonNullList<ItemStack> masa_gadget_mod$getItemStacks();
 }

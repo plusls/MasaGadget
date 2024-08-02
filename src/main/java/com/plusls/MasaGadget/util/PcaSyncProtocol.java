@@ -187,7 +187,7 @@ public class PcaSyncProtocol {
             }
 
             if (entity instanceof AbstractMinecartContainer) {
-                NonNullList<ItemStack> itemStacks = ((AccessorAbstractMinecartContainer) entity).getItemStacks();
+                NonNullList<ItemStack> itemStacks = ((AccessorAbstractMinecartContainer) entity).masa_gadget_mod$getItemStacks();
                 itemStacks.clear();
                 ContainerHelper.loadAllItems(
                         tag,
@@ -213,16 +213,16 @@ public class PcaSyncProtocol {
                 //$$             .parse(client.level.registryAccess().createSerializationContext(NbtOps.INSTANCE),
                 //$$                     tag.get("Offers"))
                 //$$             .resultOrPartial(Util.prefix("Failed to load offers: ", MagicLib.getLogger()::warn))
-                //$$             .ifPresent(merchantOffers -> ((AccessorAbstractVillager) entity).setOffers(merchantOffers));
+                //$$             .ifPresent(merchantOffers -> ((AccessorAbstractVillager) entity).masa_gadget_mod$setOffers(merchantOffers));
                 //$$ }
                 //#else
-                ((AccessorAbstractVillager) entity).setOffers(new MerchantOffers(tag.getCompound("Offers")));
+                ((AccessorAbstractVillager) entity).masa_gadget_mod$setOffers(new MerchantOffers(tag.getCompound("Offers")));
                 //#endif
 
                 if (entity instanceof Villager) {
-                    ((AccessorVillager) entity).setNumberOfRestocksToday(tag.getInt("RestocksToday"));
-                    ((AccessorVillager) entity).setLastRestockGameTime(tag.getLong("LastRestock"));
-                    ((AccessorLivingEntity) entity).setBrain(((AccessorLivingEntity) entity).invokeMakeBrain(new Dynamic<>(NbtOps.INSTANCE, tag.get("Brain"))));
+                    ((AccessorVillager) entity).masa_gadget_mod$setNumberOfRestocksToday(tag.getInt("RestocksToday"));
+                    ((AccessorVillager) entity).masa_gadget_mod$setLastRestockGameTime(tag.getLong("LastRestock"));
+                    ((AccessorLivingEntity) entity).masa_gadget_mod$setBrain(((AccessorLivingEntity) entity).masa_gadget_mod$makeBrain(new Dynamic<>(NbtOps.INSTANCE, tag.get("Brain"))));
                 }
             }
 
@@ -247,7 +247,7 @@ public class PcaSyncProtocol {
 
             if (entity instanceof ZombieVillager) {
                 if (tag.contains("ConversionTime", 99) && tag.getInt("ConversionTime") > -1) {
-                    ((AccessorZombieVillager) entity).invokeStartConverting(tag.hasUUID("ConversionPlayer") ? tag.getUUID("ConversionPlayer") : null, tag.getInt("ConversionTime"));
+                    ((AccessorZombieVillager) entity).masa_gadget_mod$startConverting(tag.hasUUID("ConversionPlayer") ? tag.getUUID("ConversionPlayer") : null, tag.getInt("ConversionTime"));
                 }
             }
         }

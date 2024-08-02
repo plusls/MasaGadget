@@ -22,12 +22,7 @@ import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 @Dependencies(require = @Dependency(ModId.litematica))
 @Mixin(value = SchematicUtils.class, remap = false)
 public class MixinSchematicUtils {
-    @Inject(
-            method = "saveSchematic",
-            at = @At(
-                    value = "HEAD"
-            )
-    )
+    @Inject(method = "saveSchematic", at = @At("HEAD"))
     private static void syncInventory(boolean inMemoryOnly, CallbackInfoReturnable<Boolean> cir) {
         if (!Configs.saveInventoryToSchematicInServer.getBooleanValue() ||
                 Minecraft.getInstance().hasSingleplayerServer() || !PcaSyncProtocol.enable) {

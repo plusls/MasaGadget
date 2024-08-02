@@ -15,7 +15,7 @@ public class ZombieVillagerConvertTimeInfo {
             return ComponentUtil.tr("masa_gadget_mod.message.no_data").withStyle(ChatFormatting.YELLOW).get();
         }
 
-        int villagerConversionTime = ((AccessorZombieVillager) zombieVillager).getVillagerConversionTime();
+        int villagerConversionTime = ((AccessorZombieVillager) zombieVillager).masa_gadget_mod$$getVillagerConversionTime();
 
         if (villagerConversionTime > 0) {
             return ComponentUtil.simple(String.format("%d", villagerConversionTime)).get();

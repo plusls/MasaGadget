@@ -34,12 +34,7 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
     //$$
     //$$ @SuppressWarnings({"MixinAnnotationTarget", "UnresolvedMixinReference"})
     //#endif
-    @Inject(
-            method = "initGui",
-            at = @At(
-                    value = "RETURN"
-            )
-    )
+    @Inject(method = "initGui", at = @At("RETURN"))
     public void postInitGui(CallbackInfo ci) {
         if (!Configs.favoritesSupport.getBooleanValue()) {
             return;

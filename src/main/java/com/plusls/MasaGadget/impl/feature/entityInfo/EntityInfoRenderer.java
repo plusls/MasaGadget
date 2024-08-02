@@ -1,6 +1,5 @@
 package com.plusls.MasaGadget.impl.feature.entityInfo;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Queues;
 import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.util.MiscUtil;

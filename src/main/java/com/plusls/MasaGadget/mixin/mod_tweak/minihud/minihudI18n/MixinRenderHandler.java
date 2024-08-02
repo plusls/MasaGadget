@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 @Mixin(value = RenderHandler.class, remap = false)
 public class MixinRenderHandler {
     @Unique
-    private static final Pattern masa_gadget$textPattern = Pattern.compile("[\\w ]+: ");
+    private static final Pattern masa_gadget_mod$textPattern = Pattern.compile("[\\w ]+: ");
 
     @Redirect(
             method = "addLine(Lfi/dy/masa/minihud/config/InfoToggle;)V",
@@ -36,9 +36,7 @@ public class MixinRenderHandler {
 
     @ModifyVariable(
             method = "addLine(Ljava/lang/String;)V",
-            at = @At(
-                    value = "HEAD"
-            ),
+            at = @At("HEAD"),
             argsOnly = true
     )
     private String patchLine(String string) {
@@ -46,7 +44,7 @@ public class MixinRenderHandler {
             return string;
         }
 
-        Matcher matcher = masa_gadget$textPattern.matcher(string);
+        Matcher matcher = masa_gadget_mod$textPattern.matcher(string);
         int start = 0;
         List<String> keys = Lists.newArrayList();
 

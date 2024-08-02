@@ -17,9 +17,7 @@ import top.hendrixshen.magiclib.api.i18n.I18n;
 public abstract class MixinFeatureToggle implements IHotkeyTogglable {
     @Inject(
             method = "getComment",
-            at = @At(
-                    value = "RETURN"
-            ),
+            at = @At("RETURN"),
             cancellable = true
     )
     private void useI18nComment(CallbackInfoReturnable<String> cir) {
@@ -31,9 +29,7 @@ public abstract class MixinFeatureToggle implements IHotkeyTogglable {
 
     @Inject(
             method = "getConfigGuiDisplayName",
-            at = @At(
-                    value = "HEAD"
-            ),
+            at = @At("HEAD"),
             cancellable = true
     )
     private void patchGetConfigGuiDisplayName(CallbackInfoReturnable<String> cir) {

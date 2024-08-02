@@ -19,13 +19,11 @@ public class MixinGuiBase {
     @Shadow
     private int keyInputCount;
     @Unique
-    private long masa_gadget$openTime;
+    private long masa_gadget_mod$openTime;
 
     @Inject(
             method = "init",
-            at = @At(
-                    value = "HEAD"
-            ),
+            at = @At("HEAD"),
             remap = true
     )
     private void preInit(CallbackInfo ci) {
@@ -33,15 +31,13 @@ public class MixinGuiBase {
             return;
         }
 
-        this.masa_gadget$openTime = System.nanoTime();
+        this.masa_gadget_mod$openTime = System.nanoTime();
         this.keyInputCount = 0;
     }
 
     @Inject(
             method = "charTyped",
-            at = @At(
-                    value = "HEAD"
-            ),
+            at = @At("HEAD"),
             cancellable = true,
             remap = true
     )
@@ -50,7 +46,7 @@ public class MixinGuiBase {
             return;
         }
 
-        if (this.keyInputCount <= 0 && System.nanoTime() - this.masa_gadget$openTime <= 100000000) {
+        if (this.keyInputCount <= 0 && System.nanoTime() - this.masa_gadget_mod$openTime <= 100000000) {
             this.keyInputCount++;
             cir.setReturnValue(true);
         }

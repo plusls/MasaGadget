@@ -1,5 +1,6 @@
 package com.plusls.MasaGadget.mixin.mod_tweak.litematica.fixCarpetAccurateProtocol;
 
+import com.plusls.MasaGadget.SharedConstants;
 import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.util.BlockPlacer;
 import com.plusls.MasaGadget.util.ModId;
@@ -41,7 +42,7 @@ public abstract class MixinBlockItem {
         try {
             blockState = BlockPlacer.alternativeBlockPlacement(this.getBlock(), context);
         } catch (Exception e) {
-            e.printStackTrace();
+            SharedConstants.getLogger().throwing(e);
         }
 
         if (blockState != null && this.canPlace(context, blockState)) {

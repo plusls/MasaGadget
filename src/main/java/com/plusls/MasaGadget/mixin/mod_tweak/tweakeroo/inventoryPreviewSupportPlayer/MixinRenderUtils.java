@@ -32,12 +32,7 @@ public abstract class MixinRenderUtils {
     //$$ @Unique
     //$$ private static GuiGraphics masa_gadget$gui;
     //$$
-    //$$ @Inject(
-    //$$         method = "renderInventoryOverlay",
-    //$$         at = @At(
-    //$$                 value = "HEAD"
-    //$$         )
-    //$$ )
+    //$$ @Inject(method = "renderInventoryOverlay", at = @At("HEAD"))
     //$$ private static void intercept(Minecraft mc, GuiGraphics gui, CallbackInfo ci) {
     //$$     MixinRenderUtils.masa_gadget$gui = gui;
     //$$ }

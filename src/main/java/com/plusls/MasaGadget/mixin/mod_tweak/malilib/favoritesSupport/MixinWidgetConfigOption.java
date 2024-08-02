@@ -26,12 +26,7 @@ public abstract class MixinWidgetConfigOption extends WidgetConfigOptionBase<Gui
         super(x, y, width, height, parent, entry, listIndex);
     }
 
-    @Inject(
-            method = "addConfigOption",
-            at = @At(
-                    value = "HEAD"
-            )
-    )
+    @Inject(method = "addConfigOption", at = @At("HEAD"))
     private void addFavoritesButton(int x, int y, float zLevel, int labelWidth, int configWidth, IConfigBase config, CallbackInfo ci) {
         if (!Configs.favoritesSupport.getBooleanValue()) {
             return;

@@ -18,10 +18,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-//#if MC <= 11802
-import net.minecraft.client.multiplayer.ClientLevel;
-//#endif
-
 public class InventoryPreviewSyncDataClientOnlyUtil {
     public static void onHitCallback(@Nullable HitResult hitResult, boolean oldStatus, boolean stateChanged) {
         Minecraft mc = Minecraft.getInstance();

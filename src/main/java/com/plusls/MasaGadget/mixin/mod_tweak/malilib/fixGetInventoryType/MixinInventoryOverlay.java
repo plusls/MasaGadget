@@ -22,9 +22,7 @@ import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 public class MixinInventoryOverlay {
     @Inject(
             method = "getInventoryType(Lnet/minecraft/world/Container;)Lfi/dy/masa/malilib/render/InventoryOverlay$InventoryRenderType;",
-            at = @At(
-                    value = "RETURN"
-            ),
+            at = @At("RETURN"),
             cancellable = true,
             remap = true
     )
@@ -38,9 +36,7 @@ public class MixinInventoryOverlay {
 
     @Inject(
             method = "getInventoryType(Lnet/minecraft/world/item/ItemStack;)Lfi/dy/masa/malilib/render/InventoryOverlay$InventoryRenderType;",
-            at = @At(
-                    value = "RETURN"
-            ),
+            at = @At("RETURN"),
             cancellable = true,
             remap = true
     )

@@ -33,6 +33,7 @@ import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
+//$$ import net.minecraft.client.gui.screens.Screen;
 //#endif
 
 //#if MC > 11605
@@ -267,10 +268,10 @@ public class InventoryOverlayRenderHandler {
     }
 
     private void renderTooltip(RenderContext renderContext, @NotNull ItemStack itemStack, int x, int y) {
-        //#if MC > 11904
-        //$$ renderContext.getGuiComponent().renderTooltip(Minecraft.getInstance().font, itemStack, x, y);
-        //#else
         Minecraft mc = Minecraft.getInstance();
+        //#if MC > 11904
+        //$$ renderContext.getGuiComponent().renderTooltip(mc.font, Screen.getTooltipFromItem(mc, itemStack), itemStack.getTooltipImage(), x, y);
+        //#else
         List<Component> tooltipLines = itemStack.getTooltipLines(mc.player, mc.options.advancedItemTooltips ?
                 TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL);
 

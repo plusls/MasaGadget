@@ -7,6 +7,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(value = GuiListBase.class, remap = false)
 public interface AccessorGuiListBase {
-    @Invoker
-    WidgetListBase<?, ?> invokeGetListWidget();
+    @Invoker("getListWidget")
+    WidgetListBase<?, ?> masa_gadget_mod$getListWidget();
 }

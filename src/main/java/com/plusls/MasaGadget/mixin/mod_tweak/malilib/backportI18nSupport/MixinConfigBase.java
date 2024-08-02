@@ -21,14 +21,12 @@ import top.hendrixshen.magiclib.util.collect.ValueContainer;
 @Mixin(value = ConfigBase.class, remap = false)
 public abstract class MixinConfigBase implements IConfigBase {
     @Unique
-    private static final ValueContainer<Class<?>> masa_gadget$tweakerMoreIConfigBaseClass = ReflectionUtil
+    private static final ValueContainer<Class<?>> masa_gadget_mod$tweakerMoreIConfigBaseClass = ReflectionUtil
             .getClass("me.fallenbreath.tweakermore.config.options.TweakerMoreIConfigBase");
 
     @Inject(
             method = "getComment",
-            at = @At(
-                    value = "RETURN"
-            ),
+            at = @At("RETURN"),
             cancellable = true
     )
     private void useI18nComment(CallbackInfoReturnable<String> cir) {
@@ -47,13 +45,11 @@ public abstract class MixinConfigBase implements IConfigBase {
     @SuppressWarnings({"MixinAnnotationTarget", "UnresolvedMixinReference"})
     @Inject(
             method = "getConfigGuiDisplayName",
-            at = @At(
-                    value = "HEAD"
-            ),
+            at = @At(value = "HEAD"),
             cancellable = true
     )
     private void patchGetConfigGuiDisplayName(CallbackInfoReturnable<String> cir) {
-        if (MixinConfigBase.masa_gadget$tweakerMoreIConfigBaseClass
+        if (MixinConfigBase.masa_gadget_mod$tweakerMoreIConfigBaseClass
                 .filter(clazz -> clazz.isInstance(this)).isPresent()) {
             return;
         }

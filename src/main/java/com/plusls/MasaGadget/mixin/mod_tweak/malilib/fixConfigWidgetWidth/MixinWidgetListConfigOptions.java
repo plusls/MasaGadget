@@ -27,7 +27,7 @@ import java.util.Objects;
 @Mixin(value = WidgetListConfigOptions.class, remap = false)
 public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptionsBase<GuiConfigsBase.ConfigOptionWrapper, WidgetConfigOption> {
     @Unique
-    private static final ValueContainer<Class<?>> masa_gadget$tweakerMoreIConfigBaseClass = ReflectionUtil
+    private static final ValueContainer<Class<?>> masa_gadget_mod$tweakerMoreIConfigBaseClass = ReflectionUtil
             .getClass("me.fallenbreath.tweakermore.gui.TweakerMoreConfigGui");
 
     @Shadow
@@ -53,7 +53,7 @@ public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptio
         }
 
         // TweakerMore manager it ui by itself.
-        if (MixinWidgetListConfigOptions.masa_gadget$tweakerMoreIConfigBaseClass
+        if (MixinWidgetListConfigOptions.masa_gadget_mod$tweakerMoreIConfigBaseClass
                 .filter(clazz -> clazz.isInstance(this.parent)).isPresent()) {
             return;
         }

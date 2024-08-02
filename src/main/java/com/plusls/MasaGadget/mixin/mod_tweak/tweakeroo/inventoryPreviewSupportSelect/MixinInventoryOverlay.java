@@ -28,9 +28,7 @@ public class MixinInventoryOverlay {
             //#else
             method = "renderStackAt",
             //#endif
-            at = @At(
-                    value = "RETURN"
-            )
+            at = @At("RETURN")
     )
     private static void addStackToolTip(
             ItemStack stack,

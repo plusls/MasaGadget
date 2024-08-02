@@ -61,7 +61,7 @@ public class MixinWorldUtils {
     @Unique
     private static final ThreadLocal<Integer> masa_gadget_mod$interactBlockCount = ThreadLocal.withInitial(() -> null);
 
-    @Inject(method = "applyCarpetProtocolHitVec", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(method = "applyCarpetProtocolHitVec", at = @At("HEAD"), cancellable = true)
     private static void preApplyCarpetProtocolHitVec(BlockPos pos, BlockState state, Vec3 hitVecIn, CallbackInfoReturnable<Vec3> cir) {
         if (!Configs.fixAccurateProtocol.getBooleanValue()) {
             return;
@@ -250,7 +250,9 @@ public class MixinWorldUtils {
                     //#else
                     target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;useItemOn(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;",
                     //#endif
-                    shift = At.Shift.AFTER, ordinal = 0, remap = true
+                    shift = At.Shift.AFTER,
+                    ordinal = 0,
+                    remap = true
             )
     )
     private static void fixDoEasyPlaceAction1(Minecraft mc, CallbackInfoReturnable<InteractionResult> cir) {

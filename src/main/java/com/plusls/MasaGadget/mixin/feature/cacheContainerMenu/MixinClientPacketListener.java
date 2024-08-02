@@ -21,12 +21,7 @@ import java.util.Objects;
 
 @Mixin(ClientPacketListener.class)
 public class MixinClientPacketListener {
-    @Inject(
-            method = "handleOpenScreen",
-            at = @At(
-                    value = "RETURN"
-            )
-    )
+    @Inject(method = "handleOpenScreen", at = @At("RETURN"))
     private void postHandleOpenScreen(ClientboundOpenScreenPacket clientboundOpenScreenPacket, CallbackInfo ci) {
         Minecraft minecraft = Minecraft.getInstance();
 
@@ -41,12 +36,7 @@ public class MixinClientPacketListener {
         }
     }
 
-    @Inject(
-            method = "handleContainerSetSlot",
-            at = @At(
-                    value = "RETURN"
-            )
-    )
+    @Inject(method = "handleContainerSetSlot", at = @At("RETURN"))
     private void postHandleContainerSetSlot(ClientboundContainerSetSlotPacket clientboundContainerSetSlotPacket,
                                             CallbackInfo ci) {
         Minecraft minecraft = Minecraft.getInstance();
@@ -77,7 +67,7 @@ public class MixinClientPacketListener {
         }
     }
 
-    @Inject(method = "handleContainerContent", at = @At(value = "RETURN"))
+    @Inject(method = "handleContainerContent", at = @At("RETURN"))
     private void postHandleContainerContent(ClientboundContainerSetContentPacket clientboundContainerSetContentPacket, CallbackInfo ci) {
         Minecraft minecraft = Minecraft.getInstance();
 

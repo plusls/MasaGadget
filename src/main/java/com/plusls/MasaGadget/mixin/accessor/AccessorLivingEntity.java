@@ -9,9 +9,9 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(LivingEntity.class)
 public interface AccessorLivingEntity {
-    @Accessor
-    void setBrain(Brain<?> brain);
+    @Accessor("brain")
+    void masa_gadget_mod$setBrain(Brain<?> brain);
 
-    @Invoker
-    Brain<?> invokeMakeBrain(Dynamic<?> dynamic);
+    @Invoker("makeBrain")
+    Brain<?> masa_gadget_mod$makeBrain(Dynamic<?> dynamic);
 }

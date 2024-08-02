@@ -27,8 +27,8 @@ public class VillagerNextRestockTimeInfo {
             nextWorkTime = timeOfDay < 2000 ? 2000 - timeOfDay : 24000 - timeOfDay + 2000;
         }
 
-        int numberOfRestocksToday = ((AccessorVillager) villager).getNumberOfRestocksToday();
-        long lastRestockGameTime = ((AccessorVillager) villager).getLastRestockGameTime();
+        int numberOfRestocksToday = ((AccessorVillager) villager).masa_gadget_mod$getNumberOfRestocksToday();
+        long lastRestockGameTime = ((AccessorVillager) villager).masa_gadget_mod$getLastRestockGameTime();
 
         if (numberOfRestocksToday == 0) {
             nextRestockTime = 0;

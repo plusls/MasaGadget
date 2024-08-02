@@ -23,9 +23,7 @@ import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 public class MixinInventoryUtils {
     @Inject(
             method = "restockNewStackToHand",
-            at = @At(
-                    "RETURN"
-            ),
+            at = @At("RETURN"),
             locals = LocalCapture.CAPTURE_FAILHARD
     )
     private static void restockOnFailed(Player player, InteractionHand hand, ItemStack itemStack,

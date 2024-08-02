@@ -18,9 +18,7 @@ import top.hendrixshen.magiclib.api.i18n.I18n;
 public abstract class MixinRendererToggle implements IHotkeyTogglable {
     @Inject(
             method = "getComment",
-            at = @At(
-                    value = "RETURN"
-            ),
+            at = @At("RETURN"),
             cancellable = true
     )
     private void useI18nComment(CallbackInfoReturnable<String> cir) {

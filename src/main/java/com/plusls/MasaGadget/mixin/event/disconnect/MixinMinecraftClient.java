@@ -16,9 +16,7 @@ public abstract class MixinMinecraftClient {
             //#else
             method = "clearLevel(Lnet/minecraft/client/gui/screens/Screen;)V",
             //#endif
-            at = @At(
-                    value = "HEAD"
-            )
+            at = @At("HEAD")
     )
     private void onDisconnect(CallbackInfo ci) {
         if (!Minecraft.getInstance().hasSingleplayerServer()) {

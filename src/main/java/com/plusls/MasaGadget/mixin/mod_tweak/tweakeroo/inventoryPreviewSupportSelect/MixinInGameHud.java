@@ -25,12 +25,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 @Dependencies(require = @Dependency(ModId.tweakeroo))
 @Mixin(value = Gui.class, priority = 1100)
 public abstract class MixinInGameHud {
-    @Inject(
-            method = "render",
-            at = @At(
-                    value = "RETURN"
-            )
-    )
+    @Inject(method = "render", at = @At("RETURN"))
     private void onGameOverlayPost(
             //#if MC > 11904
             //$$ GuiGraphics poseStackOrGuiGraphics,

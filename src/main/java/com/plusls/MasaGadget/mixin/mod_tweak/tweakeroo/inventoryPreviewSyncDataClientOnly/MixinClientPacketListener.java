@@ -18,12 +18,7 @@ import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 @Dependencies(require = @Dependency(ModId.tweakeroo))
 @Mixin(ClientPacketListener.class)
 public class MixinClientPacketListener {
-    @Inject(
-            method = "handleOpenScreen",
-            at = @At(
-                    value = "RETURN"
-            )
-    )
+    @Inject(method = "handleOpenScreen", at = @At("RETURN"))
     private void postHandleOpenScreen(ClientboundOpenScreenPacket clientboundOpenScreenPacket, CallbackInfo ci) {
         Minecraft minecraft = Minecraft.getInstance();
 

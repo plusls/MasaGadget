@@ -25,7 +25,11 @@ public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptio
         super(x, y, width, height, configWidth);
     }
 
-    @Inject(method = "getEntryStringsForFilter*", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(
+            method = "getEntryStringsForFilter*",
+            at = @At("HEAD"),
+            cancellable = true
+    )
     private void preGetEntryStringsForFilter(GuiConfigsBase.ConfigOptionWrapper entry, CallbackInfoReturnable<List<String>> cir) {
         if (!Configs.optimizeConfigWidgetSearch.getBooleanValue()) {
             return;

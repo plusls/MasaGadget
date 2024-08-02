@@ -10,10 +10,10 @@ import java.util.UUID;
 
 @Mixin(ZombieVillager.class)
 public interface AccessorZombieVillager {
-    @Accessor
-    int getVillagerConversionTime();
+    @Accessor("villagerConversionTime")
+    int masa_gadget_mod$$getVillagerConversionTime();
 
-    @Invoker
-    void invokeStartConverting(@Nullable UUID uUID, int i);
+    @Invoker("startConverting")
+    void masa_gadget_mod$startConverting(@Nullable UUID uUID, int i);
 }
 

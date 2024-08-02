@@ -18,12 +18,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 
 @Mixin(MultiPlayerGameMode.class)
 public class MixinMultiPlayerGameMode {
-    @Inject(
-            method = "useItemOn",
-            at = @At(
-                    value = "HEAD"
-            )
-    )
+    @Inject(method = "useItemOn", at = @At("HEAD"))
     private void prevUseItemOn(LocalPlayer localPlayer,
                                //#if MC < 11900
                                ClientLevel clientLevel,

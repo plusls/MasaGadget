@@ -7,18 +7,18 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(Villager.class)
 public interface AccessorVillager {
-    @Accessor
-    int getNumberOfRestocksToday();
+    @Accessor("numberOfRestocksToday")
+    int masa_gadget_mod$getNumberOfRestocksToday();
 
-    @Accessor
-    void setNumberOfRestocksToday(int numberOfRestocksToday);
+    @Accessor("numberOfRestocksToday")
+    void masa_gadget_mod$setNumberOfRestocksToday(int numberOfRestocksToday);
 
-    @Accessor
-    long getLastRestockGameTime();
+    @Accessor("lastRestockGameTime")
+    long masa_gadget_mod$getLastRestockGameTime();
 
-    @Accessor
-    void setLastRestockGameTime(long lastRestockGameTime);
+    @Accessor("lastRestockGameTime")
+    void masa_gadget_mod$setLastRestockGameTime(long lastRestockGameTime);
 
-    @Invoker
-    boolean invokeNeedsToRestock();
+    @Invoker("needsToRestock")
+    boolean masa_gadget_mod$needsToRestock();
 }
