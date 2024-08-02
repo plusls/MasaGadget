@@ -22,9 +22,11 @@ import top.hendrixshen.magiclib.api.compat.minecraft.client.gui.FontCompat;
 import top.hendrixshen.magiclib.impl.render.context.RenderGlobal;
 
 import java.util.List;
+
 //#if MC > 11605
 //$$ import com.mojang.blaze3d.systems.RenderSystem;
 //#endif
+
 //#if MC > 11404
 import net.minecraft.client.renderer.MultiBufferSource;
 import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
@@ -33,7 +35,14 @@ import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
+//$$
+//#if MC > 12006
+//$$ import fi.dy.masa.malilib.util.WorldUtils;
+//$$ import net.minecraft.world.item.Item;
+//$$ import net.minecraft.world.item.TooltipFlag;
+//#else
 //$$ import net.minecraft.client.gui.screens.Screen;
+//#endif
 //#endif
 
 //#if MC > 11605
@@ -270,7 +279,19 @@ public class InventoryOverlayRenderHandler {
     private void renderTooltip(RenderContext renderContext, @NotNull ItemStack itemStack, int x, int y) {
         Minecraft mc = Minecraft.getInstance();
         //#if MC > 11904
-        //$$ renderContext.getGuiComponent().renderTooltip(mc.font, Screen.getTooltipFromItem(mc, itemStack), itemStack.getTooltipImage(), x, y);
+        //$$ renderContext.getGuiComponent().renderTooltip(
+        //$$         mc.font,
+        //#if MC > 12006
+        // TODO: Consider how to treat this after the PCA protocol rewrite.
+        // Ugly fix for MC 1.21+ enchantment becomes data-driven changes (Use Registry Sync).
+        // Note: This will not work if Tweakeroo changes the way it fetches item data.
+        //       Registry Sync must be encoded and decoded using the same registries.
+        //       Otherwise, the codec will not be able to parse the data correctly.
+        //$$         itemStack.getTooltipLines(Item.TooltipContext.of(WorldUtils.getBestWorld(mc)), mc.player, mc.options.advancedItemTooltips ? TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL),
+        //#else
+        //$$         Screen.getTooltipFromItem(mc, itemStack),
+        //#endif
+        //$$         itemStack.getTooltipImage(), x, y);
         //#else
         List<Component> tooltipLines = itemStack.getTooltipLines(mc.player, mc.options.advancedItemTooltips ?
                 TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL);
