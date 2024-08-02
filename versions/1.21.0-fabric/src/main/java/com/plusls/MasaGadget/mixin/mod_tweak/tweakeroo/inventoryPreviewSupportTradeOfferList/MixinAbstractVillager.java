@@ -7,10 +7,19 @@ import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(AbstractVillager.class)
 public class MixinAbstractVillager {
+    @Unique
+    private static boolean masa_gadget_mod$shouldForgeInvoke() {
+        return Configs.inventoryPreviewSupportTradeOfferList.getBooleanValue() ||
+                Configs.renderNextRestockTime.getBooleanValue() ||
+                Configs.renderTradeEnchantedBook.getBooleanValue() ||
+                Configs.renderZombieVillagerConvertTime.getBooleanValue();
+    }
+
     @WrapOperation(
             method = "getOffers",
             at = @At(
@@ -19,6 +28,10 @@ public class MixinAbstractVillager {
             )
     )
     private boolean forgiveInvoke(Level instance, @NotNull Operation<Boolean> original) {
-        return original.call(instance) && !Configs.inventoryPreviewSupportTradeOfferList.getBooleanValue();
+        if (MixinAbstractVillager.masa_gadget_mod$shouldForgeInvoke()) {
+            return false;
+        }
+
+        return original.call(instance);
     }
 }
