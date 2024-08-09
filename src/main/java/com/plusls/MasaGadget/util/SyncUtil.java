@@ -23,7 +23,7 @@ public class SyncUtil {
 
         ServerLevel level = server.getLevel(
                 //#if MC > 11502
-                entityCompat.getLevel().get().dimension()
+                entityCompat.getLevel().dimension()
                 //#else
                 //$$ entity.dimension
                 //#endif

@@ -21,6 +21,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.resources.ResourceLocationCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.world.level.LevelCompat;
 import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
@@ -46,16 +47,16 @@ public class SearchMobSpawnPointUtil {
                 if (ret == null) {
                     ret = (ShapeDespawnSphere) shapeBase;
                 } else {
-                    InfoUtil.displayChatMessage(ComponentUtil.tr("masa_gadget_mod.message.onlySupportOneDespawnShape")
-                            .withStyle(ChatFormatting.RED).get());
+                    InfoUtil.displayChatMessage(ComponentUtil.trCompat("masa_gadget_mod.message.onlySupportOneDespawnShape")
+                            .withStyle(ChatFormatting.RED));
                     return null;
                 }
             }
         }
 
         if (ret == null) {
-            InfoUtil.displayChatMessage(ComponentUtil.tr("masa_gadget_mod.message.canNotFindDespawnShape")
-                    .withStyle(ChatFormatting.RED).get());
+            InfoUtil.displayChatMessage(ComponentUtil.trCompat("masa_gadget_mod.message.canNotFindDespawnShape")
+                    .withStyle(ChatFormatting.RED));
         }
 
         return ret;
@@ -155,21 +156,21 @@ public class SearchMobSpawnPointUtil {
             }
         }
 
-        ComponentCompat text;
+        MutableComponentCompat text;
 
         if (spawnPos == null) {
-            text = ComponentUtil.tr("masa_gadget_mod.message.noBlockCanSpawn")
+            text = ComponentUtil.trCompat("masa_gadget_mod.message.noBlockCanSpawn")
                     .withStyle(ChatFormatting.GREEN);
         } else {
             // for ommc parser
-            text = ComponentUtil.tr("masa_gadget_mod.message.spawnPos", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
+            text = ComponentUtil.trCompat("masa_gadget_mod.message.spawnPos", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
 
             if (MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.oh_my_minecraft_client)) {
                 InfoUtil.sendCommand(String.format("highlightWaypoint %d %d %d", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()));
             }
         }
 
-        InfoUtil.displayChatMessage(text.get());
+        InfoUtil.displayChatMessage(text);
     }
 
     private static double squaredDistanceTo(int x, int y, int z, Vec3 vec3d) {

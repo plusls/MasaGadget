@@ -45,7 +45,7 @@ public abstract class MixinZombieVillagerEntity extends Zombie {
 
     @Inject(method = "tick", at = @At("RETURN"))
     private void syncConvertingData(CallbackInfo ci) {
-        if (EntityCompat.of(this).getLevelCompat().get().get().isClientSide() && this.isAlive() && this.isConverting()) {
+        if (EntityCompat.of(this).getLevel().isClientSide() && this.isAlive() && this.isConverting()) {
             int i = this.getConversionProgress();
             this.villagerConversionTime -= i;
 

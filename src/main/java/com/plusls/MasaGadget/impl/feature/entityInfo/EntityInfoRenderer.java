@@ -7,6 +7,7 @@ import com.plusls.MasaGadget.util.SyncUtil;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Position;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.ZombieVillager;
@@ -67,7 +68,11 @@ public class EntityInfoRenderer implements RenderEntityListener, RenderLevelList
                 TextRenderer renderer = TextRenderer.create();
 
                 if (Configs.renderNextRestockTime.getBooleanValue()) {
-                    renderer.addLine(VillagerNextRestockTimeInfo.getInfo(villager));
+                    Component info = VillagerNextRestockTimeInfo.getInfo(villager);
+
+                    if (info != null) {
+                        renderer.addLine(info);
+                    }
                 }
 
                 if (Configs.renderTradeEnchantedBook.getBooleanValue()) {

@@ -12,13 +12,17 @@ import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
 
 public class VillagerNextRestockTimeInfo {
-    public static @NotNull Component getInfo(@NotNull Villager villager) {
+    public static Component getInfo(@NotNull Villager villager) {
         long nextRestockTime;
         long nextWorkTime;
         long timeOfDay = villager.getLevel().getDayTime() % 24000;
 
+        if (villager.getVillagerData().getProfession() != VillagerProfession.LIBRARIAN) {
+            return null;
+        }
+
         if (!Minecraft.getInstance().hasSingleplayerServer() && !PcaSyncProtocol.enable) {
-            return ComponentUtil.tr("masa_gadget_mod.message.no_data").withStyle(ChatFormatting.YELLOW).get();
+            return ComponentUtil.tr("masa_gadget_mod.message.no_data").withStyle(ChatFormatting.YELLOW);
         }
 
         if (timeOfDay >= 2000 && timeOfDay <= 9000) {
@@ -52,10 +56,10 @@ public class VillagerNextRestockTimeInfo {
         }
 
         if (nextRestockTime == 0) {
-            return ComponentUtil.simple("OK").withStyle(ChatFormatting.GREEN).get();
+            return ComponentUtil.simple("OK").withStyle(ChatFormatting.GREEN);
         }
 
-        return ComponentUtil.simple(String.format("%d", nextRestockTime)).get();
+        return ComponentUtil.simple(String.format("%d", nextRestockTime));
     }
 
     // 因为刁民的需要补货的函数，会检查当前货物是否被消耗，从使用的角度只需要关心当前货物是否用完

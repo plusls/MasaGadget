@@ -12,15 +12,15 @@ import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
 public class ZombieVillagerConvertTimeInfo {
     public static @NotNull Component getInfo(ZombieVillager zombieVillager) {
         if (!Minecraft.getInstance().hasSingleplayerServer() && !PcaSyncProtocol.enable) {
-            return ComponentUtil.tr("masa_gadget_mod.message.no_data").withStyle(ChatFormatting.YELLOW).get();
+            return ComponentUtil.tr("masa_gadget_mod.message.no_data").withStyle(ChatFormatting.YELLOW);
         }
 
         int villagerConversionTime = ((AccessorZombieVillager) zombieVillager).masa_gadget_mod$$getVillagerConversionTime();
 
         if (villagerConversionTime > 0) {
-            return ComponentUtil.simple(String.format("%d", villagerConversionTime)).get();
+            return ComponentUtil.simple(String.format("%d", villagerConversionTime));
         }
 
-        return ComponentUtil.simple("-1").get();
+        return ComponentUtil.simple("-1");
     }
 }

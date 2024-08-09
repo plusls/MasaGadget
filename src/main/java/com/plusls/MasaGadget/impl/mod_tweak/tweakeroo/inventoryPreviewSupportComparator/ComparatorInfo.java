@@ -48,7 +48,7 @@ public class ComparatorInfo implements RenderLevelListener {
         if (pos.isPresent() && blockEntity instanceof ComparatorBlockEntity) {
             TextRenderer.create()
                     .text(ComponentUtil.simple(((ComparatorBlockEntity) blockEntity).getOutputSignal())
-                            .withStyle(ChatFormatting.GREEN).get())
+                            .withStyle(ChatFormatting.GREEN))
                     .atCenter(pos.get())
                     .seeThrough()
                     .render();

@@ -223,8 +223,8 @@ public class Configs {
                 PcaSyncProtocol.syncEntity(entity.getId());
             }
 
-            InfoUtil.displayChatMessage(ComponentUtil.tr("masa_gadget_mod.message.syncAllEntityDataSuccess")
-                    .withStyle(ChatFormatting.GREEN).get());
+            InfoUtil.displayChatMessage(ComponentUtil.trCompat("masa_gadget_mod.message.syncAllEntityDataSuccess")
+                    .withStyle(ChatFormatting.GREEN));
             return true;
         });
 

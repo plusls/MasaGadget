@@ -38,7 +38,7 @@ public class VillageTradeEnchantedBookInfo {
         }
 
         if (!Minecraft.getInstance().hasSingleplayerServer() && !PcaSyncProtocol.enable) {
-            return Lists.newArrayList(ComponentUtil.tr("masa_gadget_mod.message.no_data").withStyle(ChatFormatting.YELLOW).get());
+            return Lists.newArrayList(ComponentUtil.tr("masa_gadget_mod.message.no_data").withStyle(ChatFormatting.YELLOW));
         }
 
         List<Component> ret = Lists.newArrayList();
@@ -121,7 +121,7 @@ public class VillageTradeEnchantedBookInfo {
                 //#else
                 //$$ ret.add(((BaseComponent) entry.getKey().getFullname(entry.getValue())).withStyle(enchantment_level_color));
                 //#endif
-                ret.add(ComponentUtil.simple(String.format("%d(%d-%d)", cost, minCost, maxCost)).withStyle(cast_color).get());
+                ret.add(ComponentUtil.simple(String.format("%d(%d-%d)", cost, minCost, maxCost)).withStyle(cast_color));
             }
 
             break;

@@ -154,7 +154,7 @@ public class PcaSyncProtocol {
         }
 
         PlayerCompat playerCompat = PlayerCompat.of(player);
-        LevelCompat levelCompat = playerCompat.getLevel();
+        LevelCompat levelCompat = playerCompat.getLevelCompat();
         Level level = levelCompat.get();
 
         if (!levelCompat.getDimensionLocation().equals(
@@ -274,7 +274,7 @@ public class PcaSyncProtocol {
             return;
         }
 
-        LevelCompat levelCompat = PlayerCompat.of(player).getLevel();
+        LevelCompat levelCompat = PlayerCompat.of(player).getLevelCompat();
         Level level = levelCompat.get();
 
         if (!levelCompat.getDimensionLocation().equals(
