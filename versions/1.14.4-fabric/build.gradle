@@ -137,7 +137,12 @@ dependencies {
 
 loom {
     // accessWidenerPath.set(file("src/main/resources/${project.parent.property("mod.id")}.accesswidener"))
-    enableTransitiveAccessWideners.set(true)
+    enableTransitiveAccessWideners.set(false)
+
+    interfaceInjection {
+        enableDependencyInterfaceInjection.set(false)
+        isEnabled.set(false)
+    }
 
     if (modPlatform == "forge") {
         forge {
