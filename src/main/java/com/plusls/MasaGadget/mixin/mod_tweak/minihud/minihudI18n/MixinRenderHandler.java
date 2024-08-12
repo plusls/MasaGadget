@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Dependencies(require = @Dependency(ModId.minihud))
+@Dependencies(require = @Dependency(value = ModId.minihud, versionPredicates = "<0.31.999-sakura.21"))
 @Mixin(value = RenderHandler.class, remap = false)
 public class MixinRenderHandler {
     @Unique

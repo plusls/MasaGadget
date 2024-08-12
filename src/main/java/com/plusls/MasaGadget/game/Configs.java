@@ -138,7 +138,7 @@ public class Configs {
     public static MagicConfigDouble showOriginalConfigNameScale = Configs.cf.newConfigDouble("showOriginalConfigNameScale", 0.65, 0, 2);
 
     // MiniHUD
-    @Dependencies(require = @Dependency(ModId.minihud))
+    @Dependencies(require = @Dependency(value = ModId.minihud, versionPredicates = "<0.31.999-sakura.21"))
     @Config(category = ConfigCategory.MINIHUD)
     public static MagicConfigBoolean minihudI18n = Configs.cf.newConfigBoolean("minihudI18n", false);
 
