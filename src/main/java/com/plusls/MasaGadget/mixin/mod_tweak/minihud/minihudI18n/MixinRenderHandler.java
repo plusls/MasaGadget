@@ -9,15 +9,36 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.api.i18n.I18n;
+import top.hendrixshen.magiclib.api.platform.PlatformType;
 
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Dependencies(require = @Dependency(value = ModId.minihud, versionPredicates = "<0.31.999-sakura.21"))
+@Dependencies(
+        require = {
+                @Dependency(value = ModId.minihud, versionPredicates = "<0.31.999-sakura.21"),
+                @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FABRIC_LIKE)
+        }
+)
+@Dependencies(
+        require = {
+                @Dependency(value = ModId.minecraft, versionPredicates = "<1.21.1-"),
+                @Dependency(value = ModId.minihud, versionPredicates = "*"),
+                @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE)
+        }
+)
+@Dependencies(
+        require = {
+                @Dependency(value = ModId.minecraft, versionPredicates = ">1.21.1-"),
+                @Dependency(value = ModId.minihud, versionPredicates = ">0.1.21-mc1.21"),
+                @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE)
+        }
+)
 @Mixin(value = RenderHandler.class, remap = false)
 public class MixinRenderHandler {
     @Unique

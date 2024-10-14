@@ -31,8 +31,10 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
+import top.hendrixshen.magiclib.api.platform.PlatformType;
 import top.hendrixshen.magiclib.mixin.malilib.accessor.WidgetListConfigOptionsAccessor;
 import top.hendrixshen.magiclib.util.MiscUtil;
 
@@ -51,6 +53,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
                 @Dependency(ModId.mod_menu)
         }
 )
+@Dependencies(require = @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE))
 @Mixin(value = WidgetListBase.class, remap = false, priority = 1100)
 public abstract class MixinWidgetListBase<TYPE, WIDGET extends WidgetListEntryBase<TYPE>> {
     // To make sure it only once gets rendered
@@ -88,12 +91,7 @@ public abstract class MixinWidgetListBase<TYPE, WIDGET extends WidgetListEntryBa
         }
     }
 
-    @Inject(
-            method = "drawContents",
-            at = @At(
-                    "HEAD"
-            )
-    )
+    @Inject(method = "drawContents", at = @At("HEAD"))
     private void drawMagicConfigGuiDropDownListSetFlag(CallbackInfo ci) {
         this.masa_gadget_mod$shouldRenderMagicConfigGuiDropDownList = true;
     }
@@ -130,12 +128,7 @@ public abstract class MixinWidgetListBase<TYPE, WIDGET extends WidgetListEntryBa
     }
     //#endif
 
-    @Inject(
-            method = "drawContents",
-            at = @At(
-                    value = "TAIL"
-            )
-    )
+    @Inject(method = "drawContents", at = @At("TAIL"))
     private void drawMagicConfigGuiDropDownListAgainAfterHover(
             //#if MC > 11904
             //$$ GuiGraphics poseStackOrGuiGraphics,

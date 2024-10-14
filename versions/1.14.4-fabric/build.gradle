@@ -36,6 +36,11 @@ repositories {
     }
 
     maven {
+        name("NyanMaven Mirror")
+        url("https://maven.hendrixshen.top/mirror")
+    }
+
+    maven {
         name("NeoForge")
         url("https://maven.neoforged.net/releases")
     }
@@ -55,14 +60,19 @@ repositories {
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def apiDependencies = [
-        ["maven.modrinth:item-scroller"        , "itemscroller", mcVersion < 12102, false],
-        ["maven.modrinth:litematica"           , "litematica"  , mcVersion < 12102, false],
-        ["maven.modrinth:minihud"              , "minihud"     , mcVersion < 12102, false],
-        ["maven.modrinth:tweakeroo"            , "tweakeroo"   , mcVersion < 12102, false],
-        ["com.github.sakura-ryoko:itemscroller", "itemscroller", mcVersion > 12101, false],
-        ["com.github.sakura-ryoko:litematica"  , "litematica"  , mcVersion > 12101, false],
-        ["com.github.sakura-ryoko:minihud"     , "minihud"     , mcVersion > 12101, false],
-        ["com.github.sakura-ryoko:tweakeroo"   , "tweakeroo"   , mcVersion > 12101, false],
+        ["maven.modrinth:rocknroller"                           , "itemscroller", forgeLike                      , false],
+        ["maven.modrinth:forgematica"                           , "litematica"  , forgeLike                      , false],
+        ["maven.modrinth:bocchud"                               , "minihud"     , forgeLike                      , false],
+        ["maven.modrinth:tweakerge"                             , "tweakeroo"   , forgeLike                      , false],
+        ["com.github.sakura-ryoko:itemscroller"                 , "itemscroller", fabricLike && mcVersion > 12101, false],
+        ["com.github.sakura-ryoko:litematica"                   , "litematica"  , fabricLike && mcVersion > 12101, false],
+        ["com.github.sakura-ryoko:minihud"                      , "minihud"     , fabricLike && mcVersion > 12101, false],
+        ["com.github.sakura-ryoko:tweakeroo"                    , "tweakeroo"   , fabricLike && mcVersion > 12101, false],
+        ["maven.modrinth:item-scroller"                         , "itemscroller", fabricLike && mcVersion < 12102, false],
+        ["maven.modrinth:litematica"                            , "litematica"  , fabricLike && mcVersion < 12102, false],
+        ["maven.modrinth:minihud"                               , "minihud"     , fabricLike && mcVersion < 12102, false],
+        ["maven.modrinth:tweakeroo"                             , "tweakeroo"   , fabricLike && mcVersion < 12102, false],
+        ["org.sinytra.forgified-fabric-api:forgified-fabric-api", "fabric_api"  , forgeLike                      , true]
 ]
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
@@ -268,7 +278,7 @@ java {
 remapJar {
     if (forgeLike) {
         if (modPlatform == "neoforge") {
-            atAccessWideners.add("${project.parent.property("mod.id")}.accesswidener")
+            // atAccessWideners.add("${project.parent.property("mod.id")}.accesswidener")
         }
 
         exclude("${project.parent.property("mod.id")}.accesswidener")
@@ -282,6 +292,7 @@ replaceToken {
     replace("@MOD_IDENTIFIER@", project.parent.property("mod.id").toString().replace("-", "_"))
     replace("@MOD_NAME@"      , project.parent.property("mod.name"))
     replace("@MOD_VERSION@"   , project.getVersionWithCommitHash(this.project.parent) as String)
+    replaceIn("com/plusls/MasaGadget/MasaGadgetNeoForgeMod")
     replaceIn("com/plusls/MasaGadget/SharedConstants")
 }
 

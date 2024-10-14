@@ -35,6 +35,10 @@ preprocess {
     mc12002_fabric.link(mc12004_fabric, null)
     mc12004_fabric.link(mc12006_fabric, null)
     mc12006_fabric.link(mc12101_fabric, null)
+
+    // NeoForge
+    Node mc12101_neoforge = createNode("1.21.1-neoforge", 1_21_01, "mojang")
+    mc12101_fabric.link(mc12101_neoforge, null)
 }
 
 ext {

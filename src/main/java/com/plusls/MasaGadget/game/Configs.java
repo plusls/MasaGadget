@@ -9,10 +9,12 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.api.malilib.annotation.Config;
 import top.hendrixshen.magiclib.api.malilib.config.MagicConfigManager;
+import top.hendrixshen.magiclib.api.platform.PlatformType;
 import top.hendrixshen.magiclib.impl.malilib.config.MagicConfigFactory;
 import top.hendrixshen.magiclib.impl.malilib.config.option.*;
 import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
@@ -84,7 +86,8 @@ public class Configs {
 
     @Dependencies(require = {
             @Dependency(value = ModId.litematica, versionPredicates = "<0.0.0-dev.20210917.192300"),
-            @Dependency(value = ModId.tweakeroo)
+            @Dependency(ModId.tweakeroo),
+            @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FABRIC_LIKE)
     })
     @Config(category = ConfigCategory.LITEMATICA)
     public static MagicConfigBoolean nudgeSelectionSupportFreeCamera = Configs.cf.newConfigBoolean("nudgeSelectionSupportFreeCamera", false);
@@ -98,13 +101,52 @@ public class Configs {
     public static MagicConfigBoolean useRelativePath = Configs.cf.newConfigBoolean("useRelativePath", false);
 
     // MALILIB
-    @Dependencies(require = @Dependency(value = ModId.malilib, versionPredicates = "<0.11.0"))
-    @Dependencies(require = @Dependency(value = ModId.minihud, versionPredicates = "<0.20.0"))
-    @Dependencies(require = @Dependency(value = ModId.tweakeroo, versionPredicates = "<0.11.1"))
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.malilib, versionPredicates = "<0.11.0"),
+                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FABRIC_LIKE)
+            }
+    )
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.minecraft, versionPredicates = "<1.18-"),
+                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE)
+            }
+    )
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.minihud, versionPredicates = "<0.20.0"),
+                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FABRIC_LIKE)
+            }
+    )
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.minecraft, versionPredicates = "<1.18-"),
+                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE)
+            }
+    )
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.tweakeroo, versionPredicates = "<0.11.1"),
+                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FABRIC_LIKE)
+            }
+    )
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.minecraft, versionPredicates = "<1.18-"),
+                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE)
+            }
+    )
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean backportI18nSupport = Configs.cf.newConfigBoolean("backportI18nSupport", false);
 
-    @Dependencies(require = @Dependency(ModId.mod_menu))
+    @Dependencies(
+            require = {
+                    @Dependency(ModId.mod_menu),
+                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FABRIC_LIKE)
+            }
+    )
+    @Dependencies(require = @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE))
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean fastSwitchMasaConfigGui = Configs.cf.newConfigBoolean("fastSwitchMasaConfigGui", false);
 
@@ -119,15 +161,48 @@ public class Configs {
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean fixConfigWidgetWidthExpand = Configs.cf.newConfigBoolean("fixConfigWidgetWidthExpand", false);
 
-    @Dependencies(require = @Dependency(value = ModId.malilib, versionPredicates = "<0.11.0"))
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.malilib, versionPredicates = "<0.11.0"),
+                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FABRIC_LIKE)
+            }
+    )
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.minecraft, versionPredicates = "<1.18-"),
+                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE)
+            }
+    )
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean fixGetInventoryType = Configs.cf.newConfigBoolean("fixGetInventoryType", false);
 
-    @Dependencies(require = @Dependency(value = ModId.malilib, versionPredicates = "<0.11.6"))
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.malilib, versionPredicates = "<0.11.6"),
+                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FABRIC_LIKE)
+            }
+    )
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.minecraft, versionPredicates = "<1.18-"),
+                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE)
+            }
+    )
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean fixSearchbarHotkeyInput = Configs.cf.newConfigBoolean("fixSearchbarHotkeyInput", false);
 
-    @Dependencies(require = @Dependency(value = ModId.malilib, versionPredicates = "<0.11.0"))
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.malilib, versionPredicates = "<0.11.0"),
+                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FABRIC_LIKE)
+            }
+    )
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.minecraft, versionPredicates = "<1.18-"),
+                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE)
+            }
+    )
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean optimizeConfigWidgetSearch = Configs.cf.newConfigBoolean("optimizeConfigWidgetSearch", false);
 
@@ -138,7 +213,26 @@ public class Configs {
     public static MagicConfigDouble showOriginalConfigNameScale = Configs.cf.newConfigDouble("showOriginalConfigNameScale", 0.65, 0, 2);
 
     // MiniHUD
-    @Dependencies(require = @Dependency(value = ModId.minihud, versionPredicates = "<0.31.999-sakura.21"))
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.minihud, versionPredicates = "<0.31.999-sakura.21"),
+                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FABRIC_LIKE)
+            }
+    )
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.minecraft, versionPredicates = "<1.21.1-"),
+                    @Dependency(value = ModId.minihud, versionPredicates = "*"),
+                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE)
+            }
+    )
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.minecraft, versionPredicates = ">1.21.1-"),
+                    @Dependency(value = ModId.minihud, versionPredicates = ">0.1.21-mc1.21"),
+                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE)
+            }
+    )
     @Config(category = ConfigCategory.MINIHUD)
     public static MagicConfigBoolean minihudI18n = Configs.cf.newConfigBoolean("minihudI18n", false);
 

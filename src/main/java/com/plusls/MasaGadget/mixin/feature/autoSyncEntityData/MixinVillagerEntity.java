@@ -17,7 +17,7 @@ public abstract class MixinVillagerEntity {
     private VillagerProfession masa_gadget_mod$oldVillagerProfession;
 
     @SuppressWarnings("ConstantConditions")
-    @Inject(method = "tick", at = @At(value = "RETURN"))
+    @Inject(method = "tick", at = @At("RETURN"))
     private void syncVillagerData(CallbackInfo ci) {
         if (!Configs.autoSyncEntityData.getBooleanValue() ||
                 Minecraft.getInstance().hasSingleplayerServer() ||

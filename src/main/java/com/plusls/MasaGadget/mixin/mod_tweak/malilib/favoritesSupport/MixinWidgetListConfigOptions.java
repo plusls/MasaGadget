@@ -25,11 +25,7 @@ public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptio
         super(x, y, width, height, configWidth);
     }
 
-    @Inject(
-            method = "getEntryStringsForFilter*",
-            at = @At("HEAD"),
-            cancellable = true
-    )
+    @Inject(method = "getEntryStringsForFilter*", at = @At("HEAD"), cancellable = true)
     private void filterFavorites(GuiConfigsBase.ConfigOptionWrapper entry, CallbackInfoReturnable<List<String>> cir) {
         if (Configs.favoritesSupport.getBooleanValue() && MalilibFavoritesData.getInstance().isFilterSwitch()) {
             IConfigBase config = entry.getConfig();

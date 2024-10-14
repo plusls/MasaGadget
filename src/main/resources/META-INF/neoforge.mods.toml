@@ -1,0 +1,32 @@
+modLoader = "javafml"
+loaderVersion = "*"
+license = "${mod_license}"
+
+[[mods]]
+modId = "${mod_id}"
+version = "${mod_version}"
+displayName = "${mod_name}"
+description = '''
+${mod_description}
+'''
+logoFile = "icon.png"
+authors = "Hendrix-Shen, Plusls"
+displayURL = "${mod_homepage}"
+displayTest = "NONE"
+
+[[dependencies.${mod_id}]]
+modId = "magiclib_malilib_extra"
+mandatory=true
+versionRange="*"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "minecraft"
+mandatory=true
+versionRange="${minecraft_dependency}"
+ordering="NONE"
+side="BOTH"
+
+[[mixins]]
+config = "masa_gadget_mod.mixins.json"

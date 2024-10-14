@@ -15,8 +15,10 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
+import top.hendrixshen.magiclib.api.platform.PlatformType;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.SelectorDropDownList;
 
 //#if MC > 11902
@@ -32,9 +34,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 @Dependencies(
         require = {
                 @Dependency(ModId.malilib),
-                @Dependency(ModId.mod_menu)
+                @Dependency(ModId.mod_menu),
+                @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FABRIC_LIKE)
         }
 )
+@Dependencies(require = @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE))
 @Mixin(value = GuiConfigsBase.class, remap = false)
 public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.ConfigOptionWrapper, WidgetConfigOption, WidgetListConfigOptions> implements MasaGadgetDropdownList {
     protected MixinGuiConfigBase(int listX, int listY) {
@@ -53,12 +57,7 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
     //$$
     //$$ @SuppressWarnings({"MixinAnnotationTarget", "UnresolvedMixinReference"})
     //#endif
-    @Inject(
-            method = "initGui",
-            at = @At(
-                    value = "RETURN"
-            )
-    )
+    @Inject(method = "initGui", at = @At("RETURN"))
     public void postInitGui(CallbackInfo ci) {
         if (Configs.fastSwitchMasaConfigGui.getBooleanValue()) {
             this.masa_gadget$masaModGuiList = new SelectorDropDownList<>(
@@ -66,8 +65,7 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
                     FastMasaGuiSwitcher.getInstance().getModNameList());
             this.masa_gadget$masaModGuiList.setSelectedEntry(FastMasaGuiSwitcher.getInstance().getModName(this.getClass()));
             this.masa_gadget$masaModGuiList.setEntryChangeListener(entry ->
-                    GuiBase.openGui(FastMasaGuiSwitcher.getInstance().getConfigScreenFactory(entry)
-                            .create(this.getParent())));
+                    GuiBase.openGui(FastMasaGuiSwitcher.getInstance().getConfigScreenFactory(entry).create(this.getParent())));
             this.addWidget(this.masa_gadget$masaModGuiList);
         }
     }

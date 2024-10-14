@@ -31,7 +31,7 @@ public abstract class MixinBlockItem {
     @Shadow
     protected abstract boolean canPlace(BlockPlaceContext context, BlockState state);
 
-    @Inject(method = "getPlacementState", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(method = "getPlacementState", at = @At("HEAD"), cancellable = true)
     private void preGetPlacementState(BlockPlaceContext context, CallbackInfoReturnable<BlockState> cir) {
         if (!Configs.fixAccurateProtocol.getBooleanValue()) {
             return;

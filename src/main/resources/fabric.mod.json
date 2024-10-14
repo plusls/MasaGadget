@@ -28,7 +28,7 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "com.plusls.MasaGadget.MasaGadgetMod"
+      "com.plusls.MasaGadget.MasaGadgetFabricMod"
     ],
     "modmenu": [
       "com.plusls.MasaGadget.impl.compat.modmenu.ModMenuApiImpl"
@@ -38,7 +38,7 @@
     "${mod_id}.mixins.json"
   ],
   "depends": {
-    "fabric": ">=${magiclib_dependency}",
+    "fabric": "*",
     "magiclib": ">=${magiclib_dependency}",
     "malilib": "*",
     "minecraft": "${minecraft_dependency}"
