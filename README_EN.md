@@ -447,6 +447,8 @@ And use `preprocess` to be compatible with all versions.
 - Minecraft 1.20.1 (Ending support soon)
 - Minecraft 1.20.2 (Ending support soon)
 - Minecraft 1.20.4
+- Minecraft 1.20.6
+- Minecraft 1.21.1
 
 ### Mappings
 

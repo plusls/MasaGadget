@@ -447,6 +447,8 @@ ItemScroller 存储的配方编号，只支持 2x2 配方
 - Minecraft 1.20.1 (即将终止支持)
 - Minecraft 1.20.2 (即将终止支持)
 - Minecraft 1.20.4
+- Minecraft 1.20.6
+- Minecraft 1.21.1
 
 ### 混淆映射表
 
