@@ -40,14 +40,23 @@ public class MalilibFavoritesButton extends WidgetHoverInfo {
             int mouseY,
             boolean selected
             //#if MC > 11904
-            //$$ , GuiGraphics gui
+            //$$ , GuiGraphics guiGraphicsOrPoseStack
             //#elseif MC > 11502
-            , PoseStack poseStack
+            , PoseStack guiGraphicsOrPoseStack
             //#endif
     ) {
         RenderUtils.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.bindTexture(icon.getTexture());
-        icon.renderAt(this.x, this.y, (float) this.zLevel, this.status, this.isMouseOver(mouseX, mouseY));
+        icon.renderAt(
+                this.x,
+                this.y,
+                (float) this.zLevel,
+                this.status,
+                this.isMouseOver(mouseX, mouseY)
+                //#if MC > 12101
+                //$$ , guiGraphicsOrPoseStack
+                //#endif
+        );
 
         if (this.isMouseOver(mouseX, mouseY)) {
             RenderUtils.drawOutlinedBox(this.x, this.y, this.width, this.height, 0x20C0C0C0, -520093697);

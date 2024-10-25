@@ -5,6 +5,10 @@ import fi.dy.masa.malilib.gui.interfaces.IGuiIcon;
 import fi.dy.masa.malilib.render.RenderUtils;
 import net.minecraft.resources.ResourceLocation;
 
+//#if MC > 12101
+//$$ import net.minecraft.client.gui.GuiGraphics;
+//#endif
+
 public enum MasaGadgetIcons implements IGuiIcon {
     FAVORITE(0, 0, 16, 16, 16, 16);
 
@@ -47,7 +51,16 @@ public enum MasaGadgetIcons implements IGuiIcon {
     }
 
     @Override
-    public void renderAt(int x, int y, float zLevel, boolean enabled, boolean selected) {
+    public void renderAt(
+            int x,
+            int y,
+            float zLevel,
+            boolean enabled,
+            boolean selected
+            //#if MC > 12101
+            //$$ , GuiGraphics guiGraphics
+            //#endif
+    ) {
         int u = this.u;
         int v = this.v;
 

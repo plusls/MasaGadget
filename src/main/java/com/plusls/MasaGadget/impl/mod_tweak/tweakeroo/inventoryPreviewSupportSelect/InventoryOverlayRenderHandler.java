@@ -14,6 +14,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.api.render.context.RenderContext;
 
+//#if MC > 12101
+//$$ import net.minecraft.client.renderer.RenderType;
+//#endif
+
 //#if MC < 12000
 import com.plusls.MasaGadget.mixin.accessor.AccessorGuiComponent;
 import net.minecraft.network.chat.Component;
@@ -28,6 +32,7 @@ import java.util.List;
 //#endif
 
 //#if MC > 11404
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 //#endif
@@ -243,7 +248,9 @@ public class InventoryOverlayRenderHandler {
     }
 
     private void renderSlotHighlight(@NotNull RenderContext renderContext, int x, int y) {
-        //#if MC > 11605
+        //#if MC > 12101
+        //$$ renderContext.getGuiComponent().fillGradient(RenderType.guiOverlay(), x, y, x + 16, y + 16, 0x80FFFFFF, 0x80FFFFFF, 0);
+        //#elseif MC > 11605
         //$$ AbstractContainerScreen.renderSlotHighlight(
         //#if MC > 11904
         //$$         renderContext.getGuiComponent(),

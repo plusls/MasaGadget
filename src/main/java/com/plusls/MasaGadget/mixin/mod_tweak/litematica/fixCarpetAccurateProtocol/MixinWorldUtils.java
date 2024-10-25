@@ -165,7 +165,14 @@ public class MixinWorldUtils {
                 }
             }
 
-            mc.player.connection.send(new ServerboundMovePlayerPacket.Rot(playerCompat.getYRot(), playerCompat.getXRot(), playerCompat.isOnGround()));
+            mc.player.connection.send(new ServerboundMovePlayerPacket.Rot(
+                    playerCompat.getYRot(),
+                    playerCompat.getXRot(),
+                    playerCompat.isOnGround()
+                    //#if MC > 12101
+                    //$$ , false
+                    //#endif
+            ));
         }
 
         if (stateSchematic.getBlock() instanceof FenceGateBlock && stateSchematic.getValue(BlockStateProperties.OPEN)) {
@@ -264,7 +271,14 @@ public class MixinWorldUtils {
         if (MixinWorldUtils.masa_gadget_mod$easyPlaceActionOldYaw.get() != null) {
             PlayerCompat playerCompat = PlayerCompat.of(Objects.requireNonNull(mc.player));
             playerCompat.setYRot(masa_gadget_mod$easyPlaceActionOldYaw.get());
-            mc.player.connection.send(new ServerboundMovePlayerPacket.Rot(playerCompat.getYRot(), playerCompat.getXRot(), playerCompat.isOnGround()));
+            mc.player.connection.send(new ServerboundMovePlayerPacket.Rot(
+                    playerCompat.getYRot(),
+                    playerCompat.getXRot(),
+                    playerCompat.isOnGround()
+                    //#if MC > 12101
+                    //$$ , false
+                    //#endif
+            ));
         }
     }
 }

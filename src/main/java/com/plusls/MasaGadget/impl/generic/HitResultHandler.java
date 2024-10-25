@@ -24,6 +24,7 @@ import net.minecraft.world.phys.*;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.api.compat.minecraft.util.ProfilerCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.EntityCompat;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
@@ -191,7 +192,7 @@ public class HitResultHandler {
     }
 
     public void endClientTickCallback() {
-        ProfilerFiller profiler = Minecraft.getInstance().getProfiler();
+        ProfilerFiller profiler = ProfilerCompat.get();
         Level level = WorldUtils.getBestWorld(Minecraft.getInstance());
 
         if (level == null) {
