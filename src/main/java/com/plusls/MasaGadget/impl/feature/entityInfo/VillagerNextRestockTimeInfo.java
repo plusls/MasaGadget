@@ -16,8 +16,9 @@ public class VillagerNextRestockTimeInfo {
         long nextRestockTime;
         long nextWorkTime;
         long timeOfDay = villager.getLevel().getDayTime() % 24000;
+        VillagerProfession profession = villager.getVillagerData().getProfession();
 
-        if (villager.getVillagerData().getProfession() != VillagerProfession.LIBRARIAN) {
+        if (profession == VillagerProfession.NONE || profession == VillagerProfession.NITWIT) {
             return null;
         }
 
