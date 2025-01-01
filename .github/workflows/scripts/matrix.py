@@ -15,28 +15,12 @@ import common
 
 
 def main():
-    # target_subproject_env = os.environ.get('TARGET_SUBPROJECT', '')
-    target_subproject_env = ''
-    target_subprojects = list(filter(None, target_subproject_env.split(',') if target_subproject_env != '' else []))
-    print('target_subprojects: {}'.format(target_subprojects))
-    subproject_dict: Dict[str, List[str]] = common.get_subproject_dict()
-    matrix: Dict[str, List[Dict[str, str]]] = {'include': []}
-
-    if len(target_subprojects) == 0:
-        for platform in subproject_dict:
-            for mc_ver in subproject_dict[platform]:
-                matrix['include'].append({
-                    'platform': platform,
-                    'mc_ver': mc_ver
-                })
-    else:
-        for platform in subproject_dict:
-            for mc_ver in subproject_dict[platform]:
-                if mc_ver in target_subprojects:
-                    matrix['include'].append({
-                        'platform': platform,
-                        'mc_ver': mc_ver
-                    })
+    subproject_dict: Dict[str, List[str]] = common.get_projects_by_platform()
+    matrix: Dict[str, List[Dict[str, str]]] = {'include': [
+        {'platform': platform, 'mc_ver': mc_ver}
+        for platform, versions in subproject_dict.items()
+        for mc_ver in versions
+    ]}
 
     with open(os.environ['GITHUB_OUTPUT'], 'w') as f:
         f.write('matrix={}\n'.format(json.dumps(matrix)))
