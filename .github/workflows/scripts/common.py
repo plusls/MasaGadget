@@ -4,7 +4,10 @@ Common functions
 __author__ = 'Hendrix_Shen'
 
 import json
+from dataclasses import dataclass
 from typing import Dict, List, Set
+
+from jproperties import Properties
 
 __PLATFORM_MAPPING: dict = {
     'fabric': 'Fabric',
@@ -12,6 +15,20 @@ __PLATFORM_MAPPING: dict = {
     'neoforge': 'NeoForge',
     'quilt': 'Quilt'
 }
+
+
+def get_settings() -> dict:
+    with open('settings.json') as f:
+        return json.load(f)
+
+
+def read_properties(file_name: str) -> Properties:
+    configs = Properties()
+
+    with open(file_name, 'rb') as f:
+        configs.load(f)
+
+    return configs
 
 
 def get_mc_vers(subproject_dict: Dict[str, List[str]]) -> List[str]:
@@ -24,10 +41,8 @@ def get_mc_vers(subproject_dict: Dict[str, List[str]]) -> List[str]:
     return sorted(list(mc_vers))
 
 
-def get_subproject_dict() -> Dict[str, List[str]]:
-    with open('settings.json') as f:
-        settings: dict = json.load(f)
-
+def get_projects_by_platform() -> Dict[str, List[str]]:
+    settings: dict = get_settings()
     projects: Dict[str, List[str]] = {}
 
     for version in settings['versions']:
@@ -49,20 +64,24 @@ def pretty_platform(platform: str) -> str:
 
 
 def read_prop(file_name: str, key: str) -> str:
-    with open(file_name) as prop:
-        return next(filter(
-            lambda x: x.split('=', 1)[0].strip() == key,
-            prop.readlines()
-        )).split('=', 1)[1].lstrip()
+    configs: Properties = read_properties(file_name)
+    return configs[key].data
 
 
+@dataclass(frozen=True)
+class FileData:
+    file_name: str
+    file_size: int
+    sha256: str
+
+    def get_file_size(self) -> str:
+        return '{} B'.format(self.file_size)
+
+
+@dataclass(frozen=True)
 class Module:
     __mc_ver: str
     __platform: str
-
-    def __init__(self, mc_ver: str, platform: str) -> None:
-        self.__mc_ver = mc_ver
-        self.__platform = platform
 
     @staticmethod
     def of(module_name: str) -> 'Module':

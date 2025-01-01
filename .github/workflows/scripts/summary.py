@@ -2,7 +2,7 @@
 Modified from github.com/Fallen-Breath/fabric-mod-template
 Originally authored by Fallen_Breath
 
-A script to scan through all valid mod jars in build-artifacts.zip/$version/build/libs,
+A script to scan through all valid mod jars in build-artifacts.zip/$module/$version/build/libs,
 and generate an artifact summary table for that to GitHub action step summary
 """
 __author__ = 'Hendrix_Shen'
@@ -10,11 +10,13 @@ __author__ = 'Hendrix_Shen'
 import functools
 import glob
 import hashlib
-import json
 import os
 from typing import List, Dict
 
 import common
+from common import FileData
+
+__EMPTY_FILE_INFO = FileData('*not found*', 0, '*N/A*')
 
 
 def get_sha256_hash(file_path: str) -> str:
@@ -27,43 +29,26 @@ def get_sha256_hash(file_path: str) -> str:
     return sha256_hash.hexdigest()
 
 
-def get_file_info(file_paths: List[str], subproject: str, warnings: List[str]) -> dict:
+def get_file_info(file_paths: List[str], subproject: str, warnings: List[str]) -> FileData:
     if len(file_paths) == 0:
-        file_name = '*not found*'
-        file_size = 0
-        sha256 = '*N/A*'
-    else:
-        file_name = '`{}`'.format(os.path.basename(file_paths[0]))
-        file_size = '{} B'.format(os.path.getsize(file_paths[0]))
-        sha256 = '`{}`'.format(get_sha256_hash(file_paths[0]))
-        if len(file_paths) > 1:
-            warnings.append(
-                'Found too many build files in subproject {}: {}'.format(subproject, ', '.join(file_paths)))
+        return __EMPTY_FILE_INFO
 
-    return {
-        'file_name': file_name,
-        'file_size': file_size,
-        'sha256': sha256
-    }
+    if len(file_paths) > 1:
+        warnings.append(
+            'Found too many build files in subproject {}: {}'.format(subproject, ', '.join(file_paths)))
+
+    return FileData(os.path.basename(file_paths[0]), os.path.getsize(file_paths[0]), get_sha256_hash(file_paths[0]))
 
 
 def main():
-    target_subproject_env = os.environ.get('TARGET_SUBPROJECT', '')
-    target_subprojects = list(filter(None, target_subproject_env.split(',') if target_subproject_env != '' else []))
-    print('target_subprojects: {}'.format(target_subprojects))
-    subproject_dict: Dict[str, List[str]] = common.get_subproject_dict()
+    subproject_dict: Dict[str, List[str]] = common.get_projects_by_platform()
 
     with open(os.environ['GITHUB_STEP_SUMMARY'], 'w') as f:
         warnings = []
-        modules: List[common.Module] = []
-
-        for platform in subproject_dict:
-            for mc_ver in subproject_dict[platform]:
-                if len(target_subprojects) > 0 and mc_ver not in target_subprojects:
-                    print('Skipping {}-{}'.format(mc_ver, platform))
-                    continue
-
-                modules.append(common.Module(mc_ver, platform))
+        modules = [
+            common.Module(mc_ver, platform)
+            for platform in subproject_dict
+            for mc_ver in subproject_dict[platform]]
 
         modules = sorted(list(set(modules)), key=lambda m: (m.mc_ver(), m.platform()))
         f.write('## Build Artifacts Summary\n\n')
@@ -71,13 +56,13 @@ def main():
         f.write('| --- | --- |--- | --- | --- |\n')
 
         for module in modules:
-            file_paths = glob.glob('build-artifacts/{}/build/libs/*.jar'.format(module.get_str()))
+            file_paths = glob.glob('build-artifacts/versions/{}/build/libs/*.jar'.format(module.get_str()))
             file_paths = list(
                 filter(lambda fp: not fp.endswith('-sources.jar') and not fp.endswith('-javadoc.jar'), file_paths))
             file_info = get_file_info(file_paths, 'magiclib-wrapper', warnings)
             f.write('| {} | {} | {} | {} | {} |\n'.format(module.mc_ver(), module.pretty_platform(),
-                                                          file_info.get('file_name'), file_info.get('file_size'),
-                                                          file_info.get('sha256')))
+                                                          file_info.file_name, file_info.file_size,
+                                                          file_info.sha256))
 
         if len(warnings) > 0:
             f.write('\n### Warnings\n\n')

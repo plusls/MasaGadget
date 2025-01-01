@@ -1,0 +1,129 @@
+name: _step.prepare_action_info
+on:
+  workflow_call:
+    outputs:
+      build_publish:
+        value: ${{ jobs.prepare_build_info.outputs.build_publish }}
+      build_version_type:
+        value: ${{ jobs.prepare_build_info.outputs.build_version_type }}
+      publish_enable:
+        value: ${{ jobs.prepare_build_info.outputs.publish_enable }}
+      publish_platform_channel:
+        value: ${{ jobs.prepare_build_info.outputs.publish_platform_channel }}
+      publish_type:
+        value: ${{ jobs.prepare_build_info.outputs.publish_type }}
+jobs:
+  prepare_build_info:
+    runs-on: ubuntu-24.04
+    outputs:
+      build_publish: ${{ steps.build_info.outputs.build_publish }}
+      build_version_type: ${{ steps.build_info.outputs.build_version_type }}
+      publish_enable: ${{ steps.build_info.outputs.publish_enable }}
+      publish_platform_channel: ${{ steps.build_info.outputs.publish_platform_channel }}
+      publish_type: ${{ steps.build_info.outputs.publish_type }}
+    steps:
+      - name: Checkout the sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Determining build info
+        id: build_info
+        env:
+          REPO_OWNER: ${{ github.repository_owner }}
+          GH_EVENT_NAME: ${{ github.event_name }}
+        run: |
+          # Publish to NyanMaven
+          build_publish=false
+          # Version Type
+          #    BETA
+          #    DEV
+          #    FORK
+          #    PULL_REQUEST
+          #    RC
+          #    RELEASE
+          build_version_type=DEV
+          # MC-Publish
+          publish_enable=false
+          # CurseForge / Modrinth Release Channel
+          #   alpha
+          #   beta
+          #   release
+          publish_platform_channel=alpha
+          # Publish Type
+          #   dev
+          #   release
+          publish_type=dev
+          
+          # Master Repo
+          #   push
+          #     false / BETA / false / - / -
+          #   pull_request
+          #     false / PULL_REQUEST / false / - / -
+          #   pre-release
+          #     false / RC / true / beta / release
+          #   release   
+          #     false / RELEASE / true / release / release
+          if [ "$REPO_OWNER" == 'plusls' ]
+          then
+              if [ "$GH_EVENT_NAME" == 'push' ]
+              then
+                  build_version_type=BETA
+              elif [ "$GH_EVENT_NAME" == 'pull_request' ]
+              then
+                  build_version_type=PULL_REQUEST
+              elif [ "$GH_EVENT_NAME" == 'release' ]
+              then
+                  if [ ${{ github.event.release.prerelease }} ]
+                  then
+                      build_version_type=RC
+                      publish_platform_channel=beta
+                  else
+                      build_version_type=RELEASE
+                      publish_platform_channel=release
+                  fi
+              else
+                  echo Unsupported github event name "$GH_EVENT_NAME"
+                  exit 1
+              fi
+          # Nyan-Work (Test) Repo
+          #   push
+          #     true / DEV / false / - / dev
+          elif [ "$REPO_OWNER" == 'Nyan-Work' ]
+          then
+              if [ "$GH_EVENT_NAME" == 'push' ]
+              then
+                  build_publish=true
+                  publish_enable=true
+              else
+                  echo Unsupported github event name "$GH_EVENT_NAME"
+                  exit 1
+              fi
+          # Fork Repos
+          #   push
+          #     true / FORK / false / - / dev
+          else
+              if [ "$GH_EVENT_NAME" == 'release' ]
+              then
+                  build_version_type=FORK
+                  publish_enable=true
+              else
+                  echo Unsupported github event name "$GH_EVENT_NAME"
+                  exit 1
+              fi
+          fi
+          
+          echo "build_publish=$build_publish" >> $GITHUB_OUTPUT
+          echo "build_version_type=$build_version_type" >> $GITHUB_OUTPUT
+          echo "publish_channel=$publish_channel" >> $GITHUB_OUTPUT
+          echo "publish_enable=$publish_enable" >> $GITHUB_OUTPUT
+          echo "publish_platform_channel=$publish_platform_channel" >> $GITHUB_OUTPUT
+          echo "publish_type=$publish_type" >> $GITHUB_OUTPUT
+        
+          cat <<EOF > $GITHUB_STEP_SUMMARY
+          ## Determining build info
+          - build_publish: \`$build_publish\`
+          - build_version_type: \`$build_version_type\`
+          - publish_enable: \`$publish_enable\`
+          - publish_platform_channel: \`$publish_platform_channel\`
+          - publish_type: \`$publish_type\`
+          EOF
