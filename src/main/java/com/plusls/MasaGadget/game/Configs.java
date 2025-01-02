@@ -323,6 +323,7 @@ public class Configs {
         });
 
         // Malilib
+        Configs.fastSwitchMasaConfigGui.setValueChangeCallback(Configs::redrawConfigGui);
         Configs.favoritesSupport.setValueChangeCallback(Configs::redrawConfigGui);
         Configs.showOriginalConfigName.setValueChangeCallback(Configs::redrawConfigGui);
         Configs.showOriginalConfigNameScale.setValueChangeCallback(Configs::redrawConfigGui);
