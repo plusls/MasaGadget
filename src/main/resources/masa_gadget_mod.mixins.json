@@ -20,6 +20,7 @@
     "feature.cacheContainerMenu.MixinClientPacketListener",
     "feature.cacheContainerMenu.MixinLocalPlayer",
     "feature.cacheContainerMenu.MixinMultiPlayerGameMode",
+    "mod_tweak.common.MixinGuiBase",
     "mod_tweak.litematica.betterEasyPlaceMode.MixinWorldUtils",
     "mod_tweak.litematica.disableLitematicaEasyPlaceFailTip.MixinWorldUtils",
     "mod_tweak.litematica.fixCarpetAccurateProtocol.MixinBlockItem",
