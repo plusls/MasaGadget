@@ -25,8 +25,9 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
             return;
         }
 
+        int xOffset = Configs.fastSwitchMasaConfigGui.getBooleanValue() ? 132 : 28;
         MalilibFavoritesButton favoritesButton = MalilibFavoritesButton.create(
-                this.width - 132, 10, MalilibFavoritesData.getInstance().isFilterSwitch(),
+                this.width - xOffset, 10, MalilibFavoritesData.getInstance().isFilterSwitch(),
                 status -> {
                     MalilibFavoritesData.getInstance().setFilterSwitch(status);
                     ValueContainer.ofNullable(this.getListWidget()).ifPresent(w -> {
