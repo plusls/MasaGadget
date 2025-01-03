@@ -61,21 +61,26 @@ repositories {
     mavenCentral()
 }
 
+String itemscroller_fabric_ga = project.getProperties().getOrDefault("dependencies.api.itemscroller_version.use_sakura_fork", false) ?
+        "com.github.sakura-ryoko:itemscroller" : "maven.modrinth:item-scroller"
+String litematica_fabric_ga = project.getProperties().getOrDefault("dependencies.api.litematica_version.use_sakura_fork", false) ?
+        "com.github.sakura-ryoko:litematica" : "maven.modrinth:litematica"
+String minihud_fabric_ga = project.getProperties().getOrDefault("dependencies.api.minihud_version.use_sakura_fork", false) ?
+        "com.github.sakura-ryoko:minihud" : "maven.modrinth:minihud"
+String tweakeroo_fabric_ga = project.getProperties().getOrDefault("dependencies.api.tweakeroo_version.use_sakura_fork", false) ?
+        "com.github.sakura-ryoko:tweakeroo" : "maven.modrinth:tweakeroo"
+
 // Module, Property prefix, Resolve condition, Transitive dependencies.
 def apiDependencies = [
-        ["maven.modrinth:rocknroller"                           , "itemscroller", forgeLike                      , false],
-        ["maven.modrinth:forgematica"                           , "litematica"  , forgeLike                      , false],
-        ["maven.modrinth:bocchud"                               , "minihud"     , forgeLike                      , false],
-        ["maven.modrinth:tweakerge"                             , "tweakeroo"   , forgeLike                      , false],
-        ["com.github.sakura-ryoko:itemscroller"                 , "itemscroller", fabricLike && mcVersion > 12101, false],
-        ["com.github.sakura-ryoko:litematica"                   , "litematica"  , fabricLike && mcVersion > 12101, false],
-        ["com.github.sakura-ryoko:minihud"                      , "minihud"     , fabricLike && mcVersion > 12101, false],
-        ["com.github.sakura-ryoko:tweakeroo"                    , "tweakeroo"   , fabricLike && mcVersion > 12101, false],
-        ["maven.modrinth:item-scroller"                         , "itemscroller", fabricLike && mcVersion < 12102, false],
-        ["maven.modrinth:litematica"                            , "litematica"  , fabricLike && mcVersion < 12102, false],
-        ["maven.modrinth:minihud"                               , "minihud"     , fabricLike && mcVersion < 12102, false],
-        ["maven.modrinth:tweakeroo"                             , "tweakeroo"   , fabricLike && mcVersion < 12102, false],
-        ["org.sinytra.forgified-fabric-api:forgified-fabric-api", "fabric_api"  , forgeLike                      , true]
+        ["maven.modrinth:rocknroller"                           , "itemscroller", forgeLike , false],
+        ["maven.modrinth:forgematica"                           , "litematica"  , forgeLike , false],
+        ["maven.modrinth:bocchud"                               , "minihud"     , forgeLike , false],
+        ["maven.modrinth:tweakerge"                             , "tweakeroo"   , forgeLike , false],
+        [itemscroller_fabric_ga                                 , "itemscroller", fabricLike, false],
+        [litematica_fabric_ga                                   , "litematica"  , fabricLike, false],
+        [minihud_fabric_ga                                      , "minihud"     , fabricLike, false],
+        [tweakeroo_fabric_ga                                    , "tweakeroo"   , fabricLike, false],
+        ["org.sinytra.forgified-fabric-api:forgified-fabric-api", "fabric_api"  , forgeLike , true]
 ]
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.

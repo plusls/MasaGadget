@@ -1,5 +1,6 @@
 package com.plusls.MasaGadget.mixin.mod_tweak.malilib.fastSwitchMasaConfigGui;
 
+import com.plusls.MasaGadget.api.fake.mod_tweak.malilib.favoritesSupport.GuiBaseInjector;
 import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.api.gui.MasaGadgetDropdownList;
 import com.plusls.MasaGadget.impl.mod_tweak.malilib.fastSwitchMasaConfigGui.FastMasaGuiSwitcher;
@@ -12,17 +13,16 @@ import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.interfaces.IStringValue;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.api.platform.PlatformType;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.SelectorDropDownList;
 
-//#if MC > 11902
-//$$ import org.spongepowered.asm.mixin.Intrinsic;
+//#if MC > 12006
+//$$ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+//$$ import fi.dy.masa.malilib.gui.widgets.WidgetBase;
+//$$ import org.spongepowered.asm.mixin.injection.At;
 //#endif
 
 //#if MC > 11904
@@ -40,7 +40,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 )
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE))
 @Mixin(value = GuiConfigsBase.class, remap = false)
-public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.ConfigOptionWrapper, WidgetConfigOption, WidgetListConfigOptions> implements MasaGadgetDropdownList {
+public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.ConfigOptionWrapper, WidgetConfigOption, WidgetListConfigOptions> implements MasaGadgetDropdownList, GuiBaseInjector {
     protected MixinGuiConfigBase(int listX, int listY) {
         super(listX, listY);
     }
@@ -48,17 +48,8 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
     @Unique
     private SelectorDropDownList<IStringValue> masa_gadget$masaModGuiList;
 
-    //#if MC > 11902
-    //$$ //@Intrinsic
-    //$$ //@Override
-    //$$ //public void initGui() {
-    //$$ //    super.initGui();
-    //$$ //}
-    //$$
-    //$$ @SuppressWarnings({"MixinAnnotationTarget", "UnresolvedMixinReference"})
-    //#endif
-    @Inject(method = "initGui", at = @At("RETURN"))
-    public void postInitGui(CallbackInfo ci) {
+    @Override
+    public void masa_gadget_mod$addFastSwitcherWidget() {
         if (Configs.fastSwitchMasaConfigGui.getBooleanValue()) {
             this.masa_gadget$masaModGuiList = new SelectorDropDownList<>(
                     this.width - 111, 10, 100, 16, 200, 5,
@@ -105,4 +96,18 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
                 //#endif
         );
     }
+
+    //#if MC > 12006
+    //$$ // Force blocking malilib's intrinsic dropdown list
+    //$$ @WrapWithCondition(
+    //$$         method = "initGui",
+    //$$         at = @At(
+    //$$                 value = "INVOKE",
+    //$$                 target = "Lfi/dy/masa/malilib/gui/GuiConfigsBase;addWidget(Lfi/dy/masa/malilib/gui/widgets/WidgetBase;)Lfi/dy/masa/malilib/gui/widgets/WidgetBase;"
+    //$$         )
+    //$$ )
+    //$$ private boolean blockInherentDropdownList(GuiConfigsBase instance, WidgetBase widgetBase) {
+    //$$     return !Configs.fastSwitchMasaConfigGui.getBooleanValue();
+    //$$ }
+    //#endif
 }

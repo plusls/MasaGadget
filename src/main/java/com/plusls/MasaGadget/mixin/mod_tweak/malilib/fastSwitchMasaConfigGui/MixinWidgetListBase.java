@@ -21,6 +21,7 @@
 package com.plusls.MasaGadget.mixin.mod_tweak.malilib.fastSwitchMasaConfigGui;
 
 import com.plusls.MasaGadget.api.gui.MasaGadgetDropdownList;
+import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.util.ModId;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetListBase;
@@ -93,7 +94,9 @@ public abstract class MixinWidgetListBase<TYPE, WIDGET extends WidgetListEntryBa
 
     @Inject(method = "drawContents", at = @At("HEAD"))
     private void drawMagicConfigGuiDropDownListSetFlag(CallbackInfo ci) {
-        this.masa_gadget_mod$shouldRenderMagicConfigGuiDropDownList = true;
+        if (Configs.fastSwitchMasaConfigGui.getBooleanValue()) {
+            this.masa_gadget_mod$shouldRenderMagicConfigGuiDropDownList = true;
+        }
     }
 
     //#if MC < 11904
