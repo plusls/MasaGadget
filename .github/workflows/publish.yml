@@ -179,7 +179,7 @@ jobs:
           result-encoding: string
         env:
           CHANGELOG: |-
-            ${{ needs.release_core.outputs.github_changelog }}
+            ${{ needs.create_github_release.outputs.github_changelog }}
             
             -------
             
