@@ -113,6 +113,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           github-changelog: ${{ steps.changelog.outputs.result }}
           github-prerelease: true
+          github-commitish: ${{ github.sha }}
           files: build-artifacts/versions/**/build/libs/!(*-@(dev|sources|javadoc)).jar
           name: ${{ steps.shared_publish_info.outputs.release_title }}
           retry-attempts: 3
