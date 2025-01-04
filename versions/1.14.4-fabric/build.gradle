@@ -308,24 +308,6 @@ processResources {
     outputs.upToDateWhen { false }
 
     [
-            ["itemscroller"                , mcVersion > 12006],
-            ["litematica"                  , mcVersion > 12006],
-            ["malilib"                     , mcVersion > 12006],
-            ["masa_gadget_mod_minihud_i18n", mcVersion > 12006],
-            ["minihud"                     , mcVersion > 12006],
-            ["tweakeroo"                   , false],
-    ].forEach { item ->
-        String identifier = item[0]
-        boolean shouldExclude = item[1]
-
-        if (shouldExclude) {
-            filesMatching("assets/${identifier}/lang/*.json") {
-                exclude()
-            }
-        }
-    }
-
-    [
             "fabric.mod.json"            : ["fabric"],
             "META-INF"                   : ["forge", "neoforge"],
             "META-INF/mods.toml"         : ["forge", "neoforge", mcVersion < 12005 ? "neoforge": "none"],
