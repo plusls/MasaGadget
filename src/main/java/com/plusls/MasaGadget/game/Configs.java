@@ -273,13 +273,16 @@ public class Configs {
     @Config(category = ConfigCategory.TWEAKEROO)
     public static MagicConfigBoolean inventoryPreviewSyncDataClientOnly = Configs.cf.newConfigBoolean("inventoryPreviewSyncDataClientOnly", false);
 
-    @Dependencies(require = @Dependency(ModId.tweakeroo))
+    @Dependencies(
+            require = @Dependency(ModId.tweakeroo),
+            conflict = @Dependency(value = ModId.minecraft, versionPredicates = ">=1.21-")
+    )
     @Config(category = ConfigCategory.TWEAKEROO)
     public static MagicConfigBoolean inventoryPreviewUseCache = Configs.cf.newConfigBoolean("inventoryPreviewUseCache", false);
 
     @Dependencies(require = {
             @Dependency(ModId.tweakeroo),
-            @Dependency(ModId.tweakeroo)
+            @Dependency(ModId.itemscroller)
     })
     @Config(category = ConfigCategory.TWEAKEROO)
     public static MagicConfigBoolean restockWithCrafting = Configs.cf.newConfigBoolean("restockWithCrafting", false);

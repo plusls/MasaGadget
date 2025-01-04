@@ -34,11 +34,19 @@ import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 public class MixinRenderUtils {
     //#if MC > 11904
     //$$ @Unique
-    //$$ private static GuiGraphics masa_gadget_mod$gui;
+    //$$ private static GuiGraphics masa_gadget$guiGraphics;
     //$$
     //$$ @Inject(method = "renderInventoryOverlay", at = @At("HEAD"))
-    //$$ private static void intercept(Minecraft mc, GuiGraphics gui, CallbackInfo ci) {
-    //$$     MixinRenderUtils.masa_gadget_mod$gui = gui;
+    //$$ private static void intercept(
+    //#if MC > 12006
+    //$$         InventoryOverlay.Context context,
+    //#else
+    //$$         Minecraft mc,
+    //#endif
+    //$$         GuiGraphics guiGraphics,
+    //$$         CallbackInfo ci
+    //$$ ) {
+    //$$     MixinRenderUtils.masa_gadget$guiGraphics = guiGraphics;
     //$$ }
     //#endif
 
@@ -110,7 +118,7 @@ public class MixinRenderUtils {
                 MixinRenderUtils.masa_gadget$maxTradeOfferSize,
                 Minecraft.getInstance()
                 //#if MC > 11904
-                //$$ , masa_gadget_mod$gui
+                //$$ , masa_gadget$guiGraphics
                 //#endif
         );
         fi.dy.masa.malilib.render.RenderUtils.color(1.0F, 1.0F, 1.0F, 1.0F);
