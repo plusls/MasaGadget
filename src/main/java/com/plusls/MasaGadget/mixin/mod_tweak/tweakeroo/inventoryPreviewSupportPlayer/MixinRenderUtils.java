@@ -30,11 +30,19 @@ import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 public abstract class MixinRenderUtils {
     //#if MC > 11904
     //$$ @Unique
-    //$$ private static GuiGraphics masa_gadget$gui;
+    //$$ private static GuiGraphics masa_gadget$guiGraphics;
     //$$
     //$$ @Inject(method = "renderInventoryOverlay", at = @At("HEAD"))
-    //$$ private static void intercept(Minecraft mc, GuiGraphics gui, CallbackInfo ci) {
-    //$$     MixinRenderUtils.masa_gadget$gui = gui;
+    //$$ private static void intercept(
+    //#if MC > 12006
+    //$$         InventoryOverlay.Context context,
+    //#else
+    //$$         Minecraft mc,
+    //#endif
+    //$$         GuiGraphics guiGraphics,
+    //$$         CallbackInfo ci
+    //$$ ) {
+    //$$     MixinRenderUtils.masa_gadget$guiGraphics = guiGraphics;
     //$$ }
     //#endif
 
@@ -78,7 +86,7 @@ public abstract class MixinRenderUtils {
                     27,
                     Minecraft.getInstance()
                     //#if MC > 11904
-                    //$$ , masa_gadget$gui
+                    //$$ , masa_gadget$guiGraphics
                     //#endif
             );
             fi.dy.masa.malilib.render.RenderUtils.color(1.0F, 1.0F, 1.0F, 1.0F);

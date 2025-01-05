@@ -20,7 +20,10 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 
-@Dependencies(require = @Dependency(ModId.tweakeroo))
+@Dependencies(
+        require = @Dependency(ModId.tweakeroo),
+        conflict = @Dependency(value = ModId.minecraft, versionPredicates = ">=1.21-")
+)
 @Mixin(value = RenderUtils.class, remap = false)
 public class MixinMixinRenderUtils {
     @Redirect(
