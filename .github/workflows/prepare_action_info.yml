@@ -73,7 +73,7 @@ jobs:
                   build_version_type=PULL_REQUEST
               elif [ "$GH_EVENT_NAME" == 'release' ]
               then
-                  if [ ${{ github.event.release.prerelease }} ]
+                  if [ “${{ github.event.release.prerelease }}” == 'true' ]
                   then
                       build_version_type=RC
                       publish_platform_channel=beta
@@ -81,6 +81,8 @@ jobs:
                       build_version_type=RELEASE
                       publish_platform_channel=release
                   fi
+          
+                  publish_type=release
               else
                   echo Unsupported github event name "$GH_EVENT_NAME"
                   exit 1
