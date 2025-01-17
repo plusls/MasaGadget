@@ -48,9 +48,22 @@ Map<String, List<String>> settings = file("settings.json").withReader {
     new JsonSlurper().parse(it) as Map<String, List<String>>
 }
 
-for (String version : settings.get("versions")) {
+List<String> versions = settings.get("versions") as List<String>
+File mainProjectFile = file("versions/mainProject")
+
+if (!mainProjectFile.exists()) {
+    throw new IllegalArgumentException("Missing mainProject file: ${mainProjectFile.absolutePath}")
+}
+
+String mainProject = new String(mainProjectFile.readBytes()).trim()
+
+if (!versions.contains(mainProject)) {
+    throw new IllegalArgumentException("Invalid main project: ${mainProject}")
+}
+
+for (String version : versions) {
     include(":$version")
     ProjectDescriptor proj = project(":$version")
     proj.setProjectDir(file("versions/$version"))
-    proj.setBuildFileName("../${settings.versions.get(0)}/build.gradle")
+    proj.setBuildFileName("../${mainProject}/build.gradle")
 }
