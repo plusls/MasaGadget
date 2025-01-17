@@ -8,6 +8,8 @@ plugins {
 }
 
 preprocess {
+    strictExtraMappings.set(false)
+
     // Fabric
     Node mc11404_fabric = createNode("1.14.4-fabric", 1_14_04, "mojang")
     Node mc11502_fabric = createNode("1.15.2-fabric", 1_15_02, "mojang")
