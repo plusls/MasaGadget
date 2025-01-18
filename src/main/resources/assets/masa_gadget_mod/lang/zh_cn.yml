@@ -1,0 +1,180 @@
+masa_gadget_mod:
+  config:
+    category:
+      all:
+        name: 全部
+      generic:
+        name: 通用
+      litematica:
+        name: Litematica
+      malilib:
+        name: MaLiLib
+      minihud:
+        name: MiniHud
+      tweakeroo:
+        name: Tweakeroo
+    option:
+      # ================================ Generic ================================
+      autoSyncEntityData:
+        name: 自动同步实体数据
+        comment: 自动使用 §7pca同步协议§r 来同步实体数据。
+      cacheContainerMenu:
+        name: 缓存容器数据
+        comment: 打开容器后将缓存服务端侧数据到本地。
+      debug:
+        name: 调试模式
+        comment: MasaGadget 的调试模式。
+      openConfigGui:
+        name: 打开配置界面
+        comment: 打开配置界面的快捷键。
+      renderNextRestockTime:
+        name: 渲染村民交易补货冷却
+        comment: 在村民附近渲染下一次补货时间。
+      renderTradeEnchantedBook:
+        name: 渲染村民交易第一本附魔书
+        comment: |
+          在村民附近渲染第一本附魔书的信息。
+          注意：只对图书管理员有效。
+      renderVillageHomeTracer:
+        name: 渲染村民绑定床
+        comment: 渲染村民到床的追踪线。
+      renderVillageHomeTracerColor:
+        name: 渲染村民绑定床追踪线颜色
+        comment: '@config#renderVillageHomeTracer@ 追踪线颜色。'
+      renderVillageJobSiteTracer:
+        name: 渲染村民绑定工作方块
+        comment: 渲染村民绑定工作方块的追踪线。
+      renderVillageJobSiteTracerColor:
+        name: 渲染村民绑定工作方块追踪线颜色
+        comment: '@config#renderVillageJobSiteTracer@ 追踪线颜色。'
+      renderZombieVillagerConvertTime:
+        name: 渲染僵尸村民转换时间
+        comment: 在僵尸村民附近渲染转换时间。
+      syncAllEntityData:
+        name: 同步所有实体数据
+        comment: 使用 §7pca同步协议§r 同步全部实体数据。
+      # ================================ MaLiLib ================================
+      backportI18nSupport:
+        name: 移植本地化支持
+        comment: 从 MC 1.18.x 版本的本地化支持。
+      fastSwitchMasaConfigGui:
+        name: 快速切换配置菜单
+        comment: 你可以通过下拉菜单快速切换配置窗口。
+      favoritesSupport:
+        name: 收藏夹支持
+        comment: 你可以收藏你喜欢的配置。
+      fixConfigWidgetWidth:
+        name: 修复配置控件宽度
+        comment: 使用 getTranslatedGuiDisplayName 的长度作为配置控件的宽度。
+      fixConfigWidgetWidthExpand:
+        name: 修复配置控件宽度增强
+        comment: |
+          更深层修复配置文本宽度, 需要启用 @config#fixConfigWidgetWidth@。
+          注意：
+            可能带来额外的性能开销，仅当
+            配置文本宽度出现问题时尝试启用，
+            若不生效请关闭此功能。
+      fixGetInventoryType:
+        name: 修复容器类型
+        comment: 修复熔炉变种容器类型的识别问题。
+      fixSearchbarHotkeyInput:
+        name: 修复搜索框按键输入
+        comment: 修复使用热键打开配置界面时会在搜索框产生错误输入的问题。
+      optimizeConfigWidgetSearch:
+        name: 优化配置搜索
+        comment: 支持忽略大小写，本地化文本，并且可以使用 §6modified§r 来搜索配置。
+      showOriginalConfigName:
+        name: 显示原始配置名称
+        comment: | 
+          如果配置名称被翻译，将显示原始配置名称。
+          如果翻译不存在，则不会显示。
+      showOriginalConfigNameScale:
+        name: 显示原始配置名称缩放
+        comment: '@config#showOriginalConfigName@ 字体缩放.'
+      # ================================ Tweakeroo ================================
+      inventoryPreviewSupportComparator:
+        name: 容器预览支持比较器
+        comment: 容器预览将渲染比较器输出信号。
+      inventoryPreviewSupportPlayer:
+        name: 容器预览支持玩家
+        comment: 你可以使用容器预览来查看玩家的背包和末影箱。
+      inventoryPreviewSupportSelect:
+        name: 容器预览支持选中
+        comment: | 
+          当你按住容器预览快捷键时，
+          你可以使用鼠标滚轮选中物品来渲染提示窗，
+          并且你可以在选中潜影盒的时候，
+          按下鼠标滚轮切换潜影盒。
+      inventoryPreviewSupportShulkerBoxItemEntity:
+        name: 容器预览支持潜影盒物品实体
+        comment: 容器预览支持潜影盒实体。
+      inventoryPreviewSupportTradeOfferList:
+        name: 容器预览支持交易列表
+        comment: 容器预览将展示村民交易内容。
+      inventoryPreviewSyncData:
+        name: 容器预览同步数据
+        comment: 当进行容器预览时，使用 §7pca同步协议§r 同步实体和方块实体数据。
+      inventoryPreviewSyncDataClientOnly:
+        name: 容器预览同步数据客户端模式
+        comment: 通过打开容器的方式来同步方块实体数据。
+      inventoryPreviewUseCache:
+        name: 容器预览使用缓存
+        comment: 容器预览将使用缓存的指向结果，将减少渲染卡顿。
+      restockWithCrafting:
+        name: 使用合成表补货
+        comment: 自动使用背包 2x2 合成表合成所需物品。
+      restockWithCraftingRecipes:
+        name: 使用合成表配方补货
+        comment: |
+          ItemScroller 存储的配方索引。
+          注意：仅支持 2x2 配方。
+      # ================================ Litematica ================================
+      betterEasyPlaceMode:
+        name: 更好的轻松放置
+        comment: 轻松放置模式可以打开容器（如箱子、漏斗等）。
+      disableLitematicaEasyPlaceFailTip:
+        name: 禁用投影轻松放置失败提示
+        comment: 禁用轻松放置失败时烦人的提示窗。
+      fixAccurateProtocol:
+        name: 修复精准协议
+        comment: 修复精准协议支持。
+      nudgeSelectionSupportFreeCamera:
+        name: 支持自由相机移动选区
+        comment: 支持自由相机模式下移动选区。
+      saveInventoryToSchematicInServer:
+        name: 保存服务器容器数据到蓝图
+        comment: 使用 §7pca同步协议§r 同步服务器容器数据来保存蓝图。
+      useRelativePath:
+        name: 使用相对路径
+        comment: 使用相对路径来存取蓝图文件。
+      # ================================ MiniHud ================================
+      minihudI18n:
+        name: MiniHud本地化
+        comment: MiniHud 本地化补丁。
+      pcaSyncProtocolSyncBeehive:
+        name: pca同步协议支持蜂巢
+        comment: 按下 §6容器预览§r 热键来使用 §7pca同步协议§r 同步蜂巢。
+      searchMobSpawnPoint:
+        name: 搜索怪物生成点
+        comment: |
+          搜索怪物生成点。需要再 MiniHud 中设置 §6怪物立刻消失范围球体§r， 
+          亮度检查取决于 MiniHud 中的 §6lightLevelThresholdSafe§r 设置。
+      searchMobSpawnPointBlackList:
+        name: 搜寻刷怪点黑名单
+        comment: 不搜索黑名单中方块。
+  gui:
+    title: 'MasaGadget - 版本: %s'
+    button:
+      favorite:
+        cancel: 取消收藏。
+        set: 设置收藏。
+        show_all: 展示所有配置。
+        show_favorite_only: 仅展示收藏配置。
+  message:
+    can_not_find_respawn_shape: 找不到怪物消失图形。
+    load_inventory_to_local_success: 从服务同步容器数据成功。
+    no_block_can_spawn: 找不到能刷怪的方块。
+    no_data: 无数据
+    only_support_one_despawn_shape: 只支持一个怪物消失图形。
+    spawn_pos: 离玩家最近的能刷怪的坐标为：[%d, %d, %d]。
+    sync_all_entity_data_success: 成功同步所有实体数据。

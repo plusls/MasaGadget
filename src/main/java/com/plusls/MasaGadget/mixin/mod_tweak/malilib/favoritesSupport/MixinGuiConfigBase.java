@@ -36,8 +36,8 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
                     });
                     SharedConstants.getConfigHandler().save();
                 },
-                status -> status ? I18n.tr("masa_gadget_mod.message.showAllOptions") :
-                        I18n.tr("masa_gadget_mod.message.showFavorite"));
+                status -> status ? SharedConstants.tr("gui.button.favorite.show_all") :
+                        SharedConstants.tr("gui.button.favorite.show_favorite_only"));
         this.addWidget(favoritesButton);
     }
 }

@@ -47,7 +47,7 @@ public class SearchMobSpawnPointUtil {
                 if (ret == null) {
                     ret = (ShapeDespawnSphere) shapeBase;
                 } else {
-                    InfoUtil.displayChatMessage(ComponentUtil.trCompat("masa_gadget_mod.message.onlySupportOneDespawnShape")
+                    InfoUtil.displayChatMessage(ComponentUtil.trCompat("masa_gadget_mod.message.only_support_one_despawn_shape")
                             .withStyle(ChatFormatting.RED));
                     return null;
                 }
@@ -55,7 +55,7 @@ public class SearchMobSpawnPointUtil {
         }
 
         if (ret == null) {
-            InfoUtil.displayChatMessage(ComponentUtil.trCompat("masa_gadget_mod.message.canNotFindDespawnShape")
+            InfoUtil.displayChatMessage(ComponentUtil.trCompat("masa_gadget_mod.message.can_not_find_respawn_shape")
                     .withStyle(ChatFormatting.RED));
         }
 
@@ -159,11 +159,11 @@ public class SearchMobSpawnPointUtil {
         MutableComponentCompat text;
 
         if (spawnPos == null) {
-            text = ComponentUtil.trCompat("masa_gadget_mod.message.noBlockCanSpawn")
+            text = ComponentUtil.trCompat("masa_gadget_mod.message.no_block_can_spawn")
                     .withStyle(ChatFormatting.GREEN);
         } else {
             // for ommc parser
-            text = ComponentUtil.trCompat("masa_gadget_mod.message.spawnPos", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
+            text = ComponentUtil.trCompat("masa_gadget_mod.message.spawn_pos", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
 
             if (MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.oh_my_minecraft_client)) {
                 InfoUtil.sendCommand(String.format("highlightWaypoint %d %d %d", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()));

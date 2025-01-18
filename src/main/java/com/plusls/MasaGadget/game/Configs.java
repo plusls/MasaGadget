@@ -60,45 +60,8 @@ public class Configs {
     @Config(category = ConfigCategory.GENERIC)
     public static MagicConfigBooleanHotkeyed renderZombieVillagerConvertTime = Configs.cf.newConfigBooleanHotkeyed("renderZombieVillagerConvertTime", false);
 
-    @Dependencies(require = @Dependency(ModId.minihud))
-    @Config(category = ConfigCategory.GENERIC)
-    public static MagicConfigHotkey searchMobSpawnPoint = Configs.cf.newConfigHotkey("searchMobSpawnPoint");
-
-    @Dependencies(require = @Dependency(ModId.minihud))
-    @Config(category = ConfigCategory.GENERIC)
-    public static MagicConfigStringList searchMobSpawnPointBlackList = Configs.cf.newConfigStringList("searchMobSpawnPointBlackList", ImmutableList.of());
-
     @Config(category = ConfigCategory.GENERIC)
     public static MagicConfigHotkey syncAllEntityData = Configs.cf.newConfigHotkey("syncAllEntityData");
-
-    // Litematica
-    @Dependencies(require = @Dependency(ModId.litematica))
-    @Config(category = ConfigCategory.LITEMATICA)
-    public static MagicConfigBooleanHotkeyed betterEasyPlaceMode = Configs.cf.newConfigBooleanHotkeyed("betterEasyPlaceMode", false);
-
-    @Dependencies(require = @Dependency(ModId.litematica))
-    @Config(category = ConfigCategory.LITEMATICA)
-    public static MagicConfigBooleanHotkeyed disableLitematicaEasyPlaceFailTip = Configs.cf.newConfigBooleanHotkeyed("disableLitematicaEasyPlaceFailTip", false);
-
-    @Dependencies(require = @Dependency(ModId.litematica))
-    @Config(category = ConfigCategory.LITEMATICA)
-    public static MagicConfigBooleanHotkeyed fixAccurateProtocol = Configs.cf.newConfigBooleanHotkeyed("fixAccurateProtocol", false);
-
-    @Dependencies(require = {
-            @Dependency(value = ModId.litematica, versionPredicates = "<0.0.0-dev.20210917.192300"),
-            @Dependency(ModId.tweakeroo),
-            @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FABRIC_LIKE)
-    })
-    @Config(category = ConfigCategory.LITEMATICA)
-    public static MagicConfigBoolean nudgeSelectionSupportFreeCamera = Configs.cf.newConfigBoolean("nudgeSelectionSupportFreeCamera", false);
-
-    @Dependencies(require = @Dependency(ModId.litematica))
-    @Config(category = ConfigCategory.LITEMATICA)
-    public static MagicConfigBoolean saveInventoryToSchematicInServer = Configs.cf.newConfigBoolean("saveInventoryToSchematicInServer", false);
-
-    @Dependencies(require = @Dependency(ModId.litematica))
-    @Config(category = ConfigCategory.LITEMATICA)
-    public static MagicConfigBoolean useRelativePath = Configs.cf.newConfigBoolean("useRelativePath", false);
 
     // MALILIB
     @Dependencies(
@@ -212,38 +175,6 @@ public class Configs {
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigDouble showOriginalConfigNameScale = Configs.cf.newConfigDouble("showOriginalConfigNameScale", 0.65, 0, 2);
 
-    // MiniHUD
-    @Dependencies(
-            require = {
-                    @Dependency(value = ModId.minihud, versionPredicates = "<0.31.999-sakura.21"),
-                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FABRIC_LIKE)
-            }
-    )
-    @Dependencies(
-            require = {
-                    @Dependency(value = ModId.minecraft, versionPredicates = "<1.21.1-"),
-                    @Dependency(value = ModId.minihud, versionPredicates = "*"),
-                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE)
-            }
-    )
-    @Dependencies(
-            require = {
-                    @Dependency(value = ModId.minecraft, versionPredicates = ">1.21.1-"),
-                    @Dependency(value = ModId.minihud, versionPredicates = ">0.1.21-mc1.21"),
-                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE)
-            }
-    )
-    @Config(category = ConfigCategory.MINIHUD)
-    public static MagicConfigBoolean minihudI18n = Configs.cf.newConfigBoolean("minihudI18n", false);
-
-    @Dependencies(require = {
-            @Dependency(ModId.minihud),
-            @Dependency(ModId.tweakeroo),
-            @Dependency(value = ModId.minecraft, versionPredicates = ">1.14.4")
-    })
-    @Config(category = ConfigCategory.MINIHUD)
-    public static MagicConfigBoolean pcaSyncProtocolSyncBeehive = Configs.cf.newConfigBoolean("pcaSyncProtocolSyncBeehive", false);
-
     // Tweakeroo
     @Dependencies(require = @Dependency(ModId.tweakeroo))
     @Config(category = ConfigCategory.TWEAKEROO)
@@ -293,6 +224,75 @@ public class Configs {
     })
     @Config(category = ConfigCategory.TWEAKEROO)
     public static MagicConfigStringList restockWithCraftingRecipes = Configs.cf.newConfigStringList("restockWithCraftingRecipes", ImmutableList.of());
+
+    // Litematica
+    @Dependencies(require = @Dependency(ModId.litematica))
+    @Config(category = ConfigCategory.LITEMATICA)
+    public static MagicConfigBooleanHotkeyed betterEasyPlaceMode = Configs.cf.newConfigBooleanHotkeyed("betterEasyPlaceMode", false);
+
+    @Dependencies(require = @Dependency(ModId.litematica))
+    @Config(category = ConfigCategory.LITEMATICA)
+    public static MagicConfigBooleanHotkeyed disableLitematicaEasyPlaceFailTip = Configs.cf.newConfigBooleanHotkeyed("disableLitematicaEasyPlaceFailTip", false);
+
+    @Dependencies(require = @Dependency(ModId.litematica))
+    @Config(category = ConfigCategory.LITEMATICA)
+    public static MagicConfigBooleanHotkeyed fixAccurateProtocol = Configs.cf.newConfigBooleanHotkeyed("fixAccurateProtocol", false);
+
+    @Dependencies(require = {
+            @Dependency(value = ModId.litematica, versionPredicates = "<0.0.0-dev.20210917.192300"),
+            @Dependency(ModId.tweakeroo),
+            @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FABRIC_LIKE)
+    })
+    @Config(category = ConfigCategory.LITEMATICA)
+    public static MagicConfigBoolean nudgeSelectionSupportFreeCamera = Configs.cf.newConfigBoolean("nudgeSelectionSupportFreeCamera", false);
+
+    @Dependencies(require = @Dependency(ModId.litematica))
+    @Config(category = ConfigCategory.LITEMATICA)
+    public static MagicConfigBoolean saveInventoryToSchematicInServer = Configs.cf.newConfigBoolean("saveInventoryToSchematicInServer", false);
+
+    @Dependencies(require = @Dependency(ModId.litematica))
+    @Config(category = ConfigCategory.LITEMATICA)
+    public static MagicConfigBoolean useRelativePath = Configs.cf.newConfigBoolean("useRelativePath", false);
+
+    // MiniHUD
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.minihud, versionPredicates = "<0.31.999-sakura.21"),
+                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FABRIC_LIKE)
+            }
+    )
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.minecraft, versionPredicates = "<1.21.1-"),
+                    @Dependency(value = ModId.minihud, versionPredicates = "*"),
+                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE)
+            }
+    )
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.minecraft, versionPredicates = ">1.21.1-"),
+                    @Dependency(value = ModId.minihud, versionPredicates = ">0.1.21-mc1.21"),
+                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE)
+            }
+    )
+    @Config(category = ConfigCategory.MINIHUD)
+    public static MagicConfigBoolean minihudI18n = Configs.cf.newConfigBoolean("minihudI18n", false);
+
+    @Dependencies(require = {
+            @Dependency(ModId.minihud),
+            @Dependency(ModId.tweakeroo),
+            @Dependency(value = ModId.minecraft, versionPredicates = ">1.14.4")
+    })
+    @Config(category = ConfigCategory.MINIHUD)
+    public static MagicConfigBoolean pcaSyncProtocolSyncBeehive = Configs.cf.newConfigBoolean("pcaSyncProtocolSyncBeehive", false);
+
+    @Dependencies(require = @Dependency(ModId.minihud))
+    @Config(category = ConfigCategory.MINIHUD)
+    public static MagicConfigHotkey searchMobSpawnPoint = Configs.cf.newConfigHotkey("searchMobSpawnPoint");
+
+    @Dependencies(require = @Dependency(ModId.minihud))
+    @Config(category = ConfigCategory.MINIHUD)
+    public static MagicConfigStringList searchMobSpawnPointBlackList = Configs.cf.newConfigStringList("searchMobSpawnPointBlackList", ImmutableList.of());
 
     public static void init() {
         Configs.cm.parseConfigClass(Configs.class);

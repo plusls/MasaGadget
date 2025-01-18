@@ -42,7 +42,7 @@ public class MixinSchematicUtils {
     @Inject(method = "saveSchematic", at = @At("RETURN"))
     private static void postSaveSchematic(boolean inMemoryOnly, CallbackInfoReturnable<Boolean> cir) {
         if (Configs.saveInventoryToSchematicInServer.getBooleanValue() && PcaSyncUtil.lastUpdatePos == null) {
-            InfoUtils.showGuiOrInGameMessage(Message.MessageType.SUCCESS, SharedConstants.getModIdentifier() + ".message.loadInventoryToLocalSuccess");
+            InfoUtils.showGuiOrInGameMessage(Message.MessageType.SUCCESS, SharedConstants.tr("message.load_inventory_to_local_success"));
         }
     }
 }

@@ -1,0 +1,182 @@
+masa_gadget_mod:
+  config:
+    category:
+      all:
+        name: All
+      generic:
+        name: Generic
+      litematica:
+        name: Litematica
+      malilib:
+        name: MaLiLib
+      minihud:
+        name: MiniHud
+      tweakeroo:
+        name: Tweakeroo
+    option:
+      # ================================ Generic ================================
+      autoSyncEntityData:
+        name: autoSyncEntityData
+        comment: Auto use §7pcaSyncProtocol§r to sync entity data.
+      cacheContainerMenu:
+        name: cacheContainerMenu
+        comment: Will cache inventory data from server when open inventory.
+      debug:
+        name: debug
+        comment: Debug mode of MasaGadget.
+      openConfigGui:
+        name: openConfigGui
+        comment: A hotkey to open the in-game Config GUI.
+      renderNextRestockTime:
+        name: renderNextRestockTime
+        comment: Render next restock time on villager.
+      renderTradeEnchantedBook:
+        name: renderTradeEnchantedBook
+        comment: |
+          Render enchanted book info on villager.
+          Note: Only for the librarian.
+      renderVillageHomeTracer:
+        name: renderVillageHomeTracer
+        comment: Render tracking line of the villager to the home.
+      renderVillageHomeTracerColor:
+        name: renderVillageHomeTracerColor
+        comment: '@config#renderVillageHomeTracer@ track line color.'
+      renderVillageJobSiteTracer:
+        name: renderVillageJobSiteTracer
+        comment: Render tracking line of villager to the job site.
+      renderVillageJobSiteTracerColor:
+        name: renderVillageJobSiteTracerColor
+        comment: '@config#renderVillageJobSiteTracer@ track line color.'
+      renderZombieVillagerConvertTime:
+        name: renderZombieVillagerConvertTime
+        comment: Render convert time on zombie villager.
+      syncAllEntityData:
+        name: syncAllEntityData
+        comment: Use §7pcaSyncProtocol§r to sync all entity data.
+      # ================================ MaLiLib ================================
+      backportI18nSupport:
+        name: backportI18nSupport
+        comment: Backport i18n support from MC 1.18.x
+      fastSwitchMasaConfigGui:
+        name: fastSwitchMasaConfigGui
+        comment: You can quickly switch between config screens using drop-down menu.
+      favoritesSupport:
+        name: favoritesSupport
+        comment: You can bookmark your favorite configs.
+      fixConfigWidgetWidth:
+        name: fixConfigWidgetWidth
+        comment: Use the length of getTranslatedGuiDisplayName as widget width
+      fixConfigWidgetWidthExpand:
+        name: fixConfigWidgetWidthExpand
+        comment: | 
+          Deeper fixes for the config width label, require @config#fixConfigWidgetWidth@ to be enabled.
+          Note:
+            May cause additional performance overhead, try enabling it 
+            only if there is a problem with config label widths,
+            disable it if it doesn't take effect.
+      fixGetInventoryType:
+        name: fixGetInventoryType
+        comment: Fix AbstractFurnaceBlock inventory type.
+      fixSearchbarHotkeyInput:
+        name: fixSearchbarHotkeyInput
+        comment: Fix searchbar input when press hotkey to open config gui.
+      optimizeConfigWidgetSearch:
+        name: optimizeConfigWidgetSearch
+        comment: Make search support uppercase, translate text, and can use §6modified§r to search modified config.
+      showOriginalConfigName:
+        name: showOriginalConfigName
+        comment: | 
+          Show original config name if it was translated. 
+          If translation does not exist it will not be displayed.
+      showOriginalConfigNameScale:
+        name: showOriginalConfigNameScale
+        comment: '@config#showOriginalConfigName@ font scale.'
+      # ================================ Tweakeroo ================================
+      inventoryPreviewSupportComparator:
+        name: inventoryPreviewSupportComparator
+        comment: Inventory preview will render the output of comparator.
+      inventoryPreviewSupportPlayer:
+        name: inventoryPreviewSupportPlayer
+        comment: You can use preview to view the inventory of player and their ender chest inventory.
+      inventoryPreviewSupportSelect:
+        name: inventoryPreviewSupportSelect
+        comment: | 
+          When you press the inventory preview hotkey, 
+          You can use mouse wheel select item to render tooltip,
+          and you can switch to shulkerbox by pressing mouse wheel
+          when the shulkerbox is selected.
+      inventoryPreviewSupportShulkerBoxItemEntity:
+        name: inventoryPreviewSupportShulkerBoxItemEntity
+        comment: Inventory preview support shulker box item entity.
+      inventoryPreviewSupportTradeOfferList:
+        name: inventoryPreviewSupportTradeOfferList
+        comment: Inventory preview will preview the trade offer list of merchant
+      inventoryPreviewSyncData:
+        name: inventoryPreviewSyncData
+        comment: When you inventory preview, use §7pcaSyncProtocol§r to sync entity and block entity data and entity data from server.
+      inventoryPreviewSyncDataClientOnly:
+        name: inventoryPreviewSyncDataClientOnly
+        comment: Open inventory to sync block entity data.
+      inventoryPreviewUseCache:
+        name: inventoryPreviewUseCache
+        comment: Inventory preview get the hit result from cache, to reduce lag when render.
+      restockWithCrafting:
+        name: restockWithCrafting
+        comment: Automatically craft required items in the 2x2 crafting grid
+      restockWithCraftingRecipes:
+        name: restockWithCraftingRecipes
+        comment: |
+          Recipe indexes in ItemScroller recipe storage. 
+          Note: only 2x2 recipes are supported.
+      # ================================ Litematica ================================
+      betterEasyPlaceMode:
+        name: betterEasyPlaceMode
+        comment: Easy place mode can open container (such as chest, hopper, etc.).
+      disableLitematicaEasyPlaceFailTip:
+        name: disableLitematicaEasyPlaceFailTip
+        comment: Disable easyPlace failure that annoying prompt window.
+      fixAccurateProtocol:
+        name: fixAccurateProtocol
+        comment: Fix accurate protocol support
+      nudgeSelectionSupportFreeCamera:
+        name: nudgeSelectionSupportFreeCamera
+        comment: Nudge Selection Support Free Camera.
+      saveInventoryToSchematicInServer:
+        name: saveInventoryToSchematicInServer
+        comment: Use §7pcaSyncProtocol§r to sync inventory data to local and save to schematic.
+      useRelativePath:
+        name: useRelativePath
+        comment: Save and load schematic use relative path.
+      # ================================ MiniHud ================================
+      minihudI18n:
+        name: minihudI18n
+        comment: Minihud display text support i18n translate.
+      pcaSyncProtocolSyncBeehive:
+        name: pcaSyncProtocolSyncBeehive
+        comment: Press §6inventoryPreview§r hotkey to use §7pcaSyncProtocol§r to sync Beehive
+      searchMobSpawnPoint:
+        name: searchMobSpawnPoint
+        comment: |
+          Search mob spawn point. Need set §6Despawn Sphere§r in minihud, 
+          and light check depends on §66lightLevelThresholdSafe§r in minihud
+      searchMobSpawnPointBlackList:
+        name: searchMobSpawnPointBlackList
+        comment: Don't search blocks in this list.
+  gui:
+    title: 'MasaGadget - Version: %s'
+    button:
+      favorite:
+        cancel: Cancel favorite.
+        set: Set favorite.
+        show_all: Show all config.
+        show_favorite_only: Show favorite config only.
+  message:
+    can_not_find_respawn_shape: Can't find despawn shape.
+    load_inventory_to_local_success: Load inventory to local success
+    no_block_can_spawn: No block can spawn monster.
+    no_data: no data
+    only_support_one_despawn_shape: Only support one despawn shape.
+    spawn_pos: 'Spawn pos: [%d, %d, %d].'
+    sync_all_entity_data_success: Sync all entity data success.
+
+

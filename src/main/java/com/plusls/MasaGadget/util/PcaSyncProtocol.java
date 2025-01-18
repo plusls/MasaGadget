@@ -297,7 +297,7 @@ public class PcaSyncProtocol {
         BlockEntity blockEntity = level.getBlockEntity(pos);
 
         if (Configs.saveInventoryToSchematicInServer.getBooleanValue() && pos.equals(PcaSyncUtil.lastUpdatePos)) {
-            InfoUtils.showGuiOrInGameMessage(Message.MessageType.SUCCESS, SharedConstants.getModIdentifier() + ".message.loadInventoryToLocalSuccess");
+            InfoUtils.showGuiOrInGameMessage(Message.MessageType.SUCCESS, SharedConstants.tr("message.loadInventoryToLocalSuccess"));
             PcaSyncUtil.lastUpdatePos = null;
         }
 
