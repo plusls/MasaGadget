@@ -37,11 +37,7 @@ public abstract class MixinConfigBase implements IConfigBase {
     private static final ValueContainer<Class<?>> masa_gadget_mod$tweakerMoreIConfigBaseClass = ReflectionUtil
             .getClass("me.fallenbreath.tweakermore.config.options.TweakerMoreIConfigBase");
 
-    @Inject(
-            method = "getComment",
-            at = @At("RETURN"),
-            cancellable = true
-    )
+    @Inject(method = "getComment", at = @At("RETURN"), cancellable = true)
     private void useI18nComment(CallbackInfoReturnable<String> cir) {
         if (Configs.backportI18nSupport.getBooleanValue()) {
             cir.setReturnValue(MiscUtil.getTranslatedOrFallback("config.comment." + this.getName().toLowerCase(),
@@ -56,20 +52,16 @@ public abstract class MixinConfigBase implements IConfigBase {
     }
 
     @SuppressWarnings({"MixinAnnotationTarget", "UnresolvedMixinReference"})
-    @Inject(
-            method = "getConfigGuiDisplayName",
-            at = @At("HEAD"),
-            cancellable = true
-    )
+    @Inject(method = "getConfigGuiDisplayName", at = @At("HEAD"), cancellable = true)
     private void patchGetConfigGuiDisplayName(CallbackInfoReturnable<String> cir) {
         if (MixinConfigBase.masa_gadget_mod$tweakerMoreIConfigBaseClass
                 .filter(clazz -> clazz.isInstance(this)).isPresent()) {
+            cir.setReturnValue(I18n.tr("tweakermore.config.".concat(this.getName())));
             return;
         }
 
         if (Configs.backportI18nSupport.getBooleanValue()) {
-            cir.setReturnValue(I18n.translateOrFallback("config.name." + this.getName().toLowerCase(),
-                    this.getName()));
+            cir.setReturnValue(I18n.translateOrFallback("config.name.".concat(this.getName().toLowerCase()), this.getName()));
         }
     }
 }
