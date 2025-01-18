@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.compat.minecraft.resources.ResourceLocationCompat;
+import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.malilib.config.MagicConfigManager;
 import top.hendrixshen.magiclib.impl.malilib.config.GlobalConfigManager;
 import top.hendrixshen.magiclib.impl.malilib.config.MagicConfigHandler;
@@ -36,5 +37,13 @@ public class SharedConstants {
     @Contract("_ -> new")
     public static @NotNull ResourceLocation id(String path) {
         return ResourceLocationCompat.fromNamespaceAndPath(SharedConstants.modIdentifier, path);
+    }
+
+    public static String tr(String key) {
+        return I18n.tr(SharedConstants.modIdentifier.concat(".").concat(key));
+    }
+
+    public static String tr(String key, Object... objects) {
+        return I18n.tr(SharedConstants.modIdentifier.concat(".").concat(key), objects);
     }
 }

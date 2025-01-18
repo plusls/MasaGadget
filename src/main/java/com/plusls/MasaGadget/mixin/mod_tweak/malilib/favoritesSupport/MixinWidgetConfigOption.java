@@ -56,7 +56,7 @@ public abstract class MixinWidgetConfigOption extends WidgetConfigOptionBase<Gui
 
                     SharedConstants.getConfigHandler().save();
                 },
-                status -> status ? I18n.tr("masa_gadget_mod.message.cancelFavorite") :
-                        I18n.tr("masa_gadget_mod.message.setFavorite")));
+                status -> status ? SharedConstants.tr("gui.button.favorite.cancel") :
+                        SharedConstants.tr("gui.button.favorite.set")));
     }
 }

@@ -16,7 +16,7 @@ public class ConfigGui extends MagicConfigGui {
         super(
                 SharedConstants.getModIdentifier(),
                 SharedConstants.getConfigManager(),
-                I18n.tr("masa_gadget_mod.gui.title.configs", SharedConstants.getModVersion())
+                I18n.tr("masa_gadget_mod.gui.title", SharedConstants.getModVersion())
         );
     }
 
