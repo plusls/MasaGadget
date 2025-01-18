@@ -22,6 +22,7 @@ import top.hendrixshen.magiclib.impl.malilib.config.gui.SelectorDropDownList;
 //#if MC > 12006
 //$$ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 //$$ import fi.dy.masa.malilib.gui.widgets.WidgetBase;
+//$$ import org.spongepowered.asm.mixin.Dynamic;
 //$$ import org.spongepowered.asm.mixin.injection.At;
 //#endif
 
@@ -99,12 +100,14 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
 
     //#if MC > 12006
     //$$ // Force blocking malilib's intrinsic dropdown list
+    //$$ @Dynamic
     //$$ @WrapWithCondition(
-    //$$         method = "initGui",
+    //$$         method = {"initGui", "buildConfigSwitcher"},
     //$$         at = @At(
     //$$                 value = "INVOKE",
     //$$                 target = "Lfi/dy/masa/malilib/gui/GuiConfigsBase;addWidget(Lfi/dy/masa/malilib/gui/widgets/WidgetBase;)Lfi/dy/masa/malilib/gui/widgets/WidgetBase;"
-    //$$         )
+    //$$         ),
+    //$$         require = 0
     //$$ )
     //$$ private boolean blockInherentDropdownList(GuiConfigsBase instance, WidgetBase widgetBase) {
     //$$     return !Configs.fastSwitchMasaConfigGui.getBooleanValue();
