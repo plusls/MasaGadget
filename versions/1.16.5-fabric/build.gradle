@@ -62,6 +62,8 @@ String itemscroller_fabric_ga = project.getProperties().getOrDefault("dependenci
         "com.github.sakura-ryoko:itemscroller" : "maven.modrinth:item-scroller"
 String litematica_fabric_ga = project.getProperties().getOrDefault("dependencies.api.litematica_version.use_sakura_fork", false) ?
         "com.github.sakura-ryoko:litematica" : "maven.modrinth:litematica"
+String malilib_fabric_ga = project.getProperties().getOrDefault("dependencies.api.malilib_version.use_sakura_fork", false) ?
+        "com.github.sakura-ryoko:malilib" : "maven.modrinth:malilib"
 String minihud_fabric_ga = project.getProperties().getOrDefault("dependencies.api.minihud_version.use_sakura_fork", false) ?
         "com.github.sakura-ryoko:minihud" : "maven.modrinth:minihud"
 String tweakeroo_fabric_ga = project.getProperties().getOrDefault("dependencies.api.tweakeroo_version.use_sakura_fork", false) ?
@@ -84,6 +86,16 @@ def apiDependencies = [
 def runtimeDependencies = [
         ["", "", false, false]
 ]
+
+configurations {
+    modApi {
+        resolutionStrategy {
+            if (project.getProperties().getOrDefault("dependencies.api.malilib_version.override", false)) {
+                force("${malilib_fabric_ga}:${project.findProperty("dependencies.api.malilib_version")}")
+            }
+        }
+    }
+}
 
 dependencies {
     // Development environment

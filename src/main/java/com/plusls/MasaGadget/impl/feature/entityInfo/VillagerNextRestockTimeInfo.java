@@ -2,6 +2,7 @@ package com.plusls.MasaGadget.impl.feature.entityInfo;
 
 import com.plusls.MasaGadget.mixin.accessor.AccessorVillager;
 import com.plusls.MasaGadget.util.PcaSyncProtocol;
+import com.plusls.MasaGadget.util.VillagerDataUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -11,12 +12,21 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
 
+//#if MC > 12104
+//$$ import net.minecraft.resources.ResourceKey;
+//#endif
+
 public class VillagerNextRestockTimeInfo {
     public static Component getInfo(@NotNull Villager villager) {
         long nextRestockTime;
         long nextWorkTime;
         long timeOfDay = villager.getLevel().getDayTime() % 24000;
-        VillagerProfession profession = villager.getVillagerData().getProfession();
+
+        //#if MC > 12104
+        //$$ ResourceKey<VillagerProfession> profession = VillagerDataUtil.getVillagerProfession(villager);
+        //#else
+        VillagerProfession profession = VillagerDataUtil.getVillagerProfession(villager);
+        //#endif
 
         if (profession == VillagerProfession.NONE || profession == VillagerProfession.NITWIT) {
             return null;
@@ -64,9 +74,9 @@ public class VillagerNextRestockTimeInfo {
     }
 
     // 因为刁民的需要补货的函数，会检查当前货物是否被消耗，从使用的角度只需要关心当前货物是否用完
-    private static boolean needsRestock(@NotNull Villager villagerEntity) {
-        if (villagerEntity.getVillagerData().getProfession() != VillagerProfession.NONE) {
-            for (MerchantOffer offer : villagerEntity.getOffers()) {
+    private static boolean needsRestock(@NotNull Villager villager) {
+        if (VillagerDataUtil.getVillagerProfession(villager) != VillagerProfession.NONE) {
+            for (MerchantOffer offer : villager.getOffers()) {
                 if (offer.isOutOfStock()) {
                     return true;
                 }

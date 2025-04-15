@@ -51,7 +51,9 @@ public class ScalableWidgetLabel extends WidgetLabel {
 
         if (this.visible) {
             renderContext.pushMatrix();
+            //#if MC < 12105
             RenderUtils.setupBlend();
+            //#endif
             this.drawLabelBackground();
 
             int fontHeight = this.fontHeight;

@@ -1,0 +1,5 @@
+net.minecraft.network.protocol.game.ClientboundContainerSetContentPacket getContainerId() containerId()
+net.minecraft.network.protocol.game.ClientboundContainerSetContentPacket getItems() items()
+
+fi.dy.masa.malilib.util.BlockUtils fi.dy.masa.malilib.util.game.BlockUtils
+fi.dy.masa.malilib.util.Color4f fi.dy.masa.malilib.util.data.Color4f

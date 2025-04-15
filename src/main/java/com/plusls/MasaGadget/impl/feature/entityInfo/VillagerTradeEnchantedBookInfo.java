@@ -2,6 +2,7 @@ package com.plusls.MasaGadget.impl.feature.entityInfo;
 
 import com.google.common.collect.Lists;
 import com.plusls.MasaGadget.util.PcaSyncProtocol;
+import com.plusls.MasaGadget.util.VillagerDataUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.*;
@@ -19,6 +20,10 @@ import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
 import java.util.Collections;
 import java.util.List;
 
+//#if MC > 12104
+//$$ import net.minecraft.resources.ResourceKey;
+//#endif
+
 //#if MC > 12006
 //$$ import net.minecraft.tags.EnchantmentTags;
 //#endif
@@ -31,9 +36,9 @@ import java.util.List;
 import java.util.Map;
 //#endif
 
-public class VillageTradeEnchantedBookInfo {
+public class VillagerTradeEnchantedBookInfo {
     public static @NotNull List<Component> getInfo(@NotNull Villager villager) {
-        if (villager.getVillagerData().getProfession() != VillagerProfession.LIBRARIAN) {
+        if (VillagerDataUtil.getVillagerProfession(villager) != VillagerProfession.LIBRARIAN) {
             return Collections.emptyList();
         }
 

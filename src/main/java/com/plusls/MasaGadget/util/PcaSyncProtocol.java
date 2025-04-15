@@ -44,6 +44,10 @@ import top.hendrixshen.magiclib.util.minecraft.NetworkUtil;
 
 import java.util.Objects;
 
+//#if MC > 12104
+//$$ import net.minecraft.core.UUIDUtil;
+//#endif
+
 //#if MC > 12004
 //$$ import com.plusls.MasaGadget.impl.network.packet.*;
 //$$ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -181,7 +185,13 @@ public class PcaSyncProtocol {
             assert tag != null;
 
             if (entity instanceof Mob) {
-                if (tag.getBoolean("PersistenceRequired")) {
+                if (
+                    //#if MC > 12104
+                    //$$ tag.getBoolean("PersistenceRequired").orElse(false)
+                    //#else
+                    tag.getBoolean("PersistenceRequired")
+                    //#endif
+                ) {
                     ((Mob) entity).setPersistenceRequired();
                 }
             }
@@ -201,7 +211,11 @@ public class PcaSyncProtocol {
             if (entity instanceof AbstractVillager) {
                 ((AbstractVillager) entity).getInventory().clearContent();
                 SimpleContainerCompat.of(((AbstractVillager) entity).getInventory()).fromTag(
+                        //#if MC > 12104
+                        //$$ tag.getListOrEmpty("Inventory")
+                        //#else
                         tag.getList("Inventory", TagCompat.TAG_COMPOUND)
+                        //#endif
                         //#if MC > 12004
                         //$$ , client.level.registryAccess()
                         //#endif
@@ -220,8 +234,20 @@ public class PcaSyncProtocol {
                 //#endif
 
                 if (entity instanceof Villager) {
-                    ((AccessorVillager) entity).masa_gadget_mod$setNumberOfRestocksToday(tag.getInt("RestocksToday"));
-                    ((AccessorVillager) entity).masa_gadget_mod$setLastRestockGameTime(tag.getLong("LastRestock"));
+                    ((AccessorVillager) entity).masa_gadget_mod$setNumberOfRestocksToday(
+                        //#if MC > 12104
+                        //$$ tag.getIntOr("RestocksToday", 0)
+                        //#else
+                        tag.getInt("RestocksToday")
+                        //#endif
+                    );
+                    ((AccessorVillager) entity).masa_gadget_mod$setLastRestockGameTime(
+                        //#if MC > 12104
+                        //$$ tag.getLongOr("RestocksToday", 0L)
+                        //#else
+                        tag.getLong("LastRestock")
+                        //#endif
+                    );
                     ((AccessorLivingEntity) entity).masa_gadget_mod$setBrain(((AccessorLivingEntity) entity).masa_gadget_mod$makeBrain(new Dynamic<>(NbtOps.INSTANCE, tag.get("Brain"))));
                 }
             }
@@ -233,8 +259,19 @@ public class PcaSyncProtocol {
 
             if (entity instanceof Player) {
                 Player playerEntity = (Player) entity;
-                PlayerCompat.of(playerEntity).getInventory().load(tag.getList("Inventory", TagCompat.TAG_COMPOUND));
+                PlayerCompat.of(playerEntity).getInventory().load(
+                        //#if MC > 12104
+                        //$$ tag.getListOrEmpty("Inventory")
+                        //#else
+                        tag.getList("Inventory", TagCompat.TAG_COMPOUND)
+                        //#endif
+                );
 
+                //#if MC > 12104
+                //$$ tag.getList("EnderItems").ifPresent(tags ->
+                //$$         playerEntity.getEnderChestInventory().fromTag(tags, client.level.registryAccess())
+                //$$ );
+                //#else
                 if (tag.contains("EnderItems", TagCompat.TAG_LIST)) {
                     playerEntity.getEnderChestInventory().fromTag(
                             tag.getList("EnderItems", TagCompat.TAG_COMPOUND)
@@ -243,12 +280,23 @@ public class PcaSyncProtocol {
                             //#endif
                     );
                 }
+                //#endif
             }
 
             if (entity instanceof ZombieVillager) {
+                //#if MC > 12104
+                //$$ int conversionTime = tag.getIntOr("ConversionTime", -1);
+                //$$
+                //$$ if (conversionTime > -1) {
+                //$$     tag.read("ConversionPlayer", UUIDUtil.CODEC).ifPresent(uuid ->
+                //$$         ((AccessorZombieVillager) entity).masa_gadget_mod$startConverting(uuid, conversionTime)
+                //$$     );
+                //$$ }
+                //#else
                 if (tag.contains("ConversionTime", 99) && tag.getInt("ConversionTime") > -1) {
                     ((AccessorZombieVillager) entity).masa_gadget_mod$startConverting(tag.hasUUID("ConversionPlayer") ? tag.getUUID("ConversionPlayer") : null, tag.getInt("ConversionTime"));
                 }
+                //#endif
             }
         }
     }

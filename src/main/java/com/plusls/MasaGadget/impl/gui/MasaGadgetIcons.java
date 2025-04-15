@@ -72,7 +72,21 @@ public enum MasaGadgetIcons implements IGuiIcon {
             v += this.hoverOffV;
         }
 
-        RenderUtils.drawTexturedRect(x, y, u, v, this.w, this.h, zLevel);
+        RenderUtils.drawTexturedRect(
+            //#if MC > 12104
+            //$$ this.getTexture(),
+            //#endif
+            x,
+            y,
+            u,
+            v,
+            this.w,
+            this.h,
+            zLevel
+            //#if MC > 12104
+            //$$ , guiGraphics
+            //#endif
+        );
     }
 
     @Override

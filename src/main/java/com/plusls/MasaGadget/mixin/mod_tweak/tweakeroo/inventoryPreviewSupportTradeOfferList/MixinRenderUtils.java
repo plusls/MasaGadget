@@ -3,7 +3,9 @@ package com.plusls.MasaGadget.mixin.mod_tweak.tweakeroo.inventoryPreviewSupportT
 import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.impl.generic.HitResultHandler;
 import com.plusls.MasaGadget.util.ModId;
+import com.plusls.MasaGadget.util.VillagerDataUtil;
 import fi.dy.masa.malilib.render.InventoryOverlay;
+import fi.dy.masa.malilib.render.InventoryOverlay.InventoryRenderType;
 import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.tweakeroo.renderer.RenderUtils;
 import net.minecraft.client.Minecraft;
@@ -69,20 +71,20 @@ public class MixinRenderUtils {
 
         Entity entity = HitResultHandler.getInstance().getHitEntity().orElse(null);
 
-        if (!(entity instanceof AbstractVillager)) {
+        if (!(entity instanceof Villager)) {
             return inv;
         }
 
-        AbstractVillager abstractVillager = (AbstractVillager) entity;
+        Villager villager = (Villager) entity;
 
-        if (abstractVillager instanceof Villager &&
-                ((Villager) abstractVillager).getVillagerData().getProfession() == VillagerProfession.NONE) {
+        if (villager instanceof Villager &&
+                VillagerDataUtil.getVillagerProfession(villager) == VillagerProfession.NONE) {
             return inv;
         }
 
         SimpleContainer simpleInventory = new SimpleContainer(MixinRenderUtils.masa_gadget$maxTradeOfferSize);
 
-        for (MerchantOffer tradeOffer : abstractVillager.getOffers()) {
+        for (MerchantOffer tradeOffer : villager.getOffers()) {
             for (int i = 0; i < simpleInventory.getContainerSize(); ++i) {
                 ItemStack itemStack = simpleInventory.getItem(i);
 
@@ -97,7 +99,7 @@ public class MixinRenderUtils {
         int y = GuiUtils.getScaledWindowHeight() / 2 - 5;
         int slotOffsetX = 8;
         int slotOffsetY = 8;
-        InventoryOverlay.InventoryRenderType type = InventoryOverlay.InventoryRenderType.GENERIC;
+        InventoryRenderType type = InventoryRenderType.GENERIC;
         DyeColor dye = DyeColor.GREEN;
         //#if MC > 12006
         //$$ float[] colors = fi.dy.masa.malilib.render.RenderUtils.getColorComponents(dye.getTextureDiffuseColor());
@@ -106,8 +108,17 @@ public class MixinRenderUtils {
         //#endif
 
         fi.dy.masa.malilib.render.RenderUtils.color(colors[0], colors[1], colors[2], 1.0F);
-        InventoryOverlay.renderInventoryBackground(type, x, y, MixinRenderUtils.masa_gadget$maxTradeOfferSize,
-                MixinRenderUtils.masa_gadget$maxTradeOfferSize, Minecraft.getInstance());
+        InventoryOverlay.renderInventoryBackground(
+                type,
+                x,
+                y,
+                MixinRenderUtils.masa_gadget$maxTradeOfferSize,
+                MixinRenderUtils.masa_gadget$maxTradeOfferSize,
+                Minecraft.getInstance()
+                //#if MC > 12104
+                //$$ , MixinRenderUtils.masa_gadget$guiGraphics
+                //#endif
+        );
         InventoryOverlay.renderInventoryStacks(
                 type,
                 simpleInventory,

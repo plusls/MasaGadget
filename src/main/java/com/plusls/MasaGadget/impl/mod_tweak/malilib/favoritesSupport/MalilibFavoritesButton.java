@@ -46,7 +46,12 @@ public class MalilibFavoritesButton extends WidgetHoverInfo {
             //#endif
     ) {
         RenderUtils.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.bindTexture(icon.getTexture());
+        this.bindTexture(
+            icon.getTexture()
+            //#if MC > 12104
+            //$$ , guiGraphicsOrPoseStack
+            //#endif
+        );
         icon.renderAt(
                 this.x,
                 this.y,

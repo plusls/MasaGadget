@@ -76,7 +76,7 @@ public class EntityInfoRenderer implements RenderEntityListener, RenderLevelList
                 }
 
                 if (Configs.renderTradeEnchantedBook.getBooleanValue()) {
-                    VillageTradeEnchantedBookInfo.getInfo(villager).forEach(renderer::addLine);
+                    VillagerTradeEnchantedBookInfo.getInfo(villager).forEach(renderer::addLine);
                 }
 
                 if (villager.isSleeping()) {
