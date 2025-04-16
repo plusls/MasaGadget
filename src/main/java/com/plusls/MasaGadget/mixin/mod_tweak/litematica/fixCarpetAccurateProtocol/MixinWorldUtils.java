@@ -71,7 +71,11 @@ public class MixinWorldUtils {
         double y = hitVecIn.y;
         double z = hitVecIn.z;
         Block block = state.getBlock();
-        Direction facing = fi.dy.masa.malilib.util.BlockUtils.getFirstPropertyFacingValue(state);
+        //#if MC > 12104
+        //$$ Direction facing = BlockUtils.getFirstPropertyFacingValue(state).orElse(null);
+        //#else
+        Direction facing = BlockUtils.getFirstPropertyFacingValue(state);
+        //#endif
         // 应该是 32 而不是 16
         final int propertyIncrement = 32;
         double relX = hitVecIn.x - pos.getX();
@@ -133,7 +137,11 @@ public class MixinWorldUtils {
         InteractionHand hand = EntityUtils.getUsedHandForItem(Objects.requireNonNull(mc.player), stack);
         PlayerCompat playerCompat = PlayerCompat.of(mc.player);
         Vec3 hitPos = trace.getLocation();
+        //#if MC > 12104
+        //$$ Direction newSide = BlockUtils.getFirstPropertyFacingValue(stateSchematic).orElse(null);
+        //#else
         Direction newSide = BlockUtils.getFirstPropertyFacingValue(stateSchematic);
+        //#endif
         MixinWorldUtils.masa_gadget_mod$easyPlaceActionNewSide.set(newSide);
         MixinWorldUtils.masa_gadget_mod$easyPlaceActionOldYaw.set(playerCompat.getYRot());
 
@@ -156,7 +164,11 @@ public class MixinWorldUtils {
             BlockState testState = stateSchematic.getBlock().getStateForPlacement(itemPlacementContext);
 
             if (testState != null) {
+                //#if MC > 12104
+                //$$ Direction testDirection = BlockUtils.getFirstPropertyFacingValue(testState).orElse(null);
+                //#else
                 Direction testDirection = BlockUtils.getFirstPropertyFacingValue(testState);
+                //#endif
 
                 if (testDirection != null && testDirection != newSide) {
                     newSide = newSide.getOpposite();

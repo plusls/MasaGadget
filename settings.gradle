@@ -7,28 +7,28 @@ pluginManagement {
         gradlePluginPortal()
 
         maven {
-            name("Fabric")
-            url("https://maven.fabricmc.net")
+            name = "Fabric"
+            url = "https://maven.fabricmc.net"
         }
 
         maven {
-            name("Architectury")
-            url("https://maven.architectury.dev")
+            name = "Architectury"
+            url = "https://maven.architectury.dev"
         }
 
         maven {
-            name("MinecraftForge")
-            url("https://files.minecraftforge.net/maven")
+            name = "MinecraftForge"
+            url = "https://files.minecraftforge.net/maven"
         }
 
         maven {
-            name("NeoForge")
-            url("https://maven.neoforged.net/releases")
+            name = "NeoForge"
+            url = "https://maven.neoforged.net/releases"
         }
 
         maven {
-            name("Jitpack")
-            url("https://jitpack.io")
+            name = "Jitpack"
+            url = "https://jitpack.io"
         }
     }
 

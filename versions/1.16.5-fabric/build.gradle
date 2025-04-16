@@ -31,28 +31,28 @@ repositories {
     mavenLocal()
 
     maven {
-        name("NyanMaven Release")
-        url("https://maven.hendrixshen.top/releases")
+        name = "NyanMaven Release"
+        url = "https://maven.hendrixshen.top/releases"
     }
 
     maven {
-        name("NyanMaven Mirror")
-        url("https://maven.hendrixshen.top/mirror")
+        name = "NyanMaven Mirror"
+        url = "https://maven.hendrixshen.top/mirror"
     }
 
     maven {
-        name("NeoForge")
-        url("https://maven.neoforged.net/releases")
+        name = "NeoForge"
+        url = "https://maven.neoforged.net/releases"
     }
 
     maven {
-        name("Modrinth Maven")
-        url("https://api.modrinth.com/maven")
+        name = "Modrinth Maven"
+        url = "https://api.modrinth.com/maven"
     }
 
     maven {
-        name("Jitpack Maven")
-        url("https://jitpack.io")
+        name = "Jitpack Maven"
+        url = "https://jitpack.io"
     }
 
     mavenCentral()
@@ -62,6 +62,8 @@ String itemscroller_fabric_ga = project.getProperties().getOrDefault("dependenci
         "com.github.sakura-ryoko:itemscroller" : "maven.modrinth:item-scroller"
 String litematica_fabric_ga = project.getProperties().getOrDefault("dependencies.api.litematica_version.use_sakura_fork", false) ?
         "com.github.sakura-ryoko:litematica" : "maven.modrinth:litematica"
+String malilib_fabric_ga = project.getProperties().getOrDefault("dependencies.api.malilib_version.use_sakura_fork", false) ?
+        "com.github.sakura-ryoko:malilib" : "maven.modrinth:malilib"
 String minihud_fabric_ga = project.getProperties().getOrDefault("dependencies.api.minihud_version.use_sakura_fork", false) ?
         "com.github.sakura-ryoko:minihud" : "maven.modrinth:minihud"
 String tweakeroo_fabric_ga = project.getProperties().getOrDefault("dependencies.api.tweakeroo_version.use_sakura_fork", false) ?
@@ -84,6 +86,16 @@ def apiDependencies = [
 def runtimeDependencies = [
         ["", "", false, false]
 ]
+
+configurations {
+    modApi {
+        resolutionStrategy {
+            if (project.getProperties().getOrDefault("dependencies.api.malilib_version.override", false)) {
+                force("${malilib_fabric_ga}:${project.findProperty("dependencies.api.malilib_version")}")
+            }
+        }
+    }
+}
 
 dependencies {
     // Development environment
@@ -121,7 +133,7 @@ dependencies {
             }
 
             modApi("${dependencyNotation}:${dependencyVersion}") {
-                transitive(shouldTransitive)
+                transitive = shouldTransitive
             }
         }
     }
@@ -200,7 +212,7 @@ loom {
 
     // Setup client default settings.
     runClient {
-        defaultCharacterEncoding("UTF-8")
+        defaultCharacterEncoding = "UTF-8"
 
         doFirst {
             file("${project.projectDir}/run/client/config").mkdirs()
@@ -228,7 +240,7 @@ loom {
 
     // Setup server default settings.
     runServer {
-        defaultCharacterEncoding("UTF-8")
+        defaultCharacterEncoding = "UTF-8"
 
         doFirst {
             // Agree eula before server init.
@@ -250,23 +262,23 @@ loom {
 
 base {
     setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${project.property("dependencies.minecraft_version")}-${modPlatform}")
-    group("${project.property("mod.maven_group")}")
-    version(project.getModVersion(project.parent))
+    setGroup("${project.property("mod.maven_group")}")
+    setVersion(project.getModVersion(project.parent))
 }
 
 java {
     if (mcVersion > 11204) {
-        sourceCompatibility(JavaVersion.VERSION_21)
-        targetCompatibility(JavaVersion.VERSION_21)
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     } else if (mcVersion > 11701) {
-        sourceCompatibility(JavaVersion.VERSION_17)
-        targetCompatibility(JavaVersion.VERSION_17)
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     } else if (mcVersion > 11605) {
-        sourceCompatibility(JavaVersion.VERSION_16)
-        targetCompatibility(JavaVersion.VERSION_16)
+        sourceCompatibility = JavaVersion.VERSION_16
+        targetCompatibility = JavaVersion.VERSION_16
     } else {
-        sourceCompatibility(JavaVersion.VERSION_1_8)
-        targetCompatibility(JavaVersion.VERSION_1_8)
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     withSourcesJar()
@@ -282,7 +294,16 @@ replaceToken {
 }
 
 processResources {
-    outputs.upToDateWhen { false }
+    inputs.property("magiclib_dependency" , project.property("dependencies.magiclib_dependency"))
+    inputs.property("minecraft_dependency", project.property("dependencies.minecraft_dependency"))
+    inputs.property("mod_alias"           , project.parent.property("mod.id"))
+    inputs.property("mod_description"     , project.parent.property("mod.description"))
+    inputs.property("mod_homepage"        , project.parent.property("mod.homepage"))
+    inputs.property("mod_id"              , project.parent.property("mod.id").toString().replace("-", "_"))
+    inputs.property("mod_license"         , project.parent.property("mod.license"))
+    inputs.property("mod_name"            , project.parent.property("mod.name"))
+    inputs.property("mod_sources"         , project.parent.property("mod.sources"))
+    inputs.property("mod_version"         , project.getVersionWithCommitHash(this.project.parent))
 
     [
             "fabric.mod.json"            : ["fabric"],
@@ -293,16 +314,16 @@ processResources {
         if (platforms.contains(modPlatform)) {
             filesMatching(file) {
                 expand([
-                        "magiclib_dependency" : project.property("dependencies.magiclib_dependency"),
-                        "minecraft_dependency": project.property("dependencies.minecraft_dependency"),
-                        "mod_alias"           : project.parent.property("mod.id"),
-                        "mod_description"     : project.parent.property("mod.description"),
-                        "mod_homepage"        : project.parent.property("mod.homepage"),
-                        "mod_id"              : project.parent.property("mod.id").toString().replace("-", "_"),
-                        "mod_license"         : project.parent.property("mod.license"),
-                        "mod_name"            : project.parent.property("mod.name"),
-                        "mod_sources"         : project.parent.property("mod.sources"),
-                        "mod_version"         : project.getVersionWithCommitHash(this.project.parent)
+                        "magiclib_dependency" : inputs.properties.get("magiclib_dependency"),
+                        "minecraft_dependency": inputs.properties.get("minecraft_dependency"),
+                        "mod_alias"           : inputs.properties.get("mod_alias"),
+                        "mod_description"     : inputs.properties.get("mod_description"),
+                        "mod_homepage"        : inputs.properties.get("mod_homepage"),
+                        "mod_id"              : inputs.properties.get("mod_id"),
+                        "mod_license"         : inputs.properties.get("mod_license"),
+                        "mod_name"            : inputs.properties.get("mod_name"),
+                        "mod_sources"         : inputs.properties.get("mod_sources"),
+                        "mod_version"         : inputs.properties.get("mod_version"),
                 ])
             }
         } else {
@@ -325,32 +346,26 @@ yamlang {
 
 publishing {
     publications {
-        create("release", MavenPublication) {
-            artifactId("${this.project.parent.property("mod.artifact_name")}-${project.name}")
+        register("release", MavenPublication) {
+            artifactId = "${this.project.parent.property("mod.artifact_name")}-${project.name}"
             from(this.project.components.java)
-            version("${this.project.getMavenArtifactVersion(this.project.parent)}")
-        }
-
-        register("snapshot", MavenPublication) { MavenPublication publication ->
-            artifactId("${this.project.parent.property("mod.artifact_name")}-${project.name}")
-            from(this.project.components.java)
-            version("${this.project.parent.property("mod.version")}-SNAPSHOT")
+            version = "${this.project.getMavenArtifactVersion(this.project.parent)}"
         }
     }
 
     repositories {
         mavenLocal {
-            name("mavenLocal")
+            name = "mavenLocal"
         }
 
         maven {
-            name("projectLocalSnapshot")
-            url("${rootDir}/publish/snapshot")
+            name = "projectLocalSnapshot"
+            url = "${rootDir}/publish/snapshot"
         }
 
         maven {
-            name("projectLocalRelease")
-            url("${rootDir}/publish/release")
+            name = "projectLocalRelease"
+            url = "${rootDir}/publish/release"
         }
     }
 }
@@ -369,12 +384,12 @@ tasks.withType(PublishToMavenRepository).configureEach {
 
 tasks.withType(Javadoc).configureEach { Javadoc task ->
     include("**/api/**")
-    task.options.encoding("UTF-8")
+    task.options.encoding = "UTF-8"
     (task.options as CoreJavadocOptions).addStringOption("Xdoclint:none", "-quiet")
 }
 
 tasks.withType(JavaCompile).configureEach { JavaCompile task ->
-    task.options.encoding("UTF-8")
+    task.options.encoding = "UTF-8"
 
     if (mcVersion > 12005) {
         task.options.release.set(21)
@@ -384,29 +399,32 @@ tasks.withType(JavaCompile).configureEach { JavaCompile task ->
         task.options.release.set(16)
     } else {
         task.options.release.set(8)
+        options.compilerArgs << '-Xlint:-options'
     }
 }
 
-tasks.register("cleanRuns", DefaultTask.class) {
-    doLast {
-        file(loom.runConfigs.client.runDir).parentFile.deleteDir()
-    }
+tasks.register("cleanRuns", Delete.class) { Delete cleanTask ->
+    dependsOn("cleanRunClient", "cleanRunServer")
+    cleanTask.setGroup("${project.property("mod.id")}")
+    cleanTask.delete(file(loom.runConfigs.client.runDir).parentFile)
 }
 
-tasks.register("cleanRunClient", DefaultTask.class) {
-    doLast {
-        file(loom.runConfigs.client.runDir).deleteDir()
-    }
+tasks.register("cleanRunClient", Delete.class) { Delete cleanTask ->
+    cleanTask.setGroup("${project.property("mod.id")}")
+    cleanTask.delete(loom.runConfigs.client.runDir)
 }
 
-tasks.register("cleanRunServer", DefaultTask.class) {
-    doLast {
-        file(loom.runConfigs.server.runDir).deleteDir()
-    }
+tasks.register("cleanRunServer", Delete.class) { Delete cleanTask ->
+    cleanTask.setGroup("${project.property("mod.id")}")
+    cleanTask.delete(loom.runConfigs.server.runDir)
+}
+
+tasks.register("cleanJar", Delete.class) { Delete cleanTask ->
+    cleanTask.setGroup("${project.property("mod.id")}")
+    cleanTask.delete(project.layout.buildDirectory.dir("libs"))
 }
 
 [
-        "cleanRuns", "cleanRunClient", "cleanRunServer",
         "runClient", "runServer",
         "runMixinAuditClient", "runMixinAuditServer",
         "preprocessCode", "preprocessResources",
@@ -414,7 +432,7 @@ tasks.register("cleanRunServer", DefaultTask.class) {
 ].forEach { taskName ->
     if (tasks.getNames().contains(taskName)) {
         tasks.named(taskName) {
-            it.group("${project.property("mod.id")}")
+            it.setGroup("${project.property("mod.id")}")
         }
     }
 }

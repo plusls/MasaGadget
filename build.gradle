@@ -26,6 +26,7 @@ preprocess {
     Node mc12101_fabric = createNode("1.21.1-fabric", 1_21_01, "mojang")
     Node mc12103_fabric = createNode("1.21.3-fabric", 1_21_03, "mojang")
     Node mc12104_fabric = createNode("1.21.4-fabric", 1_21_04, "mojang")
+    Node mc12105_fabric = createNode("1.21.5-fabric", 1_21_05, "mojang")
 
     mc11502_fabric.link(mc11404_fabric, file("versions/mapping-fabric-1.15.2-1.14.4.txt"))
     mc11605_fabric.link(mc11502_fabric, file("versions/mapping-fabric-1.16.5-1.15.2.txt"))
@@ -41,6 +42,7 @@ preprocess {
     mc12006_fabric.link(mc12101_fabric, file("versions/mapping-fabric-1.20.6-1.21.1.txt"))
     mc12101_fabric.link(mc12103_fabric, file("versions/mapping-fabric-1.21.1-1.21.3.txt"))
     mc12103_fabric.link(mc12104_fabric, file("versions/mapping-fabric-1.21.3-1.21.4.txt"))
+    mc12104_fabric.link(mc12105_fabric, file("versions/mapping-fabric-1.21.4-1.21.5.txt"))
 
     // NeoForge
     Node mc12101_neoforge = createNode("1.21.1-neoforge", 1_21_01, "mojang")

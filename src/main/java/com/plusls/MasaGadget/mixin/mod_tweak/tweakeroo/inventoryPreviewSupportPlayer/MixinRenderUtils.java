@@ -75,7 +75,17 @@ public abstract class MixinRenderUtils {
             float[] colors = dye.getTextureDiffuseColors();
             //#endif
             fi.dy.masa.malilib.render.RenderUtils.color(colors[0], colors[1], colors[2], 1.0F);
-            InventoryOverlay.renderInventoryBackground(type, x, y, 9, 27, Minecraft.getInstance());
+            InventoryOverlay.renderInventoryBackground(
+                type,
+                x,
+                y,
+                9,
+                27,
+                Minecraft.getInstance()
+                //#if MC > 12104
+                //$$ , MixinRenderUtils.masa_gadget$guiGraphics
+                //#endif
+            );
             InventoryOverlay.renderInventoryStacks(
                     type,
                     player.getEnderChestInventory(),

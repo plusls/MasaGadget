@@ -68,7 +68,13 @@ public class RestockUtil {
                     //#endif
                 ) {
                     mc.gameMode.handleInventoryMouseClick(player.inventoryMenu.containerId,
-                            hand == InteractionHand.MAIN_HAND ? PlayerCompat.of(player).getInventory().selected + 36 : 45,
+                            hand == InteractionHand.MAIN_HAND ?
+                                //#if MC > 12104
+                                //$$ PlayerCompat.of(player).getInventory().getSelectedSlot() + 36 :
+                                //#else
+                                PlayerCompat.of(player).getInventory().selected + 36 :
+                                //#endif
+                                45,
                             0, ClickType.PICKUP, player);
                     return;
                 } else {
