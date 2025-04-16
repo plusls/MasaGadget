@@ -82,6 +82,7 @@ jobs:
                       publish_platform_channel=release
                   fi
           
+                  publish_enable=true
                   publish_type=release
               else
                   echo Unsupported github event name "$GH_EVENT_NAME"
