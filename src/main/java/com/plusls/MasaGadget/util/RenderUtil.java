@@ -22,13 +22,67 @@ import org.lwjgl.opengl.GL11;
 //#endif
 
 public class RenderUtil {
-    public static void drawConnectLine(Vec3 pos1, Vec3 pos2, double boxLength, Color4f pos1Color, Color4f pos2Color, @NotNull Color4f lineColor) {
+    public static void drawConnectLine(Vec3 pos1, Vec3 pos2, double expend, Color4f pos1Color, Color4f pos2Color, @NotNull Color4f lineColor) {
+        RenderUtil.drawOutlineBox(pos1, expend, pos1Color);
+        RenderUtil.drawLine(pos1, pos2, lineColor);
+        RenderUtil.drawOutlineBox(pos2, expend, pos2Color);
+    }
+
+    public static void drawLine(Vec3 pos1, Vec3 pos2, Color4f color) {
         Vec3 camPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
         pos1 = pos1.subtract(camPos);
         pos2 = pos2.subtract(camPos);
         //#if MC > 12104
+        //$$ RenderContext ctx = new RenderContext(MaLiLibPipelines.DEBUG_LINES_MASA_SIMPLE_NO_DEPTH_NO_CULL, BufferUsage.STATIC_WRITE);
+        //$$ BufferBuilder builder = ctx.getBuilder();
         //$$ PoseStack poseStack = new PoseStack();
-        //$$ RenderContext ctx = new RenderContext(() -> "MasaGadgetConnectLineBox1", MaLiLibPipelines.DEBUG_LINES_MASA_SIMPLE_NO_DEPTH, BufferUsage.STATIC_WRITE);
+        //$$ poseStack.pushPose();
+        //#else
+        Tesselator tesselator = Tesselator.getInstance();
+        //#if MC > 12006
+        //$$ BufferBuilder builder = tesselator.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+        //#else
+        BufferBuilder builder = tesselator.getBuilder();
+        RenderUtil.beginLines(builder);
+        //#endif
+        //#endif
+        //#if MC > 12006
+        //$$ builder.addVertex((float) pos1.x(), (float) pos1.y(), (float) pos1.z()).setColor(color.r, color.g, color.b, color.a);
+        //$$ builder.addVertex((float) pos2.x(), (float) pos2.y(), (float) pos2.z()).setColor(color.r, color.g, color.b, color.a);
+        //#if MC > 12104
+        //$$
+        //$$ try {
+        //$$     MeshData meshData = builder.build();
+        //$$
+        //$$     if (meshData != null) {
+        //$$         ctx.draw(meshData, false, true);
+        //$$         meshData.close();
+        //$$     }
+        //$$
+        //$$     ctx.close();
+        //$$ } catch (Exception ignored) {
+        //$$ }
+        //$$
+        //$$ poseStack.popPose();
+        //#else
+        //$$ RenderUtil.end(builder);
+        //#endif
+        //#else
+        builder.vertex(pos1.x(), pos1.y(), pos1.z()).color(color.r, color.g, color.b, color.a).endVertex();
+        builder.vertex(pos2.x(), pos2.y(), pos2.z()).color(color.r, color.g, color.b, color.a).endVertex();
+        tesselator.end();
+        //#endif
+    }
+
+    public static void drawOutlineBox(Vec3 pos, double expend, Color4f color) {
+        Vec3 camPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+        pos = pos.subtract(camPos);
+
+        //#if MC > 12104
+        //$$ RenderContext ctx = new RenderContext(MaLiLibPipelines.LINES_MASA_SIMPLE_NO_DEPTH_NO_CULL, BufferUsage.STATIC_WRITE);
+        //$$ BufferBuilder builder = ctx.getBuilder();
+        //$$ PoseStack poseStack = new PoseStack();
+        //$$ poseStack.pushPose();
         //#else
         Tesselator tesselator = Tesselator.getInstance();
         //#if MC > 12006
@@ -39,82 +93,44 @@ public class RenderUtil {
         //#endif
         //#endif
         RenderUtils.drawBoxAllEdgesBatchedLines(
-                (float) (pos1.x() - boxLength),
-                (float) (pos1.y() - boxLength),
-                (float) (pos1.z() - boxLength),
-                (float) (pos1.x() + boxLength),
-                (float) (pos1.y() + boxLength),
-                (float) (pos1.z() + boxLength),
-                pos1Color,
+                (float) (pos.x() - expend),
+                (float) (pos.y() - expend),
+                (float) (pos.z() - expend),
+                (float) (pos.x() + expend),
+                (float) (pos.y() + expend),
+                (float) (pos.z() + expend),
+                color,
                 //#if MC > 12104
-                //$$ ctx.getBuilder(),
+                //$$ builder,
                 //$$ poseStack.last()
                 //#else
                 builder
                 //#endif
         );
         //#if MC > 12104
-        //$$ ctx.draw();
-        //$$ RenderUtil.closeRenderContext(ctx);
-        //$$ ctx = new RenderContext(() -> "MasaGadgetConnectLineBox2", MaLiLibPipelines.DEBUG_LINES_MASA_SIMPLE_NO_DEPTH, BufferUsage.STATIC_WRITE);
+        //$$
+        //$$ try {
+        //$$     MeshData meshData = builder.build();
+        //$$
+        //$$     if (meshData != null) {
+        //$$         ctx.draw(meshData, false, true);
+        //$$         meshData.close();
+        //$$     }
+        //$$
+        //$$     ctx.close();
+        //$$ } catch (Exception ignored) {
+        //$$ }
+        //$$
+        //$$ poseStack.popPose();
         //#elseif MC > 12006
         //$$ RenderUtil.end(builder);
-        //$$ builder = tesselator.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
         //#else
-        tesselator.end();
-        RenderUtil.beginLines(builder);
-        //#endif
-        RenderUtils.drawBoxAllEdgesBatchedLines(
-                (float) (pos2.x() - boxLength),
-                (float) (pos2.y() - boxLength),
-                (float) (pos2.z() - boxLength),
-                (float) (pos2.x() + boxLength),
-                (float) (pos2.y() + boxLength),
-                (float) (pos2.z() + boxLength),
-                pos2Color,
-                //#if MC > 12104
-                //$$ ctx.getBuilder(),
-                //$$ poseStack.last()
-                //#else
-                builder
-                //#endif
-        );
-        //#if MC > 12104
-        //$$ ctx.draw();
-        //$$ RenderUtil.closeRenderContext(ctx);
-        //$$ ctx = new RenderContext(() -> "MasaGadgetConnectLine", MaLiLibPipelines.DEBUG_LINES_MASA_SIMPLE_NO_DEPTH, BufferUsage.STATIC_WRITE);
-        //$$ BufferBuilder builder = ctx.getBuilder();
-        //#elseif MC > 12006
-        //$$ RenderUtil.end(builder);
-        //$$ builder = tesselator.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
-        //#else
-        tesselator.end();
-        RenderUtil.beginLines(builder);
-        //#endif
-        //#if MC > 12006
-        //$$ builder.addVertex((float) pos1.x(), (float) pos1.y(), (float) pos1.z()).setColor(lineColor.r, lineColor.g, lineColor.b, lineColor.a);
-        //$$ builder.addVertex((float) pos2.x(), (float) pos2.y(), (float) pos2.z()).setColor(lineColor.r, lineColor.g, lineColor.b, lineColor.a);
-        //#if MC > 12104
-        //$$ ctx.draw();
-        //$$ RenderUtil.closeRenderContext(ctx);
-        //#else
-        //$$ RenderUtil.end(builder);
-        //#endif
-        //#else
-        builder.vertex(pos1.x(), pos1.y(), pos1.z()).color(lineColor.r, lineColor.g, lineColor.b, lineColor.a).endVertex();
-        builder.vertex(pos2.x(), pos2.y(), pos2.z()).color(lineColor.r, lineColor.g, lineColor.b, lineColor.a).endVertex();
         tesselator.end();
         //#endif
     }
 
-    //#if MC > 12104
-    //$$ private static void closeRenderContext(RenderContext ctx) {
-    //$$     try {
-    //$$         ctx.close();
-    //$$     } catch (Exception ignore) {
-    //$$     }
-    //$$ }
-    //#elseif MC > 12006
+    //#if MC < 12105
+    //#if MC > 12006
     //$$ private static void end(BufferBuilder builder) {
     //$$     try (MeshData meshData = builder.buildOrThrow()) {
     //$$         BufferUploader.drawWithShader(meshData);
@@ -130,5 +146,6 @@ public class RenderUtil {
         builder.begin(GL11.GL_LINES, DefaultVertexFormat.POSITION_COLOR);
         //#endif
     }
+    //#endif
     //#endif
 }
