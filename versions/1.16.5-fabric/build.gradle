@@ -359,11 +359,6 @@ publishing {
         }
 
         maven {
-            name = "projectLocalSnapshot"
-            url = "${rootDir}/publish/snapshot"
-        }
-
-        maven {
             name = "projectLocalRelease"
             url = "${rootDir}/publish/release"
         }
@@ -373,7 +368,6 @@ publishing {
 tasks.withType(PublishToMavenRepository).configureEach {
     Provider<Boolean> predicate = provider {
         repository == publishing.repositories.mavenLocal ||
-                (repository == publishing.repositories.projectLocalSnapshot && publication == publishing.publications.snapshot) ||
                 (repository == publishing.repositories.projectLocalRelease && publication == publishing.publications.release)
     }
 
