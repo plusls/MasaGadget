@@ -35,8 +35,6 @@ public class RenderUtil {
         //#if MC > 12104
         //$$ RenderContext ctx = new RenderContext(MaLiLibPipelines.DEBUG_LINES_MASA_SIMPLE_NO_DEPTH_NO_CULL, BufferUsage.STATIC_WRITE);
         //$$ BufferBuilder builder = ctx.getBuilder();
-        //$$ PoseStack poseStack = new PoseStack();
-        //$$ poseStack.pushPose();
         //#else
         Tesselator tesselator = Tesselator.getInstance();
         //#if MC > 12006
@@ -62,8 +60,6 @@ public class RenderUtil {
         //$$     ctx.close();
         //$$ } catch (Exception ignored) {
         //$$ }
-        //$$
-        //$$ poseStack.popPose();
         //#else
         //$$ RenderUtil.end(builder);
         //#endif
@@ -79,10 +75,8 @@ public class RenderUtil {
         pos = pos.subtract(camPos);
 
         //#if MC > 12104
-        //$$ RenderContext ctx = new RenderContext(MaLiLibPipelines.LINES_MASA_SIMPLE_NO_DEPTH_NO_CULL, BufferUsage.STATIC_WRITE);
+        //$$ RenderContext ctx = new RenderContext(MaLiLibPipelines.DEBUG_LINES_MASA_SIMPLE_NO_DEPTH_NO_CULL, BufferUsage.STATIC_WRITE);
         //$$ BufferBuilder builder = ctx.getBuilder();
-        //$$ PoseStack poseStack = new PoseStack();
-        //$$ poseStack.pushPose();
         //#else
         Tesselator tesselator = Tesselator.getInstance();
         //#if MC > 12006
@@ -100,12 +94,7 @@ public class RenderUtil {
                 (float) (pos.y() + expend),
                 (float) (pos.z() + expend),
                 color,
-                //#if MC > 12104
-                //$$ builder,
-                //$$ poseStack.last()
-                //#else
                 builder
-                //#endif
         );
         //#if MC > 12104
         //$$
@@ -120,8 +109,6 @@ public class RenderUtil {
         //$$     ctx.close();
         //$$ } catch (Exception ignored) {
         //$$ }
-        //$$
-        //$$ poseStack.popPose();
         //#elseif MC > 12006
         //$$ RenderUtil.end(builder);
         //#else
