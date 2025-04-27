@@ -83,6 +83,11 @@ masa_gadget_mod:
       optimizeConfigWidgetSearch:
         name: 优化配置搜索
         comment: 支持忽略大小写，本地化文本，并且可以使用 §6modified§r 来搜索配置。
+      pinyinSousuo:
+        name: 拼音搜索
+        comment: |-
+          为搜索栏提供拼音搜索支
+          这仅对当前游戏语言为中文系列语言有效.
       showOriginalConfigName:
         name: 显示原始配置名称
         comment: | 

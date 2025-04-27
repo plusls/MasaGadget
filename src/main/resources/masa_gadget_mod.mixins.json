@@ -38,6 +38,7 @@
     "mod_tweak.malilib.fixGetInventoryType.MixinInventoryOverlay",
     "mod_tweak.malilib.fixSearchbarHotkeyInput.MixinGuiBase",
     "mod_tweak.malilib.optimizeConfigWidgetSearch.MixinWidgetListConfigOptions",
+    "mod_tweak.malilib.pinyinSousuo.MixinWidgetListBase",
     "mod_tweak.malilib.showOriginalConfigName.MixinWidgetConfigOption",
     "mod_tweak.malilib.showOriginalConfigName.MixinWidgetListConfigOptions",
     "mod_tweak.minihud.backportI18nSupport.MixinInfoToggle",

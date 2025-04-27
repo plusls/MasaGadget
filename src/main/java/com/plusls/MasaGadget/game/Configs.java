@@ -170,6 +170,9 @@ public class Configs {
     public static MagicConfigBoolean optimizeConfigWidgetSearch = Configs.cf.newConfigBoolean("optimizeConfigWidgetSearch", false);
 
     @Config(category = ConfigCategory.MALILIB)
+    public static MagicConfigBoolean pinyinSousuo = Configs.cf.newConfigBoolean("pinyinSousuo", false);
+
+    @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean showOriginalConfigName = Configs.cf.newConfigBoolean("showOriginalConfigName", false);
 
     @Config(category = ConfigCategory.MALILIB)

@@ -83,6 +83,11 @@ masa_gadget_mod:
       optimizeConfigWidgetSearch:
         name: optimizeConfigWidgetSearch
         comment: Make search support uppercase, translate text, and can use §6modified§r to search modified config.
+      pinyinSousuo:
+        name: pinyinSousuo
+        comment: |-
+          Provide Hanyu Pinyin support for search bar.
+          This only works if the current game language is Chinese.
       showOriginalConfigName:
         name: showOriginalConfigName
         comment: | 

@@ -108,6 +108,7 @@ dependencies {
 
     // Dependency
     modApi(annotationProcessor("top.hendrixshen.magiclib:magiclib-all-${project.name}:${project.property("dependencies.magiclib_version")}"))
+    modImplementation(include("com.github.Towdium:PinIn:${project.property("dependencies.pinin_version")}"))
 
     switch (modPlatform) {
         case "fabric":
