@@ -37,6 +37,9 @@ import java.util.function.Function;
 //$$ import net.neoforged.fml.ModContainer;
 //$$ import net.neoforged.fml.ModList;
 //$$ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+//$$ import org.thinkingstudio.mafglib.loader.entrypoints.ConfigScreenEntrypoint;
+//$$
+//$$ import java.util.Optional;
 //#endif
 
 public class FastMasaGuiSwitcher {
@@ -81,14 +84,12 @@ public class FastMasaGuiSwitcher {
             throw new IllegalStateException("Re-trigger initialize.");
         }
 
-        if (MagicLib.getInstance().getCurrentPlatform().getPlatformType().isFabricLike() &&
-                !MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.mod_menu)) {
+        //#if FABRIC_LIKE
+        if (!MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.mod_menu)) {
             return;
         }
 
-        Minecraft client = Minecraft.getInstance();
-
-        //#if FABRIC_LIKE
+        Minecraft mc = Minecraft.getInstance();
         FabricLoader.getInstance().getEntrypointContainers("modmenu", Object.class).forEach(entrypoint -> {
             ModMetadata metadata = entrypoint.getProvider().getMetadata();
             try {
@@ -129,7 +130,7 @@ public class FastMasaGuiSwitcher {
                     return;
                 }
 
-                Screen screen = configScreenFactoryCompat.create(client.screen);
+                Screen screen = configScreenFactoryCompat.create(mc.screen);
 
                 if (!(screen instanceof GuiConfigsBase)) {
                     return;
@@ -153,37 +154,54 @@ public class FastMasaGuiSwitcher {
             }
         });
         //#elseif FORGE_LIKE
-        //$$ ModList.get().getSortedMods().forEach(modContainer ->
-        //$$         modContainer.getCustomExtension(IConfigScreenFactory.class).ifPresent(
-        //$$                 factory -> {
-        //$$                     Screen screen = factory.createScreen(modContainer, client.screen);
+        //$$ for (ModContainer mod : ModList.get().getSortedMods()) {
+        //$$     // Backward compatibility
+        //$$     try {
+        //$$         Optional<ConfigScreenEntrypoint> entrypoint = mod.getCustomExtension(ConfigScreenEntrypoint.class);
         //$$
-        //$$                     if (!(screen instanceof GuiConfigsBase)) {
-        //$$                         return;
-        //$$                     }
+        //$$         if (entrypoint.isPresent()) {
+        //$$             this.buildGuiMap(mod, entrypoint.get().getModConfigScreenFactory());
+        //$$             continue;
+        //$$         }
+        //$$     } catch (NoClassDefFoundError ignore) {
+        //$$         // NO-OP
+        //$$     }
         //$$
-        //$$                     String modName = modContainer.getModInfo().getDisplayName();
-        //$$
-        //$$                     if (!this.guiClass.containsKey(screen.getClass())) {
-        //$$                         MasaGadgetScreenFactory masaGadgetScreenFactory = new MasaGadgetScreenFactory(modContainer, factory);
-        //$$                         this.guiModName.put(masaGadgetScreenFactory, () -> modName);
-        //$$                         this.guiClass.put(screen.getClass(), masaGadgetScreenFactory);
-        //$$                     } else {
-        //$$                         MasaGadgetScreenFactory savedConfigScreenFactory = this.guiClass.get(screen.getClass());
-        //$$                         String savedName = savedConfigScreenFactory.getClass().getName();
-        //$$
-        //$$                         if (savedName.length() > modName.length()) {
-        //$$                             MasaGadgetScreenFactory masaGadgetScreenFactory = new MasaGadgetScreenFactory(modContainer, factory);
-        //$$                             this.guiModName.put(masaGadgetScreenFactory, () -> modName);
-        //$$                         }
-        //$$                     }
-        //$$                 }
-        //$$         )
-        //$$ );
+        //$$     mod.getCustomExtension(IConfigScreenFactory.class).ifPresent(factory ->
+        //$$             this.buildGuiMap(mod, factory)
+        //$$     );
+        //$$ }
         //#endif
 
         this.initialized.set(true);
     }
+
+    //#if FORGE_LIKE
+    //$$ private void buildGuiMap(ModContainer mod, IConfigScreenFactory factory) {
+    //$$     Minecraft mc = Minecraft.getInstance();
+    //$$     Screen screen = factory.createScreen(mod, mc.screen);
+    //$$
+    //$$     if (!(screen instanceof GuiConfigsBase)) {
+    //$$         return;
+    //$$     }
+    //$$
+    //$$     String modName = mod.getModInfo().getDisplayName();
+    //$$
+    //$$     if (!this.guiClass.containsKey(screen.getClass())) {
+    //$$         MasaGadgetScreenFactory masaGadgetScreenFactory = new MasaGadgetScreenFactory(mod, factory);
+    //$$         this.guiModName.put(masaGadgetScreenFactory, () -> modName);
+    //$$         this.guiClass.put(screen.getClass(), masaGadgetScreenFactory);
+    //$$     } else {
+    //$$         MasaGadgetScreenFactory savedConfigScreenFactory = this.guiClass.get(screen.getClass());
+    //$$         String savedName = savedConfigScreenFactory.getClass().getName();
+    //$$
+    //$$         if (savedName.length() > modName.length()) {
+    //$$             MasaGadgetScreenFactory masaGadgetScreenFactory = new MasaGadgetScreenFactory(mod, factory);
+    //$$             this.guiModName.put(masaGadgetScreenFactory, () -> modName);
+    //$$         }
+    //$$     }
+    //$$ }
+    //#endif
 
     public List<IStringValue> getModNameList() {
         return this.guiModName.values()
