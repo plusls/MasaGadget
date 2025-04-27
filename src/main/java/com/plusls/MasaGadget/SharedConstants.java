@@ -1,6 +1,5 @@
 package com.plusls.MasaGadget;
 
-import com.plusls.MasaGadget.game.MasaGadgetManager;
 import lombok.Getter;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
@@ -12,7 +11,6 @@ import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.malilib.config.MagicConfigManager;
 import top.hendrixshen.magiclib.impl.malilib.config.GlobalConfigManager;
 import top.hendrixshen.magiclib.impl.malilib.config.MagicConfigHandler;
-import top.hendrixshen.magiclib.util.CommonUtil;
 import top.hendrixshen.magiclib.util.VersionUtil;
 
 public class SharedConstants {
@@ -25,10 +23,7 @@ public class SharedConstants {
     @Getter
     private static final String modVersionType = VersionUtil.getVersionType(SharedConstants.modVersion);
     @Getter
-    private static final MagicConfigManager configManager = CommonUtil.make(() -> {
-        GlobalConfigManager.registerConfigManager(new MasaGadgetManager());
-        return GlobalConfigManager.getConfigManager(SharedConstants.modIdentifier);
-    });
+    private static final MagicConfigManager configManager = GlobalConfigManager.getConfigManager(SharedConstants.getModIdentifier());
     @Getter
     private static final MagicConfigHandler configHandler = new MagicConfigHandler(configManager, 1);
     @Getter

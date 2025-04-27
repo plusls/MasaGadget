@@ -1,9 +1,9 @@
-package com.plusls.MasaGadget.mixin.mod_tweak.malilib.pinyinSousuo;
+package com.plusls.MasaGadget.mixin.mod_tweak.malilib.pinyinSouSuo;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.plusls.MasaGadget.game.Configs;
-import com.plusls.MasaGadget.impl.mod_tweak.malilib.pinyinSousuo.PinInHelper;
+import com.plusls.MasaGadget.impl.mod_tweak.malilib.pinyinSouSuo.PinInHelper;
 import fi.dy.masa.malilib.gui.widgets.WidgetListBase;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,7 +20,7 @@ public class MixinWidgetListBase {
     private int patchMatchLogic(String instance, String str, Operation<Integer> original) {
         int ret = original.call(instance, str);
 
-        if (Configs.pinyinSousuo.getBooleanValue() && PinInHelper.getInstance().contains(instance, str)) {
+        if (Configs.pinyinSouSuo.getBooleanValue() && PinInHelper.getInstance().contains(instance, str)) {
             ret += 1;
         }
 

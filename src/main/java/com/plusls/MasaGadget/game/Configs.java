@@ -2,9 +2,13 @@ package com.plusls.MasaGadget.game;
 
 import com.google.common.collect.ImmutableList;
 import com.plusls.MasaGadget.SharedConstants;
+import com.plusls.MasaGadget.impl.mod_tweak.malilib.pinyinSouSuo.PinInHelper;
+import com.plusls.MasaGadget.impl.mod_tweak.malilib.pinyinSouSuo.PinYinSouSuoKeyboard;
 import com.plusls.MasaGadget.util.ModId;
 import com.plusls.MasaGadget.util.PcaSyncProtocol;
 import com.plusls.MasaGadget.util.SearchMobSpawnPointUtil;
+import fi.dy.masa.malilib.config.options.ConfigBoolean;
+import fi.dy.masa.malilib.interfaces.IValueChangeCallback;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
@@ -170,7 +174,31 @@ public class Configs {
     public static MagicConfigBoolean optimizeConfigWidgetSearch = Configs.cf.newConfigBoolean("optimizeConfigWidgetSearch", false);
 
     @Config(category = ConfigCategory.MALILIB)
-    public static MagicConfigBoolean pinyinSousuo = Configs.cf.newConfigBoolean("pinyinSousuo", false);
+    public static MagicConfigBoolean pinyinSouSuo = Configs.cf.newConfigBoolean("pinyinSouSuo", false);
+
+    @Config(category = ConfigCategory.MALILIB)
+    public static MagicConfigBoolean pinyinSouSuoFZh2Z = Configs.cf.newConfigBoolean("pinyinSouSuoFZh2Z", false);
+
+    @Config(category = ConfigCategory.MALILIB)
+    public static MagicConfigBoolean pinyinSouSuoFSh2S = Configs.cf.newConfigBoolean("pinyinSouSuoFSh2S", false);
+
+    @Config(category = ConfigCategory.MALILIB)
+    public static MagicConfigBoolean pinyinSouSuoFCh2C = Configs.cf.newConfigBoolean("pinyinSouSuoFCh2C", false);
+
+    @Config(category = ConfigCategory.MALILIB)
+    public static MagicConfigBoolean pinyinSouSuoFAng2An = Configs.cf.newConfigBoolean("pinyinSouSuoFAng2An", false);
+
+    @Config(category = ConfigCategory.MALILIB)
+    public static MagicConfigBoolean pinyinSouSuoFIng2In = Configs.cf.newConfigBoolean("pinyinSouSuoFIng2In", false);
+
+    @Config(category = ConfigCategory.MALILIB)
+    public static MagicConfigBoolean pinyinSouSuoFEng2En = Configs.cf.newConfigBoolean("pinyinSouSuoFEng2En", false);
+
+    @Config(category = ConfigCategory.MALILIB)
+    public static MagicConfigBoolean pinyinSouSuoFU2V = Configs.cf.newConfigBoolean("pinyinSouSuoFU2V", false);
+
+    @Config(category = ConfigCategory.MALILIB)
+    public static MagicConfigOptionList pinyinSouSuoKeyboard = Configs.cf.newConfigOptionList("pinyinSouSuoKeyboard", PinYinSouSuoKeyboard.QUANPIN);
 
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean showOriginalConfigName = Configs.cf.newConfigBoolean("showOriginalConfigName", false);
@@ -300,6 +328,8 @@ public class Configs {
     public static void init() {
         Configs.cm.parseConfigClass(Configs.class);
 
+        IValueChangeCallback<ConfigBoolean> pinYinCallback = configBoolean -> PinInHelper.getInstance().commitConfig();
+
         // Generic
         MagicConfigManager.setHotkeyCallback(openConfigGui, ConfigGui::openGui, true);
 
@@ -333,6 +363,14 @@ public class Configs {
         Configs.favoritesSupport.setValueChangeCallback(Configs::redrawConfigGui);
         Configs.showOriginalConfigName.setValueChangeCallback(Configs::redrawConfigGui);
         Configs.showOriginalConfigNameScale.setValueChangeCallback(Configs::redrawConfigGui);
+        Configs.pinyinSouSuo.setValueChangeCallback(pinYinCallback);
+        Configs.pinyinSouSuoFZh2Z.setValueChangeCallback(pinYinCallback);
+        Configs.pinyinSouSuoFSh2S.setValueChangeCallback(pinYinCallback);
+        Configs.pinyinSouSuoFCh2C.setValueChangeCallback(pinYinCallback);
+        Configs.pinyinSouSuoFAng2An.setValueChangeCallback(pinYinCallback);
+        Configs.pinyinSouSuoFIng2In.setValueChangeCallback(pinYinCallback);
+        Configs.pinyinSouSuoFEng2En.setValueChangeCallback(pinYinCallback);
+        Configs.pinyinSouSuoFU2V.setValueChangeCallback(pinYinCallback);
     }
 
     private static void redrawConfigGui(Object object) {

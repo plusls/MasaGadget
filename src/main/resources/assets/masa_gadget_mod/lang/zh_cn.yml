@@ -83,11 +83,45 @@ masa_gadget_mod:
       optimizeConfigWidgetSearch:
         name: 优化配置搜索
         comment: 支持忽略大小写，本地化文本，并且可以使用 §6modified§r 来搜索配置。
-      pinyinSousuo:
+      pinyinSouSuo:
         name: 拼音搜索
         comment: |-
           为搜索栏提供拼音搜索支
           这仅对当前游戏语言为中文系列语言有效.
+      pinyinSouSuoFZh2Z:
+        name: 拼音搜索-模糊拼写zh-z
+        comment: 使用@config#pinyinSouSuo@时启用模糊拼写 zh <=> z。
+      pinyinSouSuoFSh2S:
+        name: 拼音搜索-模糊拼写sh-s
+        comment: 使用@config#pinyinSouSuo@时启用模糊拼写 sh <=> s。
+      pinyinSouSuoFCh2C:
+        name: 拼音搜索-模糊拼写ch-c
+        comment: 使用@config#pinyinSouSuo@时启用模糊拼写 ch <=> c。
+      pinyinSouSuoFAng2An:
+        name: 拼音搜索-模糊拼写ang-an
+        comment: 使用@config#pinyinSouSuo@时启用模糊拼写 ang <=> an。
+      pinyinSouSuoFIng2In:
+        name: 拼音搜索-模糊拼写ing-in
+        comment: 使用@config#pinyinSouSuo@时启用模糊拼写 ing <=> in。
+      pinyinSouSuoFEng2En:
+        name: 拼音搜索-模糊拼写eng-en
+        comment: 使用@config#pinyinSouSuo@时启用模糊拼写 eng <=> en。
+      pinyinSouSuoFU2V:
+        name: 拼音搜索-模糊拼写u-v
+        comment: 使用@config#pinyinSouSuo@时启用模糊拼写 u <=> v。
+      pinyinSouSuoKeyboard:
+        name: 拼音搜索-键盘
+        comment: 使用@config#pinyinSouSuo@时检查器所用的键盘.
+        value:
+          QUANPIN: 全拼
+          DAQIAN: 大千式
+          XIAOHE: 小鹤
+          ZIRANMA: 自然码
+          SOUGOU: 搜狗
+          GUOBIAO: 国标
+          MICROSOFT: 微软
+          PINYINPP: 双拼
+          ZIGUANG: 紫光
       showOriginalConfigName:
         name: 显示原始配置名称
         comment: | 
