@@ -28,6 +28,6 @@ public enum PinYinSouSuoKeyboard implements EnumOptionEntry {
 
     @Override
     public String getTranslationPrefix() {
-        return SharedConstants.getModIdentifier().concat(".config.option.pinyinSousuoKeyboard");
+        return SharedConstants.getModIdentifier().concat(".config.option.pinyinSouSuoKeyboard");
     }
 }
