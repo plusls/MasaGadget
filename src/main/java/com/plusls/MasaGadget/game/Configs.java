@@ -173,30 +173,39 @@ public class Configs {
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean optimizeConfigWidgetSearch = Configs.cf.newConfigBoolean("optimizeConfigWidgetSearch", false);
 
+    @Dependencies(conflict = @Dependency("jecharacters"))
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean pinyinSouSuo = Configs.cf.newConfigBoolean("pinyinSouSuo", false);
 
+    @Dependencies(conflict = @Dependency("jecharacters"))
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean pinyinSouSuoFZh2Z = Configs.cf.newConfigBoolean("pinyinSouSuoFZh2Z", false);
 
+    @Dependencies(conflict = @Dependency("jecharacters"))
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean pinyinSouSuoFSh2S = Configs.cf.newConfigBoolean("pinyinSouSuoFSh2S", false);
 
+    @Dependencies(conflict = @Dependency("jecharacters"))
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean pinyinSouSuoFCh2C = Configs.cf.newConfigBoolean("pinyinSouSuoFCh2C", false);
 
+    @Dependencies(conflict = @Dependency("jecharacters"))
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean pinyinSouSuoFAng2An = Configs.cf.newConfigBoolean("pinyinSouSuoFAng2An", false);
 
+    @Dependencies(conflict = @Dependency("jecharacters"))
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean pinyinSouSuoFIng2In = Configs.cf.newConfigBoolean("pinyinSouSuoFIng2In", false);
 
+    @Dependencies(conflict = @Dependency("jecharacters"))
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean pinyinSouSuoFEng2En = Configs.cf.newConfigBoolean("pinyinSouSuoFEng2En", false);
 
+    @Dependencies(conflict = @Dependency("jecharacters"))
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean pinyinSouSuoFU2V = Configs.cf.newConfigBoolean("pinyinSouSuoFU2V", false);
 
+    @Dependencies(conflict = @Dependency("jecharacters"))
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigOptionList pinyinSouSuoKeyboard = Configs.cf.newConfigOptionList("pinyinSouSuoKeyboard", PinYinSouSuoKeyboard.QUANPIN);
 
