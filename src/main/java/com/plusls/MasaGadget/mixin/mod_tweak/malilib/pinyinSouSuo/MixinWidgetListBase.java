@@ -7,7 +7,10 @@ import com.plusls.MasaGadget.impl.mod_tweak.malilib.pinyinSouSuo.PinInHelper;
 import fi.dy.masa.malilib.gui.widgets.WidgetListBase;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 
+@Dependencies(conflict = @Dependency("jecharacters"))
 @Mixin(value = WidgetListBase.class, remap = false)
 public class MixinWidgetListBase {
     //#if MC > 11701
