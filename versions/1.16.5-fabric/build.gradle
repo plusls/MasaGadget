@@ -108,15 +108,16 @@ dependencies {
 
     // Dependency
     modApi(annotationProcessor("top.hendrixshen.magiclib:magiclib-all-${project.name}:${project.property("dependencies.magiclib_version")}"))
-    modImplementation(include("com.github.Towdium:PinIn:${project.property("dependencies.pinin_version")}"))
 
     switch (modPlatform) {
         case "fabric":
+            implementation(include("com.github.Towdium:PinIn:${project.property("dependencies.pinin_version")}"))
             break
         case "forge":
             forge("net.minecraftforge:forge:${project.property("dependencies.minecraft_version")}-${project.property("dependencies.forge_version")}")
             break
         case "neoforge":
+            forgeDependencies(include("com.github.Towdium:PinIn:${project.property("dependencies.pinin_version")}"))
             neoForge("net.neoforged:neoforge:${project.property("dependencies.neoforge_version")}")
             break
     }
