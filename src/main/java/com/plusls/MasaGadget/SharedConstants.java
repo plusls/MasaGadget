@@ -8,9 +8,10 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.compat.minecraft.resources.ResourceLocationCompat;
 import top.hendrixshen.magiclib.api.i18n.I18n;
+import top.hendrixshen.magiclib.api.malilib.config.MagicConfigHandler;
 import top.hendrixshen.magiclib.api.malilib.config.MagicConfigManager;
 import top.hendrixshen.magiclib.impl.malilib.config.GlobalConfigManager;
-import top.hendrixshen.magiclib.impl.malilib.config.MagicConfigHandler;
+import top.hendrixshen.magiclib.impl.malilib.config.MagicConfigHandlerImpl;
 import top.hendrixshen.magiclib.util.VersionUtil;
 
 public class SharedConstants {
@@ -25,7 +26,7 @@ public class SharedConstants {
     @Getter
     private static final MagicConfigManager configManager = GlobalConfigManager.getConfigManager(SharedConstants.getModIdentifier());
     @Getter
-    private static final MagicConfigHandler configHandler = new MagicConfigHandler(configManager, 1);
+    private static final MagicConfigHandler configHandler = new MagicConfigHandlerImpl(configManager, 1);
     @Getter
     private static final Logger logger = LogManager.getLogger(SharedConstants.modIdentifier);
 

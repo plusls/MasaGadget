@@ -13,7 +13,7 @@
     "accessor.AccessorLivingEntity",
     "accessor.AccessorVillager",
     "accessor.AccessorZombieVillager",
-    "event.disconnect.MixinMinecraftClient",
+    "event.MixinMinecraft",
     "feature.autoSyncEntityData.MixinClientPlayNetworkHandler",
     "feature.autoSyncEntityData.MixinVillagerEntity",
     "feature.autoSyncEntityData.MixinZombieVillagerEntity",
@@ -58,5 +58,8 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "network.MixinMagicPacketRegisterCenter"
+  ]
 }

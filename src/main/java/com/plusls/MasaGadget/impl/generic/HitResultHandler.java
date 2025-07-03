@@ -1,6 +1,7 @@
 package com.plusls.MasaGadget.impl.generic;
 
 import com.google.common.collect.Sets;
+import com.plusls.MasaGadget.api.event.MinecraftListener;
 import com.plusls.MasaGadget.impl.mod_tweak.tweakeroo.inventoryPreviewSupportSelect.InventoryOverlayRenderHandler;
 import com.plusls.MasaGadget.util.InventoryPreviewSyncDataClientOnlyUtil;
 import com.plusls.MasaGadget.util.InventoryPreviewSyncDataUtil;
@@ -10,7 +11,6 @@ import fi.dy.masa.malilib.util.WorldUtils;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.config.Hotkeys;
 import lombok.Getter;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,7 +30,7 @@ import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 import java.util.*;
 
-public class HitResultHandler {
+public class HitResultHandler implements MinecraftListener {
     @Getter
     private static final HitResultHandler instance = new HitResultHandler();
 
@@ -43,7 +43,7 @@ public class HitResultHandler {
 
     @ApiStatus.Internal
     public void init() {
-        ClientTickEvents.END_CLIENT_TICK.register(minecraft -> HitResultHandler.getInstance().endClientTickCallback());
+        MagicLib.getInstance().getEventManager().register(MinecraftListener.class, this);
 
         if (MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.tweakeroo)) {
             this.registerOnHitCallback(InventoryPreviewSyncDataUtil::onHitCallback);
@@ -191,7 +191,17 @@ public class HitResultHandler {
         return this.lastHitResult != null && this.lastInventoryPreviewStatus;
     }
 
-    public void endClientTickCallback() {
+    public void registerOnHitCallback(HitResultCallback callback) {
+        this.hitCallbacks.add(callback);
+    }
+
+    @Override
+    public void onDisconnect() {
+        // NO-OP
+    }
+
+    @Override
+    public void onTickEnd() {
         ProfilerFiller profiler = ProfilerCompat.get();
         Level level = WorldUtils.getBestWorld(Minecraft.getInstance());
 
@@ -241,10 +251,6 @@ public class HitResultHandler {
 
         profiler.pop();
         this.lastInventoryPreviewStatus = currentStatus;
-    }
-
-    public void registerOnHitCallback(HitResultCallback callback) {
-        this.hitCallbacks.add(callback);
     }
 
     @FunctionalInterface
