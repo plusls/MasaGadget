@@ -7,8 +7,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-//#if MC > 12104
+//#if 12106 > MC && MC > 12104
 //$$ import com.mojang.blaze3d.buffers.BufferUsage;
+//#endif
+
+//#if MC > 12104
 //$$ import fi.dy.masa.malilib.render.MaLiLibPipelines;
 //$$ import fi.dy.masa.malilib.render.RenderContext;
 //#elseif MC > 11605
@@ -33,7 +36,15 @@ public class RenderUtil {
         pos1 = pos1.subtract(camPos);
         pos2 = pos2.subtract(camPos);
         //#if MC > 12104
-        //$$ RenderContext ctx = new RenderContext(MaLiLibPipelines.DEBUG_LINES_MASA_SIMPLE_NO_DEPTH_NO_CULL, BufferUsage.STATIC_WRITE);
+        //$$ RenderContext ctx = new RenderContext(
+        //$$         //#if MC >= 12107
+        //$$         //$$ () -> "masa_gadget:line",
+        //$$         //#endif
+        //$$         MaLiLibPipelines.DEBUG_LINES_MASA_SIMPLE_NO_DEPTH_NO_CULL
+        //$$         //#if MC < 12106
+        //$$         , BufferUsage.STATIC_WRITE
+        //$$         //#endif
+        //$$ );
         //$$ BufferBuilder builder = ctx.getBuilder();
         //#else
         Tesselator tesselator = Tesselator.getInstance();
@@ -75,7 +86,15 @@ public class RenderUtil {
         pos = pos.subtract(camPos);
 
         //#if MC > 12104
-        //$$ RenderContext ctx = new RenderContext(MaLiLibPipelines.DEBUG_LINES_MASA_SIMPLE_NO_DEPTH_NO_CULL, BufferUsage.STATIC_WRITE);
+        //$$ RenderContext ctx = new RenderContext(
+        //$$         //#if MC >= 12107
+        //$$         //$$ () -> "masa_gadget:outline_box",
+        //$$         //#endif
+        //$$         MaLiLibPipelines.DEBUG_LINES_MASA_SIMPLE_NO_DEPTH_NO_CULL
+        //$$         //#if MC < 12106
+        //$$         , BufferUsage.STATIC_WRITE
+        //$$         //#endif
+        //$$ );
         //$$ BufferBuilder builder = ctx.getBuilder();
         //#else
         Tesselator tesselator = Tesselator.getInstance();

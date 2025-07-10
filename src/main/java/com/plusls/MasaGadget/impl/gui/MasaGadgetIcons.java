@@ -52,12 +52,15 @@ public enum MasaGadgetIcons implements IGuiIcon {
 
     @Override
     public void renderAt(
+            //#if MC >= 12106
+            //$$ GuiGraphics guiGraphics,
+            //#endif
             int x,
             int y,
             float zLevel,
             boolean enabled,
             boolean selected
-            //#if MC > 12101
+            //#if 12106 > MC && MC > 12101
             //$$ , GuiGraphics guiGraphics
             //#endif
     ) {
@@ -73,19 +76,22 @@ public enum MasaGadgetIcons implements IGuiIcon {
         }
 
         RenderUtils.drawTexturedRect(
-            //#if MC > 12104
-            //$$ this.getTexture(),
-            //#endif
-            x,
-            y,
-            u,
-            v,
-            this.w,
-            this.h,
-            zLevel
-            //#if MC > 12104
-            //$$ , guiGraphics
-            //#endif
+                //#if MC >= 12106
+                //$$ guiGraphics,
+                //#endif
+                //#if MC > 12104
+                //$$ this.getTexture(),
+                //#endif
+                x,
+                y,
+                u,
+                v,
+                this.w,
+                this.h,
+                zLevel
+                //#if 12106 > MC && MC > 12104
+                //$$ , guiGraphics
+                //#endif
         );
     }
 

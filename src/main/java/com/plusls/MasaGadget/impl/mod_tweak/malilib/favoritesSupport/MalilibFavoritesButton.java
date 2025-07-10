@@ -34,6 +34,15 @@ public class MalilibFavoritesButton extends WidgetHoverInfo {
         return new MalilibFavoritesButton(x, y, MasaGadgetIcons.FAVORITE, defaultStatus, onPress, tooltipSupplier);
     }
 
+    //#if MC >= 12106
+    //$$ public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean selected) {
+    //$$     icon.renderAt(guiGraphics, this.x, this.y, (float) this.zLevel, this.status, this.isMouseOver(mouseX, mouseY));
+    //$$
+    //$$     if (this.isMouseOver(mouseX, mouseY)) {
+    //$$         RenderUtils.drawOutlinedBox(guiGraphics, this.x, this.y, this.width, this.height, 0x20C0C0C0, -520093697);
+    //$$     }
+    //$$ }
+    //#else
     @Override
     public void render(
             int mouseX,
@@ -67,6 +76,7 @@ public class MalilibFavoritesButton extends WidgetHoverInfo {
             RenderUtils.drawOutlinedBox(this.x, this.y, this.width, this.height, 0x20C0C0C0, -520093697);
         }
     }
+    //#endif
 
     protected boolean onMouseClickedImpl(int mouseX, int mouseY, int mouseButton) {
         this.status = !this.status;

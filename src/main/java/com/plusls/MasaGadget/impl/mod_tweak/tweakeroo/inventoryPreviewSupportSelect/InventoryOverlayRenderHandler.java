@@ -12,7 +12,11 @@ import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import top.hendrixshen.magiclib.api.render.context.RenderContext;
+import top.hendrixshen.magiclib.api.render.context.GuiRenderContext;
+
+//#if MC >= 12106
+//$$ import net.minecraft.core.component.DataComponents;
+//#endif
 
 //#if MC > 12101
 //$$ import net.minecraft.client.renderer.RenderType;
@@ -90,7 +94,7 @@ public class InventoryOverlayRenderHandler {
         }
     }
 
-    public void render(@NotNull RenderContext renderContext) {
+    public void render(@NotNull GuiRenderContext renderContext) {
         //#if MC > 11605 && MC < 12000
         //$$ RenderSystem.applyModelViewMatrix();
         //#endif
@@ -109,14 +113,14 @@ public class InventoryOverlayRenderHandler {
         this.dropState();
     }
 
-    private void attachToMainInventoryView(RenderContext renderContext) {
+    private void attachToMainInventoryView(GuiRenderContext renderContext) {
         if (!this.selectInventory) {
             this.renderSlotHighlight(renderContext, this.renderX, this.renderY);
             this.renderTooltip(renderContext, this.itemStack, this.renderX, this.renderY);
         }
     }
 
-    private void attachToSubShulkerBoxView(RenderContext renderContext) {
+    private void attachToSubShulkerBoxView(GuiRenderContext renderContext) {
         if (!this.selectInventory) {
             return;
         }
@@ -128,17 +132,21 @@ public class InventoryOverlayRenderHandler {
         }
 
         //#if MC > 11904
-        //$$ GuiGraphics gui = renderContext.getGuiComponent();
+        //$$ GuiGraphics guiGraphics = renderContext.getGuiComponent();
         //#endif
 
         this.renderSlotHighlight(renderContext, this.renderX, this.renderY);
         this.renderingSubInventory = true;
-        RenderUtils.renderShulkerBoxPreview(this.itemStack,
+        RenderUtils.renderShulkerBoxPreview(
+                //#if MC >= 12107
+                //$$ guiGraphics,
+                //#endif
+                this.itemStack,
                 GuiUtils.getScaledWindowWidth() / 2 - 96,
                 GuiUtils.getScaledWindowHeight() / 2 + 30,
                 true
-                //#if MC > 11904
-                //$$ , gui
+                //#if 12106 > MC && MC > 11904
+                //$$ , guiGraphics
                 //#endif
         );
         this.renderingSubInventory = false;
@@ -148,7 +156,9 @@ public class InventoryOverlayRenderHandler {
                 this.subItemStack != null
         ) {
             renderContext.pushMatrix();
-            renderContext.translate(0, 0, 400);
+            //#if MC < 12106
+            renderContext.translateDirect(0, 0, 400);
+            //#endif
             this.renderSlotHighlight(renderContext, this.subRenderX, this.subRenderY);
             this.renderTooltip(renderContext, this.subItemStack, this.subRenderX, this.subRenderY);
             renderContext.popMatrix();
@@ -247,9 +257,22 @@ public class InventoryOverlayRenderHandler {
         }
     }
 
-    private void renderSlotHighlight(@NotNull RenderContext renderContext, int x, int y) {
+    private void renderSlotHighlight(@NotNull GuiRenderContext renderContext, int x, int y) {
         //#if MC > 12101
-        //$$ renderContext.getGuiComponent().fillGradient(RenderType.guiOverlay(), x, y, x + 16, y + 16, 0x80FFFFFF, 0x80FFFFFF, 0);
+        //$$ renderContext.getGuiComponent().fillGradient(
+        //$$         //#if MC < 12106
+        //$$         RenderType.guiOverlay(),
+        //$$         //#endif
+        //$$         x,
+        //$$         y,
+        //$$         x + 16,
+        //$$         y + 16,
+        //$$         0x80FFFFFF,
+        //$$         0x80FFFFFF
+        //$$         //#if MC < 12106
+        //$$         , 0
+        //$$         //#endif
+        //$$ );
         //#elseif MC > 11605
         //$$ AbstractContainerScreen.renderSlotHighlight(
         //#if MC > 11904
@@ -265,10 +288,10 @@ public class InventoryOverlayRenderHandler {
         RenderGlobal.disableDepthTest();
         RenderGlobal.colorMask(true, true, true, false);
         renderContext.pushMatrix();
-        renderContext.translate(0, 0, 400);
+        renderContext.translateDirect(0, 0, 400);
         ((AccessorGuiComponent) renderContext.getGuiComponent()).masa_gadget_mod$fillGradient(
                 //#if MC > 11502
-                renderContext.getMatrixStack().getPoseStack(),
+                renderContext.getPoseStack(),
                 //#endif
                 x,
                 y,
@@ -283,22 +306,28 @@ public class InventoryOverlayRenderHandler {
         //#endif
     }
 
-    private void renderTooltip(RenderContext renderContext, @NotNull ItemStack itemStack, int x, int y) {
+    private void renderTooltip(GuiRenderContext renderContext, @NotNull ItemStack itemStack, int x, int y) {
         Minecraft mc = Minecraft.getInstance();
         //#if MC > 11904
         //$$ renderContext.getGuiComponent().renderTooltip(
         //$$         mc.font,
-        //#if MC > 12006
-        // TODO: Consider how to treat this after the PCA protocol rewrite.
-        // Ugly fix for MC 1.21+ enchantment becomes data-driven changes (Use Registry Sync).
-        // Note: This will not work if Tweakeroo changes the way it fetches item data.
-        //       Registry Sync must be encoded and decoded using the same registries.
-        //       Otherwise, the codec will not be able to parse the data correctly.
-        //$$         itemStack.getTooltipLines(Item.TooltipContext.of(WorldUtils.getBestWorld(mc)), mc.player, mc.options.advancedItemTooltips ? TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL),
-        //#else
+        //$$         //#if MC > 12006
+        //$$         // TODO: Consider how to treat this after the PCA protocol rewrite.
+        //$$         // Ugly fix for MC 1.21+ enchantment becomes data-driven changes (Use Registry Sync).
+        //$$         // Note: This will not work if Tweakeroo changes the way it fetches item data.
+        //$$         //       Registry Sync must be encoded and decoded using the same registries.
+        //$$         //       Otherwise, the codec will not be able to parse the data correctly.
+        //$$         //$$ itemStack.getTooltipLines(Item.TooltipContext.of(WorldUtils.getBestWorld(mc)), mc.player, mc.options.advancedItemTooltips ? TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL),
+        //$$         //#else
         //$$         Screen.getTooltipFromItem(mc, itemStack),
+        //$$         //#endif
+        //$$         itemStack.getTooltipImage(),
+        //$$         x,
+        //$$         y
+        //$$ );
+        //#if MC >= 12106
+        //$$ renderContext.getGuiComponent().renderDeferredTooltip();
         //#endif
-        //$$         itemStack.getTooltipImage(), x, y);
         //#else
         List<Component> tooltipLines = itemStack.getTooltipLines(mc.player, mc.options.advancedItemTooltips ?
                 TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL);
@@ -332,7 +361,7 @@ public class InventoryOverlayRenderHandler {
         }
 
         renderContext.pushMatrix();
-        renderContext.translate(0, 0, 400);
+        renderContext.translateDirect(0, 0, 400);
 
         //#if MC < 11904
         float backupBlitOffset = mc.getItemRenderer().blitOffset;
@@ -342,7 +371,7 @@ public class InventoryOverlayRenderHandler {
         AccessorGuiComponent guiComponent = (AccessorGuiComponent) renderContext.getGuiComponent();
         guiComponent.masa_gadget_mod$fillGradient(
                 //#if MC > 11502
-                renderContext.getMatrixStack().getPoseStack(),
+                renderContext.getPoseStack(),
                 //#endif
                 renderX - 3,
                 renderY - 4,
@@ -353,7 +382,7 @@ public class InventoryOverlayRenderHandler {
         );
         guiComponent.masa_gadget_mod$fillGradient(
                 //#if MC > 11502
-                renderContext.getMatrixStack().getPoseStack(),
+                renderContext.getPoseStack(),
                 //#endif
                 renderX - 3,
                 renderY + yOffset + 3,
@@ -364,7 +393,7 @@ public class InventoryOverlayRenderHandler {
         );
         guiComponent.masa_gadget_mod$fillGradient(
                 //#if MC > 11502
-                renderContext.getMatrixStack().getPoseStack(),
+                renderContext.getPoseStack(),
                 //#endif
                 renderX - 3,
                 renderY - 3,
@@ -375,7 +404,7 @@ public class InventoryOverlayRenderHandler {
         );
         guiComponent.masa_gadget_mod$fillGradient(
                 //#if MC > 11502
-                renderContext.getMatrixStack().getPoseStack(),
+                renderContext.getPoseStack(),
                 //#endif
                 renderX - 4,
                 renderY - 3,
@@ -386,7 +415,7 @@ public class InventoryOverlayRenderHandler {
         );
         guiComponent.masa_gadget_mod$fillGradient(
                 //#if MC > 11502
-                renderContext.getMatrixStack().getPoseStack(),
+                renderContext.getPoseStack(),
                 //#endif
                 renderX + xOffset + 3,
                 renderY - 3,
@@ -397,7 +426,7 @@ public class InventoryOverlayRenderHandler {
         );
         guiComponent.masa_gadget_mod$fillGradient(
                 //#if MC > 11502
-                renderContext.getMatrixStack().getPoseStack(),
+                renderContext.getPoseStack(),
                 //#endif
                 renderX - 3,
                 renderY - 3 + 1,
@@ -408,7 +437,7 @@ public class InventoryOverlayRenderHandler {
         );
         guiComponent.masa_gadget_mod$fillGradient(
                 //#if MC > 11502
-                renderContext.getMatrixStack().getPoseStack(),
+                renderContext.getPoseStack(),
                 //#endif
                 renderX + xOffset + 2,
                 renderY - 3 + 1,
@@ -419,7 +448,7 @@ public class InventoryOverlayRenderHandler {
         );
         guiComponent.masa_gadget_mod$fillGradient(
                 //#if MC > 11502
-                renderContext.getMatrixStack().getPoseStack(),
+                renderContext.getPoseStack(),
                 //#endif
                 renderX - 3,
                 renderY - 3,
@@ -430,7 +459,7 @@ public class InventoryOverlayRenderHandler {
         );
         guiComponent.masa_gadget_mod$fillGradient(
                 //#if MC > 11502
-                renderContext.getMatrixStack().getPoseStack(),
+                renderContext.getPoseStack(),
                 //#endif
                 renderX - 3,
                 renderY + yOffset + 2,
@@ -440,7 +469,7 @@ public class InventoryOverlayRenderHandler {
                 0x5028007F
         );
 
-        renderContext.translate(0, 0, 1);
+        renderContext.translateDirect(0, 0, 1);
         FontCompat fontCompat = FontCompat.of(mc.font);
 
         for (int i = 0; i < tooltipLines.size(); i++) {

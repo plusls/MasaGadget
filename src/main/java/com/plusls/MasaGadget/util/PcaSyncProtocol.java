@@ -1,6 +1,5 @@
 package com.plusls.MasaGadget.util;
 
-import com.google.common.collect.Sets;
 import com.mojang.serialization.Dynamic;
 import com.plusls.MasaGadget.SharedConstants;
 import com.plusls.MasaGadget.api.event.DisconnectListener;
@@ -20,7 +19,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
@@ -36,7 +34,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.api.compat.minecraft.nbt.TagCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.resources.ResourceLocationCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.world.SimpleContainerCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.player.PlayerCompat;
@@ -50,10 +47,20 @@ import top.hendrixshen.magiclib.api.network.packet.ServerboundPacketHandler;
 import top.hendrixshen.magiclib.util.minecraft.NetworkUtil;
 
 import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+
+//#if MC >= 12106
+//$$ import com.mojang.logging.LogUtils;
+//$$ import net.minecraft.util.ProblemReporter;
+//$$ import net.minecraft.world.ItemStackWithSlot;
+//$$ import net.minecraft.world.level.storage.TagValueInput;
+//$$ import net.minecraft.world.level.storage.ValueInput;
+//$$ import org.slf4j.Logger;
+//#else
+import top.hendrixshen.magiclib.api.compat.minecraft.nbt.TagCompat;
+//#endif
 
 //#if MC > 12104
 //$$ import net.minecraft.core.UUIDUtil;
@@ -64,6 +71,10 @@ import java.util.function.Consumer;
 //#endif
 
 public class PcaSyncProtocol {
+    //#if MC >= 12106
+    //$$ private static final Logger LOGGER = LogUtils.getLogger();
+    //#endif
+
     private static final String NAMESPACE = "pca";
     private static final AtomicBoolean registeredPackers = new AtomicBoolean();
     private static BlockPos lastBlockPos = null;
@@ -162,6 +173,14 @@ public class PcaSyncProtocol {
         if (entity != null) {
             SharedConstants.getLogger().debug("update entity!");
 
+            //#if MC >= 12106
+            //$$ ValueInput input;
+            //$$
+            //$$ try (ProblemReporter.ScopedCollector collector = new ProblemReporter.ScopedCollector(entity.problemPath(), PcaSyncProtocol.LOGGER)) {
+            //$$     input = TagValueInput.create(collector, entity.registryAccess(), tag);
+            //$$ }
+            //#endif
+
             if (entity instanceof Mob) {
                 if (
                     //#if MC > 12104
@@ -178,9 +197,13 @@ public class PcaSyncProtocol {
                 NonNullList<ItemStack> itemStacks = ((AccessorAbstractMinecartContainer) entity).masa_gadget_mod$getItemStacks();
                 itemStacks.clear();
                 ContainerHelper.loadAllItems(
+                        //#if MC >= 12106
+                        //$$ input,
+                        //#else
                         tag,
+                        //#endif
                         itemStacks
-                        //#if MC > 12004
+                        //#if 12106 >= MC && MC > 12004
                         //$$ , mc.level.registryAccess()
                         //#endif
                 );
@@ -188,6 +211,11 @@ public class PcaSyncProtocol {
 
             if (entity instanceof AbstractVillager) {
                 ((AbstractVillager) entity).getInventory().clearContent();
+                //#if MC >= 12106
+                //$$ input.list("Inventory", ItemStack.CODEC).ifPresent(itemStacks ->
+                //$$         SimpleContainerCompat.of(((AbstractVillager) entity).getInventory()).fromTag(itemStacks));
+                //$$ ((AccessorAbstractVillager) entity).masa_gadget_mod$setOffers(input.read("Offers", MerchantOffers.CODEC).orElse(null));
+                //#else
                 SimpleContainerCompat.of(((AbstractVillager) entity).getInventory()).fromTag(
                         //#if MC > 12104
                         //$$ tag.getListOrEmpty("Inventory")
@@ -209,6 +237,7 @@ public class PcaSyncProtocol {
                 //$$ }
                 //#else
                 ((AccessorAbstractVillager) entity).masa_gadget_mod$setOffers(new MerchantOffers(tag.getCompound("Offers")));
+                //#endif
                 //#endif
 
                 if (entity instanceof Villager) {
@@ -232,11 +261,21 @@ public class PcaSyncProtocol {
 
             if (entity instanceof AbstractHorse) {
                 // TODO 写的更优雅一些
-                entity.load(tag);
+                entity.load(
+                        //#if MC >= 12106
+                        //$$ input
+                        //#else
+                        tag
+                        //#endif
+                );
             }
 
             if (entity instanceof Player) {
                 Player playerEntity = (Player) entity;
+                //#if MC >= 12106
+                //$$ PlayerCompat.of(playerEntity).getInventory().load(input.listOrEmpty("Inventory", ItemStackWithSlot.CODEC));
+                //$$ playerEntity.getEnderChestInventory().fromSlots(input.listOrEmpty("EnderItems", ItemStackWithSlot.CODEC));
+                //#else
                 PlayerCompat.of(playerEntity).getInventory().load(
                         //#if MC > 12104
                         //$$ tag.getListOrEmpty("Inventory")
@@ -258,6 +297,7 @@ public class PcaSyncProtocol {
                             //#endif
                     );
                 }
+                //#endif
                 //#endif
             }
 
