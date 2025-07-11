@@ -198,7 +198,7 @@ jobs:
           curseforge-token: ${{ secrets.CF_API_TOKEN || '${undefined}' }}
           files: ${{ steps.file_info.outputs.path }}
           changelog: ${{ steps.changelog.outputs.result }}
-          name: ${{ needs.create_github_release.outputs.release_title }}
+          name: ${{ needs.create_github_release.outputs.release_title }} for MC ${{ matrix.mc_ver }} (${{ matrix.platform }})
           version: ${{ format('v{0}.{1}-mc{2}-{3}', needs.create_github_release.outputs.mod_version, needs.create_github_release.outputs.commit_count, matrix.mc_ver, matrix.platform) }}
           version-type: alpha
           loaders: ${{ steps.publish_info.outputs.publish_loaders }}
@@ -217,7 +217,7 @@ jobs:
           curseforge-token: ${{ secrets.CF_API_TOKEN || '${undefined}' }}
           files: ${{ steps.file_info.outputs.path }}
           changelog: ${{ steps.changelog.outputs.result }}
-          name: ${{ needs.create_github_release.outputs.release_title }}
+          name: ${{ needs.create_github_release.outputs.release_title }} for MC ${{ matrix.mc_ver }} (${{ matrix.platform }})
           version: ${{ format('v{0}.{1}-mc{2}-{3}', needs.create_github_release.outputs.mod_version, needs.create_github_release.outputs.commit_count, matrix.mc_ver, matrix.platform) }}
           version-type: ${{ github.event.release.prerelease && 'beta' || 'release' }}
           loaders: ${{ steps.publish_info.outputs.publish_loaders }}
