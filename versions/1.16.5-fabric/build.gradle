@@ -211,55 +211,6 @@ loom {
             }
         }
     }
-
-    // Setup client default settings.
-    runClient {
-        defaultCharacterEncoding = "UTF-8"
-
-        doFirst {
-            file("${project.projectDir}/run/client/config").mkdirs()
-            file("${project.projectDir}/run/client/options.txt").with { File f ->
-                {
-                    if (!f.exists()) {
-                        f.parentFile.mkdirs()
-                        f.withWriter { BufferedWriter writer ->
-                            writer.writeLine("autoJump:false")
-                            writer.writeLine("enableVsync:false")
-                            writer.writeLine("forceUnicodeFont:true")
-                            writer.writeLine("fov:1.0")
-                            writer.writeLine("gamma:16.0")
-                            writer.writeLine("guiScale:3")
-                            writer.writeLine("lang:${Locale.getDefault().toString().toLowerCase()}")
-                            writer.writeLine("maxFps:260")
-                            writer.writeLine("renderDistance:10")
-                            writer.writeLine("soundCategory_master:0.0")
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // Setup server default settings.
-    runServer {
-        defaultCharacterEncoding = "UTF-8"
-
-        doFirst {
-            // Agree eula before server init.
-            file("${project.projectDir}/run/server/eula.txt").with { File f ->
-                {
-                    if (!f.exists()) {
-                        f.parentFile.mkdirs()
-                        f.withWriter { BufferedWriter writer ->
-                            writer.writeLine("#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).")
-                            writer.writeLine("#${new Date()}")
-                            writer.writeLine("eula=true")
-                        }
-                    }
-                }
-            }
-        }
-    }
 }
 
 base {
@@ -396,6 +347,59 @@ tasks.withType(JavaCompile).configureEach { JavaCompile task ->
     } else {
         task.options.release.set(8)
         options.compilerArgs << '-Xlint:-options'
+    }
+}
+
+// Setup client default settings.
+tasks.named("runClient") {
+    defaultCharacterEncoding = "UTF-8"
+
+    doFirst {
+        file("${project.projectDir}/run/client/config").mkdirs()
+        file("${project.projectDir}/run/client/options.txt").with { File f ->
+            {
+                if (!f.exists()) {
+                    f.parentFile.mkdirs()
+                    f.withWriter { BufferedWriter writer ->
+                        writer.writeLine("autoJump:false")
+                        writer.writeLine("enableVsync:false")
+                        writer.writeLine("forceUnicodeFont:true")
+                        writer.writeLine("fov:1.0")
+
+                        if (mcVersion < 11900) {
+                            writer.writeLine("gamma:16.0")
+                        }
+
+                        writer.writeLine("guiScale:3")
+                        writer.writeLine("lang:${Locale.getDefault().toString().toLowerCase()}")
+                        writer.writeLine("maxFps:260")
+                        writer.writeLine("renderDistance:10")
+                        writer.writeLine("soundCategory_master:0.0")
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Setup server default settings.
+tasks.named("runServer") {
+    defaultCharacterEncoding = "UTF-8"
+
+    doFirst {
+        // Agree eula before server init.
+        file("${project.projectDir}/run/server/eula.txt").with { File f ->
+            {
+                if (!f.exists()) {
+                    f.parentFile.mkdirs()
+                    f.withWriter { BufferedWriter writer ->
+                        writer.writeLine("#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).")
+                        writer.writeLine("#${new Date()}")
+                        writer.writeLine("eula=true")
+                    }
+                }
+            }
+        }
     }
 }
 

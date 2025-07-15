@@ -40,7 +40,7 @@ public abstract class MixinInGameHud {
             CallbackInfo ci
     ) {
         if (Configs.inventoryPreviewSupportSelect.getBooleanValue()) {
-            InventoryOverlayRenderHandler.getInstance().render(RenderContext.of(
+            InventoryOverlayRenderHandler.getInstance().render(RenderContext.gui(
                     //#if MC > 11502
                     poseStackOrGuiGraphics
                     //#endif

@@ -6,6 +6,7 @@ import com.plusls.MasaGadget.util.MiscUtil;
 import com.plusls.MasaGadget.util.SyncUtil;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Position;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -18,8 +19,11 @@ import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.event.minecraft.render.RenderEntityListener;
 import top.hendrixshen.magiclib.api.event.minecraft.render.RenderLevelListener;
+import top.hendrixshen.magiclib.api.render.context.LevelRenderContext;
 import top.hendrixshen.magiclib.api.render.context.RenderContext;
 import top.hendrixshen.magiclib.impl.render.TextRenderer;
+import top.hendrixshen.magiclib.impl.render.context.EntityRenderContext;
+import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 
 import java.util.Queue;
 
@@ -42,12 +46,12 @@ public class EntityInfoRenderer implements RenderEntityListener, RenderLevelList
     }
 
     @Override
-    public void preRenderEntity(Entity entity, RenderContext renderContext, float partialTicks) {
+    public void preRenderEntity(Entity entity, EntityRenderContext renderContext) {
         // NO-OP
     }
 
     @Override
-    public void postRenderEntity(Entity entity, RenderContext renderContext, float partialTicks) {
+    public void postRenderEntity(Entity entity, EntityRenderContext renderContext) {
         if ((entity instanceof Villager &&
                 (Configs.renderNextRestockTime.getBooleanValue() || Configs.renderTradeEnchantedBook.getBooleanValue())) ||
                 (entity instanceof ZombieVillager && (Configs.renderZombieVillagerConvertTime.getBooleanValue()))) {
@@ -56,12 +60,14 @@ public class EntityInfoRenderer implements RenderEntityListener, RenderLevelList
     }
 
     @Override
-    public void preRenderLevel(Level level, RenderContext renderContext, float partialTicks) {
+    public void preRenderLevel(ClientLevel level, LevelRenderContext renderContext) {
         // NO-OP
     }
 
     @Override
-    public void postRenderLevel(Level level, RenderContext renderContext, float partialTicks) {
+    public void postRenderLevel(ClientLevel level, LevelRenderContext renderContext) {
+        float partialTick = RenderUtil.getPartialTick();
+
         for (Entity entity : this.queue) {
             if (entity instanceof Villager) {
                 Villager villager = MiscUtil.cast(SyncUtil.syncEntityDataFromIntegratedServer(entity));
@@ -80,10 +86,10 @@ public class EntityInfoRenderer implements RenderEntityListener, RenderLevelList
                 }
 
                 if (villager.isSleeping()) {
-                    Position position = entity.getEyePosition(partialTicks);
+                    Position position = entity.getEyePosition(partialTick);
                     renderer.at(position.x(), position.y() + 0.4F, position.z());
                 } else {
-                    EntityInfoRenderer.rotationAround(renderer, entity.getEyePosition(partialTicks), 0.6);
+                    EntityInfoRenderer.rotationAround(renderer, entity.getEyePosition(partialTick), 0.6);
                 }
 
                 renderer.bgColor((int) (Minecraft.getInstance().options.getBackgroundOpacity(0.25F) * 255.0F) << 24)
@@ -92,7 +98,7 @@ public class EntityInfoRenderer implements RenderEntityListener, RenderLevelList
                         .render();
             } else if (entity instanceof ZombieVillager) {
                 ZombieVillager zombieVillager = MiscUtil.cast(SyncUtil.syncEntityDataFromIntegratedServer(entity));
-                EntityInfoRenderer.rotationAround(TextRenderer.create(), entity.getEyePosition(partialTicks), 0.6)
+                EntityInfoRenderer.rotationAround(TextRenderer.create(), entity.getEyePosition(partialTick), 0.6)
                         .text(ZombieVillagerConvertTimeInfo.getInfo(zombieVillager))
                         .bgColor((int) (Minecraft.getInstance().options.getBackgroundOpacity(0.25F) * 255.0F) << 24)
                         .fontScale(0.015F)

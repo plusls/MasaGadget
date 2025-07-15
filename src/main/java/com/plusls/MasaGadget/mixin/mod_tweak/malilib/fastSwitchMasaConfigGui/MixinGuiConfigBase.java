@@ -77,10 +77,13 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
         }
 
         this.masa_gadget$masaModGuiList.render(
+                //#if MC >= 12106
+                //$$ poseStackOrGuiGraphics,
+                //#endif
                 mouseX,
                 mouseY,
                 false
-                //#if MC > 11502
+                //#if 12106 > MC && MC > 11502
                 , poseStackOrGuiGraphics
                 //#endif
         );
@@ -90,9 +93,12 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
         }
 
         this.drawHoveredWidget(
+                //#if MC >= 12106
+                //$$ poseStackOrGuiGraphics,
+                //#endif
                 mouseX,
                 mouseY
-                //#if MC > 11502
+                //#if 12106 > MC && MC > 11502
                 , poseStackOrGuiGraphics
                 //#endif
         );

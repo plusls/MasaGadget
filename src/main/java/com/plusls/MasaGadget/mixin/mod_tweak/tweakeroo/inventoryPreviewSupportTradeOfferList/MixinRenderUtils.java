@@ -12,7 +12,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.DyeColor;
@@ -27,31 +26,12 @@ import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
-//$$ import org.spongepowered.asm.mixin.injection.Inject;
-//$$ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+//$$ import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.sugar.Local;
 //#endif
 
 @Dependencies(require = @Dependency(ModId.tweakeroo))
 @Mixin(value = RenderUtils.class, remap = false)
 public class MixinRenderUtils {
-    //#if MC > 11904
-    //$$ @Unique
-    //$$ private static GuiGraphics masa_gadget$guiGraphics;
-    //$$
-    //$$ @Inject(method = "renderInventoryOverlay", at = @At("HEAD"))
-    //$$ private static void intercept(
-    //#if MC > 12006
-    //$$         InventoryOverlay.Context context,
-    //#else
-    //$$         Minecraft mc,
-    //#endif
-    //$$         GuiGraphics guiGraphics,
-    //$$         CallbackInfo ci
-    //$$ ) {
-    //$$     MixinRenderUtils.masa_gadget$guiGraphics = guiGraphics;
-    //$$ }
-    //#endif
-
     @Unique
     private static final int masa_gadget$maxTradeOfferSize = 9;
 
@@ -64,7 +44,12 @@ public class MixinRenderUtils {
             ),
             ordinal = 0
     )
-    private static Container renderTradeOfferList(Container inv) {
+    private static Container renderTradeOfferList(
+            Container inv
+            //#if MC > 11904
+            //$$ , @Local(argsOnly = true) GuiGraphics guiGraphics
+            //#endif
+    ) {
         if (!Configs.inventoryPreviewSupportTradeOfferList.getBooleanValue()) {
             return inv;
         }
@@ -101,25 +86,35 @@ public class MixinRenderUtils {
         int slotOffsetY = 8;
         InventoryRenderType type = InventoryRenderType.GENERIC;
         DyeColor dye = DyeColor.GREEN;
+        //#if MC < 12106
         //#if MC > 12006
         //$$ float[] colors = fi.dy.masa.malilib.render.RenderUtils.getColorComponents(dye.getTextureDiffuseColor());
         //#else
         float[] colors = dye.getTextureDiffuseColors();
         //#endif
-
         fi.dy.masa.malilib.render.RenderUtils.color(colors[0], colors[1], colors[2], 1.0F);
+        //#endif
         InventoryOverlay.renderInventoryBackground(
+                //#if MC >= 12106
+                //$$ guiGraphics,
+                //#endif
                 type,
                 x,
                 y,
                 MixinRenderUtils.masa_gadget$maxTradeOfferSize,
                 MixinRenderUtils.masa_gadget$maxTradeOfferSize,
+                //#if MC >= 12106
+                //$$ dye.getTextureDiffuseColor(),
+                //#endif
                 Minecraft.getInstance()
-                //#if MC > 12104
-                //$$ , MixinRenderUtils.masa_gadget$guiGraphics
+                //#if 12106 > MC && MC > 12104
+                //$$ , guiGraphics
                 //#endif
         );
         InventoryOverlay.renderInventoryStacks(
+                //#if MC >= 12106
+                //$$ guiGraphics,
+                //#endif
                 type,
                 simpleInventory,
                 x + slotOffsetX,
@@ -128,11 +123,13 @@ public class MixinRenderUtils {
                 0,
                 MixinRenderUtils.masa_gadget$maxTradeOfferSize,
                 Minecraft.getInstance()
-                //#if MC > 11904
-                //$$ , masa_gadget$guiGraphics
+                //#if 12106 > MC && MC > 11904
+                //$$ , guiGraphics
                 //#endif
         );
+        //#if MC < 12106
         fi.dy.masa.malilib.render.RenderUtils.color(1.0F, 1.0F, 1.0F, 1.0F);
+        //#endif
         return inv;
     }
 }

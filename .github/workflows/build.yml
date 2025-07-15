@@ -23,18 +23,10 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 21
-      - name: Validate gradle wrapper
-        uses: gradle/actions/wrapper-validation@v4
-      - name: Cache gradle files
-        uses: actions/cache@v4
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
         with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ./.gradle/loom-cache
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle', '**/gradle.properties', '**/*.accesswidener', 'settings.json') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+          cache-read-only: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/master' && github.ref != 'refs/heads/dev' }}
       - name: Build and publish with gradle
         if: ${{ inputs.build_publish == true }}
         run: |

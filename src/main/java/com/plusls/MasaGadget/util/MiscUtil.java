@@ -15,13 +15,14 @@ import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.chunk.LevelChunk;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.EntityCompat;
 import top.hendrixshen.magiclib.api.i18n.I18n;
 
 public class MiscUtil extends top.hendrixshen.magiclib.util.MiscUtil {
     public static <T extends Entity> T getBestEntity(T entity) {
         // Only try to fetch the corresponding server world if the entity is in the actual client world.
         // Otherwise the entity may be for example in Litematica's schematic world.
-        Level world = entity.getCommandSenderWorld();
+        Level world = EntityCompat.of(entity).getLevel();
         Minecraft client = Minecraft.getInstance();
         T ret = entity;
         if (world == client.level) {

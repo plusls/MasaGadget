@@ -1,6 +1,6 @@
 package com.plusls.MasaGadget.mixin.event;
 
-import com.plusls.MasaGadget.impl.event.DisconnectEvent;
+import com.plusls.MasaGadget.impl.event.MinecraftEvent;
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,12 +20,12 @@ public abstract class MixinMinecraft {
     )
     private void onDisconnect(CallbackInfo ci) {
         if (!Minecraft.getInstance().hasSingleplayerServer()) {
-            EventManager.dispatch(new DisconnectEvent());
+            EventManager.dispatch(new MinecraftEvent.DisconnectEvent());
         }
     }
 
     @Inject(method = "tick", at = @At("RETURN"))
     private void onTickEnd(CallbackInfo ci) {
-        EventManager.dispatch(new DisconnectEvent());
+        EventManager.dispatch(new MinecraftEvent.TickEndEvent());
     }
 }

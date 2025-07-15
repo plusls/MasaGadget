@@ -21,6 +21,15 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 
+//#if MC >= 12106
+//$$ import com.mojang.logging.LogUtils;
+//$$ import net.minecraft.world.level.storage.TagValueInput;
+//$$ import net.minecraft.world.level.storage.ValueInput;
+//$$ import net.minecraft.util.ProblemReporter;
+//$$ import org.slf4j.Logger;
+//$$ import org.spongepowered.asm.mixin.Unique;
+//#endif
+
 //#if MC > 12004
 //$$ import net.minecraft.client.Minecraft;
 //$$ import net.minecraft.core.component.DataComponents;
@@ -30,6 +39,11 @@ import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 @Dependencies(require = @Dependency(ModId.tweakeroo))
 @Mixin(value = RenderUtils.class, remap = false)
 public abstract class MixinRenderUtils {
+    //#if MC >= 12106
+    //$$ @Unique
+    //$$ private static final Logger masa_gadget$logger = LogUtils.getLogger();
+    //#endif
+
     @ModifyVariable(
             method = "renderInventoryOverlay",
             at = @At(
@@ -65,6 +79,12 @@ public abstract class MixinRenderUtils {
             if (item instanceof BlockItem && ((BlockItem) item).getBlock() instanceof ShulkerBoxBlock) {
                 ret = new SimpleContainer(27);
 
+                //#if MC >= 12106
+                //$$ try (ProblemReporter.ScopedCollector collector = new ProblemReporter.ScopedCollector(MixinRenderUtils.masa_gadget$logger)) {
+                //$$     ValueInput input = TagValueInput.create(collector, Minecraft.getInstance().cameraEntity.registryAccess(), invNbt);
+                //$$     ContainerHelper.loadAllItems(input, stacks);
+                //$$ }
+                //#else
                 if (invNbt != null) {
                     ContainerHelper.loadAllItems(
                             invNbt,
@@ -74,6 +94,7 @@ public abstract class MixinRenderUtils {
                             //#endif
                     );
                 }
+                //#endif
 
                 for (int i = 0; i < 27; i++) {
                     ret.setItem(i, stacks.get(i));
