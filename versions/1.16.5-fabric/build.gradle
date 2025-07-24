@@ -78,8 +78,7 @@ def apiDependencies = [
         [itemscroller_fabric_ga                                 , "itemscroller", fabricLike, false],
         [litematica_fabric_ga                                   , "litematica"  , fabricLike, false],
         [minihud_fabric_ga                                      , "minihud"     , fabricLike, false],
-        [tweakeroo_fabric_ga                                    , "tweakeroo"   , fabricLike, false],
-        ["org.sinytra.forgified-fabric-api:forgified-fabric-api", "fabric_api"  , forgeLike , true]
+        [tweakeroo_fabric_ga                                    , "tweakeroo"   , fabricLike, false]
 ]
 
 // Module, Property prefix, Resolve condition, Transitive dependencies.
