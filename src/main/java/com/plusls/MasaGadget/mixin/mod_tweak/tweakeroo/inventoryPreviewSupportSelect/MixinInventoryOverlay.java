@@ -23,11 +23,12 @@ public class MixinInventoryOverlay {
     @Inject(
             //#if MC >= 12106
             //$$ method = "renderStackAt(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/item/ItemStack;FFFLnet/minecraft/client/Minecraft;DD)V",
+            //$$ remap = true,
             //#elseif MC > 12006
             //$$ method = "renderStackAt(Lnet/minecraft/world/item/ItemStack;FFFLnet/minecraft/client/Minecraft;Lnet/minecraft/client/gui/GuiGraphics;DD)V",
+            //$$ remap = true,
             //#else
             method = "renderStackAt",
-            remap = true,
             //#endif
             at = @At("RETURN")
     )
