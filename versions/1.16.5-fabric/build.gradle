@@ -1,174 +1,118 @@
+import net.fabricmc.loom.util.ModPlatform
+
 plugins {
+    id("checkstyle")
     id("maven-publish")
 
-    id("top.hendrixshen.replace-token").version("${replace_token_version}")
+    alias(libs.plugins.yamlang)
+    alias(libs.plugins.replace.token)
+
+    id("top.hendrixshen.magiclib.build-logic.magic-loom")
 }
 
-apply(plugin: "dev.architectury.loom")
-apply(plugin: "com.replaymod.preprocess")
-apply(plugin: "me.fallenbreath.yamlang")
-
-String modPlatform = loom.platform.get().toString().toLowerCase()
-boolean fabricLike = modPlatform == "fabric" || modPlatform == "quilt"
-boolean forgeLike = modPlatform == "forge" || modPlatform == "neoforge"
-int mcVersion = 0
-
-preprocess {
-    mcVersion = vars.get().get("MC")
-    vars.put("MC", mcVersion)
-    vars.put("FABRIC", modPlatform == "fabric" ? 1 : 0)
-    vars.put("FORGE", modPlatform == "forge" ? 1 : 0)
-    vars.put("NEO_FORGE", modPlatform == "neoforge" ? 1 : 0)
-    vars.put("FABRIC_LIKE", fabricLike ? 1 : 0)
-    vars.put("FORGE_LIKE", forgeLike ? 1 : 0)
-}
-
-loom {
-    silentMojangMappingsLicense()
-}
+final int mcVersion = magic.projectDetail.get().getMinecraftVersionNumber()
+final ModPlatform modPlatform = magic.projectDetail.get().getPlatform()
+final boolean fabricLike = !modPlatform.isForgeLike()
+final boolean forgeLike = modPlatform.isForgeLike()
+final VersionCatalogsExtension catalogsExtension = project.getExtensions().getByType(VersionCatalogsExtension.class)
 
 repositories {
     mavenLocal()
 
     maven {
         name = "NyanMaven Release"
-        url = "https://maven.hendrixshen.top/releases"
+        url = "https://maven.hendrixshen.moe/releases"
+
+        content {
+            includeGroupAndSubgroups("top.hendrixshen")
+        }
     }
 
     maven {
         name = "NyanMaven Mirror"
-        url = "https://maven.hendrixshen.top/mirror"
-    }
-
-    maven {
-        name = "NeoForge"
-        url = "https://maven.neoforged.net/releases"
+        url = "https://maven.hendrixshen.moe/mirror"
     }
 
     maven {
         name = "Modrinth Maven"
         url = "https://api.modrinth.com/maven"
+
+        content {
+            includeGroup("maven.modrinth")
+        }
+    }
+
+    maven {
+        name = "Curse Maven"
+        url = "https://www.cursemaven.com"
+
+        content {
+            includeGroup("curse.maven")
+        }
     }
 
     maven {
         name = "Jitpack Maven"
         url = "https://jitpack.io"
+
+        content {
+            includeGroupAndSubgroups("com.github")
+        }
     }
 
     mavenCentral()
 }
 
-String itemscroller_fabric_ga = project.getProperties().getOrDefault("dependencies.api.itemscroller_version.use_sakura_fork", false) ?
-        "com.github.sakura-ryoko:itemscroller" : "maven.modrinth:item-scroller"
-String litematica_fabric_ga = project.getProperties().getOrDefault("dependencies.api.litematica_version.use_sakura_fork", false) ?
-        "com.github.sakura-ryoko:litematica" : "maven.modrinth:litematica"
-String malilib_fabric_ga = project.getProperties().getOrDefault("dependencies.api.malilib_version.use_sakura_fork", false) ?
-        "com.github.sakura-ryoko:malilib" : "maven.modrinth:malilib"
-String minihud_fabric_ga = project.getProperties().getOrDefault("dependencies.api.minihud_version.use_sakura_fork", false) ?
-        "com.github.sakura-ryoko:minihud" : "maven.modrinth:minihud"
-String tweakeroo_fabric_ga = project.getProperties().getOrDefault("dependencies.api.tweakeroo_version.use_sakura_fork", false) ?
-        "com.github.sakura-ryoko:tweakeroo" : "maven.modrinth:tweakeroo"
-
-// Module, Property prefix, Resolve condition, Transitive dependencies.
-def apiDependencies = [
-        ["maven.modrinth:rocknroller"                           , "itemscroller", forgeLike , false],
-        ["maven.modrinth:forgematica"                           , "litematica"  , forgeLike , false],
-        ["maven.modrinth:bocchud"                               , "minihud"     , forgeLike , false],
-        ["maven.modrinth:tweakerge"                             , "tweakeroo"   , forgeLike , false],
-        [itemscroller_fabric_ga                                 , "itemscroller", fabricLike, false],
-        [litematica_fabric_ga                                   , "litematica"  , fabricLike, false],
-        [minihud_fabric_ga                                      , "minihud"     , fabricLike, false],
-        [tweakeroo_fabric_ga                                    , "tweakeroo"   , fabricLike, false]
+// Configuration name, Module, Resolve condition, Use version mapping, Configuration closure.
+def deps = [
+        ["autoApi"          , "itemscroller", fabricLike                         , true , { transitive = false }],
+        ["autoApi"          , "litematica"  , fabricLike                         , true , { transitive = false }],
+        ["autoApi"          , "minihud"     , fabricLike                         , true , { transitive = false }],
+        ["autoApi"          , "tweakeroo"   , fabricLike                         , true , { transitive = false }],
+        ["autoApi"          , "forgematica" , forgeLike                          , true , { transitive = false }],
+        ["autoApi"          , "rocknroller" , forgeLike                          , true , { transitive = false }],
+        ["autoApi"          , "bocchud"     , forgeLike                          , true , { transitive = false }],
+        ["autoApi"          , "tweakerge"   , forgeLike                          , true , { transitive = false }],
+        ["implementation"   , "pinyin"      , fabricLike                         , false, { transitive = false }],
+        ["forge"            , "pinyin"      , modPlatform == ModPlatform.FORGE   , false, { transitive = false }],
+        ["forgeDependencies", "pinyin"      , modPlatform == ModPlatform.NEOFORGE, false, { transitive = false }],
+        ["include"          , "pinyin"      , true                               , false, { transitive = false }],
 ]
-
-// Module, Property prefix, Resolve condition, Transitive dependencies.
-def runtimeDependencies = [
-        ["", "", false, false]
-]
-
-configurations {
-    modApi {
-        resolutionStrategy {
-            if (project.getProperties().getOrDefault("dependencies.api.malilib_version.override", false)) {
-                force("${malilib_fabric_ga}:${project.findProperty("dependencies.api.malilib_version")}")
-            }
-        }
-    }
-}
 
 dependencies {
-    // Development environment
-    minecraft("com.mojang:minecraft:${project.property("dependencies.minecraft_version")}")
-    mappings(loom.officialMojangMappings())
-
     // Lombok
-    compileOnly("org.projectlombok:lombok:${project.property("dependencies.lombok_version")}")
-    annotationProcessor("org.projectlombok:lombok:${project.property("dependencies.lombok_version")}")
+    compileOnly(libs.lombok)
+    annotationProcessor(libs.lombok)
 
     // Dependency
-    modApi(annotationProcessor("top.hendrixshen.magiclib:magiclib-all-${project.name}:${project.property("dependencies.magiclib_version")}"))
+    autoApi(annotationProcessor("top.hendrixshen.magiclib:magiclib-all-${magic.getProjectDetail().get().getProjectName()}:${catalogsExtension.named("mods").findVersion("magiclib").orElseThrow { throw new GradleException("No magiclib version found") } }"))
 
-    switch (modPlatform) {
-        case "fabric":
-            implementation(include("com.github.Towdium:PinIn:${project.property("dependencies.pinin_version")}"))
-            break
-        case "forge":
-            forge("net.minecraftforge:forge:${project.property("dependencies.minecraft_version")}-${project.property("dependencies.forge_version")}")
-            break
-        case "neoforge":
-            forgeDependencies(include("com.github.Towdium:PinIn:${project.property("dependencies.pinin_version")}"))
-            neoForge("net.neoforged:neoforge:${project.property("dependencies.neoforge_version")}")
-            break
-    }
+    deps.forEach { item ->
+        String configurationName = item[0]
+        String dependencyName = item[1]
+        boolean shouldResolve = item[2]
 
-    // API
-    apiDependencies.forEach { item ->
-        String dependencyNotation = item[0]
-        String dependencyVersion = project.findProperty("dependencies.api.${item[1]}_version")
-        boolean shouldResolve = item[2] && dependencyVersion != "0"
-        boolean shouldTransitive = item[3]
-
-        if (shouldResolve) {
-            if (!dependencyVersion) {
-                throw new RuntimeException("Could not get unknown property 'dependencies.api.${item[1]}_version' for dependency ${item[0]} in project ${project.name}")
-            }
-
-            modApi("${dependencyNotation}:${dependencyVersion}") {
-                transitive = shouldTransitive
-            }
+        if (!shouldResolve) {
+            return
         }
-    }
 
-    // Runtime Library - Make development environment comfortable.
-    runtimeDependencies.forEach { item ->
-        String dependencyNotation = item[0]
-        String dependencyVersion = project.findProperty("dependencies.runtime.${item[1]}_version")
-        boolean shouldResolve = item[2] && dependencyVersion != "0"
-        boolean shouldTransitive = item[3]
+        org.gradle.api.provider.Provider<MinimalExternalModuleDependency> dep = catalogsExtension.named("mods").findLibrary(item[3] ? "${dependencyName}-mc${mcVersion}" : dependencyName).orElseThrow { throw new GradleException("No mod library found for ${dependencyName + (item[3] ? "-mc${mcVersion}" : "")}") }
+        shouldResolve &= dep.get().getVersion() != "0"
+        Closure<Void> closure = (Closure<Void>) item[4]
 
         if (shouldResolve) {
-            if (!dependencyVersion) {
-                throw new RuntimeException("Could not get unknown property 'dependencies.runtime.${item[1]}_version' for dependency ${item[0]} in project ${project.name}")
-            }
-
-            modRuntimeOnly("${dependencyNotation}:${dependencyVersion}") {
-                transitive(shouldTransitive)
-            }
+            add(configurationName, dep, closure)
         }
     }
 }
 
 loom {
+    // accessWidenerPath.set(file("src/main/resources/${project.parent.property("mod.id")}.accesswidener"))
     enableTransitiveAccessWideners.set(false)
 
     interfaceInjection {
         enableDependencyInterfaceInjection.set(false)
         isEnabled.set(false)
-    }
-
-    runConfigs.configureEach {
-        // Dump modified classes automatically.
-        property("mixin.debug.export", "true")
     }
 
     runConfigs.named("client") {
@@ -180,17 +124,6 @@ loom {
                 "--username",
                 project.getOrDefault("ow.game.window.username", "dev")
         ])
-        vmArgs("-Dmagiclib.debug=true")
-        vmArgs("-Dmagiclib.dev.qol=true")
-        vmArgs("-Dmagiclib.dev.qol.dfu.destroy=true")
-        runDir("run/client")
-    }
-
-    runConfigs.named("server") {
-        vmArgs("-Dmagiclib.debug=true")
-        vmArgs("-Dmagiclib.dev.qol=true")
-        vmArgs("-Dmagiclib.dev.qol.dfu.destroy=true")
-        runDir("run/server")
     }
 
     if (fabricLike) {
@@ -213,27 +146,14 @@ loom {
 }
 
 base {
-    setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${project.property("dependencies.minecraft_version")}-${modPlatform}")
+    setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${magic.projectDetail.get().getMinecraftVersionName()}-${modPlatform.id()}")
     setGroup("${project.property("mod.maven_group")}")
     setVersion(project.getModVersion(project.parent))
 }
 
-java {
-    if (mcVersion > 11204) {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
-    } else if (mcVersion > 11701) {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    } else if (mcVersion > 11605) {
-        sourceCompatibility = JavaVersion.VERSION_16
-        targetCompatibility = JavaVersion.VERSION_16
-    } else {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    withSourcesJar()
+checkstyle {
+    configFile = rootProject.file("checkstyle.xml")
+    toolVersion = libs.versions.checkstyle.get()
 }
 
 replaceToken {
@@ -241,8 +161,8 @@ replaceToken {
     replace("@MOD_IDENTIFIER@", project.parent.property("mod.id").toString().replace("-", "_"))
     replace("@MOD_NAME@"      , project.parent.property("mod.name"))
     replace("@MOD_VERSION@"   , project.getVersionWithCommitHash(this.project.parent) as String)
-    replaceIn("com/plusls/MasaGadget/MasaGadgetNeoForgeMod")
-    replaceIn("com/plusls/MasaGadget/SharedConstants")
+    replaceIn("top/hendrixshen/tweakmyclient/SharedConstants")
+    replaceIn("top/hendrixshen/tweakmyclient/TweakMyClientForge")
 }
 
 processResources {
@@ -260,10 +180,10 @@ processResources {
     [
             "fabric.mod.json"            : ["fabric"],
             "META-INF"                   : ["forge", "neoforge"],
-            "META-INF/mods.toml"         : ["forge", "neoforge", mcVersion < 12005 ? "neoforge": "none"],
+            "META-INF/mods.toml"         : ["forge", mcVersion < 12005 ? "neoforge": "none"],
             "META-INF/neoforge.mods.toml": [mcVersion > 12004 ? "neoforge" : "none"]
     ].forEach { file, platforms ->
-        if (platforms.contains(modPlatform)) {
+        if (platforms.contains(modPlatform.id())) {
             filesMatching(file) {
                 expand([
                         "magiclib_dependency" : inputs.properties.get("magiclib_dependency"),
@@ -275,7 +195,7 @@ processResources {
                         "mod_license"         : inputs.properties.get("mod_license"),
                         "mod_name"            : inputs.properties.get("mod_name"),
                         "mod_sources"         : inputs.properties.get("mod_sources"),
-                        "mod_version"         : inputs.properties.get("mod_version"),
+                        "mod_version"         : inputs.properties.get("mod_version")
                 ])
             }
         } else {
@@ -330,100 +250,30 @@ tasks.withType(PublishToMavenRepository).configureEach {
 
 tasks.withType(Javadoc).configureEach { Javadoc task ->
     include("**/api/**")
-    task.options.encoding = "UTF-8"
+    task.options.encoding("UTF-8")
     (task.options as CoreJavadocOptions).addStringOption("Xdoclint:none", "-quiet")
 }
 
-tasks.withType(JavaCompile).configureEach { JavaCompile task ->
-    task.options.encoding = "UTF-8"
-
-    if (mcVersion > 12005) {
-        task.options.release.set(21)
-    } else if (mcVersion > 11701) {
-        task.options.release.set(17)
-    } else if (mcVersion > 11605) {
-        task.options.release.set(16)
-    } else {
-        task.options.release.set(8)
-        options.compilerArgs << '-Xlint:-options'
+tasks.register("cleanRuns", DefaultTask.class) {
+    doLast {
+        file(loom.runConfigs.client.runDir).parentFile.deleteDir()
     }
 }
 
-// Setup client default settings.
-tasks.named("runClient") {
-    defaultCharacterEncoding = "UTF-8"
-
-    doFirst {
-        file("${project.projectDir}/run/client/config").mkdirs()
-        file("${project.projectDir}/run/client/options.txt").with { File f ->
-            {
-                if (!f.exists()) {
-                    f.parentFile.mkdirs()
-                    f.withWriter { BufferedWriter writer ->
-                        writer.writeLine("autoJump:false")
-                        writer.writeLine("enableVsync:false")
-                        writer.writeLine("forceUnicodeFont:true")
-                        writer.writeLine("fov:1.0")
-
-                        if (mcVersion < 11900) {
-                            writer.writeLine("gamma:16.0")
-                        }
-
-                        writer.writeLine("guiScale:3")
-                        writer.writeLine("lang:${Locale.getDefault().toString().toLowerCase()}")
-                        writer.writeLine("maxFps:260")
-                        writer.writeLine("renderDistance:10")
-                        writer.writeLine("soundCategory_master:0.0")
-                    }
-                }
-            }
-        }
+tasks.register("cleanRunClient", DefaultTask.class) {
+    doLast {
+        file(loom.runConfigs.client.runDir).deleteDir()
     }
 }
 
-// Setup server default settings.
-tasks.named("runServer") {
-    defaultCharacterEncoding = "UTF-8"
-
-    doFirst {
-        // Agree eula before server init.
-        file("${project.projectDir}/run/server/eula.txt").with { File f ->
-            {
-                if (!f.exists()) {
-                    f.parentFile.mkdirs()
-                    f.withWriter { BufferedWriter writer ->
-                        writer.writeLine("#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://account.mojang.com/documents/minecraft_eula).")
-                        writer.writeLine("#${new Date()}")
-                        writer.writeLine("eula=true")
-                    }
-                }
-            }
-        }
+tasks.register("cleanRunServer", DefaultTask.class) {
+    doLast {
+        file(loom.runConfigs.server.runDir).deleteDir()
     }
-}
-
-tasks.register("cleanRuns", Delete.class) { Delete cleanTask ->
-    dependsOn("cleanRunClient", "cleanRunServer")
-    cleanTask.setGroup("${project.property("mod.id")}")
-    cleanTask.delete(file(loom.runConfigs.client.runDir).parentFile)
-}
-
-tasks.register("cleanRunClient", Delete.class) { Delete cleanTask ->
-    cleanTask.setGroup("${project.property("mod.id")}")
-    cleanTask.delete(loom.runConfigs.client.runDir)
-}
-
-tasks.register("cleanRunServer", Delete.class) { Delete cleanTask ->
-    cleanTask.setGroup("${project.property("mod.id")}")
-    cleanTask.delete(loom.runConfigs.server.runDir)
-}
-
-tasks.register("cleanJar", Delete.class) { Delete cleanTask ->
-    cleanTask.setGroup("${project.property("mod.id")}")
-    cleanTask.delete(project.layout.buildDirectory.dir("libs"))
 }
 
 [
+        "cleanRuns", "cleanRunClient", "cleanRunServer",
         "runClient", "runServer",
         "runMixinAuditClient", "runMixinAuditServer",
         "preprocessCode", "preprocessResources",

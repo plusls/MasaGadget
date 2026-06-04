@@ -2,7 +2,6 @@
 
 .gradle/
 build/
-publish/
 out/
 classes/
 
@@ -25,6 +24,11 @@ bin/
 .classpath
 .project
 
-# fabric
+# macos
 
+*.DS_Store
+
+# fabric
+publish/
 run/
+local.properties
