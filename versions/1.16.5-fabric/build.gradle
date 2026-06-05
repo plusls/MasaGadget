@@ -161,8 +161,8 @@ replaceToken {
     replace("@MOD_IDENTIFIER@", project.parent.property("mod.id").toString().replace("-", "_"))
     replace("@MOD_NAME@"      , project.parent.property("mod.name"))
     replace("@MOD_VERSION@"   , project.getVersionWithCommitHash(this.project.parent) as String)
-    replaceIn("top/hendrixshen/tweakmyclient/SharedConstants")
-    replaceIn("top/hendrixshen/tweakmyclient/TweakMyClientForge")
+    replaceIn("com/plusls/MasaGadget/MasaGadgetNeoForgeMod")
+    replaceIn("com/plusls/MasaGadget/SharedConstants")
 }
 
 processResources {
