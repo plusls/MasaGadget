@@ -7,20 +7,19 @@ import com.plusls.MasaGadget.util.RenderUtil;
 import com.plusls.MasaGadget.util.SyncUtil;
 import fi.dy.masa.malilib.util.Color4f;
 import lombok.Getter;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-import net.minecraft.world.entity.npc.Villager;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.event.minecraft.render.RenderEntityListener;
 import top.hendrixshen.magiclib.api.event.minecraft.render.RenderLevelListener;
 import top.hendrixshen.magiclib.api.render.context.LevelRenderContext;
-import top.hendrixshen.magiclib.api.render.context.RenderContext;
 import top.hendrixshen.magiclib.impl.render.context.EntityRenderContext;
 import top.hendrixshen.magiclib.impl.render.context.RenderGlobal;
+
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.Queue;
 
@@ -42,9 +41,9 @@ public class EntityTraceRenderer implements RenderEntityListener, RenderLevelLis
 
     @Override
     public void postRenderEntity(Entity entity, EntityRenderContext renderContext) {
-        if (entity instanceof Villager &&
-                Configs.renderVillageHomeTracer.getBooleanValue() ||
-                Configs.renderVillageJobSiteTracer.getBooleanValue()) {
+        if (entity instanceof Villager
+                && Configs.renderVillageHomeTracer.getBooleanValue()
+                || Configs.renderVillageJobSiteTracer.getBooleanValue()) {
             this.queue.add(entity);
         }
     }

@@ -1,25 +1,23 @@
 package com.plusls.MasaGadget.impl.mod_tweak.tweakeroo.inventoryPreviewSupportComparator;
 
 import com.plusls.MasaGadget.game.Configs;
-import com.plusls.MasaGadget.impl.feature.entityInfo.EntityInfoRenderer;
 import com.plusls.MasaGadget.impl.generic.HitResultHandler;
 import com.plusls.MasaGadget.util.ModId;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.config.Hotkeys;
 import lombok.Getter;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.ComparatorBlockEntity;
 import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.event.minecraft.render.RenderLevelListener;
 import top.hendrixshen.magiclib.api.render.context.LevelRenderContext;
-import top.hendrixshen.magiclib.api.render.context.RenderContext;
 import top.hendrixshen.magiclib.impl.render.TextRenderer;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
 import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.ComparatorBlockEntity;
 
 public class ComparatorInfo implements RenderLevelListener {
     @Getter
@@ -37,10 +35,10 @@ public class ComparatorInfo implements RenderLevelListener {
 
     @Override
     public void postRenderLevel(ClientLevel level, LevelRenderContext renderContext) {
-        if (!MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.tweakeroo) ||
-                !FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue() ||
-                !Hotkeys.INVENTORY_PREVIEW.getKeybind().isKeybindHeld() ||
-                !Configs.inventoryPreviewSupportComparator.getBooleanValue()) {
+        if (!MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.tweakeroo)
+                || !FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue()
+                || !Hotkeys.INVENTORY_PREVIEW.getKeybind().isKeybindHeld()
+                || !Configs.inventoryPreviewSupportComparator.getBooleanValue()) {
             return;
         }
 

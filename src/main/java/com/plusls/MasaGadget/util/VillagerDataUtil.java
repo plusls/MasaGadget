@@ -3,9 +3,11 @@ package com.plusls.MasaGadget.util;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 12104
 //$$ import net.minecraft.resources.ResourceKey;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
 public class VillagerDataUtil {
     //#if MC > 12104

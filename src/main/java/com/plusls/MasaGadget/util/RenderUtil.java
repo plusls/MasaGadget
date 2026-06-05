@@ -1,28 +1,45 @@
 package com.plusls.MasaGadget.util;
 
-import com.mojang.blaze3d.vertex.*;
 import fi.dy.masa.malilib.render.RenderUtils;
 import fi.dy.masa.malilib.util.Color4f;
-import net.minecraft.client.Minecraft;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 12104
+//$$ import fi.dy.masa.malilib.render.MaLiLibPipelines;
+//$$ import fi.dy.masa.malilib.render.RenderContext;
+//#else
+import top.hendrixshen.magiclib.api.compat.mojang.blaze3d.vertex.VertexFormatCompat;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.phys.Vec3;
+
+// CHECKSTYLE.OFF: ImportOrder
 //#if 12106 > MC && MC > 12104
 //$$ import com.mojang.blaze3d.buffers.BufferUsage;
 //#endif
 
-//#if MC > 12104
-//$$ import fi.dy.masa.malilib.render.MaLiLibPipelines;
-//$$ import fi.dy.masa.malilib.render.RenderContext;
-//#elseif MC > 11605
-//$$ import net.minecraft.client.renderer.GameRenderer;
+//#if 12109 > MC && MC > 12006
+//$$ import com.mojang.blaze3d.vertex.MeshData;
 //#endif
 
-//#if MC > 11605
-//$$ import com.mojang.blaze3d.systems.RenderSystem;
-//#else
-import org.lwjgl.opengl.GL11;
+//#if MC < 12105
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
 //#endif
+
+//#if 12105 > MC && MC > 12006
+//$$ import com.mojang.blaze3d.vertex.BufferUploader;
+//#endif
+
+//#if 12100 > MC && MC > 11605
+//$$ import com.mojang.blaze3d.systems.RenderSystem;
+//$$ import net.minecraft.client.renderer.GameRenderer;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 public class RenderUtil {
     public static void drawConnectLine(Vec3 pos1, Vec3 pos2, double expend, Color4f pos1Color, Color4f pos2Color, @NotNull Color4f lineColor) {
@@ -37,6 +54,8 @@ public class RenderUtil {
         pos2 = pos2.subtract(camPos);
         //#if MC > 12104
         //$$ RenderContext ctx = new RenderContext(
+        //$$         // CHECKSTYLE.OFF: NoWhitespaceBefore
+        //$$         // CHECKSTYLE.OFF: SeparatorWrap
         //$$         //#if MC >= 12107
         //$$         //$$ () -> "masa_gadget:line",
         //$$         //#endif
@@ -44,12 +63,14 @@ public class RenderUtil {
         //$$         //#if MC < 12106
         //$$         , BufferUsage.STATIC_WRITE
         //$$         //#endif
+        //$$         // CHECKSTYLE.ON: SeparatorWrap
+        //$$         // CHECKSTYLE.ON: NoWhitespaceBefore
         //$$ );
         //$$ BufferBuilder builder = ctx.getBuilder();
         //#else
         Tesselator tesselator = Tesselator.getInstance();
         //#if MC > 12006
-        //$$ BufferBuilder builder = tesselator.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+        //$$ BufferBuilder builder = tesselator.begin(VertexFormatCompat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
         //#else
         BufferBuilder builder = tesselator.getBuilder();
         RenderUtil.beginLines(builder);
@@ -70,6 +91,7 @@ public class RenderUtil {
         //$$
         //$$     ctx.close();
         //$$ } catch (Exception ignored) {
+        //$$     // ignore
         //$$ }
         //#else
         //$$ RenderUtil.end(builder);
@@ -87,6 +109,8 @@ public class RenderUtil {
 
         //#if MC > 12104
         //$$ RenderContext ctx = new RenderContext(
+        //$$         // CHECKSTYLE.OFF: NoWhitespaceBefore
+        //$$         // CHECKSTYLE.OFF: SeparatorWrap
         //$$         //#if MC >= 12107
         //$$         //$$ () -> "masa_gadget:outline_box",
         //$$         //#endif
@@ -94,12 +118,14 @@ public class RenderUtil {
         //$$         //#if MC < 12106
         //$$         , BufferUsage.STATIC_WRITE
         //$$         //#endif
+        //$$         // CHECKSTYLE.ON: SeparatorWrap
+        //$$         // CHECKSTYLE.ON: NoWhitespaceBefore
         //$$ );
         //$$ BufferBuilder builder = ctx.getBuilder();
         //#else
         Tesselator tesselator = Tesselator.getInstance();
         //#if MC > 12006
-        //$$ BufferBuilder builder = tesselator.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
+        //$$ BufferBuilder builder = tesselator.begin(VertexFormatCompat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
         //#else
         BufferBuilder builder = tesselator.getBuilder();
         RenderUtil.beginLines(builder);
@@ -127,6 +153,7 @@ public class RenderUtil {
         //$$
         //$$     ctx.close();
         //$$ } catch (Exception ignored) {
+        //$$     // ignore
         //$$ }
         //#elseif MC > 12006
         //$$ RenderUtil.end(builder);
@@ -141,16 +168,15 @@ public class RenderUtil {
     //$$     try (MeshData meshData = builder.buildOrThrow()) {
     //$$         BufferUploader.drawWithShader(meshData);
     //$$     } catch (Exception ignore) {
+    //$$         // ignore
     //$$     }
     //$$ }
     //#else
     private static void beginLines(BufferBuilder builder) {
         //#if MC > 11700
         //$$ RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        //$$ builder.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
-        //#else
-        builder.begin(GL11.GL_LINES, DefaultVertexFormat.POSITION_COLOR);
         //#endif
+        builder.begin(VertexFormatCompat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR);
     }
     //#endif
     //#endif

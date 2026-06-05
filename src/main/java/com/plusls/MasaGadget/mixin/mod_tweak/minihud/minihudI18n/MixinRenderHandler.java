@@ -4,16 +4,17 @@ import com.google.common.collect.Lists;
 import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.util.ModId;
 import fi.dy.masa.minihud.event.RenderHandler;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.api.platform.PlatformType;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -40,7 +41,7 @@ import java.util.regex.Pattern;
         }
 )
 @Mixin(value = RenderHandler.class, remap = false)
-public class MixinRenderHandler {
+public abstract class MixinRenderHandler {
     @Unique
     private static final Pattern masa_gadget_mod$textPattern = Pattern.compile("[\\w ]+: ");
 

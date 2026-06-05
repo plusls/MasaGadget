@@ -54,7 +54,7 @@
     "mod_tweak.tweakeroo.inventoryPreviewSupportTradeOfferList.MixinAbstractVillager",
     "mod_tweak.tweakeroo.inventoryPreviewSupportTradeOfferList.MixinRenderUtils",
     "mod_tweak.tweakeroo.inventoryPreviewSyncDataClientOnly.MixinClientPacketListener",
-    "mod_tweak.tweakeroo.inventoryPreviewUseCache.MixinMixinRenderUtils"
+    "mod_tweak.tweakeroo.inventoryPreviewUseCache.MixinRenderUtils"
   ],
   "injectors": {
     "defaultRequire": 1

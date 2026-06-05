@@ -5,6 +5,14 @@ import com.plusls.MasaGadget.game.Configs;
 import fi.dy.masa.minihud.renderer.shapes.ShapeBase;
 import fi.dy.masa.minihud.renderer.shapes.ShapeDespawnSphere;
 import fi.dy.masa.minihud.renderer.shapes.ShapeManager;
+import org.jetbrains.annotations.Nullable;
+import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.resources.ResourceLocationCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.world.level.LevelCompat;
+import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
+import top.hendrixshen.magiclib.util.minecraft.InfoUtil;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -18,15 +26,8 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
-import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
-import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
-import top.hendrixshen.magiclib.api.compat.minecraft.resources.ResourceLocationCompat;
-import top.hendrixshen.magiclib.api.compat.minecraft.world.level.LevelCompat;
-import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
-import top.hendrixshen.magiclib.util.minecraft.InfoUtil;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC < 12005
 import net.minecraft.world.level.NaturalSpawner;
 //#endif
@@ -36,6 +37,7 @@ import net.minecraft.world.level.NaturalSpawner;
 //#else
 import net.minecraft.core.Registry;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
 public class SearchMobSpawnPointUtil {
     @Nullable
@@ -110,20 +112,20 @@ public class SearchMobSpawnPointUtil {
                         } else {
                             continue;
                         }
-                    } else if (spawnPos != null && player.distanceToSqr(x, y, z) >
-                            player.distanceToSqr(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ())) {
+                    } else if (spawnPos != null && player.distanceToSqr(x, y, z) > player.distanceToSqr(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ())) {
                         continue;
                     }
 
                     currentPos.set(x, y, z);
 
                     if (
-                        //#if MC > 12004
-                        //$$ SpawnPlacements.isSpawnPositionOk(entityType, level, currentPos) &&
-                        //#else
-                            NaturalSpawner.isSpawnPositionOk(SpawnPlacements.getPlacementType(entityType), level, currentPos, entityType) &&
-                                    //#endif
-                                    lightingProvider.getLayerListener(LightLayer.BLOCK).getLightValue(currentPos) < maxSpawnLightLevel) {
+                            //#if MC > 12004
+                            //$$ SpawnPlacements.isSpawnPositionOk(entityType, level, currentPos)
+                            //#else
+                            NaturalSpawner.isSpawnPositionOk(SpawnPlacements.getPlacementType(entityType), level, currentPos, entityType)
+                            //#endif
+                                    && lightingProvider.getLayerListener(LightLayer.BLOCK).getLightValue(currentPos) < maxSpawnLightLevel
+                    ) {
                         Block block = level.getBlockState(currentPos.below()).getBlock();
                         //#if MC > 11902
                         //$$ String blockId = BuiltInRegistries.BLOCK.getKey(level.getBlockState(currentPos.below()).getBlock()).toString();

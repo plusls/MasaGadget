@@ -11,7 +11,7 @@ public class MinecraftEvent {
     private static class GenericEvent implements Event<MinecraftListener> {
         private final Consumer<MinecraftListener> action;
 
-        public GenericEvent(Consumer<MinecraftListener> action) {
+        GenericEvent(Consumer<MinecraftListener> action) {
             this.action = action;
         }
 

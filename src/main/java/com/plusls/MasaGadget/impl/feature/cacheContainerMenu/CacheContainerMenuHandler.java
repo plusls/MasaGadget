@@ -5,12 +5,26 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
-import net.minecraft.world.inventory.*;
-import net.minecraft.world.level.block.*;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.AbstractFurnaceMenu;
+import net.minecraft.world.inventory.BrewingStandMenu;
+import net.minecraft.world.inventory.ChestMenu;
+import net.minecraft.world.inventory.DispenserMenu;
+import net.minecraft.world.inventory.HopperMenu;
+import net.minecraft.world.inventory.ShulkerBoxMenu;
+import net.minecraft.world.level.block.AbstractFurnaceBlock;
+import net.minecraft.world.level.block.BarrelBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BrewingStandBlock;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.world.level.block.HopperBlock;
+import net.minecraft.world.level.block.ShulkerBoxBlock;
 
 import java.util.Objects;
 
@@ -34,10 +48,10 @@ public class CacheContainerMenuHandler {
     public void checkLastClickBlockPos() {
         long currentTime = System.nanoTime();
 
-        if (lastClickBlockPos == null ||
+        if (lastClickBlockPos == null
                 // Containers opened with a delay of more than 1s are ignored.
-                currentTime - this.lastClickTime > 1E9 ||
-                !this.isAvailableMenu()) {
+                || currentTime - this.lastClickTime > 1E9
+                || !this.isAvailableMenu()) {
             this.clearLastClickData();
         }
     }
@@ -64,11 +78,11 @@ public class CacheContainerMenuHandler {
         }
 
         Block block = Objects.requireNonNull(minecraft.level).getBlockState(this.lastClickBlockPos).getBlock();
-        return (containerMenu instanceof AbstractFurnaceMenu && block instanceof AbstractFurnaceBlock) ||
-                (containerMenu instanceof HopperMenu && block instanceof HopperBlock) ||
-                (containerMenu instanceof ShulkerBoxMenu && block instanceof ShulkerBoxBlock) ||
-                (containerMenu instanceof BrewingStandMenu && block instanceof BrewingStandBlock) ||
-                (containerMenu instanceof DispenserMenu && block instanceof DispenserBlock) ||
-                (containerMenu instanceof ChestMenu && (block instanceof ChestBlock || block instanceof BarrelBlock));
+        return (containerMenu instanceof AbstractFurnaceMenu && block instanceof AbstractFurnaceBlock)
+                || (containerMenu instanceof HopperMenu && block instanceof HopperBlock)
+                || (containerMenu instanceof ShulkerBoxMenu && block instanceof ShulkerBoxBlock)
+                || (containerMenu instanceof BrewingStandMenu && block instanceof BrewingStandBlock)
+                || (containerMenu instanceof DispenserMenu && block instanceof DispenserBlock)
+                || (containerMenu instanceof ChestMenu && (block instanceof ChestBlock || block instanceof BarrelBlock));
     }
 }

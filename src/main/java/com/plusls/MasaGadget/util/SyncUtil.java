@@ -1,10 +1,11 @@
 package com.plusls.MasaGadget.util;
 
+import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.EntityCompat;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
-import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.EntityCompat;
 
 public class SyncUtil {
     /**

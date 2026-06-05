@@ -3,14 +3,40 @@ package com.plusls.MasaGadget.impl.mod_tweak.malilib.fastSwitchMasaConfigGui;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Maps;
-import com.plusls.MasaGadget.util.ModId;
 import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.interfaces.IStringValue;
 import lombok.Getter;
+import org.jetbrains.annotations.ApiStatus;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if FABRIC_LIKE
+import com.plusls.MasaGadget.SharedConstants;
+import com.plusls.MasaGadget.util.MiscUtil;
+import com.plusls.MasaGadget.util.ModId;
+import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.metadata.ModMetadata;
+import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.api.compat.modmenu.ModMenuApiCompat;
+import top.hendrixshen.magiclib.util.ReflectionUtil;
+import top.hendrixshen.magiclib.util.collect.ValueContainer;
+//#endif
+
+//#if NEO_FORGE
+//$$ import lombok.AllArgsConstructor;
+//$$ import org.thinkingstudio.mafglib.loader.entrypoints.ConfigScreenEntrypoint;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import org.jetbrains.annotations.ApiStatus;
-import top.hendrixshen.magiclib.MagicLib;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if NEO_FORGE
+//$$ import net.neoforged.fml.ModContainer;
+//$$ import net.neoforged.fml.ModList;
+//$$ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 import java.util.Comparator;
 import java.util.List;
@@ -18,29 +44,17 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if FABRIC_LIKE
-import com.plusls.MasaGadget.SharedConstants;
-import com.plusls.MasaGadget.util.MiscUtil;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.metadata.ModMetadata;
-import top.hendrixshen.magiclib.api.compat.modmenu.ModMenuApiCompat;
-import top.hendrixshen.magiclib.util.ReflectionUtil;
-import top.hendrixshen.magiclib.util.collect.ValueContainer;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.function.Function;
 //#endif
 
 //#if NEO_FORGE
-//$$ import lombok.AllArgsConstructor;
-//$$ import net.neoforged.fml.ModContainer;
-//$$ import net.neoforged.fml.ModList;
-//$$ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
-//$$ import org.thinkingstudio.mafglib.loader.entrypoints.ConfigScreenEntrypoint;
-//$$
 //$$ import java.util.Optional;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
 public class FastMasaGuiSwitcher {
     @Getter(lazy = true)
@@ -96,8 +110,8 @@ public class FastMasaGuiSwitcher {
                 Object api = entrypoint.getEntrypoint();
                 ModMenuApiCompat.ConfigScreenFactoryCompat<?> configScreenFactoryCompat;
 
-                if (this.modMenuApiClass.isPresent() && this.modMenuApiClass.get().isAssignableFrom(api.getClass()) &&
-                        this.getModConfigScreenFactoryMethod.isPresent() && this.createMethod.isPresent()) {
+                if (this.modMenuApiClass.isPresent() && this.modMenuApiClass.get().isAssignableFrom(api.getClass())
+                        && this.getModConfigScreenFactoryMethod.isPresent() && this.createMethod.isPresent()) {
                     // >= 1.16
                     Object modConfigScreenFactory = this.getModConfigScreenFactoryMethod.get().invoke(api);
 

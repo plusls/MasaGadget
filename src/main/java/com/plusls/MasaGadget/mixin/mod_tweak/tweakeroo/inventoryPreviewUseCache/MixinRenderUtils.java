@@ -6,6 +6,9 @@ import com.plusls.MasaGadget.util.ModId;
 import fi.dy.masa.malilib.util.InventoryUtils;
 import fi.dy.masa.tweakeroo.renderer.RenderUtils;
 import fi.dy.masa.tweakeroo.util.RayTraceUtils;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Container;
@@ -14,18 +17,23 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
-import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 
+// CHECKSTYLE.OFF: JavadocStyle
+/**
+ * <li>mc1.14 ~ mc1.20.6: subproject 1.16.5 (main project)</li>
+ * <li>mc1.21+          : subproject 1.21.1 [dummy]        &lt;--------</li>
+ */
+// CHECKSTYLE.ON: JavadocStyle
 @Dependencies(
         require = @Dependency(ModId.tweakeroo),
         conflict = @Dependency(value = ModId.minecraft, versionPredicates = ">=1.21-")
 )
 @Mixin(value = RenderUtils.class, remap = false)
-public class MixinMixinRenderUtils {
+public abstract class MixinRenderUtils {
     @Redirect(
             method = "renderInventoryOverlay",
             at = @At(

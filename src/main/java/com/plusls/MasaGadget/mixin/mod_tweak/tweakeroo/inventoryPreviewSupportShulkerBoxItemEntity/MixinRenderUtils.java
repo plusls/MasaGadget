@@ -4,6 +4,15 @@ import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.impl.generic.HitResultHandler;
 import com.plusls.MasaGadget.util.ModId;
 import fi.dy.masa.tweakeroo.renderer.RenderUtils;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12106
+//$$ import org.slf4j.Logger;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
@@ -15,19 +24,13 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
-import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC >= 12106
 //$$ import com.mojang.logging.LogUtils;
 //$$ import net.minecraft.world.level.storage.TagValueInput;
 //$$ import net.minecraft.world.level.storage.ValueInput;
 //$$ import net.minecraft.util.ProblemReporter;
-//$$ import org.slf4j.Logger;
-//$$ import org.spongepowered.asm.mixin.Unique;
 //#endif
 
 //#if MC > 12004
@@ -35,6 +38,17 @@ import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 //$$ import net.minecraft.core.component.DataComponents;
 //$$ import net.minecraft.world.item.component.CustomData;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12106
+//$$ import org.spongepowered.asm.mixin.Unique;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 @Dependencies(require = @Dependency(ModId.tweakeroo))
 @Mixin(value = RenderUtils.class, remap = false)
@@ -57,9 +71,10 @@ public abstract class MixinRenderUtils {
         Container ret = inv;
         Entity traceEntity = HitResultHandler.getInstance().getHitEntity().orElse(null);
 
-        if (Configs.inventoryPreviewSupportShulkerBoxItemEntity.getBooleanValue() &&
-                ret == null &&
-                traceEntity instanceof ItemEntity) {
+        if (Configs.inventoryPreviewSupportShulkerBoxItemEntity.getBooleanValue()
+                && ret == null
+                && traceEntity instanceof ItemEntity
+        ) {
             ItemStack itemStack = ((ItemEntity) traceEntity).getItem();
             Item item = itemStack.getItem();
             //#if MC > 12004
@@ -87,11 +102,15 @@ public abstract class MixinRenderUtils {
                 //#else
                 if (invNbt != null) {
                     ContainerHelper.loadAllItems(
+                            // CHECKSTYLE.OFF: NoWhitespaceBefore
+                            // CHECKSTYLE.OFF: SeparatorWrap
                             invNbt,
                             stacks
                             //#if MC > 12004
                             //$$ , Minecraft.getInstance().level.registryAccess()
                             //#endif
+                            // CHECKSTYLE.ON: SeparatorWrap
+                            // CHECKSTYLE.ON: NoWhitespaceBefore
                     );
                 }
                 //#endif

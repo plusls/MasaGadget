@@ -1,11 +1,12 @@
 package com.plusls.MasaGadget.mixin.network;
 
 import com.plusls.MasaGadget.util.PcaSyncProtocol;
+import top.hendrixshen.magiclib.api.network.packet.MagicPacketRegistrationCenter;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import top.hendrixshen.magiclib.api.network.packet.MagicPacketRegistrationCenter;
 
 @Mixin(value = MagicPacketRegistrationCenter.class, remap = false)
 public abstract class MixinMagicPacketRegisterCenter {

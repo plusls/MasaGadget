@@ -6,13 +6,15 @@ import fi.dy.masa.malilib.gui.widgets.WidgetHoverInfo;
 import fi.dy.masa.malilib.render.RenderUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Consumer;
-
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC > 11502
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import java.util.function.Consumer;
 
 public class MalilibFavoritesButton extends WidgetHoverInfo {
     private final TooltipSupplier tooltipSupplier;
@@ -45,6 +47,8 @@ public class MalilibFavoritesButton extends WidgetHoverInfo {
     //#else
     @Override
     public void render(
+            // CHECKSTYLE.OFF: NoWhitespaceBefore
+            // CHECKSTYLE.OFF: SeparatorWrap
             int mouseX,
             int mouseY,
             boolean selected
@@ -53,15 +57,23 @@ public class MalilibFavoritesButton extends WidgetHoverInfo {
             //#elseif MC > 11502
             , PoseStack guiGraphicsOrPoseStack
             //#endif
+            // CHECKSTYLE.ON: SeparatorWrap
+            // CHECKSTYLE.ON: NoWhitespaceBefore
     ) {
         RenderUtils.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.bindTexture(
-            icon.getTexture()
-            //#if MC > 12104
-            //$$ , guiGraphicsOrPoseStack
-            //#endif
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
+                icon.getTexture()
+                //#if MC > 12104
+                //$$ , guiGraphicsOrPoseStack
+                //#endif
+                // CHECKSTYLE.ON: SeparatorWrap
+                // CHECKSTYLE.ON: NoWhitespaceBefore
         );
         icon.renderAt(
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
                 this.x,
                 this.y,
                 (float) this.zLevel,
@@ -70,6 +82,8 @@ public class MalilibFavoritesButton extends WidgetHoverInfo {
                 //#if MC > 12101
                 //$$ , guiGraphicsOrPoseStack
                 //#endif
+                // CHECKSTYLE.ON: SeparatorWrap
+                // CHECKSTYLE.ON: NoWhitespaceBefore
         );
 
         if (this.isMouseOver(mouseX, mouseY)) {

@@ -9,6 +9,10 @@ import fi.dy.masa.litematica.util.RayTraceUtils;
 import fi.dy.masa.litematica.util.WorldUtils;
 import fi.dy.masa.litematica.world.SchematicWorldHandler;
 import fi.dy.masa.malilib.util.BlockUtils;
+import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.player.PlayerCompat;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.LocalPlayer;
@@ -18,9 +22,14 @@ import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ComparatorBlock;
+import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.RepeaterBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.ComparatorMode;
@@ -28,6 +37,23 @@ import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 11900
+import net.minecraft.client.multiplayer.ClientLevel;
+//#endif
+
+//#if MC < 11600
+//$$ import net.minecraft.world.item.UseOnContext;
+//#endif
+
+//#if MC > 11404
+import net.minecraft.world.item.context.BlockPlaceContext;
+//#else
+//$$ import net.minecraft.world.item.BlockPlaceContext;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,25 +61,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.player.PlayerCompat;
-import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
-import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
+import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.sugar.Local;
 
 import java.util.Objects;
-
-//#if MC <= 11502
-//$$ import net.minecraft.world.item.UseOnContext;
-//#endif
-
-//#if MC <= 11802
-import net.minecraft.client.multiplayer.ClientLevel;
-//#endif
 
 @SuppressWarnings("DefaultAnnotationParam")
 @Dependencies(require = @Dependency(ModId.litematica))
 @Mixin(value = WorldUtils.class, priority = 900, remap = false)
-public class MixinWorldUtils {
+public abstract class MixinWorldUtils {
     @Unique
     private static final ThreadLocal<Direction> masa_gadget_mod$easyPlaceActionNewSide = ThreadLocal.withInitial(() -> null);
     @Unique
@@ -114,13 +129,16 @@ public class MixinWorldUtils {
             method = "doEasyPlaceAction",
             at = @At(
                     value = "INVOKE",
+                    //#if MC >= 12101
+                    //$$ target = "Lfi/dy/masa/litematica/util/EasyPlaceUtils;cacheEasyPlacePosition(Lnet/minecraft/core/BlockPos;)V",
+                    //#else
                     target = "Lfi/dy/masa/litematica/util/WorldUtils;cacheEasyPlacePosition(Lnet/minecraft/core/BlockPos;)V",
+                    //#endif
                     remap = true
-            ),
-            locals = LocalCapture.CAPTURE_FAILHARD
+            )
     )
     private static void fixDoEasyPlaceAction0(Minecraft mc, CallbackInfoReturnable<InteractionResult> cir,
-                                              RayTraceUtils.RayTraceWrapper traceWrapper) {
+                                              @Local(name = "traceWrapper") RayTraceUtils.RayTraceWrapper traceWrapper) {
         if (!Configs.fixAccurateProtocol.getBooleanValue()) {
             return;
         }
@@ -178,12 +196,16 @@ public class MixinWorldUtils {
             }
 
             mc.player.connection.send(new ServerboundMovePlayerPacket.Rot(
+                    // CHECKSTYLE.OFF: NoWhitespaceBefore
+                    // CHECKSTYLE.OFF: SeparatorWrap
                     playerCompat.getYRot(),
                     playerCompat.getXRot(),
                     playerCompat.isOnGround()
                     //#if MC > 12101
                     //$$ , false
                     //#endif
+                    // CHECKSTYLE.ON: SeparatorWrap
+                    // CHECKSTYLE.ON: NoWhitespaceBefore
             ));
         }
 
@@ -241,8 +263,9 @@ public class MixinWorldUtils {
                 hitResult
         );
 
-        if (!Configs.fixAccurateProtocol.getBooleanValue() ||
-                MixinWorldUtils.masa_gadget_mod$interactBlockCount.get() == null) {
+        if (!Configs.fixAccurateProtocol.getBooleanValue()
+                || MixinWorldUtils.masa_gadget_mod$interactBlockCount.get() == null
+        ) {
             return ret;
         }
 
@@ -284,12 +307,16 @@ public class MixinWorldUtils {
             PlayerCompat playerCompat = PlayerCompat.of(Objects.requireNonNull(mc.player));
             playerCompat.setYRot(masa_gadget_mod$easyPlaceActionOldYaw.get());
             mc.player.connection.send(new ServerboundMovePlayerPacket.Rot(
+                    // CHECKSTYLE.OFF: NoWhitespaceBefore
+                    // CHECKSTYLE.OFF: SeparatorWrap
                     playerCompat.getYRot(),
                     playerCompat.getXRot(),
                     playerCompat.isOnGround()
                     //#if MC > 12101
                     //$$ , false
                     //#endif
+                    // CHECKSTYLE.ON: SeparatorWrap
+                    // CHECKSTYLE.ON: NoWhitespaceBefore
             ));
         }
     }

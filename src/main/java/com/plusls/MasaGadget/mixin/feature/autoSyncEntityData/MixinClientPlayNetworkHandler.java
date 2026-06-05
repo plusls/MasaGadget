@@ -4,14 +4,23 @@ import com.google.common.collect.ImmutableList;
 import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.mixin.accessor.AccessorVillager;
 import com.plusls.MasaGadget.util.PcaSyncProtocol;
+
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.phys.AABB;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11404
+import net.minecraft.client.multiplayer.ClientLevel;
+//#else
+//$$ import net.minecraft.client.multiplayer.MultiPlayerLevel;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,7 +30,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(ClientPacketListener.class)
-public class MixinClientPlayNetworkHandler {
+public abstract class MixinClientPlayNetworkHandler {
     @Unique
     private static final List<SoundEvent> masa_gadget_mod$WORK_SOUNDS = ImmutableList.of(
             SoundEvents.VILLAGER_WORK_ARMORER,
@@ -41,9 +50,9 @@ public class MixinClientPlayNetworkHandler {
 
     @Inject(method = "handleSoundEvent", at = @At("RETURN"))
     private void syncVillagerData(ClientboundSoundPacket packet, CallbackInfo ci) {
-        if (!Configs.autoSyncEntityData.getBooleanValue() ||
-                Minecraft.getInstance().hasSingleplayerServer() ||
-                !PcaSyncProtocol.enable) {
+        if (!Configs.autoSyncEntityData.getBooleanValue()
+                || Minecraft.getInstance().hasSingleplayerServer()
+                || !PcaSyncProtocol.enable) {
             return;
         }
 
@@ -56,12 +65,10 @@ public class MixinClientPlayNetworkHandler {
         // 工作后可能会发生补货，因此在播放工作声音后需要同步村民数据
         clientLevel.getEntitiesOfClass(Villager.class,
                 new AABB(packet.getX() - 1, packet.getY() - 1, packet.getZ() - 1, packet.getX() + 1, packet.getY() + 1, packet.getZ() + 1),
-                villager -> ((AccessorVillager) villager).masa_gadget_mod$needsToRestock()).forEach(
-                villagerEntity -> {
+                villager -> ((AccessorVillager) villager).masa_gadget_mod$needsToRestock()).forEach(villagerEntity -> {
                     PcaSyncProtocol.syncEntity(villagerEntity.getId());
                     PcaSyncProtocol.cancelSyncEntity();
                 }
         );
-
     }
 }

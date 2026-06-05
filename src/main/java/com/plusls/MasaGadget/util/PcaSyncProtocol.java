@@ -1,6 +1,5 @@
 package com.plusls.MasaGadget.util;
 
-import com.mojang.serialization.Dynamic;
 import com.plusls.MasaGadget.SharedConstants;
 import com.plusls.MasaGadget.api.event.DisconnectListener;
 import com.plusls.MasaGadget.game.Configs;
@@ -12,6 +11,31 @@ import com.plusls.MasaGadget.mixin.accessor.AccessorZombieVillager;
 import fi.dy.masa.malilib.gui.Message;
 import fi.dy.masa.malilib.util.InfoUtils;
 import io.netty.buffer.Unpooled;
+import org.jetbrains.annotations.NotNull;
+import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.api.compat.minecraft.resources.ResourceLocationCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.world.SimpleContainerCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.player.PlayerCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.world.level.LevelCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.world.level.block.BlockEntityCompat;
+import top.hendrixshen.magiclib.api.network.packet.ClientboundPacketHandler;
+import top.hendrixshen.magiclib.api.network.packet.MagicPackets;
+import top.hendrixshen.magiclib.api.network.packet.PacketCodec;
+import top.hendrixshen.magiclib.api.network.packet.PacketType;
+import top.hendrixshen.magiclib.api.network.packet.ServerboundPacketHandler;
+import top.hendrixshen.magiclib.util.minecraft.NetworkUtil;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12106
+//$$ import org.slf4j.Logger;
+//#endif
+
+//#if MC < 12105
+import top.hendrixshen.magiclib.api.compat.minecraft.nbt.TagCompat;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import com.mojang.serialization.Dynamic;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -32,43 +56,29 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.api.compat.minecraft.resources.ResourceLocationCompat;
-import top.hendrixshen.magiclib.api.compat.minecraft.world.SimpleContainerCompat;
-import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.player.PlayerCompat;
-import top.hendrixshen.magiclib.api.compat.minecraft.world.level.LevelCompat;
-import top.hendrixshen.magiclib.api.compat.minecraft.world.level.block.BlockEntityCompat;
-import top.hendrixshen.magiclib.api.network.packet.ClientboundPacketHandler;
-import top.hendrixshen.magiclib.api.network.packet.MagicPackets;
-import top.hendrixshen.magiclib.api.network.packet.PacketCodec;
-import top.hendrixshen.magiclib.api.network.packet.PacketType;
-import top.hendrixshen.magiclib.api.network.packet.ServerboundPacketHandler;
-import top.hendrixshen.magiclib.util.minecraft.NetworkUtil;
 
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC >= 12106
 //$$ import com.mojang.logging.LogUtils;
 //$$ import net.minecraft.util.ProblemReporter;
 //$$ import net.minecraft.world.ItemStackWithSlot;
 //$$ import net.minecraft.world.level.storage.TagValueInput;
 //$$ import net.minecraft.world.level.storage.ValueInput;
-//$$ import org.slf4j.Logger;
-//#else
-import top.hendrixshen.magiclib.api.compat.minecraft.nbt.TagCompat;
+//#endif
+
+//#if 12106 > MC && MC > 12004
+//$$ import net.minecraft.Util;
 //#endif
 
 //#if MC > 12104
 //$$ import net.minecraft.core.UUIDUtil;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
-//#if MC > 12004
-//$$ import net.minecraft.Util;
-//#endif
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class PcaSyncProtocol {
     //#if MC >= 12106
@@ -183,11 +193,11 @@ public class PcaSyncProtocol {
 
             if (entity instanceof Mob) {
                 if (
-                    //#if MC > 12104
-                    //$$ tag.getBoolean("PersistenceRequired").orElse(false)
-                    //#else
+                        //#if MC > 12104
+                        //$$ tag.getBoolean("PersistenceRequired").orElse(false)
+                        //#else
                         tag.getBoolean("PersistenceRequired")
-                    //#endif
+                        //#endif
                 ) {
                     ((Mob) entity).setPersistenceRequired();
                 }
@@ -197,6 +207,8 @@ public class PcaSyncProtocol {
                 NonNullList<ItemStack> itemStacks = ((AccessorAbstractMinecartContainer) entity).masa_gadget_mod$getItemStacks();
                 itemStacks.clear();
                 ContainerHelper.loadAllItems(
+                        // CHECKSTYLE.OFF: NoWhitespaceBefore
+                        // CHECKSTYLE.OFF: SeparatorWrap
                         //#if MC >= 12106
                         //$$ input,
                         //#else
@@ -206,6 +218,8 @@ public class PcaSyncProtocol {
                         //#if 12106 >= MC && MC > 12004
                         //$$ , mc.level.registryAccess()
                         //#endif
+                        // CHECKSTYLE.OFF: NoWhitespaceBefore
+                        // CHECKSTYLE.OFF: SeparatorWrap
                 );
             }
 
@@ -217,6 +231,8 @@ public class PcaSyncProtocol {
                 //$$ ((AccessorAbstractVillager) entity).masa_gadget_mod$setOffers(input.read("Offers", MerchantOffers.CODEC).orElse(null));
                 //#else
                 SimpleContainerCompat.of(((AbstractVillager) entity).getInventory()).fromTag(
+                        // CHECKSTYLE.OFF: NoWhitespaceBefore
+                        // CHECKSTYLE.OFF: SeparatorWrap
                         //#if MC > 12104
                         //$$ tag.getListOrEmpty("Inventory")
                         //#else
@@ -225,6 +241,8 @@ public class PcaSyncProtocol {
                         //#if MC > 12004
                         //$$ , mc.level.registryAccess()
                         //#endif
+                        // CHECKSTYLE.ON: SeparatorWrap
+                        // CHECKSTYLE.ON: NoWhitespaceBefore
                 );
 
                 //#if MC > 12004
@@ -242,18 +260,26 @@ public class PcaSyncProtocol {
 
                 if (entity instanceof Villager) {
                     ((AccessorVillager) entity).masa_gadget_mod$setNumberOfRestocksToday(
+                            // CHECKSTYLE.OFF: NoWhitespaceBefore
+                            // CHECKSTYLE.OFF: SeparatorWrap
                             //#if MC > 12104
                             //$$ tag.getIntOr("RestocksToday", 0)
                             //#else
                             tag.getInt("RestocksToday")
                             //#endif
+                            // CHECKSTYLE.ON: SeparatorWrap
+                            // CHECKSTYLE.ON: NoWhitespaceBefore
                     );
                     ((AccessorVillager) entity).masa_gadget_mod$setLastRestockGameTime(
+                            // CHECKSTYLE.OFF: NoWhitespaceBefore
+                            // CHECKSTYLE.OFF: SeparatorWrap
                             //#if MC > 12104
                             //$$ tag.getLongOr("RestocksToday", 0L)
                             //#else
                             tag.getLong("LastRestock")
                             //#endif
+                            // CHECKSTYLE.ON: SeparatorWrap
+                            // CHECKSTYLE.ON: NoWhitespaceBefore
                     );
                     ((AccessorLivingEntity) entity).masa_gadget_mod$setBrain(((AccessorLivingEntity) entity).masa_gadget_mod$makeBrain(new Dynamic<>(NbtOps.INSTANCE, tag.get("Brain"))));
                 }
@@ -291,10 +317,14 @@ public class PcaSyncProtocol {
                 //#else
                 if (tag.contains("EnderItems", TagCompat.TAG_LIST)) {
                     playerEntity.getEnderChestInventory().fromTag(
+                            // CHECKSTYLE.OFF: NoWhitespaceBefore
+                            // CHECKSTYLE.OFF: SeparatorWrap
                             tag.getList("EnderItems", TagCompat.TAG_COMPOUND)
                             //#if MC > 12004
                             //$$ , mc.level.registryAccess()
                             //#endif
+                            // CHECKSTYLE.ON: SeparatorWrap
+                            // CHECKSTYLE.ON: NoWhitespaceBefore
                     );
                 }
                 //#endif
@@ -307,7 +337,7 @@ public class PcaSyncProtocol {
                 //$$
                 //$$ if (conversionTime > -1) {
                 //$$     tag.read("ConversionPlayer", UUIDUtil.CODEC).ifPresent(uuid ->
-                //$$         ((AccessorZombieVillager) entity).masa_gadget_mod$startConverting(uuid, conversionTime)
+                //$$             ((AccessorZombieVillager) entity).masa_gadget_mod$startConverting(uuid, conversionTime)
                 //$$     );
                 //$$ }
                 //#else
@@ -346,10 +376,14 @@ public class PcaSyncProtocol {
         if (blockEntity != null) {
             SharedConstants.getLogger().debug("update blockEntity!");
             BlockEntityCompat.of(blockEntity).load(
+                    // CHECKSTYLE.OFF: NoWhitespaceBefore
+                    // CHECKSTYLE.OFF: SeparatorWrap
                     Objects.requireNonNull(tag)
                     //#if MC > 12004
                     //$$ , mc.level.registryAccess()
                     //#endif
+                    // CHECKSTYLE.ON: SeparatorWrap
+                    // CHECKSTYLE.ON: NoWhitespaceBefore
             );
         }
     }

@@ -1,7 +1,6 @@
 package com.plusls.MasaGadget;
 
 import lombok.Getter;
-import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
@@ -13,6 +12,8 @@ import top.hendrixshen.magiclib.api.malilib.config.MagicConfigManager;
 import top.hendrixshen.magiclib.impl.malilib.config.GlobalConfigManager;
 import top.hendrixshen.magiclib.impl.malilib.config.MagicConfigHandlerImpl;
 import top.hendrixshen.magiclib.util.VersionUtil;
+
+import net.minecraft.resources.ResourceLocation;
 
 public class SharedConstants {
     @Getter

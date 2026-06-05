@@ -9,9 +9,6 @@ import com.plusls.MasaGadget.util.PcaSyncProtocol;
 import com.plusls.MasaGadget.util.SearchMobSpawnPointUtil;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
 import fi.dy.masa.malilib.interfaces.IValueChangeCallback;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.Entity;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
@@ -20,11 +17,21 @@ import top.hendrixshen.magiclib.api.malilib.annotation.Config;
 import top.hendrixshen.magiclib.api.malilib.config.MagicConfigManager;
 import top.hendrixshen.magiclib.api.platform.PlatformType;
 import top.hendrixshen.magiclib.impl.malilib.config.MagicConfigFactory;
-import top.hendrixshen.magiclib.impl.malilib.config.option.*;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigBoolean;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigBooleanHotkeyed;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigColor;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigDouble;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigHotkey;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigOptionList;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigStringList;
 import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
 import top.hendrixshen.magiclib.util.minecraft.InfoUtil;
 
-import java.util.*;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.Entity;
+
+import java.util.Objects;
 
 public class Configs {
     private static final MagicConfigManager cm = SharedConstants.getConfigManager();

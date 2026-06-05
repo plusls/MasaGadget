@@ -1,0 +1,16 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+insert_final_newline = true
+tab_width = 4
+
+[*.java]
+ij_continuation_indent_size = 8
+ij_java_class_count_to_use_import_on_demand = 999
+ij_java_imports_layout = *,|,com.mojang.**,net.minecraft.**,|,cpw.mods.**,net.fabricmc.**,net.minecraftforge.**,net.neoforged.**,|,com.llamalad7.mixinextras.**,org.spongepowered.**,top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.**,|,java.**,javax.**,|,$*
+ij_java_replace_instanceof_and_cast = true
+ij_java_replace_null_check = true
+ij_java_replace_sum_lambda_with_method_ref = true

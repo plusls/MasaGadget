@@ -7,6 +7,9 @@ import fi.dy.masa.itemscroller.recipes.CraftingHandler;
 import fi.dy.masa.itemscroller.recipes.RecipePattern;
 import fi.dy.masa.itemscroller.recipes.RecipeStorage;
 import fi.dy.masa.itemscroller.util.InventoryUtils;
+import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.player.PlayerCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.world.item.ItemStackCompat;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -16,8 +19,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.player.PlayerCompat;
-import top.hendrixshen.magiclib.api.compat.minecraft.world.item.ItemStackCompat;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,24 +58,24 @@ public class RestockUtil {
                 mc.gameMode.handleInventoryMouseClick(player.inventoryMenu.containerId, 0, 0, ClickType.PICKUP, player);
 
                 if (
-                    //#if MC > 11904
-                    //$$     ItemStack.isSameItem(player.inventoryMenu.getCarried(), itemStack)
-                    //#elseif MC > 11902
-                    //$$ player.inventoryMenu.getCarried().sameItem(itemStack)
-                    //#elseif MC > 11605
-                    //$$ player.inventoryMenu.getCarried().sameItemStackIgnoreDurability(itemStack)
-                    //#else
+                        //#if MC > 11904
+                        //$$ ItemStack.isSameItem(player.inventoryMenu.getCarried(), itemStack)
+                        //#elseif MC > 11902
+                        //$$ player.inventoryMenu.getCarried().sameItem(itemStack)
+                        //#elseif MC > 11605
+                        //$$ player.inventoryMenu.getCarried().sameItemStackIgnoreDurability(itemStack)
+                        //#else
                         PlayerCompat.of(player).getInventory().getCarried().sameItemStackIgnoreDurability(itemStack)
-                    //#endif
+                        //#endif
                 ) {
                     mc.gameMode.handleInventoryMouseClick(player.inventoryMenu.containerId,
-                            hand == InteractionHand.MAIN_HAND ?
-                                //#if MC > 12104
-                                //$$ PlayerCompat.of(player).getInventory().getSelectedSlot() + 36 :
-                                //#else
-                                PlayerCompat.of(player).getInventory().selected + 36 :
-                                //#endif
-                                45,
+                            hand == InteractionHand.MAIN_HAND
+                            //#if MC > 12104
+                            //$$ ? PlayerCompat.of(player).getInventory().getSelectedSlot() + 36
+                            //#else
+                            ? PlayerCompat.of(player).getInventory().selected + 36
+                            //#endif
+                            : 45,
                             0, ClickType.PICKUP, player);
                     return;
                 } else {

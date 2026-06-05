@@ -11,6 +11,13 @@ import fi.dy.masa.malilib.util.WorldUtils;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.config.Hotkeys;
 import lombok.Getter;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
+import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.api.compat.minecraft.util.ProfilerCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.EntityCompat;
+import top.hendrixshen.magiclib.util.collect.ValueContainer;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,15 +27,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.phys.*;
-import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.Nullable;
-import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.api.compat.minecraft.util.ProfilerCompat;
-import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.EntityCompat;
-import top.hendrixshen.magiclib.util.collect.ValueContainer;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
-import java.util.*;
+import java.util.ConcurrentModificationException;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 public class HitResultHandler implements MinecraftListener {
     @Getter
@@ -70,8 +78,8 @@ public class HitResultHandler implements MinecraftListener {
         Player player = mc.player;
         Entity cameraEntity = mc.getCameraEntity();
 
-        if (!MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.tweakeroo) ||
-                !FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue() || cameraEntity == null) {
+        if (!MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.tweakeroo)
+                || !FeatureToggle.TWEAK_FREE_CAMERA.getBooleanValue() || cameraEntity == null) {
             cameraEntity = player;
         }
 

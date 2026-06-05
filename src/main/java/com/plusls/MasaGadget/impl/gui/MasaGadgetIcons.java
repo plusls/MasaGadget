@@ -3,11 +3,14 @@ package com.plusls.MasaGadget.impl.gui;
 import com.plusls.MasaGadget.SharedConstants;
 import fi.dy.masa.malilib.gui.interfaces.IGuiIcon;
 import fi.dy.masa.malilib.render.RenderUtils;
+
 import net.minecraft.resources.ResourceLocation;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 12101
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#endif
+// CHECKSTYLE.OFF: ImportOrder
 
 public enum MasaGadgetIcons implements IGuiIcon {
     FAVORITE(0, 0, 16, 16, 16, 16);
@@ -52,6 +55,8 @@ public enum MasaGadgetIcons implements IGuiIcon {
 
     @Override
     public void renderAt(
+            // CHECKSTYLE.OFF: NoWhitespaceBefore
+            // CHECKSTYLE.OFF: SeparatorWrap
             //#if MC >= 12106
             //$$ GuiGraphics guiGraphics,
             //#endif
@@ -63,6 +68,8 @@ public enum MasaGadgetIcons implements IGuiIcon {
             //#if 12106 > MC && MC > 12101
             //$$ , GuiGraphics guiGraphics
             //#endif
+            // CHECKSTYLE.ON: SeparatorWrap
+            // CHECKSTYLE.ON: NoWhitespaceBefore
     ) {
         int u = this.u;
         int v = this.v;
@@ -76,6 +83,8 @@ public enum MasaGadgetIcons implements IGuiIcon {
         }
 
         RenderUtils.drawTexturedRect(
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
                 //#if MC >= 12106
                 //$$ guiGraphics,
                 //#endif
@@ -92,6 +101,8 @@ public enum MasaGadgetIcons implements IGuiIcon {
                 //#if 12106 > MC && MC > 12104
                 //$$ , guiGraphics
                 //#endif
+                // CHECKSTYLE.ON: SeparatorWrap
+                // CHECKSTYLE.ON: NoWhitespaceBefore
         );
     }
 

@@ -1,8 +1,8 @@
 package com.plusls.MasaGadget.mixin.mod_tweak.malilib.fastSwitchMasaConfigGui;
 
 import com.plusls.MasaGadget.api.fake.mod_tweak.malilib.favoritesSupport.GuiBaseInjector;
-import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.api.gui.MasaGadgetDropdownList;
+import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.impl.mod_tweak.malilib.fastSwitchMasaConfigGui.FastMasaGuiSwitcher;
 import com.plusls.MasaGadget.util.ModId;
 import fi.dy.masa.malilib.gui.GuiBase;
@@ -11,26 +11,36 @@ import fi.dy.masa.malilib.gui.GuiListBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.interfaces.IStringValue;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 import top.hendrixshen.magiclib.api.platform.PlatformType;
 import top.hendrixshen.magiclib.impl.malilib.config.gui.SelectorDropDownList;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 12006
-//$$ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 //$$ import fi.dy.masa.malilib.gui.widgets.WidgetBase;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11904
+//$$ import net.minecraft.client.gui.GuiGraphics;
+//#elseif MC > 11502
+import com.mojang.blaze3d.vertex.PoseStack;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 12006
+//$$ import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 //$$ import org.spongepowered.asm.mixin.Dynamic;
 //$$ import org.spongepowered.asm.mixin.injection.At;
 //#endif
-
-//#if MC > 11904
-//$$ import net.minecraft.client.gui.GuiGraphics;
-//#elseif MC > 11404
-import com.mojang.blaze3d.vertex.PoseStack;
-//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 @Dependencies(
         require = {
@@ -42,12 +52,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 @Dependencies(require = @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE))
 @Mixin(value = GuiConfigsBase.class, remap = false)
 public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.ConfigOptionWrapper, WidgetConfigOption, WidgetListConfigOptions> implements MasaGadgetDropdownList, GuiBaseInjector {
+    @Unique
+    private SelectorDropDownList<IStringValue> masa_gadget$masaModGuiList;
+
     protected MixinGuiConfigBase(int listX, int listY) {
         super(listX, listY);
     }
-
-    @Unique
-    private SelectorDropDownList<IStringValue> masa_gadget$masaModGuiList;
 
     @Override
     public void masa_gadget_mod$addFastSwitcherWidget() {
@@ -77,6 +87,8 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
         }
 
         this.masa_gadget$masaModGuiList.render(
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
                 //#if MC >= 12106
                 //$$ poseStackOrGuiGraphics,
                 //#endif
@@ -86,6 +98,8 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
                 //#if 12106 > MC && MC > 11502
                 , poseStackOrGuiGraphics
                 //#endif
+                // CHECKSTYLE.ON: SeparatorWrap
+                // CHECKSTYLE.ON: NoWhitespaceBefore
         );
 
         if (this.masa_gadget$masaModGuiList.isMouseOver(mouseX, mouseY)) {
@@ -93,6 +107,8 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
         }
 
         this.drawHoveredWidget(
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
                 //#if MC >= 12106
                 //$$ poseStackOrGuiGraphics,
                 //#endif
@@ -101,6 +117,8 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
                 //#if 12106 > MC && MC > 11502
                 , poseStackOrGuiGraphics
                 //#endif
+                // CHECKSTYLE.ON: SeparatorWrap
+                // CHECKSTYLE.ON: NoWhitespaceBefore
         );
     }
 

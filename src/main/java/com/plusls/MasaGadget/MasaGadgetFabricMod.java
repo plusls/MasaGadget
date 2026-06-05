@@ -1,4 +1,5 @@
 //#if FABRIC_LIKE
+
 package com.plusls.MasaGadget;
 
 import net.fabricmc.api.ClientModInitializer;

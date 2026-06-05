@@ -2,20 +2,25 @@ package com.plusls.MasaGadget.mixin.feature.autoSyncEntityData;
 
 import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.util.PcaSyncProtocol;
+import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.EntityCompat;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.monster.ZombieVillager;
 import net.minecraft.world.level.Level;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.EntityCompat;
 
 @Mixin(ZombieVillager.class)
 public abstract class MixinZombieVillagerEntity extends Zombie {
+    @Shadow
+    private int villagerConversionTime;
+
     public MixinZombieVillagerEntity(EntityType<? extends Zombie> entityType, Level level) {
         super(entityType, level);
     }
@@ -26,14 +31,11 @@ public abstract class MixinZombieVillagerEntity extends Zombie {
     @Shadow
     protected abstract int getConversionProgress();
 
-    @Shadow
-    private int villagerConversionTime;
-
     @Inject(method = "handleEntityEvent", at = @At("RETURN"))
     private void syncVillagerData(byte status, CallbackInfo ci) {
-        if (!Configs.autoSyncEntityData.getBooleanValue() ||
-                Minecraft.getInstance().hasSingleplayerServer() ||
-                !PcaSyncProtocol.enable) {
+        if (!Configs.autoSyncEntityData.getBooleanValue()
+                || Minecraft.getInstance().hasSingleplayerServer()
+                || !PcaSyncProtocol.enable) {
             return;
         }
 
@@ -51,9 +53,10 @@ public abstract class MixinZombieVillagerEntity extends Zombie {
 
             if (this.villagerConversionTime <= 0) {
                 // 如果这里为负，应该是没有同步数据
-                if (!Configs.autoSyncEntityData.getBooleanValue() ||
-                        Minecraft.getInstance().hasSingleplayerServer() ||
-                        !PcaSyncProtocol.enable) {
+                if (!Configs.autoSyncEntityData.getBooleanValue()
+                        || Minecraft.getInstance().hasSingleplayerServer()
+                        || !PcaSyncProtocol.enable
+                ) {
                     return;
                 }
 

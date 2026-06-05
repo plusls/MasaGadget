@@ -3,12 +3,13 @@ package com.plusls.MasaGadget.util;
 import fi.dy.masa.litematica.selection.Box;
 import fi.dy.masa.litematica.util.EntityUtils;
 import fi.dy.masa.litematica.util.PositionUtils;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -24,8 +25,8 @@ public class PcaSyncUtil {
         PcaSyncUtil.lastUpdatePos = null;
 
         BlockPos lastUpdatePos = null;
-        for (Box box : boxes) {
 
+        for (Box box : boxes) {
             BlockPos pos1 = box.getPos1();
             BlockPos pos2 = box.getPos2();
             if (pos1 == null || pos2 == null) {
@@ -46,6 +47,7 @@ public class PcaSyncUtil {
                     PcaSyncProtocol.syncEntity(entity.getId());
                 }
             }
+
             for (int x = minX; x <= maxX; ++x) {
                 for (int y = minY; y <= maxY; ++y) {
                     for (int z = minZ; z <= maxZ; ++z) {
@@ -57,8 +59,8 @@ public class PcaSyncUtil {
                     }
                 }
             }
-
         }
+
         PcaSyncProtocol.cancelSyncBlockEntity();
         PcaSyncProtocol.cancelSyncEntity();
         PcaSyncUtil.lastUpdatePos = lastUpdatePos;

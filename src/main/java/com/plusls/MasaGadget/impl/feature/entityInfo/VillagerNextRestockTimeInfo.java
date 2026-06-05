@@ -3,18 +3,21 @@ package com.plusls.MasaGadget.impl.feature.entityInfo;
 import com.plusls.MasaGadget.mixin.accessor.AccessorVillager;
 import com.plusls.MasaGadget.util.PcaSyncProtocol;
 import com.plusls.MasaGadget.util.VillagerDataUtil;
+import org.jetbrains.annotations.NotNull;
+import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.trading.MerchantOffer;
-import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 12104
 //$$ import net.minecraft.resources.ResourceKey;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
 public class VillagerNextRestockTimeInfo {
     public static Component getInfo(@NotNull Villager villager) {

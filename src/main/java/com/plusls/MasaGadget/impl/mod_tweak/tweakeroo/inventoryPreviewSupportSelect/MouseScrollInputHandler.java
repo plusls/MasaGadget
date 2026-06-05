@@ -8,16 +8,19 @@ import fi.dy.masa.malilib.hotkeys.IMouseInputHandler;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.config.Hotkeys;
 import lombok.Getter;
-import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.MagicLib;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.player.Player;
+
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11902
 //$$ import net.minecraft.core.registries.BuiltInRegistries;
 //#else
 import net.minecraft.core.Registry;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
 public class MouseScrollInputHandler implements IMouseInputHandler {
     @Getter
@@ -32,10 +35,10 @@ public class MouseScrollInputHandler implements IMouseInputHandler {
     public boolean onMouseScroll(int mouseX, int mouseY, double amount) {
         Player player = Minecraft.getInstance().player;
 
-        if (!MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.tweakeroo) ||
-                !Configs.inventoryPreviewSupportSelect.getBooleanValue() ||
-                !FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue() ||
-                !HitResultHandler.getInstance().getLastInventoryPreviewStatus()) {
+        if (!MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.tweakeroo)
+                || !Configs.inventoryPreviewSupportSelect.getBooleanValue()
+                || !FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue()
+                || !HitResultHandler.getInstance().getLastInventoryPreviewStatus()) {
             return false;
         }
 
@@ -45,26 +48,26 @@ public class MouseScrollInputHandler implements IMouseInputHandler {
             InventoryOverlayRenderHandler.getInstance().scrollerDown();
         }
 
-        return !MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.litematica) ||
-                !fi.dy.masa.litematica.config.Configs.Generic.TOOL_ITEM_ENABLED.getBooleanValue() ||
-                player == null ||
+        return !MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.litematica)
+                || !fi.dy.masa.litematica.config.Configs.Generic.TOOL_ITEM_ENABLED.getBooleanValue()
+                || player == null
                 //#if MC > 11902
-                //$$ !BuiltInRegistries.ITEM.getKey(player.getMainHandItem().getItem()).toString()
+                //$$ || !BuiltInRegistries.ITEM.getKey(player.getMainHandItem().getItem()).toString()
                 //$$         .contains(fi.dy.masa.litematica.config.Configs.Generic.TOOL_ITEM.getStringValue());
                 //#else
-                !Registry.ITEM.getKey(player.getMainHandItem().getItem()).toString()
+                || !Registry.ITEM.getKey(player.getMainHandItem().getItem()).toString()
                         .contains(fi.dy.masa.litematica.config.Configs.Generic.TOOL_ITEM.getStringValue());
         //#endif
     }
 
     @Override
     public boolean onMouseClick(int mouseX, int mouseY, int eventButton, boolean eventButtonState) {
-        if (MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.tweakeroo) &&
-                Configs.inventoryPreviewSupportSelect.getBooleanValue() &&
-                FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue() &&
-                Hotkeys.INVENTORY_PREVIEW.getKeybind().isKeybindHeld() &&
-                eventButton == 2 &&
-                eventButtonState) {
+        if (MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.tweakeroo)
+                && Configs.inventoryPreviewSupportSelect.getBooleanValue()
+                && FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue()
+                && Hotkeys.INVENTORY_PREVIEW.getKeybind().isKeybindHeld()
+                && eventButton == 2
+                && eventButtonState) {
             InventoryOverlayRenderHandler.getInstance().switchSelectInventory();
         }
 

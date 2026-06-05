@@ -1,17 +1,22 @@
 package com.plusls.MasaGadget.impl.gui;
 
 import fi.dy.masa.malilib.gui.widgets.WidgetLabel;
-import fi.dy.masa.malilib.render.RenderUtils;
 import lombok.Getter;
 import lombok.Setter;
 import top.hendrixshen.magiclib.api.render.context.GuiRenderContext;
 import top.hendrixshen.magiclib.api.render.context.RenderContext;
 
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 12105
+import fi.dy.masa.malilib.render.RenderUtils;
+//#endif
+
 //#if MC > 11904
 //$$ import net.minecraft.client.gui.GuiGraphics;
-//#elseif MC > 11404
+//#elseif MC > 11502
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
 @Getter
 @Setter
@@ -25,6 +30,8 @@ public class ScalableWidgetLabel extends WidgetLabel {
 
     @Override
     public void render(
+            // CHECKSTYLE.OFF: NoWhitespaceBefore
+            // CHECKSTYLE.OFF: SeparatorWrap
             //#if MC >= 12106
             //$$ GuiGraphics guiGraphicsOrPoseStack,
             //#endif
@@ -38,15 +45,19 @@ public class ScalableWidgetLabel extends WidgetLabel {
             , PoseStack guiGraphicsOrPoseStack
             //#endif
             //#endif
+            // CHECKSTYLE.ON: SeparatorWrap
+            // CHECKSTYLE.ON: NoWhitespaceBefore
     ) {
         if (this.visible) {
             //#if MC < 12105
             RenderUtils.setupBlend();
             //#endif
             this.drawLabelBackground(
+                    // CHECKSTYLE.ON: Indentation
                     //#if MC >= 12106
                     //$$ guiGraphicsOrPoseStack
                     //#endif
+                    // CHECKSTYLE.OFF: Indentation
             );
             GuiRenderContext renderContext = RenderContext.gui(
                     //#if MC > 11502
@@ -69,6 +80,8 @@ public class ScalableWidgetLabel extends WidgetLabel {
 
                 if (this.centered) {
                     this.drawCenteredStringWithShadow(
+                            // CHECKSTYLE.OFF: NoWhitespaceBefore
+                            // CHECKSTYLE.OFF: SeparatorWrap
                             //#if MC >= 12106
                             //$$ guiGraphicsOrPoseStack,
                             //#endif
@@ -79,9 +92,13 @@ public class ScalableWidgetLabel extends WidgetLabel {
                             //#if 12106 > MC && MC >= 11600
                             , guiGraphicsOrPoseStack
                             //#endif
+                            // CHECKSTYLE.ON: SeparatorWrap
+                            // CHECKSTYLE.ON: NoWhitespaceBefore
                     );
                 } else {
                     this.drawStringWithShadow(
+                            // CHECKSTYLE.OFF: NoWhitespaceBefore
+                            // CHECKSTYLE.OFF: SeparatorWrap
                             //#if MC >= 12106
                             //$$ guiGraphicsOrPoseStack,
                             //#endif
@@ -92,6 +109,8 @@ public class ScalableWidgetLabel extends WidgetLabel {
                             //#if 12106 > MC && MC >= 11600
                             , guiGraphicsOrPoseStack
                             //#endif
+                            // CHECKSTYLE.ON: SeparatorWrap
+                            // CHECKSTYLE.ON: NoWhitespaceBefore
                     );
                 }
 
