@@ -63,7 +63,8 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
     public void masa_gadget_mod$addFastSwitcherWidget() {
         if (Configs.fastSwitchMasaConfigGui.getBooleanValue()) {
             this.masa_gadget$masaModGuiList = new SelectorDropDownList<>(
-                    this.width - 111, 10, 100, 16, 200, 5,
+                    this.width - 111, 10, 100, 16, 200,
+                    Configs.fastSwitchMasaConfigGuiVisibleEntries.getIntegerValue(),
                     FastMasaGuiSwitcher.getInstance().getModNameList());
             this.masa_gadget$masaModGuiList.setSelectedEntry(FastMasaGuiSwitcher.getInstance().getModName(this.getClass()));
             this.masa_gadget$masaModGuiList.setEntryChangeListener(entry ->

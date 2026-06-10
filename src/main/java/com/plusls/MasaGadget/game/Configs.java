@@ -22,6 +22,7 @@ import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigBooleanHot
 import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigColor;
 import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigDouble;
 import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigHotkey;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigInteger;
 import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigOptionList;
 import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigStringList;
 import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
@@ -123,6 +124,16 @@ public class Configs {
     @Dependencies(require = @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE))
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean fastSwitchMasaConfigGui = Configs.cf.newConfigBoolean("fastSwitchMasaConfigGui", false);
+
+    @Dependencies(
+            require = {
+                    @Dependency(ModId.mod_menu),
+                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FABRIC_LIKE)
+            }
+    )
+    @Dependencies(require = @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE))
+    @Config(category = ConfigCategory.MALILIB)
+    public static MagicConfigInteger fastSwitchMasaConfigGuiVisibleEntries = Configs.cf.newConfigInteger("fastSwitchMasaConfigGuiVisibleEntries", 5, 3, 15);
 
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBooleanHotkeyed favoritesSupport = Configs.cf.newConfigBooleanHotkeyed("favoritesSupport", false);
@@ -376,6 +387,7 @@ public class Configs {
 
         // Malilib
         Configs.fastSwitchMasaConfigGui.setValueChangeCallback(Configs::redrawConfigGui);
+        Configs.fastSwitchMasaConfigGuiVisibleEntries.setValueChangeCallback(Configs::redrawConfigGui);
         Configs.favoritesSupport.setValueChangeCallback(Configs::redrawConfigGui);
         Configs.showOriginalConfigName.setValueChangeCallback(Configs::redrawConfigGui);
         Configs.showOriginalConfigNameScale.setValueChangeCallback(Configs::redrawConfigGui);

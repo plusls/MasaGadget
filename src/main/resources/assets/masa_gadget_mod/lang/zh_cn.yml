@@ -59,7 +59,12 @@ masa_gadget_mod:
         comment: 从 MC 1.18.x 版本的本地化支持。
       fastSwitchMasaConfigGui:
         name: 快速切换配置菜单
-        comment: 你可以通过下拉菜单快速切换配置窗口。
+        comment: |-
+          你可以通过下拉菜单快速切换配置窗口。
+          另见：配置 @config#fastSwitchMasaConfigGuiVisibleEntries@。
+      fastSwitchMasaConfigGuiVisibleEntries:
+        name: 快速切换配置菜单-可见条目数
+        comment: 使用@config#fastSwitchMasaConfigGui@的下拉菜单时最大可见条目数。
       favoritesSupport:
         name: 收藏夹支持
         comment: 你可以收藏你喜欢的配置。
@@ -69,7 +74,7 @@ masa_gadget_mod:
       fixConfigWidgetWidthExpand:
         name: 修复配置控件宽度增强
         comment: |
-          更深层修复配置文本宽度, 需要启用 @config#fixConfigWidgetWidth@。
+          更深层修复配置文本宽度, 需要启用@config#fixConfigWidgetWidth@。
           注意：
             可能带来额外的性能开销，仅当
             配置文本宽度出现问题时尝试启用，
@@ -86,7 +91,7 @@ masa_gadget_mod:
       pinyinSouSuo:
         name: 拼音搜索
         comment: |-
-          为搜索栏提供拼音搜索支
+          为搜索栏提供拼音搜索支持
           这仅对当前游戏语言为中文系列语言有效.
       pinyinSouSuoFZh2Z:
         name: 拼音搜索-模糊拼写zh-z
@@ -129,7 +134,7 @@ masa_gadget_mod:
           如果翻译不存在，则不会显示。
       showOriginalConfigNameScale:
         name: 显示原始配置名称缩放
-        comment: '@config#showOriginalConfigName@ 字体缩放.'
+        comment: '@config#showOriginalConfigName@字体缩放。'
       # ================================ Tweakeroo ================================
       inventoryPreviewSupportComparator:
         name: 容器预览支持比较器
