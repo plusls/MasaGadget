@@ -13,6 +13,7 @@
     "accessor.AccessorLivingEntity",
     "accessor.AccessorVillager",
     "accessor.AccessorZombieVillager",
+    "event.MixinLevelRenderer",
     "event.MixinMinecraft",
     "feature.autoSyncEntityData.MixinClientPlayNetworkHandler",
     "feature.autoSyncEntityData.MixinVillagerEntity",

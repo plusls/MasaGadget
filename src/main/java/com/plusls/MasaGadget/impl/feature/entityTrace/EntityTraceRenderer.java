@@ -1,6 +1,7 @@
 package com.plusls.MasaGadget.impl.feature.entityTrace;
 
 import com.google.common.collect.Queues;
+import com.plusls.MasaGadget.api.event.RenderEntityListener;
 import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.util.MiscUtil;
 import com.plusls.MasaGadget.util.RenderUtil;
@@ -9,10 +10,8 @@ import fi.dy.masa.malilib.util.Color4f;
 import lombok.Getter;
 import org.jetbrains.annotations.ApiStatus;
 import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.api.event.minecraft.render.RenderEntityListener;
 import top.hendrixshen.magiclib.api.event.minecraft.render.RenderLevelListener;
 import top.hendrixshen.magiclib.api.render.context.LevelRenderContext;
-import top.hendrixshen.magiclib.impl.render.context.EntityRenderContext;
 import top.hendrixshen.magiclib.impl.render.context.RenderGlobal;
 
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -35,12 +34,7 @@ public class EntityTraceRenderer implements RenderEntityListener, RenderLevelLis
     }
 
     @Override
-    public void preRenderEntity(Entity entity, EntityRenderContext renderContext) {
-        // NO-OP
-    }
-
-    @Override
-    public void postRenderEntity(Entity entity, EntityRenderContext renderContext) {
+    public void postRenderEntity(Entity entity) {
         if (entity instanceof Villager
                 && Configs.renderVillageHomeTracer.getBooleanValue()
                 || Configs.renderVillageJobSiteTracer.getBooleanValue()) {

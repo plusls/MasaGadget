@@ -32,9 +32,14 @@ public abstract class MixinAbstractVillager {
     @WrapOperation(
             method = "getOffers",
             at = @At(
+                    //#if MC >= 1.21.10
+                    //$$ value = "INVOKE",
+                    //$$ target = "Lnet/minecraft/world/level/Level;isClientSide()Z"
+                    //#else
                     value = "FIELD",
                     target = "Lnet/minecraft/world/level/Level;isClientSide:Z",
                     opcode = Opcodes.GETFIELD
+                    //#endif
             )
     )
     private boolean forgiveInvoke(Level instance, @NotNull Operation<Boolean> original) {

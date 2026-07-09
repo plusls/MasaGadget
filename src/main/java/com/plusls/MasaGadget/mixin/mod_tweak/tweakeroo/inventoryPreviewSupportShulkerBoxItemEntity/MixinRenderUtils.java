@@ -26,6 +26,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 1.21.10
+//$$ import net.minecraft.world.item.component.TypedEntityData;
+//$$ import net.minecraft.world.level.block.entity.BlockEntityType;
+//#endif
+
+//#if 1.21.10 > MC && MC > 1.20.4
+//$$ import net.minecraft.world.item.component.CustomData;
+//#endif
+
 //#if MC >= 12106
 //$$ import com.mojang.logging.LogUtils;
 //$$ import net.minecraft.world.level.storage.TagValueInput;
@@ -34,9 +43,8 @@ import net.minecraft.world.level.block.ShulkerBoxBlock;
 //#endif
 
 //#if MC > 12004
-//$$ import net.minecraft.client.Minecraft;
+//$$ import top.hendrixshen.magiclib.api.compat.minecraft.client.MinecraftCompat;
 //$$ import net.minecraft.core.component.DataComponents;
-//$$ import net.minecraft.world.item.component.CustomData;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
@@ -78,13 +86,21 @@ public abstract class MixinRenderUtils {
             ItemStack itemStack = ((ItemEntity) traceEntity).getItem();
             Item item = itemStack.getItem();
             //#if MC > 12004
+            //#if MC >= 1.21.10
+            //$$ TypedEntityData<BlockEntityType<?>> invData = itemStack.get(DataComponents.BLOCK_ENTITY_DATA);
+            //#else
             //$$ CustomData invData = itemStack.get(DataComponents.BLOCK_ENTITY_DATA);
+            //#endif
             //$$
             //$$ if (invData == null) {
             //$$     return null;
             //$$ }
             //$$
+            //#if MC >= 1.21.10
+            //$$ CompoundTag invNbt = invData.copyTagWithoutId();
+            //#else
             //$$ CompoundTag invNbt = invData.copyTag();
+            //#endif
             //#else
             CompoundTag invNbt = itemStack.getTagElement("BlockEntityTag");
             //#endif
@@ -96,7 +112,7 @@ public abstract class MixinRenderUtils {
 
                 //#if MC >= 12106
                 //$$ try (ProblemReporter.ScopedCollector collector = new ProblemReporter.ScopedCollector(MixinRenderUtils.masa_gadget$logger)) {
-                //$$     ValueInput input = TagValueInput.create(collector, Minecraft.getInstance().cameraEntity.registryAccess(), invNbt);
+                //$$     ValueInput input = TagValueInput.create(collector, MinecraftCompat.getInstance().getMainCamera().getEntity().registryAccess(), invNbt);
                 //$$     ContainerHelper.loadAllItems(input, stacks);
                 //$$ }
                 //#else

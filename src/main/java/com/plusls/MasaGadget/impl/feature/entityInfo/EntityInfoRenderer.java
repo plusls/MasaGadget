@@ -1,6 +1,7 @@
 package com.plusls.MasaGadget.impl.feature.entityInfo;
 
 import com.google.common.collect.Queues;
+import com.plusls.MasaGadget.api.event.RenderEntityListener;
 import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.util.MiscUtil;
 import com.plusls.MasaGadget.util.SyncUtil;
@@ -8,11 +9,10 @@ import lombok.Getter;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.api.event.minecraft.render.RenderEntityListener;
+import top.hendrixshen.magiclib.api.compat.minecraft.client.MinecraftCompat;
 import top.hendrixshen.magiclib.api.event.minecraft.render.RenderLevelListener;
 import top.hendrixshen.magiclib.api.render.context.LevelRenderContext;
 import top.hendrixshen.magiclib.impl.render.TextRenderer;
-import top.hendrixshen.magiclib.impl.render.context.EntityRenderContext;
 import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 
 import net.minecraft.client.Minecraft;
@@ -32,7 +32,7 @@ public class EntityInfoRenderer implements RenderEntityListener, RenderLevelList
     private final Queue<Entity> queue = Queues.newConcurrentLinkedQueue();
 
     private static TextRenderer rotationAround(@NotNull TextRenderer renderer, @NotNull Position centerPos, double range) {
-        Position camPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+        Position camPos = MinecraftCompat.getInstance().getMainCamera().getPosition();
         float xAngle = (float) Mth.atan2(camPos.z() - centerPos.z(), camPos.x() - centerPos.x());
         float zAngle = (float) Mth.atan2(camPos.x() - centerPos.x(), camPos.z() - centerPos.z());
         return renderer.at(range * Mth.cos(xAngle) + centerPos.x(), centerPos.y(), range * Mth.cos(zAngle) + centerPos.z());
@@ -45,12 +45,7 @@ public class EntityInfoRenderer implements RenderEntityListener, RenderLevelList
     }
 
     @Override
-    public void preRenderEntity(Entity entity, EntityRenderContext renderContext) {
-        // NO-OP
-    }
-
-    @Override
-    public void postRenderEntity(Entity entity, EntityRenderContext renderContext) {
+    public void postRenderEntity(Entity entity) {
         if ((entity instanceof Villager
                 && (Configs.renderNextRestockTime.getBooleanValue() || Configs.renderTradeEnchantedBook.getBooleanValue()))
                 || (entity instanceof ZombieVillager && (Configs.renderZombieVillagerConvertTime.getBooleanValue()))) {

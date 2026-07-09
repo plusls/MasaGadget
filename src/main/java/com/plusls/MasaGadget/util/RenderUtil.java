@@ -22,7 +22,7 @@ import net.minecraft.world.phys.Vec3;
 //$$ import com.mojang.blaze3d.buffers.BufferUsage;
 //#endif
 
-//#if 12109 > MC && MC > 12006
+//#if MC > 12006
 //$$ import com.mojang.blaze3d.vertex.MeshData;
 //#endif
 

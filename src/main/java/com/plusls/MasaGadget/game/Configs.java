@@ -136,7 +136,7 @@ public class Configs {
     public static MagicConfigInteger fastSwitchMasaConfigGuiVisibleEntries = Configs.cf.newConfigInteger("fastSwitchMasaConfigGuiVisibleEntries", 5, 3, 15);
 
     @Config(category = ConfigCategory.MALILIB)
-    public static MagicConfigBooleanHotkeyed favoritesSupport = Configs.cf.newConfigBooleanHotkeyed("favoritesSupport", false);
+    public static MagicConfigBoolean favoritesSupport = Configs.cf.newConfigBoolean("favoritesSupport", false);
 
     @Dependencies(require = @Dependency(ModId.malilib))
     @Config(category = ConfigCategory.MALILIB)

@@ -15,6 +15,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 1.21.10
+//$$ import net.minecraft.client.input.MouseButtonEvent;
+//#endif
+
 //#if MC > 11902
 //$$ import net.minecraft.core.registries.BuiltInRegistries;
 //#else
@@ -32,7 +36,16 @@ public class MouseScrollInputHandler implements IMouseInputHandler {
     }
 
     @Override
-    public boolean onMouseScroll(int mouseX, int mouseY, double amount) {
+    public boolean onMouseScroll(
+            //#if MC >= 1.21.10
+            //$$ double mouseX,
+            //$$ double mouseY,
+            //#else
+            int mouseX,
+            int mouseY,
+            //#endif
+            double amount
+    ) {
         Player player = Minecraft.getInstance().player;
 
         if (!MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.tweakeroo)
@@ -61,12 +74,25 @@ public class MouseScrollInputHandler implements IMouseInputHandler {
     }
 
     @Override
-    public boolean onMouseClick(int mouseX, int mouseY, int eventButton, boolean eventButtonState) {
+    public boolean onMouseClick(
+            //#if MC >= 1.21.10
+            //$$ MouseButtonEvent click,
+            //#else
+            int mouseX,
+            int mouseY,
+            int eventButton,
+            //#endif
+            boolean eventButtonState
+    ) {
         if (MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.tweakeroo)
                 && Configs.inventoryPreviewSupportSelect.getBooleanValue()
                 && FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue()
                 && Hotkeys.INVENTORY_PREVIEW.getKeybind().isKeybindHeld()
+                //#if MC >= 1.21.10
+                //$$ && click.button() == 2
+                //#else
                 && eventButton == 2
+                //#endif
                 && eventButtonState) {
             InventoryOverlayRenderHandler.getInstance().switchSelectInventory();
         }
