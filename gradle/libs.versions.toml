@@ -7,7 +7,7 @@ replace-token = { id = "top.hendrixshen.replace-token", version.ref = "replace-t
 yamlang = { id = "me.fallenbreath.yamlang", version.ref = "yamlang" }
 
 [versions]
-checkstyle = "13.5.0"
+checkstyle = "13.7.0"
 essential-loom = "1.15.50"
 fabric-loader = "0.19.3"
 grgit = "5.3.3"
