@@ -1,6 +1,6 @@
 [versions]
 pinyin = "1.6.0"
-magiclib = "0.8.852"
+magiclib = "0.8.855-beta"
 
 itemscroller-mc11404 = "0.15.0-dev.20190909.151706"
 itemscroller-mc11502 = "0.15.0-dev.20200514.012232"
