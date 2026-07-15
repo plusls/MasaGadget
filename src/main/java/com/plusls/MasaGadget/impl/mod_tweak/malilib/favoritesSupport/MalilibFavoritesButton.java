@@ -7,9 +7,17 @@ import fi.dy.masa.malilib.render.RenderUtils;
 import org.jetbrains.annotations.NotNull;
 
 // CHECKSTYLE.OFF: ImportOrder
-//#if MC > 11904
+//#if MC >= 1.21.11
+//$$ import fi.dy.masa.malilib.render.GuiContext;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if 1.21.11 > MC && MC > 1.19.4
 //$$ import net.minecraft.client.gui.GuiGraphics;
-//#elseif MC > 11502
+//#endif
+
+//#if 1.20.1 > MC && MC > 1.15.2
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
@@ -37,11 +45,21 @@ public class MalilibFavoritesButton extends WidgetHoverInfo {
     }
 
     //#if MC >= 12106
-    //$$ public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean selected) {
-    //$$     icon.renderAt(guiGraphics, this.x, this.y, (float) this.zLevel, this.status, this.isMouseOver(mouseX, mouseY));
+    //$$ @Override
+    //$$ public void render(
+    //$$         //#if MC >= 1.21.11
+    //$$         //$$ GuiContext guiContextOrGuiGraphics,
+    //$$         //#else
+    //$$         GuiGraphics guiContextOrGuiGraphics,
+    //$$         //#endif
+    //$$         int mouseX,
+    //$$         int mouseY,
+    //$$         boolean selected
+    //$$ ) {
+    //$$     icon.renderAt(guiContextOrGuiGraphics, this.x, this.y, (float) this.zLevel, this.status, this.isMouseOver(mouseX, mouseY));
     //$$
     //$$     if (this.isMouseOver(mouseX, mouseY)) {
-    //$$         RenderUtils.drawOutlinedBox(guiGraphics, this.x, this.y, this.width, this.height, 0x20C0C0C0, -520093697);
+    //$$         RenderUtils.drawOutlinedBox(guiContextOrGuiGraphics, this.x, this.y, this.width, this.height, 0x20C0C0C0, -520093697);
     //$$     }
     //$$ }
     //#else

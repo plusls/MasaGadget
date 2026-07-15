@@ -3,6 +3,7 @@ package com.plusls.MasaGadget.util;
 import fi.dy.masa.malilib.render.RenderUtils;
 import fi.dy.masa.malilib.util.Color4f;
 import org.jetbrains.annotations.NotNull;
+import top.hendrixshen.magiclib.api.compat.minecraft.client.MinecraftCompat;
 
 // CHECKSTYLE.OFF: ImportOrder
 //#if MC > 12104
@@ -14,7 +15,6 @@ import top.hendrixshen.magiclib.api.compat.mojang.blaze3d.vertex.VertexFormatCom
 // CHECKSTYLE.ON: ImportOrder
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.phys.Vec3;
 
 // CHECKSTYLE.OFF: ImportOrder
@@ -49,7 +49,7 @@ public class RenderUtil {
     }
 
     public static void drawLine(Vec3 pos1, Vec3 pos2, Color4f color) {
-        Vec3 camPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+        Vec3 camPos = MinecraftCompat.getInstance().getMainCameraCompat().getPosition();
         pos1 = pos1.subtract(camPos);
         pos2 = pos2.subtract(camPos);
         //#if MC > 12104
@@ -104,7 +104,7 @@ public class RenderUtil {
     }
 
     public static void drawOutlineBox(Vec3 pos, double expend, Color4f color) {
-        Vec3 camPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+        Vec3 camPos = MinecraftCompat.getInstance().getMainCameraCompat().getPosition();
         pos = pos.subtract(camPos);
 
         //#if MC > 12104
@@ -139,6 +139,9 @@ public class RenderUtil {
                 (float) (pos.y() + expend),
                 (float) (pos.z() + expend),
                 color,
+                //#if MC >= 1.21.11
+                //$$ 1.0F,
+                //#endif
                 builder
         );
         //#if MC > 12104

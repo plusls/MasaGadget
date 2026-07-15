@@ -238,7 +238,12 @@ public class Configs {
     @Config(category = ConfigCategory.TWEAKEROO)
     public static MagicConfigBoolean inventoryPreviewSupportComparator = Configs.cf.newConfigBoolean("inventoryPreviewSupportComparator", false);
 
-    @Dependencies(require = @Dependency(ModId.tweakeroo))
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.minecraft, versionPredicates = "<1.21"),
+                    @Dependency(ModId.tweakeroo)
+            }
+    )
     @Config(category = ConfigCategory.TWEAKEROO)
     public static MagicConfigBoolean inventoryPreviewSupportPlayer = Configs.cf.newConfigBoolean("inventoryPreviewSupportPlayer", false);
 
@@ -246,11 +251,22 @@ public class Configs {
     @Config(category = ConfigCategory.TWEAKEROO)
     public static MagicConfigBoolean inventoryPreviewSupportSelect = Configs.cf.newConfigBoolean("inventoryPreviewSupportSelect", false);
 
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.minecraft, versionPredicates = "<1.21"),
+                    @Dependency(ModId.tweakeroo)
+            }
+    )
     @Dependencies(require = @Dependency(ModId.tweakeroo))
     @Config(category = ConfigCategory.TWEAKEROO)
     public static MagicConfigBoolean inventoryPreviewSupportShulkerBoxItemEntity = Configs.cf.newConfigBoolean("inventoryPreviewSupportShulkerBoxItemEntity", false);
 
-    @Dependencies(require = @Dependency(ModId.tweakeroo))
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.minecraft, versionPredicates = "<1.21"),
+                    @Dependency(ModId.tweakeroo)
+            }
+    )
     @Config(category = ConfigCategory.TWEAKEROO)
     public static MagicConfigBoolean inventoryPreviewSupportTradeOfferList = Configs.cf.newConfigBoolean("inventoryPreviewSupportTradeOfferList", false);
 
@@ -263,8 +279,10 @@ public class Configs {
     public static MagicConfigBoolean inventoryPreviewSyncDataClientOnly = Configs.cf.newConfigBoolean("inventoryPreviewSyncDataClientOnly", false);
 
     @Dependencies(
-            require = @Dependency(ModId.tweakeroo),
-            conflict = @Dependency(value = ModId.minecraft, versionPredicates = ">=1.21-")
+            require = {
+                    @Dependency(value = ModId.minecraft, versionPredicates = "<1.21"),
+                    @Dependency(ModId.tweakeroo)
+            }
     )
     @Config(category = ConfigCategory.TWEAKEROO)
     public static MagicConfigBoolean inventoryPreviewUseCache = Configs.cf.newConfigBoolean("inventoryPreviewUseCache", false);

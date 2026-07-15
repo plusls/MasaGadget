@@ -38,6 +38,12 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
+// CHECKSTYLE.OFF: JavadocStyle
+/**
+ * <li>mc1.14 ~ mc1.20: subproject 1.16.5 (main project)        &lt;--------</li>
+ * <li>mc1.21+        : subproject 1.21.1 [dummy]</li>
+ */
+// CHECKSTYLE.ON: JavadocStyle
 @Dependencies(require = @Dependency(ModId.tweakeroo))
 @Mixin(value = RenderUtils.class, remap = false)
 public abstract class MixinRenderUtils {

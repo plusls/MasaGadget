@@ -1,17 +1,41 @@
 package com.plusls.MasaGadget.mixin.mod_tweak.tweakeroo.inventoryPreviewSupportTradeOfferList;
 
 import com.plusls.MasaGadget.game.Configs;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 1.21.11
 import org.jetbrains.annotations.NotNull;
+//#endif
+
+//#if MC < 1.21.10
 import org.objectweb.asm.Opcodes;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 import net.minecraft.world.entity.npc.AbstractVillager;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 1.21.11
+//$$ import net.minecraft.server.level.ServerLevel;
+//#else
 import net.minecraft.world.level.Level;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 1.21.11
+//$$ import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.expression.Definition;
+//$$ import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.expression.Expression;
+//$$ import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+//#else
 import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 // CHECKSTYLE.OFF: JavadocStyle
 /**
@@ -29,6 +53,20 @@ public abstract class MixinAbstractVillager {
                 || Configs.renderZombieVillagerConvertTime.getBooleanValue();
     }
 
+    //#if MC >= 1.21.11
+    //$$ @SuppressWarnings("MixinAnnotationTarget")
+    //$$ // @Definition(id = "level", local = @Local(type = Level.class, name = "level"))
+    //$$ @Definition(id = "ServerLevel", type = ServerLevel.class)
+    //$$ @Expression("? instanceof ServerLevel")
+    //$$ @ModifyExpressionValue(method = "getOffers", at = @At(value = "MIXINEXTRAS:EXPRESSION"))
+    //$$ private boolean forgiveInvoke(final boolean original /*, @Local(name = "level") final Level level */) {
+    //$$     if (MixinAbstractVillager.masa_gadget_mod$shouldForgeInvoke()) {
+    //$$         return true;
+    //$$     }
+    //$$
+    //$$     return original;
+    //$$ }
+    //#else
     @WrapOperation(
             method = "getOffers",
             at = @At(
@@ -49,4 +87,5 @@ public abstract class MixinAbstractVillager {
 
         return original.call(instance);
     }
+    //#endif
 }

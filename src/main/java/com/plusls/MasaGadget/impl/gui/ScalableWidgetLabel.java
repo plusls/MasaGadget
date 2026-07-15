@@ -7,13 +7,21 @@ import top.hendrixshen.magiclib.api.render.context.GuiRenderContext;
 import top.hendrixshen.magiclib.api.render.context.RenderContext;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 1.21.11
+//$$ import fi.dy.masa.malilib.render.GuiContext;
+//#endif
+
 //#if MC < 12105
 import fi.dy.masa.malilib.render.RenderUtils;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
-//#if MC > 11904
+// CHECKSTYLE.OFF: ImportOrder
+//#if 1.21.11 > MC && MC > 1.19.4
 //$$ import net.minecraft.client.gui.GuiGraphics;
-//#elseif MC > 11502
+//#endif
+
+//#if 1.20.1 > MC && MC > 1.15.2
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
@@ -32,8 +40,10 @@ public class ScalableWidgetLabel extends WidgetLabel {
     public void render(
             // CHECKSTYLE.OFF: NoWhitespaceBefore
             // CHECKSTYLE.OFF: SeparatorWrap
-            //#if MC >= 12106
-            //$$ GuiGraphics guiGraphicsOrPoseStack,
+            //#if MC >= 1.21.11
+            //$$ GuiContext guiContextOrGuiGraphics,
+            //#elseif MC >= 1.21.6
+            //$$ GuiGraphics guiContextOrGuiGraphics,
             //#endif
             int mouseX,
             int mouseY,
@@ -54,13 +64,15 @@ public class ScalableWidgetLabel extends WidgetLabel {
             //#endif
             this.drawLabelBackground(
                     // CHECKSTYLE.ON: Indentation
-                    //#if MC >= 12106
-                    //$$ guiGraphicsOrPoseStack
+                    //#if MC >= 1.21.6
+                    //$$ guiContextOrGuiGraphics
                     //#endif
                     // CHECKSTYLE.OFF: Indentation
             );
             GuiRenderContext renderContext = RenderContext.gui(
-                    //#if MC > 11502
+                    //#if MC >= 1.21.6
+                    //$$ guiContextOrGuiGraphics
+                    //#elseif MC >= 1.16
                     guiGraphicsOrPoseStack
                     //#endif
             );
@@ -83,7 +95,7 @@ public class ScalableWidgetLabel extends WidgetLabel {
                             // CHECKSTYLE.OFF: NoWhitespaceBefore
                             // CHECKSTYLE.OFF: SeparatorWrap
                             //#if MC >= 12106
-                            //$$ guiGraphicsOrPoseStack,
+                            //$$ guiContextOrGuiGraphics,
                             //#endif
                             (int) x,
                             (int) y,
@@ -100,7 +112,7 @@ public class ScalableWidgetLabel extends WidgetLabel {
                             // CHECKSTYLE.OFF: NoWhitespaceBefore
                             // CHECKSTYLE.OFF: SeparatorWrap
                             //#if MC >= 12106
-                            //$$ guiGraphicsOrPoseStack,
+                            //$$ guiContextOrGuiGraphics,
                             //#endif
                             (int) x,
                             (int) y,

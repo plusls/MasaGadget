@@ -21,6 +21,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+// CHECKSTYLE.OFF: JavadocStyle
+/**
+ * <li>mc1.14 ~ mc1.18: subproject 1.16.5 (main project)        &lt;--------</li>
+ * <li>mc1.19+        : subproject 1.19.2 [dummy]</li>
+ */
+// CHECKSTYLE.ON: JavadocStyle
 @Dependencies(
         require = {
                 @Dependency(value = ModId.malilib, versionPredicates = "<0.11.0"),

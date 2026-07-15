@@ -10,6 +10,10 @@ import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.api.render.context.GuiRenderContext;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 1.21.11
+//$$ import fi.dy.masa.malilib.render.GuiContext;
+//#endif
+
 //#if MC > 12006
 //$$ import fi.dy.masa.malilib.util.WorldUtils;
 //#endif
@@ -149,12 +153,18 @@ public class InventoryOverlayRenderHandler {
         //$$ GuiGraphics guiGraphics = renderContext.getGuiComponent();
         //#endif
 
+        //#if MC >= 1.21.11
+        //$$ GuiContext guiContext = GuiContext.fromGuiGraphics(renderContext.getGuiComponent());
+        //#endif
+
         this.renderSlotHighlight(renderContext, this.renderX, this.renderY);
         this.renderingSubInventory = true;
         RenderUtils.renderShulkerBoxPreview(
                 // CHECKSTYLE.OFF: NoWhitespaceBefore
                 // CHECKSTYLE.OFF: SeparatorWrap
-                //#if MC >= 12107
+                //#if MC >= 1.21.11
+                //$$ guiContext,
+                //#elseif MC >= 1.21.7
                 //$$ guiGraphics,
                 //#endif
                 this.itemStack,

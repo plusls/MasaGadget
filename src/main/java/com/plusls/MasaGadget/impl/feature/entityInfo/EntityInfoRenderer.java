@@ -32,7 +32,7 @@ public class EntityInfoRenderer implements RenderEntityListener, RenderLevelList
     private final Queue<Entity> queue = Queues.newConcurrentLinkedQueue();
 
     private static TextRenderer rotationAround(@NotNull TextRenderer renderer, @NotNull Position centerPos, double range) {
-        Position camPos = MinecraftCompat.getInstance().getMainCamera().getPosition();
+        Position camPos = MinecraftCompat.getInstance().getMainCameraCompat().getPosition();
         float xAngle = (float) Mth.atan2(camPos.z() - centerPos.z(), camPos.x() - centerPos.x());
         float zAngle = (float) Mth.atan2(camPos.x() - centerPos.x(), camPos.z() - centerPos.z());
         return renderer.at(range * Mth.cos(xAngle) + centerPos.x(), centerPos.y(), range * Mth.cos(zAngle) + centerPos.z());

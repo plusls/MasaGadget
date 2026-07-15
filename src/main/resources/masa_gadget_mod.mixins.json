@@ -62,5 +62,8 @@
   },
   "mixins": [
     "network.MixinMagicPacketRegisterCenter"
-  ]
+  ],
+  "mixinextras": {
+    "minVersion": "0.5.4"
+  }
 }

@@ -50,7 +50,13 @@ public class RestockUtil {
         // TODO: Lazy update (on itemscoller's RecipeStorage updated or config changed)
         Minecraft mc = Minecraft.getInstance();
         AbstractContainerScreen<? extends AbstractContainerMenu> gui = new InventoryScreen(player);
-        gui.init(Minecraft.getInstance(), 0, 0);
+        gui.init(
+                //#if MC < 1.21.11
+                mc,
+                //#endif
+                0,
+                0
+        );
 
         for (RecipePattern recipe : RestockUtil.recipes) {
             if (ItemStackCompat.isSameItemSameTags(recipe.getResult(), itemStack)) {

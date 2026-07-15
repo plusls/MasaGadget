@@ -19,11 +19,14 @@ import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.sugar.Local;
 @Mixin(value = InventoryOverlay.class, remap = false)
 public abstract class MixinInventoryOverlay {
     @Inject(
-            //#if MC >= 12106
+            //#if MC >= 1.21
+            //#if MC >= 1.21.11
+            //$$ method = "renderStackAt(Lfi/dy/masa/malilib/render/GuiContext;Lnet/minecraft/world/item/ItemStack;FFFDD)V",
+            //#elseif MC >= 1.21.6
             //$$ method = "renderStackAt(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/item/ItemStack;FFFLnet/minecraft/client/Minecraft;DD)V",
-            //$$ remap = true,
-            //#elseif MC > 12006
+            //#else
             //$$ method = "renderStackAt(Lnet/minecraft/world/item/ItemStack;FFFLnet/minecraft/client/Minecraft;Lnet/minecraft/client/gui/GuiGraphics;DD)V",
+            //#endif
             //$$ remap = true,
             //#else
             method = "renderStackAt",

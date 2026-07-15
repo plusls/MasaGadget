@@ -17,17 +17,20 @@ public abstract class MixinLevelRenderer {
     @Inject(
             //#if MC >= 1.21.10
             //$$ method = "extractVisibleEntities",
-            //#elseif MC >= 1.21
-            //$$ method = "renderEntities",
-            //#else
+            //#elseif MC >= 1.15
             method = "renderLevel",
+            //#else
+            //$$ method = "renderEntities",
             //#endif
             at = @At(
                     value = "INVOKE",
                     //#if MC >= 1.21.10
                     //$$ target = "Lnet/minecraft/client/renderer/LevelRenderer;extractEntity(Lnet/minecraft/world/entity/Entity;F)Lnet/minecraft/client/renderer/entity/state/EntityRenderState;"
-                    //#else
+                    //#elseif MC >= 1.15
                     target = "Lnet/minecraft/client/renderer/LevelRenderer;renderEntity(Lnet/minecraft/world/entity/Entity;DDDFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;)V"
+                    //#else
+                    //$$ target = "Lnet/minecraft/client/renderer/entity/EntityRenderDispatcher;render(Lnet/minecraft/world/entity/Entity;FZ)V",
+                    //$$ ordinal = 0
                     //#endif
             )
     )

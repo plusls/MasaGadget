@@ -20,8 +20,8 @@ itemscroller-mc12104 = "0.26.5"
 itemscroller-mc12105 = "0.27.3"
 itemscroller-mc12108 = "0.28.5"
 itemscroller-mc12110 = "0.29.5"
-itemscroller-mc12111 = "0.30.5"
-itemscroller-mc260102 = "0.31.4"
+itemscroller-mc12111 = "0.30.6"
+itemscroller-mc260102 = "0.31.5"
 
 litematica-mc11404 = "0.0.0-dev.20191222.014040"
 litematica-mc11502 = "0.0.0-dev.20201006.194726"
@@ -35,14 +35,14 @@ litematica-mc12001 = "0.15.4"
 litematica-mc12002 = "0.16.1"
 litematica-mc12004 = "0.17.4"
 litematica-mc12006 = "0.18.3"
-litematica-mc12101 = "0.19.60"
-litematica-mc12103 = "0.20.8"
-litematica-mc12104 = "0.21.6"
-litematica-mc12105 = "0.22.4"
-litematica-mc12108 = "0.23.6"
-litematica-mc12110 = "0.24.7"
-litematica-mc12111 = "0.26.8"
-litematica-mc260102 = "0.27.6"
+litematica-mc12101 = "0.19.61"
+litematica-mc12103 = "0.20.9"
+litematica-mc12104 = "0.21.7"
+litematica-mc12105 = "0.22.5"
+litematica-mc12108 = "0.23.7"
+litematica-mc12110 = "0.24.9"
+litematica-mc12111 = "0.26.12"
+litematica-mc260102 = "0.27.10"
 
 minihud-mc11404 = "0.19.0-dev.20200424.001737"
 minihud-mc11502 = "0.19.0-dev.20200508.032934"
@@ -62,8 +62,8 @@ minihud-mc12104 = "0.34.8"
 minihud-mc12105 = "0.35.4"
 minihud-mc12108 = "0.36.7"
 minihud-mc12110 = "0.37.6"
-minihud-mc12111 = "0.38.10"
-minihud-mc260102 = "0.39.5"
+minihud-mc12111 = "0.38.13"
+minihud-mc260102 = "0.39.8"
 
 tweakeroo-mc11404 = "0.10.0-dev.20191218.170529"
 tweakeroo-mc11502 = "0.10.0-dev.20210124.111151"
@@ -83,14 +83,14 @@ tweakeroo-mc12104 = "0.23.6"
 tweakeroo-mc12105 = "0.24.3"
 tweakeroo-mc12108 = "0.25.6"
 tweakeroo-mc12110 = "0.26.5"
-tweakeroo-mc12111 = "0.27.9"
-tweakeroo-mc260102 = "0.28.4"
+tweakeroo-mc12111 = "0.27.11"
+tweakeroo-mc260102 = "0.28.6"
 
 bocchud-mc12001 = "nQSvjdu7" # 0.1.7-mc1.20.1
 bocchud-mc12101 = "tOP74nwE" # 0.4.1+mc1.21.1
 
 forgematica-mc12001 = "YncE2C0Y" # 0.1.13-mc1.20.1
-forgematica-mc12101 = "bNQ9lJbg" # 0.4.1+mc1.21.1
+forgematica-mc12101 = "71jxaAwz" # 0.4.2+mc1.21.1
 
 rocknroller-mc12001 = "rJ5AZYNA" # 0.1.4-mc1.20.1
 rocknroller-mc12101 = "vsVKkDaQ" # 0.4.0+mc1.21.1

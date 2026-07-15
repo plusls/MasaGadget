@@ -4,10 +4,16 @@ import com.plusls.MasaGadget.SharedConstants;
 import fi.dy.masa.malilib.gui.interfaces.IGuiIcon;
 import fi.dy.masa.malilib.render.RenderUtils;
 
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 1.21.11
+//$$ import fi.dy.masa.malilib.render.GuiContext;
+//#endif
+// CHECKSTYLE.OFF: ImportOrder
+
 import net.minecraft.resources.ResourceLocation;
 
 // CHECKSTYLE.OFF: ImportOrder
-//#if MC > 12101
+//#if 1.21.11 > MC && MC > 12101
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#endif
 // CHECKSTYLE.OFF: ImportOrder
@@ -57,7 +63,9 @@ public enum MasaGadgetIcons implements IGuiIcon {
     public void renderAt(
             // CHECKSTYLE.OFF: NoWhitespaceBefore
             // CHECKSTYLE.OFF: SeparatorWrap
-            //#if MC >= 12106
+            //#if MC >= 1.21.11
+            //$$ GuiContext guiContext,
+            //#elseif MC >= 12106
             //$$ GuiGraphics guiGraphics,
             //#endif
             int x,
@@ -85,7 +93,9 @@ public enum MasaGadgetIcons implements IGuiIcon {
         RenderUtils.drawTexturedRect(
                 // CHECKSTYLE.OFF: NoWhitespaceBefore
                 // CHECKSTYLE.OFF: SeparatorWrap
-                //#if MC >= 12106
+                //#if MC >= 1.21.11
+                //$$ guiContext,
+                //#elseif MC >= 12106
                 //$$ guiGraphics,
                 //#endif
                 //#if MC > 12104

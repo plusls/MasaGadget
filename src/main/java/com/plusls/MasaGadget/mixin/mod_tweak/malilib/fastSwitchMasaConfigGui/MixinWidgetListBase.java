@@ -35,9 +35,17 @@ import top.hendrixshen.magiclib.mixin.malilib.accessor.WidgetListConfigOptionsAc
 import top.hendrixshen.magiclib.util.MiscUtil;
 
 // CHECKSTYLE.OFF: ImportOrder
-//#if MC > 11904
+//#if MC >= 1.21.11
+//$$ import fi.dy.masa.malilib.render.GuiContext;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if 1.21.11 > MC && MC > 1.19.4
 //$$ import net.minecraft.client.gui.GuiGraphics;
-//#elseif MC > 11502
+//#endif
+
+//#if 1.20.1 > MC && MC > 1.15.2
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
@@ -67,7 +75,9 @@ public abstract class MixinWidgetListBase<TYPE, WIDGET extends WidgetListEntryBa
     @SuppressWarnings("ConstantConditions")
     @Unique
     private void masa_gadget_mod$drawMagicConfigGuiDropDownListAgain(
-            //#if MC > 11904
+            //#if MC >= 1.21.11
+            //$$ GuiContext guiContext,
+            //#elseif MC > 11904
             //$$ GuiGraphics poseStackOrGuiGraphics,
             //#elseif MC > 11502
             PoseStack poseStackOrGuiGraphics,
@@ -84,7 +94,9 @@ public abstract class MixinWidgetListBase<TYPE, WIDGET extends WidgetListEntryBa
 
             // Render it again to make sure it's on the top but below hovering widgets.
             ((MasaGadgetDropdownList) guiConfig).masa_gad_get$renderHovered(
-                    //#if MC > 11600
+                    //#if MC >= 1.21.11
+                    //$$ guiContext,
+                    //#elseif MC > 11600
                     poseStackOrGuiGraphics,
                     //#endif
                     mouseX,
@@ -136,7 +148,9 @@ public abstract class MixinWidgetListBase<TYPE, WIDGET extends WidgetListEntryBa
 
     @Inject(method = "drawContents", at = @At("TAIL"))
     private void drawMagicConfigGuiDropDownListAgainAfterHover(
-            //#if MC > 11904
+            //#if MC >= 1.21.11
+            //$$ GuiContext guiContext,
+            //#elseif MC > 11904
             //$$ GuiGraphics poseStackOrGuiGraphics,
             //#elseif MC > 11502
             PoseStack poseStackOrGuiGraphics,
@@ -147,7 +161,9 @@ public abstract class MixinWidgetListBase<TYPE, WIDGET extends WidgetListEntryBa
             CallbackInfo ci
     ) {
         this.masa_gadget_mod$drawMagicConfigGuiDropDownListAgain(
-                //#if MC > 11502
+                //#if MC >= 1.21.11
+                //$$ guiContext,
+                //#elseif MC >= 1.16
                 poseStackOrGuiGraphics,
                 //#endif
                 mouseX,

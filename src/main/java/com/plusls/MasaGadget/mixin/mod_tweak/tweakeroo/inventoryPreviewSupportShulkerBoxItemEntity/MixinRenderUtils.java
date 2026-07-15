@@ -58,6 +58,12 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
+// CHECKSTYLE.OFF: JavadocStyle
+/**
+ * <li>mc1.14 ~ mc1.20: subproject 1.16.5 (main project)        &lt;--------</li>
+ * <li>mc1.21+        : subproject 1.21.1 [dummy]</li>
+ */
+// CHECKSTYLE.ON: JavadocStyle
 @Dependencies(require = @Dependency(ModId.tweakeroo))
 @Mixin(value = RenderUtils.class, remap = false)
 public abstract class MixinRenderUtils {
@@ -123,7 +129,7 @@ public abstract class MixinRenderUtils {
                             invNbt,
                             stacks
                             //#if MC > 12004
-                            //$$ , Minecraft.getInstance().level.registryAccess()
+                            //$$ , MinecraftCompat.getInstance().getMainCamera().getEntity().registryAccess()
                             //#endif
                             // CHECKSTYLE.ON: SeparatorWrap
                             // CHECKSTYLE.ON: NoWhitespaceBefore
