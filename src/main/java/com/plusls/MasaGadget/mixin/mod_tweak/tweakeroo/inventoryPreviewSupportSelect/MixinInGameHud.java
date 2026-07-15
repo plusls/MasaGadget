@@ -10,14 +10,16 @@ import top.hendrixshen.magiclib.api.render.context.RenderContext;
 import net.minecraft.client.gui.Gui;
 
 // CHECKSTYLE.OFF: ImportOrder
-//#if MC > 12006
-//$$ import net.minecraft.client.DeltaTracker;
+//#if MC >= 26.1
+//$$ import net.minecraft.client.gui.GuiGraphicsExtractor;
+//#elseif MC >= 1.20
+//$$ import net.minecraft.client.gui.GuiGraphics;
+//#elseif MC >= 1.16
+import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 
-//#if MC > 11904
-//$$ import net.minecraft.client.gui.GuiGraphics;
-//#elseif MC > 11502
-import com.mojang.blaze3d.vertex.PoseStack;
+//#if MC > 12006
+//$$ import net.minecraft.client.DeltaTracker;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
@@ -29,11 +31,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Dependencies(require = @Dependency(ModId.tweakeroo))
 @Mixin(value = Gui.class, priority = 1100)
 public abstract class MixinInGameHud {
-    @Inject(method = "render", at = @At("RETURN"))
+    @Inject(
+            //#if MC >= 26.1
+            //$$ method = "extractRenderState",
+            //#else
+            method = "render",
+            //#endif
+            at = @At("RETURN")
+    )
     private void onGameOverlayPost(
-            //#if MC > 11904
+            //#if MC >= 26.1
+            //$$ GuiGraphicsExtractor poseStackOrGuiGraphics,
+            //#elseif MC >= 1.20
             //$$ GuiGraphics poseStackOrGuiGraphics,
-            //#elseif MC > 11502
+            //#elseif MC >= 1.16
             PoseStack poseStackOrGuiGraphics,
             //#endif
             //#if MC > 12006

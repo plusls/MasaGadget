@@ -23,7 +23,11 @@ public class VillagerNextRestockTimeInfo {
     public static Component getInfo(@NotNull Villager villager) {
         long nextRestockTime;
         long nextWorkTime;
+        //#if MC >= 26.1
+        //$$ long timeOfDay = villager.level().getGameTime() % 24000;
+        //#else
         long timeOfDay = villager.getLevel().getDayTime() % 24000;
+        //#endif
 
         //#if MC > 12104
         //$$ ResourceKey<VillagerProfession> profession = VillagerDataUtil.getVillagerProfession(villager);

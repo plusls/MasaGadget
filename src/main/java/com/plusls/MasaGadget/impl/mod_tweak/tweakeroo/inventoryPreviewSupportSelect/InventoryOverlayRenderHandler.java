@@ -36,6 +36,12 @@ import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.phys.HitResult;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 26.1
+//$$ import net.minecraft.client.gui.GuiGraphicsExtractor;
+//#elseif MC >= 1.20
+//$$ import net.minecraft.client.gui.GuiGraphics;
+//#endif
+
 //#if 12106 > MC && MC > 12101
 //$$ import net.minecraft.client.renderer.RenderType;
 //#endif
@@ -65,10 +71,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 //#if MC < 12000
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.TooltipFlag;
-//#endif
-
-//#if MC > 11904
-//$$ import net.minecraft.client.gui.GuiGraphics;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
@@ -149,7 +151,9 @@ public class InventoryOverlayRenderHandler {
             return;
         }
 
-        //#if MC > 11904
+        //#if MC >= 26.1
+        //$$ GuiGraphicsExtractor guiGraphics = renderContext.getGuiComponent();
+        //#elseif MC >= 1.20
         //$$ GuiGraphics guiGraphics = renderContext.getGuiComponent();
         //#endif
 
@@ -353,10 +357,12 @@ public class InventoryOverlayRenderHandler {
         //$$         x,
         //$$         y
         //$$ );
+        //#if MC < 26.1
         //#if MC >= 1.21.10
         //$$ renderContext.getGuiComponent().renderDeferredElements();
         //#elseif MC >= 12106
         //$$ renderContext.getGuiComponent().renderDeferredTooltip();
+        //#endif
         //#endif
         //#else
         List<Component> tooltipLines = itemStack.getTooltipLines(mc.player, mc.options.advancedItemTooltips

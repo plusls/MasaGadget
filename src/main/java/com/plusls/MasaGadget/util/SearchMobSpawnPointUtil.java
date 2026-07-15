@@ -79,7 +79,11 @@ public class SearchMobSpawnPointUtil {
             return;
         }
 
+        //#if MC >= 26.1
+        //$$ Vec3 centerPos = shapeDespawnSphere.getCenter().toVanilla();
+        //#else
         Vec3 centerPos = shapeDespawnSphere.getCenter();
+        //#endif
         BlockPos pos = new BlockPos((int) centerPos.x, (int) centerPos.y, (int) centerPos.z);
         SharedConstants.getLogger().warn("shape: {}", shapeDespawnSphere.getCenter());
         BlockPos spawnPos = null;

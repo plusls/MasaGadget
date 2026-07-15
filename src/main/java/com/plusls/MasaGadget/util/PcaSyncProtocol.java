@@ -35,13 +35,11 @@ import top.hendrixshen.magiclib.api.compat.minecraft.nbt.TagCompat;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
-import com.mojang.serialization.Dynamic;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.Entity;
@@ -58,6 +56,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 26.1
+//$$ import net.minecraft.world.entity.ai.Brain;
+//#else
+import com.mojang.serialization.Dynamic;
+import net.minecraft.nbt.NbtOps;
+//#endif
+
 //#if MC >= 12106
 //$$ import com.mojang.logging.LogUtils;
 //$$ import net.minecraft.util.ProblemReporter;
@@ -281,7 +286,11 @@ public class PcaSyncProtocol {
                             // CHECKSTYLE.ON: SeparatorWrap
                             // CHECKSTYLE.ON: NoWhitespaceBefore
                     );
+                    //#if MC >= 26.1
+                    //$$ input.read("Brain", Brain.Packed.CODEC).ifPresent(packedBrain -> ((AccessorLivingEntity) entity).masa_gadget_mod$setBrain(((AccessorLivingEntity) entity).masa_gadget_mod$makeBrain(packedBrain)));
+                    //#else
                     ((AccessorLivingEntity) entity).masa_gadget_mod$setBrain(((AccessorLivingEntity) entity).masa_gadget_mod$makeBrain(new Dynamic<>(NbtOps.INSTANCE, tag.get("Brain"))));
+                    //#endif
                 }
             }
 
