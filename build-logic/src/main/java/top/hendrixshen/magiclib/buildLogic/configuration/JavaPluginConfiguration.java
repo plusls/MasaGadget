@@ -71,7 +71,7 @@ public abstract class JavaPluginConfiguration implements Runnable {
         } else {
             task.getOptions().getRelease().set(8);
             // suppressed "source/target value 8 is obsolete and will be removed in a future release"
-            task.getOptions().getCompilerArgs().add("-Xlint:-options");;
+            task.getOptions().getCompilerArgs().add("-Xlint:-options");
         }
 
         task.getOptions().getCompilerArgs().add("-Xlint:deprecation");
