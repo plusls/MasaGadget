@@ -118,11 +118,11 @@ loom {
     runConfigs.named("client") {
         programArgs([
                 "--width",
-                project.getOrDefault("ow.game.window.width", "1920"),
+                rootProject.getOrDefault("ow.game.window.width", "1920"),
                 "--height",
-                project.getOrDefault("ow.game.window.height", "1080"),
+                rootProject.getOrDefault("ow.game.window.height", "1080"),
                 "--username",
-                project.getOrDefault("ow.game.window.username", "dev")
+                rootProject.getOrDefault("ow.game.window.username", "dev")
         ])
     }
 
@@ -147,8 +147,8 @@ loom {
 
 base {
     setArchivesName("${project.parent.property("mod.archives_base_name")}-mc${magic.projectDetail.get().getMinecraftVersionName()}-${modPlatform.id()}")
-    setGroup("${project.property("mod.maven_group")}")
-    setVersion(project.getModVersion(project.parent))
+    setGroup("${rootProject.property("mod.maven_group")}")
+    setVersion(rootProject.getModVersion(project.parent))
 }
 
 checkstyle {
@@ -160,7 +160,7 @@ replaceToken {
     targetSourceSets.set([sourceSets.main])
     replace("@MOD_IDENTIFIER@", project.parent.property("mod.id").toString().replace("-", "_"))
     replace("@MOD_NAME@"      , project.parent.property("mod.name"))
-    replace("@MOD_VERSION@"   , project.getVersionWithCommitHash(this.project.parent) as String)
+    replace("@MOD_VERSION@"   , rootProject.getVersionWithCommitHash(this.project.parent) as String)
     replaceIn("com/plusls/MasaGadget/MasaGadgetNeoForgeMod")
     replaceIn("com/plusls/MasaGadget/SharedConstants")
 }
@@ -175,7 +175,7 @@ processResources {
     inputs.property("mod_license"         , project.parent.property("mod.license"))
     inputs.property("mod_name"            , project.parent.property("mod.name"))
     inputs.property("mod_sources"         , project.parent.property("mod.sources"))
-    inputs.property("mod_version"         , project.getVersionWithCommitHash(this.project.parent))
+    inputs.property("mod_version"         , rootProject.getVersionWithCommitHash(this.project.parent))
 
     [
             "fabric.mod.json"            : ["fabric"],
@@ -221,7 +221,7 @@ publishing {
         register("release", MavenPublication) {
             artifactId = "${this.project.parent.property("mod.artifact_name")}-${project.name}"
             from(this.project.components.java)
-            version = "${this.project.getMavenArtifactVersion(this.project.parent)}"
+            version = "${rootProject.getMavenArtifactVersion(this.project.parent)}"
         }
     }
 
@@ -281,7 +281,7 @@ tasks.register("cleanRunServer", DefaultTask.class) {
 ].forEach { taskName ->
     if (tasks.getNames().contains(taskName)) {
         tasks.named(taskName) {
-            it.setGroup("${project.property("mod.id")}")
+            it.setGroup("${rootProject.property("mod.id")}")
         }
     }
 }
