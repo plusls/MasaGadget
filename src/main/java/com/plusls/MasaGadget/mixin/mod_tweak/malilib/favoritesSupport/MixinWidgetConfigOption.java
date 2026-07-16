@@ -10,9 +10,9 @@ import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOptionBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptionsBase;
+import top.hendrixshen.magiclib.api.compat.minecraft.client.MinecraftCompat;
 import top.hendrixshen.magiclib.api.i18n.I18n;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -44,7 +44,7 @@ public abstract class MixinWidgetConfigOption extends WidgetConfigOptionBase<Gui
             return;
         }
 
-        Screen screen = Minecraft.getInstance().screen;
+        Screen screen = MinecraftCompat.getInstance().getScreen();
 
         if (!(screen instanceof GuiConfigsBase)) {
             return;

@@ -5,6 +5,7 @@ import com.plusls.MasaGadget.util.ModId;
 import com.plusls.MasaGadget.util.PcaSyncProtocol;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import fi.dy.masa.tweakeroo.config.Hotkeys;
+import top.hendrixshen.magiclib.api.compat.minecraft.client.MinecraftCompat;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 
@@ -33,6 +34,6 @@ public abstract class MixinClientPacketListener {
             return;
         }
 
-        minecraft.setScreen(null);
+        MinecraftCompat.getInstance().setScreen(null);
     }
 }

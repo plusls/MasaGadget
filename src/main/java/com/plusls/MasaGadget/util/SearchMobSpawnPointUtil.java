@@ -28,6 +28,10 @@ import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraft.world.phys.Vec3;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 26.2
+//$$ import net.minecraft.world.entity.EntityTypes;
+//#endif
+
 //#if MC < 12005
 import net.minecraft.world.level.NaturalSpawner;
 //#endif
@@ -96,8 +100,13 @@ public class SearchMobSpawnPointUtil {
         int maxSpawnLightLevel = fi.dy.masa.minihud.config.Configs.Generic.LIGHT_LEVEL_THRESHOLD.getIntegerValue();
         //#endif
         LevelLightEngine lightingProvider = level.getChunkSource().getLightEngine();
+        //#if MC >= 26.2
+        //$$ EntityType<?> entityType = levelCompat.getDimensionLocation().equals(ResourceLocationCompat.withDefaultNamespace("the_nether")) ? EntityTypes.ZOMBIFIED_PIGLIN : EntityTypes.CREEPER;
+        //$$ EntityType<?> entityType2 = levelCompat.getDimensionLocation().equals(ResourceLocationCompat.withDefaultNamespace("the_nether")) ? null : EntityTypes.SPIDER;
+        //#else
         EntityType<?> entityType = levelCompat.getDimensionLocation().equals(ResourceLocationCompat.withDefaultNamespace("the_nether")) ? EntityType.ZOMBIFIED_PIGLIN : EntityType.CREEPER;
         EntityType<?> entityType2 = levelCompat.getDimensionLocation().equals(ResourceLocationCompat.withDefaultNamespace("the_nether")) ? null : EntityType.SPIDER;
+        //#endif
 
         for (int x = pos.getX() - 129; x <= maxX; ++x) {
             for (int z = pos.getZ() - 129; z <= maxZ; ++z) {

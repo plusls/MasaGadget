@@ -12,6 +12,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.sugar.Local;
 
+// CHECKSTYLE.OFF: JavadocStyle
+/**
+ * <li>mc1.14 ~ mc26.1: subproject 1.16.5 (main project)        &lt;--------</li>
+ * <li>mc26.2+        : subproject 26.2 [dummy]</li>
+ */
+// CHECKSTYLE.ON: JavadocStyle
 @Mixin(LevelRenderer.class)
 public abstract class MixinLevelRenderer {
     @Inject(

@@ -60,6 +60,9 @@ public class RenderUtil {
         //$$         //$$ () -> "masa_gadget:line",
         //$$         //#endif
         //$$         MaLiLibPipelines.DEBUG_LINES_MASA_SIMPLE_NO_DEPTH_NO_CULL
+        //$$         //#if MC >= 26.2
+        //$$         //$$ , 0
+        //$$         //#endif
         //$$         //#if MC < 12106
         //$$         , BufferUsage.STATIC_WRITE
         //$$         //#endif
@@ -115,6 +118,9 @@ public class RenderUtil {
         //$$         //$$ () -> "masa_gadget:outline_box",
         //$$         //#endif
         //$$         MaLiLibPipelines.DEBUG_LINES_MASA_SIMPLE_NO_DEPTH_NO_CULL
+        //$$         //#if MC >= 26.2
+        //$$         //$$ , 0
+        //$$         //#endif
         //$$         //#if MC < 12106
         //$$         , BufferUsage.STATIC_WRITE
         //$$         //#endif

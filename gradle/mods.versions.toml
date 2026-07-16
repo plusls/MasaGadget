@@ -22,6 +22,7 @@ itemscroller-mc12108 = "0.28.5"
 itemscroller-mc12110 = "0.29.5"
 itemscroller-mc12111 = "0.30.6"
 itemscroller-mc260102 = "0.31.5"
+itemscroller-mc260200 = "0.32.1"
 
 litematica-mc11404 = "0.0.0-dev.20191222.014040"
 litematica-mc11502 = "0.0.0-dev.20201006.194726"
@@ -43,6 +44,7 @@ litematica-mc12108 = "0.23.7"
 litematica-mc12110 = "0.24.9"
 litematica-mc12111 = "0.26.12"
 litematica-mc260102 = "0.27.10"
+litematica-mc260200 = "0.28.4"
 
 minihud-mc11404 = "0.19.0-dev.20200424.001737"
 minihud-mc11502 = "0.19.0-dev.20200508.032934"
@@ -64,6 +66,7 @@ minihud-mc12108 = "0.36.7"
 minihud-mc12110 = "0.37.6"
 minihud-mc12111 = "0.38.13"
 minihud-mc260102 = "0.39.8"
+minihud-mc260200 = "0.40.4"
 
 tweakeroo-mc11404 = "0.10.0-dev.20191218.170529"
 tweakeroo-mc11502 = "0.10.0-dev.20210124.111151"
@@ -85,6 +88,7 @@ tweakeroo-mc12108 = "0.25.6"
 tweakeroo-mc12110 = "0.26.5"
 tweakeroo-mc12111 = "0.27.11"
 tweakeroo-mc260102 = "0.28.6"
+tweakeroo-mc260200 = "0.29.2"
 
 bocchud-mc12001 = "nQSvjdu7" # 0.1.7-mc1.20.1
 bocchud-mc12101 = "tOP74nwE" # 0.4.1+mc1.21.1
@@ -121,6 +125,7 @@ itemscroller-mc12108 = { module = "maven.modrinth:item-scroller", version.ref = 
 itemscroller-mc12110 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc12110" }
 itemscroller-mc12111 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc12111" }
 itemscroller-mc260102 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc260102" }
+itemscroller-mc260200 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc260200" }
 
 minihud-mc11404 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc11404" }
 minihud-mc11502 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc11502" }
@@ -142,6 +147,7 @@ minihud-mc12108 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc
 minihud-mc12110 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc12110" }
 minihud-mc12111 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc12111" }
 minihud-mc260102 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc260102" }
+minihud-mc260200 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc260200" }
 
 litematica-mc11404 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc11404" }
 litematica-mc11502 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc11502" }
@@ -163,6 +169,7 @@ litematica-mc12108 = { module = "maven.modrinth:litematica", version.ref = "lite
 litematica-mc12110 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc12110" }
 litematica-mc12111 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc12111" }
 litematica-mc260102 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc260102" }
+litematica-mc260200 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc260200" }
 
 tweakeroo-mc11404 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc11404" }
 tweakeroo-mc11502 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc11502" }
@@ -184,6 +191,7 @@ tweakeroo-mc12108 = { module = "maven.modrinth:tweakeroo", version.ref = "tweake
 tweakeroo-mc12110 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc12110" }
 tweakeroo-mc12111 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc12111" }
 tweakeroo-mc260102 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc260102" }
+tweakeroo-mc260200 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc260200" }
 
 bocchud-mc12001 = { module = "maven.modrinth:bocchud", version.ref = "bocchud-mc12001" }
 bocchud-mc12101 = { module = "maven.modrinth:bocchud", version.ref = "bocchud-mc12101" }

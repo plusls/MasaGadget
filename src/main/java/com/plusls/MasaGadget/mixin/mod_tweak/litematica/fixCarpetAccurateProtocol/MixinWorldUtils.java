@@ -1,6 +1,5 @@
 package com.plusls.MasaGadget.mixin.mod_tweak.litematica.fixCarpetAccurateProtocol;
 
-import com.plusls.MasaGadget.SharedConstants;
 import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.util.ModId;
 import fi.dy.masa.litematica.materials.MaterialCache;
@@ -13,6 +12,12 @@ import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.player.PlayerC
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 26.2
+import com.plusls.MasaGadget.SharedConstants;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.LocalPlayer;
@@ -23,22 +28,25 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.ComparatorBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
-import net.minecraft.world.level.block.RepeaterBlock;
 import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.ComparatorMode;
-import net.minecraft.world.level.block.state.properties.Half;
-import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC < 26.2
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ComparatorBlock;
+import net.minecraft.world.level.block.RepeaterBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.state.properties.ComparatorMode;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.SlabType;
+//#endif
+
 //#if MC < 11900
 import net.minecraft.client.multiplayer.ClientLevel;
 //#endif
@@ -76,6 +84,7 @@ public abstract class MixinWorldUtils {
     @Unique
     private static final ThreadLocal<Integer> masa_gadget_mod$interactBlockCount = ThreadLocal.withInitial(() -> null);
 
+    //#if MC < 26.2
     @Inject(method = "applyCarpetProtocolHitVec", at = @At("HEAD"), cancellable = true)
     private static void preApplyCarpetProtocolHitVec(BlockPos pos, BlockState state, Vec3 hitVecIn, CallbackInfoReturnable<Vec3> cir) {
         if (!Configs.fixAccurateProtocol.getBooleanValue()) {
@@ -122,6 +131,7 @@ public abstract class MixinWorldUtils {
         SharedConstants.getLogger().debug("applyCarpetProtocolHitVec: {} -> {}", hitVecIn, new Vec3(x, y, z).toString());
         cir.setReturnValue(new Vec3(x, y, z));
     }
+    //#endif
 
     // 修复 漏斗，原木放置问题
     // 核心思路是修改玩家看的位置以及 side
