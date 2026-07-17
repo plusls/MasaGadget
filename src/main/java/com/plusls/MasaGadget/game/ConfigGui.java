@@ -28,8 +28,8 @@ public class ConfigGui extends MagicConfigGui {
 
     @Override
     public void removed() {
-        super.removed();
         ConfigGui.currentInstance = null;
+        super.removed();
     }
 
     @Override

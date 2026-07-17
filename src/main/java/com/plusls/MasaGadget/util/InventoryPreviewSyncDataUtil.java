@@ -3,6 +3,8 @@ package com.plusls.MasaGadget.util;
 import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.impl.generic.HitResultHandler;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.CompoundContainer;
@@ -11,20 +13,33 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.entity.*;
+import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
+import net.minecraft.world.level.block.entity.BarrelBlockEntity;
+import net.minecraft.world.level.block.entity.BrewingStandBlockEntity;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.entity.ComparatorBlockEntity;
+import net.minecraft.world.level.block.entity.DispenserBlockEntity;
+import net.minecraft.world.level.block.entity.HopperBlockEntity;
+import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import org.jetbrains.annotations.Nullable;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11404
+import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 public class InventoryPreviewSyncDataUtil {
     public static void onHitCallback(@Nullable HitResult hitResult, boolean oldStatus, boolean stateChanged) {
         Minecraft mc = Minecraft.getInstance();
 
-        if (!Configs.inventoryPreviewSyncData.getBooleanValue() ||
-                !PcaSyncProtocol.enable ||
-                mc.hasSingleplayerServer() ||
-                !FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue()) {
+        if (!Configs.inventoryPreviewSyncData.getBooleanValue()
+                || !PcaSyncProtocol.enable
+                || mc.hasSingleplayerServer()
+                || !FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue()
+        ) {
             return;
         }
 
@@ -48,32 +63,28 @@ public class InventoryPreviewSyncDataUtil {
             BlockPos pos = ((BlockHitResult) hitResult).getBlockPos();
             Object blockEntity = HitResultHandler.getInstance().getLastHitBlockEntity().orElse(null);
 
-            if (
-                    blockEntity instanceof AbstractFurnaceBlockEntity ||
-                            blockEntity instanceof DispenserBlockEntity ||
-                            blockEntity instanceof HopperBlockEntity ||
-                            blockEntity instanceof ShulkerBoxBlockEntity ||
-                            blockEntity instanceof BarrelBlockEntity ||
-                            blockEntity instanceof BrewingStandBlockEntity ||
-                            blockEntity instanceof ChestBlockEntity ||
-                            blockEntity instanceof CompoundContainer ||
-                            (blockEntity instanceof ComparatorBlockEntity && Configs.inventoryPreviewSupportComparator.getBooleanValue()) ||
-                            //#if MC > 11404
-                            (blockEntity instanceof BeehiveBlockEntity && Configs.pcaSyncProtocolSyncBeehive.getBooleanValue())
-                //#else
-                //$$ true
-                //#endif
+            if (blockEntity instanceof AbstractFurnaceBlockEntity
+                    || blockEntity instanceof DispenserBlockEntity
+                    || blockEntity instanceof HopperBlockEntity
+                    || blockEntity instanceof ShulkerBoxBlockEntity
+                    || blockEntity instanceof BarrelBlockEntity
+                    || blockEntity instanceof BrewingStandBlockEntity
+                    || blockEntity instanceof ChestBlockEntity
+                    || blockEntity instanceof CompoundContainer
+                    || (blockEntity instanceof ComparatorBlockEntity && Configs.inventoryPreviewSupportComparator.getBooleanValue())
+                    //#if MC > 11404
+                    || (blockEntity instanceof BeehiveBlockEntity && Configs.pcaSyncProtocolSyncBeehive.getBooleanValue())
+                    //#endif
             ) {
                 PcaSyncProtocol.syncBlockEntity(pos);
             }
         } else if (hitResult.getType() == HitResult.Type.ENTITY) {
             Entity entity = ((EntityHitResult) hitResult).getEntity();
 
-            if (
-                    entity instanceof Container ||
-                            entity instanceof AbstractVillager ||
-                            entity instanceof AbstractHorse ||
-                            entity instanceof Player
+            if (entity instanceof Container
+                    || entity instanceof AbstractVillager
+                    || entity instanceof AbstractHorse
+                    || entity instanceof Player
             ) {
                 PcaSyncProtocol.syncEntity(entity.getId());
             }

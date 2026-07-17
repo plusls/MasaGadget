@@ -1,0 +1,4 @@
+fi.dy.masa.malilib.util.JsonUtils fi.dy.masa.malilib.util.data.json.JsonUtils
+net.minecraft.world.inventory.ClickType net.minecraft.world.inventory.ContainerInput
+
+net.minecraft.client.multiplayer.MultiPlayerGameMode handleInventoryMouseClick() handleContainerInput()

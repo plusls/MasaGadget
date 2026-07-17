@@ -11,7 +11,9 @@ import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.util.serializable.JsonSaveAble;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter

@@ -1,10 +1,20 @@
 package com.plusls.MasaGadget.impl.feature.entityInfo;
 
 import com.google.common.collect.Queues;
+import com.plusls.MasaGadget.api.event.RenderEntityListener;
 import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.util.MiscUtil;
 import com.plusls.MasaGadget.util.SyncUtil;
 import lombok.Getter;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.api.compat.minecraft.client.MinecraftCompat;
+import top.hendrixshen.magiclib.api.event.minecraft.render.RenderLevelListener;
+import top.hendrixshen.magiclib.api.render.context.LevelRenderContext;
+import top.hendrixshen.magiclib.impl.render.TextRenderer;
+import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.Position;
@@ -13,17 +23,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.ZombieVillager;
 import net.minecraft.world.entity.npc.Villager;
-import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.api.event.minecraft.render.RenderEntityListener;
-import top.hendrixshen.magiclib.api.event.minecraft.render.RenderLevelListener;
-import top.hendrixshen.magiclib.api.render.context.LevelRenderContext;
-import top.hendrixshen.magiclib.api.render.context.RenderContext;
-import top.hendrixshen.magiclib.impl.render.TextRenderer;
-import top.hendrixshen.magiclib.impl.render.context.EntityRenderContext;
-import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
 
 import java.util.Queue;
 
@@ -32,29 +31,24 @@ public class EntityInfoRenderer implements RenderEntityListener, RenderLevelList
     private static final EntityInfoRenderer instance = new EntityInfoRenderer();
     private final Queue<Entity> queue = Queues.newConcurrentLinkedQueue();
 
+    private static TextRenderer rotationAround(@NotNull TextRenderer renderer, @NotNull Position centerPos, double range) {
+        Position camPos = MinecraftCompat.getInstance().getMainCameraCompat().getPosition();
+        float xAngle = (float) Mth.atan2(camPos.z() - centerPos.z(), camPos.x() - centerPos.x());
+        float zAngle = (float) Mth.atan2(camPos.x() - centerPos.x(), camPos.z() - centerPos.z());
+        return renderer.at(range * Mth.cos(xAngle) + centerPos.x(), centerPos.y(), range * Mth.cos(zAngle) + centerPos.z());
+    }
+
     @ApiStatus.Internal
     public void init() {
         MagicLib.getInstance().getEventManager().register(RenderEntityListener.class, this);
         MagicLib.getInstance().getEventManager().register(RenderLevelListener.class, this);
     }
 
-    private static TextRenderer rotationAround(@NotNull TextRenderer renderer, @NotNull Position centerPos, double range) {
-        Position camPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
-        float xAngle = (float) Mth.atan2(camPos.z() - centerPos.z(), camPos.x() - centerPos.x());
-        float zAngle = (float) Mth.atan2(camPos.x() - centerPos.x(), camPos.z() - centerPos.z());
-        return renderer.at(range * Mth.cos(xAngle) + centerPos.x(), centerPos.y(), range * Mth.cos(zAngle) + centerPos.z());
-    }
-
     @Override
-    public void preRenderEntity(Entity entity, EntityRenderContext renderContext) {
-        // NO-OP
-    }
-
-    @Override
-    public void postRenderEntity(Entity entity, EntityRenderContext renderContext) {
-        if ((entity instanceof Villager &&
-                (Configs.renderNextRestockTime.getBooleanValue() || Configs.renderTradeEnchantedBook.getBooleanValue())) ||
-                (entity instanceof ZombieVillager && (Configs.renderZombieVillagerConvertTime.getBooleanValue()))) {
+    public void postRenderEntity(Entity entity) {
+        if ((entity instanceof Villager
+                && (Configs.renderNextRestockTime.getBooleanValue() || Configs.renderTradeEnchantedBook.getBooleanValue()))
+                || (entity instanceof ZombieVillager && (Configs.renderZombieVillagerConvertTime.getBooleanValue()))) {
             this.queue.add(entity);
         }
     }

@@ -2,6 +2,7 @@ package com.plusls.MasaGadget.mixin.mod_tweak.common;
 
 import com.plusls.MasaGadget.api.fake.mod_tweak.malilib.favoritesSupport.GuiBaseInjector;
 import fi.dy.masa.malilib.gui.GuiBase;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

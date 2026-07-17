@@ -3,18 +3,22 @@ package com.plusls.MasaGadget.mixin.feature.autoSyncEntityData;
 import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.util.PcaSyncProtocol;
 import com.plusls.MasaGadget.util.VillagerDataUtil;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 12104
+//$$ import net.minecraft.resources.ResourceKey;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-//#if MC > 12104
-//$$ import net.minecraft.resources.ResourceKey;
-//#endif
 
 @Mixin(Villager.class)
 public abstract class MixinVillagerEntity {
@@ -28,9 +32,9 @@ public abstract class MixinVillagerEntity {
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "tick", at = @At("RETURN"))
     private void syncVillagerData(CallbackInfo ci) {
-        if (!Configs.autoSyncEntityData.getBooleanValue() ||
-                Minecraft.getInstance().hasSingleplayerServer() ||
-                !PcaSyncProtocol.enable) {
+        if (!Configs.autoSyncEntityData.getBooleanValue()
+                || Minecraft.getInstance().hasSingleplayerServer()
+                || !PcaSyncProtocol.enable) {
             return;
         }
 
@@ -50,9 +54,9 @@ public abstract class MixinVillagerEntity {
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "handleEntityEvent", at = @At("RETURN"))
     private void syncVillagerData(byte status, CallbackInfo ci) {
-        if (!Configs.autoSyncEntityData.getBooleanValue() ||
-                Minecraft.getInstance().hasSingleplayerServer() ||
-                !PcaSyncProtocol.enable) {
+        if (!Configs.autoSyncEntityData.getBooleanValue()
+                || Minecraft.getInstance().hasSingleplayerServer()
+                || !PcaSyncProtocol.enable) {
             return;
         }
 

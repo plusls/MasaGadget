@@ -5,6 +5,14 @@ import com.plusls.MasaGadget.game.Configs;
 import fi.dy.masa.minihud.renderer.shapes.ShapeBase;
 import fi.dy.masa.minihud.renderer.shapes.ShapeDespawnSphere;
 import fi.dy.masa.minihud.renderer.shapes.ShapeManager;
+import org.jetbrains.annotations.Nullable;
+import top.hendrixshen.magiclib.MagicLib;
+import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.resources.ResourceLocationCompat;
+import top.hendrixshen.magiclib.api.compat.minecraft.world.level.LevelCompat;
+import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
+import top.hendrixshen.magiclib.util.minecraft.InfoUtil;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -18,14 +26,11 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
-import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.ComponentCompat;
-import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
-import top.hendrixshen.magiclib.api.compat.minecraft.resources.ResourceLocationCompat;
-import top.hendrixshen.magiclib.api.compat.minecraft.world.level.LevelCompat;
-import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
-import top.hendrixshen.magiclib.util.minecraft.InfoUtil;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 26.2
+//$$ import net.minecraft.world.entity.EntityTypes;
+//#endif
 
 //#if MC < 12005
 import net.minecraft.world.level.NaturalSpawner;
@@ -36,6 +41,7 @@ import net.minecraft.world.level.NaturalSpawner;
 //#else
 import net.minecraft.core.Registry;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
 public class SearchMobSpawnPointUtil {
     @Nullable
@@ -77,7 +83,11 @@ public class SearchMobSpawnPointUtil {
             return;
         }
 
+        //#if MC >= 26.1
+        //$$ Vec3 centerPos = shapeDespawnSphere.getCenter().toVanilla();
+        //#else
         Vec3 centerPos = shapeDespawnSphere.getCenter();
+        //#endif
         BlockPos pos = new BlockPos((int) centerPos.x, (int) centerPos.y, (int) centerPos.z);
         SharedConstants.getLogger().warn("shape: {}", shapeDespawnSphere.getCenter());
         BlockPos spawnPos = null;
@@ -90,8 +100,13 @@ public class SearchMobSpawnPointUtil {
         int maxSpawnLightLevel = fi.dy.masa.minihud.config.Configs.Generic.LIGHT_LEVEL_THRESHOLD.getIntegerValue();
         //#endif
         LevelLightEngine lightingProvider = level.getChunkSource().getLightEngine();
+        //#if MC >= 26.2
+        //$$ EntityType<?> entityType = levelCompat.getDimensionLocation().equals(ResourceLocationCompat.withDefaultNamespace("the_nether")) ? EntityTypes.ZOMBIFIED_PIGLIN : EntityTypes.CREEPER;
+        //$$ EntityType<?> entityType2 = levelCompat.getDimensionLocation().equals(ResourceLocationCompat.withDefaultNamespace("the_nether")) ? null : EntityTypes.SPIDER;
+        //#else
         EntityType<?> entityType = levelCompat.getDimensionLocation().equals(ResourceLocationCompat.withDefaultNamespace("the_nether")) ? EntityType.ZOMBIFIED_PIGLIN : EntityType.CREEPER;
         EntityType<?> entityType2 = levelCompat.getDimensionLocation().equals(ResourceLocationCompat.withDefaultNamespace("the_nether")) ? null : EntityType.SPIDER;
+        //#endif
 
         for (int x = pos.getX() - 129; x <= maxX; ++x) {
             for (int z = pos.getZ() - 129; z <= maxZ; ++z) {
@@ -110,20 +125,20 @@ public class SearchMobSpawnPointUtil {
                         } else {
                             continue;
                         }
-                    } else if (spawnPos != null && player.distanceToSqr(x, y, z) >
-                            player.distanceToSqr(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ())) {
+                    } else if (spawnPos != null && player.distanceToSqr(x, y, z) > player.distanceToSqr(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ())) {
                         continue;
                     }
 
                     currentPos.set(x, y, z);
 
                     if (
-                        //#if MC > 12004
-                        //$$ SpawnPlacements.isSpawnPositionOk(entityType, level, currentPos) &&
-                        //#else
-                            NaturalSpawner.isSpawnPositionOk(SpawnPlacements.getPlacementType(entityType), level, currentPos, entityType) &&
-                                    //#endif
-                                    lightingProvider.getLayerListener(LightLayer.BLOCK).getLightValue(currentPos) < maxSpawnLightLevel) {
+                            //#if MC > 12004
+                            //$$ SpawnPlacements.isSpawnPositionOk(entityType, level, currentPos)
+                            //#else
+                            NaturalSpawner.isSpawnPositionOk(SpawnPlacements.getPlacementType(entityType), level, currentPos, entityType)
+                            //#endif
+                                    && lightingProvider.getLayerListener(LightLayer.BLOCK).getLightValue(currentPos) < maxSpawnLightLevel
+                    ) {
                         Block block = level.getBlockState(currentPos.below()).getBlock();
                         //#if MC > 11902
                         //$$ String blockId = BuiltInRegistries.BLOCK.getKey(level.getBlockState(currentPos.below()).getBlock()).toString();

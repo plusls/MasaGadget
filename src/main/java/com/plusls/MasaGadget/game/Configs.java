@@ -9,9 +9,6 @@ import com.plusls.MasaGadget.util.PcaSyncProtocol;
 import com.plusls.MasaGadget.util.SearchMobSpawnPointUtil;
 import fi.dy.masa.malilib.config.options.ConfigBoolean;
 import fi.dy.masa.malilib.interfaces.IValueChangeCallback;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.Entity;
 import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
@@ -20,11 +17,22 @@ import top.hendrixshen.magiclib.api.malilib.annotation.Config;
 import top.hendrixshen.magiclib.api.malilib.config.MagicConfigManager;
 import top.hendrixshen.magiclib.api.platform.PlatformType;
 import top.hendrixshen.magiclib.impl.malilib.config.MagicConfigFactory;
-import top.hendrixshen.magiclib.impl.malilib.config.option.*;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigBoolean;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigBooleanHotkeyed;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigColor;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigDouble;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigHotkey;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigInteger;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigOptionList;
+import top.hendrixshen.magiclib.impl.malilib.config.option.MagicConfigStringList;
 import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
 import top.hendrixshen.magiclib.util.minecraft.InfoUtil;
 
-import java.util.*;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.Entity;
+
+import java.util.Objects;
 
 public class Configs {
     private static final MagicConfigManager cm = SharedConstants.getConfigManager();
@@ -117,8 +125,18 @@ public class Configs {
     @Config(category = ConfigCategory.MALILIB)
     public static MagicConfigBoolean fastSwitchMasaConfigGui = Configs.cf.newConfigBoolean("fastSwitchMasaConfigGui", false);
 
+    @Dependencies(
+            require = {
+                    @Dependency(ModId.mod_menu),
+                    @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FABRIC_LIKE)
+            }
+    )
+    @Dependencies(require = @Dependency(dependencyType = DependencyType.PLATFORM, platformType = PlatformType.FORGE_LIKE))
     @Config(category = ConfigCategory.MALILIB)
-    public static MagicConfigBooleanHotkeyed favoritesSupport = Configs.cf.newConfigBooleanHotkeyed("favoritesSupport", false);
+    public static MagicConfigInteger fastSwitchMasaConfigGuiVisibleEntries = Configs.cf.newConfigInteger("fastSwitchMasaConfigGuiVisibleEntries", 5, 3, 15);
+
+    @Config(category = ConfigCategory.MALILIB)
+    public static MagicConfigBoolean favoritesSupport = Configs.cf.newConfigBoolean("favoritesSupport", false);
 
     @Dependencies(require = @Dependency(ModId.malilib))
     @Config(category = ConfigCategory.MALILIB)
@@ -220,7 +238,12 @@ public class Configs {
     @Config(category = ConfigCategory.TWEAKEROO)
     public static MagicConfigBoolean inventoryPreviewSupportComparator = Configs.cf.newConfigBoolean("inventoryPreviewSupportComparator", false);
 
-    @Dependencies(require = @Dependency(ModId.tweakeroo))
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.minecraft, versionPredicates = "<1.21"),
+                    @Dependency(ModId.tweakeroo)
+            }
+    )
     @Config(category = ConfigCategory.TWEAKEROO)
     public static MagicConfigBoolean inventoryPreviewSupportPlayer = Configs.cf.newConfigBoolean("inventoryPreviewSupportPlayer", false);
 
@@ -228,11 +251,22 @@ public class Configs {
     @Config(category = ConfigCategory.TWEAKEROO)
     public static MagicConfigBoolean inventoryPreviewSupportSelect = Configs.cf.newConfigBoolean("inventoryPreviewSupportSelect", false);
 
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.minecraft, versionPredicates = "<1.21"),
+                    @Dependency(ModId.tweakeroo)
+            }
+    )
     @Dependencies(require = @Dependency(ModId.tweakeroo))
     @Config(category = ConfigCategory.TWEAKEROO)
     public static MagicConfigBoolean inventoryPreviewSupportShulkerBoxItemEntity = Configs.cf.newConfigBoolean("inventoryPreviewSupportShulkerBoxItemEntity", false);
 
-    @Dependencies(require = @Dependency(ModId.tweakeroo))
+    @Dependencies(
+            require = {
+                    @Dependency(value = ModId.minecraft, versionPredicates = "<1.21"),
+                    @Dependency(ModId.tweakeroo)
+            }
+    )
     @Config(category = ConfigCategory.TWEAKEROO)
     public static MagicConfigBoolean inventoryPreviewSupportTradeOfferList = Configs.cf.newConfigBoolean("inventoryPreviewSupportTradeOfferList", false);
 
@@ -245,8 +279,10 @@ public class Configs {
     public static MagicConfigBoolean inventoryPreviewSyncDataClientOnly = Configs.cf.newConfigBoolean("inventoryPreviewSyncDataClientOnly", false);
 
     @Dependencies(
-            require = @Dependency(ModId.tweakeroo),
-            conflict = @Dependency(value = ModId.minecraft, versionPredicates = ">=1.21-")
+            require = {
+                    @Dependency(value = ModId.minecraft, versionPredicates = "<1.21"),
+                    @Dependency(ModId.tweakeroo)
+            }
     )
     @Config(category = ConfigCategory.TWEAKEROO)
     public static MagicConfigBoolean inventoryPreviewUseCache = Configs.cf.newConfigBoolean("inventoryPreviewUseCache", false);
@@ -369,6 +405,7 @@ public class Configs {
 
         // Malilib
         Configs.fastSwitchMasaConfigGui.setValueChangeCallback(Configs::redrawConfigGui);
+        Configs.fastSwitchMasaConfigGuiVisibleEntries.setValueChangeCallback(Configs::redrawConfigGui);
         Configs.favoritesSupport.setValueChangeCallback(Configs::redrawConfigGui);
         Configs.showOriginalConfigName.setValueChangeCallback(Configs::redrawConfigGui);
         Configs.showOriginalConfigNameScale.setValueChangeCallback(Configs::redrawConfigGui);

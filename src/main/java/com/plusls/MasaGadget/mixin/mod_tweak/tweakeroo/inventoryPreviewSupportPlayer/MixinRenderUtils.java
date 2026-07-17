@@ -6,23 +6,38 @@ import com.plusls.MasaGadget.util.ModId;
 import fi.dy.masa.malilib.render.InventoryOverlay;
 import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.tweakeroo.renderer.RenderUtils;
+import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.player.PlayerCompat;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC > 11904
+//$$ import net.minecraft.client.gui.GuiGraphics;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import top.hendrixshen.magiclib.api.compat.minecraft.world.entity.player.PlayerCompat;
-import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
-import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11904
-//$$ import net.minecraft.client.gui.GuiGraphics;
 //$$ import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.sugar.Local;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
+// CHECKSTYLE.OFF: JavadocStyle
+/**
+ * <li>mc1.14 ~ mc1.20: subproject 1.16.5 (main project)        &lt;--------</li>
+ * <li>mc1.21+        : subproject 1.21.1 [dummy]</li>
+ */
+// CHECKSTYLE.ON: JavadocStyle
 @Dependencies(require = @Dependency(ModId.tweakeroo))
 @Mixin(value = RenderUtils.class, remap = false)
 public abstract class MixinRenderUtils {
@@ -35,16 +50,19 @@ public abstract class MixinRenderUtils {
             )
     )
     private static Container modifyInv(
+            // CHECKSTYLE.OFF: NoWhitespaceBefore
+            // CHECKSTYLE.OFF: SeparatorWrap
             Container inv
             //#if MC > 11904
             //$$ , @Local(argsOnly = true) GuiGraphics guiGraphics
             //#endif
+            // CHECKSTYLE.ON: SeparatorWrap
+            // CHECKSTYLE.ON: NoWhitespaceBefore
     ) {
         Container ret = inv;
         Entity traceEntity = HitResultHandler.getInstance().getHitEntity().orElse(null);
 
-        if (Configs.inventoryPreviewSupportPlayer.getBooleanValue() &&
-                ret == null && traceEntity instanceof Player) {
+        if (Configs.inventoryPreviewSupportPlayer.getBooleanValue() && ret == null && traceEntity instanceof Player) {
             Player player = (Player) traceEntity;
             PlayerCompat playerCompat = PlayerCompat.of(player);
             ret = playerCompat.getInventory();
@@ -63,6 +81,8 @@ public abstract class MixinRenderUtils {
             fi.dy.masa.malilib.render.RenderUtils.color(colors[0], colors[1], colors[2], 1.0F);
             //#endif
             InventoryOverlay.renderInventoryBackground(
+                    // CHECKSTYLE.OFF: NoWhitespaceBefore
+                    // CHECKSTYLE.OFF: SeparatorWrap
                     //#if MC >= 12106
                     //$$ guiGraphics,
                     //#endif
@@ -78,8 +98,12 @@ public abstract class MixinRenderUtils {
                     //#if 12106 > MC && MC > 12104
                     //$$ , guiGraphics
                     //#endif
+                    // CHECKSTYLE.OFF: NoWhitespaceBefore
+                    // CHECKSTYLE.OFF: SeparatorWrap
             );
             InventoryOverlay.renderInventoryStacks(
+                    // CHECKSTYLE.OFF: NoWhitespaceBefore
+                    // CHECKSTYLE.OFF: SeparatorWrap
                     //#if MC >= 12106
                     //$$ guiGraphics,
                     //#endif
@@ -94,6 +118,8 @@ public abstract class MixinRenderUtils {
                     //#if 12106 > MC && MC > 11904
                     //$$ , guiGraphics
                     //#endif
+                    // CHECKSTYLE.OFF: NoWhitespaceBefore
+                    // CHECKSTYLE.OFF: SeparatorWrap
             );
             //#if MC < 12106
             fi.dy.masa.malilib.render.RenderUtils.color(1.0F, 1.0F, 1.0F, 1.0F);

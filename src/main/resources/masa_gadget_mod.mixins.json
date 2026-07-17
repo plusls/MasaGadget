@@ -13,6 +13,8 @@
     "accessor.AccessorLivingEntity",
     "accessor.AccessorVillager",
     "accessor.AccessorZombieVillager",
+    "event.MixinLevelExtractor",
+    "event.MixinLevelRenderer",
     "event.MixinMinecraft",
     "feature.autoSyncEntityData.MixinClientPlayNetworkHandler",
     "feature.autoSyncEntityData.MixinVillagerEntity",
@@ -24,6 +26,7 @@
     "mod_tweak.litematica.betterEasyPlaceMode.MixinWorldUtils",
     "mod_tweak.litematica.disableLitematicaEasyPlaceFailTip.MixinWorldUtils",
     "mod_tweak.litematica.fixCarpetAccurateProtocol.MixinBlockItem",
+    "mod_tweak.litematica.fixCarpetAccurateProtocol.MixinEasyPlaceUtils",
     "mod_tweak.litematica.fixCarpetAccurateProtocol.MixinWorldUtils",
     "mod_tweak.litematica.nudgeSelectionSupportFreeCamera.MixinInputHandler",
     "mod_tweak.litematica.saveInventoryToSchematicInServer.MixinSchematicUtils",
@@ -54,12 +57,15 @@
     "mod_tweak.tweakeroo.inventoryPreviewSupportTradeOfferList.MixinAbstractVillager",
     "mod_tweak.tweakeroo.inventoryPreviewSupportTradeOfferList.MixinRenderUtils",
     "mod_tweak.tweakeroo.inventoryPreviewSyncDataClientOnly.MixinClientPacketListener",
-    "mod_tweak.tweakeroo.inventoryPreviewUseCache.MixinMixinRenderUtils"
+    "mod_tweak.tweakeroo.inventoryPreviewUseCache.MixinRenderUtils"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "mixins": [
     "network.MixinMagicPacketRegisterCenter"
-  ]
+  ],
+  "mixinextras": {
+    "minVersion": "0.5.4"
+  }
 }

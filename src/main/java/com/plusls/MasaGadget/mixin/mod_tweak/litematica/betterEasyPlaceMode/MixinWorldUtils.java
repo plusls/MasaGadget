@@ -4,6 +4,10 @@ import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.impl.generic.HitResultHandler;
 import com.plusls.MasaGadget.util.ModId;
 import fi.dy.masa.litematica.util.WorldUtils;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
+import top.hendrixshen.magiclib.util.collect.ValueContainer;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
@@ -12,16 +16,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
-import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
-import top.hendrixshen.magiclib.util.collect.ValueContainer;
 
 @Dependencies(require = @Dependency(ModId.litematica))
 @Mixin(value = WorldUtils.class, remap = false)
-public class MixinWorldUtils {
+public abstract class MixinWorldUtils {
     @ModifyVariable(
             method = "handleEasyPlace",
             at = @At(
@@ -33,9 +35,9 @@ public class MixinWorldUtils {
     private static InteractionResult checkInventory(InteractionResult interactionResult) {
         Minecraft mc = Minecraft.getInstance();
 
-        if (!Configs.betterEasyPlaceMode.getBooleanValue() ||
-                mc.level == null ||
-                interactionResult != InteractionResult.FAIL) {
+        if (!Configs.betterEasyPlaceMode.getBooleanValue()
+                || mc.level == null
+                || interactionResult != InteractionResult.FAIL) {
             return interactionResult;
         }
 

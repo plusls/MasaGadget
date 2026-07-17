@@ -2,12 +2,13 @@ package com.plusls.MasaGadget.impl.feature.entityInfo;
 
 import com.plusls.MasaGadget.mixin.accessor.AccessorZombieVillager;
 import com.plusls.MasaGadget.util.PcaSyncProtocol;
+import org.jetbrains.annotations.NotNull;
+import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.monster.ZombieVillager;
-import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
 
 public class ZombieVillagerConvertTimeInfo {
     public static @NotNull Component getInfo(ZombieVillager zombieVillager) {

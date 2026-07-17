@@ -3,17 +3,19 @@ package com.plusls.MasaGadget.mixin.mod_tweak.litematica.disableLitematicaEasyPl
 import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.util.ModId;
 import fi.dy.masa.litematica.util.WorldUtils;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
+import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
+
 import net.minecraft.client.Minecraft;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
-import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 
 @Dependencies(require = @Dependency(ModId.litematica))
 @Mixin(value = WorldUtils.class, priority = 1100, remap = false)
-public class MixinWorldUtils {
+public abstract class MixinWorldUtils {
     @Inject(
             method = "handleEasyPlace",
             at = @At(

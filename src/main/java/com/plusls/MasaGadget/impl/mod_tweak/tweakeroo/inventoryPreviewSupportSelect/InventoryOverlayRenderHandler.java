@@ -5,62 +5,80 @@ import fi.dy.masa.malilib.render.RenderUtils;
 import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import top.hendrixshen.magiclib.api.render.context.GuiRenderContext;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 1.21.11
+//$$ import fi.dy.masa.malilib.render.GuiContext;
+//#endif
+
+//#if MC > 12006
+//$$ import fi.dy.masa.malilib.util.WorldUtils;
+//#endif
+
+//#if MC < 12000
+import com.plusls.MasaGadget.mixin.accessor.AccessorGuiComponent;
+import top.hendrixshen.magiclib.api.compat.minecraft.client.gui.FontCompat;
+import top.hendrixshen.magiclib.impl.render.context.RenderGlobal;
+//#endif
+
+//#if 12000 > MC && MC > 11404
+import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.phys.HitResult;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import top.hendrixshen.magiclib.api.render.context.GuiRenderContext;
 
-//#if MC >= 12106
-//$$ import net.minecraft.core.component.DataComponents;
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 26.1
+//$$ import net.minecraft.client.gui.GuiGraphicsExtractor;
+//#elseif MC >= 1.20
+//$$ import net.minecraft.client.gui.GuiGraphics;
 //#endif
 
-//#if MC > 12101
+//#if 12106 > MC && MC > 12101
 //$$ import net.minecraft.client.renderer.RenderType;
 //#endif
 
-//#if MC < 12000
-import com.plusls.MasaGadget.mixin.accessor.AccessorGuiComponent;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.TooltipFlag;
-import top.hendrixshen.magiclib.api.compat.minecraft.client.gui.FontCompat;
-import top.hendrixshen.magiclib.impl.render.context.RenderGlobal;
-
-import java.util.List;
-
-//#if MC > 11605
-//$$ import com.mojang.blaze3d.systems.RenderSystem;
-//#endif
-
-//#if MC > 11404
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.MultiBufferSource;
-import top.hendrixshen.magiclib.util.minecraft.render.RenderUtil;
-//#endif
-//#endif
-
-//#if MC > 11904
-//$$ import net.minecraft.client.gui.GuiGraphics;
-//$$
-//#if MC > 12006
-//$$ import fi.dy.masa.malilib.util.WorldUtils;
-//$$ import net.minecraft.world.item.Item;
-//$$ import net.minecraft.world.item.TooltipFlag;
-//#else
-//$$ import net.minecraft.client.gui.screens.Screen;
-//#endif
-//#endif
-
-//#if MC > 11605
+//#if 12103 > MC && MC > 11605
 //$$ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 //#endif
 
-//#if MC > 11404
-import com.mojang.blaze3d.vertex.PoseStack;
+//#if 12100 > MC && MC > 11904
+//$$ import net.minecraft.client.gui.screens.Screen;
 //#endif
+
+//#if MC > 12006
+//$$ import net.minecraft.world.item.Item;
+//$$ import net.minecraft.world.item.TooltipFlag;
+//#endif
+
+//#if 12000 > MC && MC > 11404
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.MultiBufferSource;
+//#endif
+
+//#if 12000 > MC && MC > 11605
+//$$ import com.mojang.blaze3d.systems.RenderSystem;
+//#endif
+
+//#if MC < 12000
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.TooltipFlag;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC < 12000
+import java.util.List;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
 public class InventoryOverlayRenderHandler {
     @Getter(lazy = true)
@@ -83,8 +101,8 @@ public class InventoryOverlayRenderHandler {
     private ItemStack subItemStack = null;
 
     public static void onHitCallback(@Nullable HitResult hitResult, boolean oldStatus, boolean stateChanged) {
-        if (!FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue() ||
-                !Configs.inventoryPreviewSupportSelect.getBooleanValue()) {
+        if (!FeatureToggle.TWEAK_INVENTORY_PREVIEW.getBooleanValue()
+                || !Configs.inventoryPreviewSupportSelect.getBooleanValue()) {
             return;
         }
 
@@ -95,7 +113,7 @@ public class InventoryOverlayRenderHandler {
     }
 
     public void render(@NotNull GuiRenderContext renderContext) {
-        //#if MC > 11605 && MC < 12000
+        //#if 12000 > MC && MC > 11605
         //$$ RenderSystem.applyModelViewMatrix();
         //#endif
 
@@ -103,9 +121,10 @@ public class InventoryOverlayRenderHandler {
             return;
         }
 
-        if (this.selectedSlot != InventoryOverlayRenderHandler.UN_SELECTED &&
-                this.adjustSelectedSlot() &&
-                this.itemStack != null) {
+        if (this.selectedSlot != InventoryOverlayRenderHandler.UN_SELECTED
+                && this.adjustSelectedSlot()
+                && this.itemStack != null
+        ) {
             this.attachToSubShulkerBoxView(renderContext);
             this.attachToMainInventoryView(renderContext);
         }
@@ -125,20 +144,31 @@ public class InventoryOverlayRenderHandler {
             return;
         }
 
-        if (!(this.itemStack.getItem() instanceof BlockItem) ||
-                !(((BlockItem) this.itemStack.getItem()).getBlock() instanceof ShulkerBoxBlock)) {
+        if (!(this.itemStack.getItem() instanceof BlockItem)
+                || !(((BlockItem) this.itemStack.getItem()).getBlock() instanceof ShulkerBoxBlock)
+        ) {
             this.switchSelectInventory();
             return;
         }
 
-        //#if MC > 11904
+        //#if MC >= 26.1
+        //$$ GuiGraphicsExtractor guiGraphics = renderContext.getGuiComponent();
+        //#elseif MC >= 1.20
         //$$ GuiGraphics guiGraphics = renderContext.getGuiComponent();
+        //#endif
+
+        //#if MC >= 1.21.11
+        //$$ GuiContext guiContext = GuiContext.fromGuiGraphics(renderContext.getGuiComponent());
         //#endif
 
         this.renderSlotHighlight(renderContext, this.renderX, this.renderY);
         this.renderingSubInventory = true;
         RenderUtils.renderShulkerBoxPreview(
-                //#if MC >= 12107
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
+                //#if MC >= 1.21.11
+                //$$ guiContext,
+                //#elseif MC >= 1.21.7
                 //$$ guiGraphics,
                 //#endif
                 this.itemStack,
@@ -148,12 +178,14 @@ public class InventoryOverlayRenderHandler {
                 //#if 12106 > MC && MC > 11904
                 //$$ , guiGraphics
                 //#endif
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
         );
         this.renderingSubInventory = false;
 
-        if (this.subSelectedSlot != InventoryOverlayRenderHandler.UN_SELECTED &&
-                this.adjustSubSelectedSlot() &&
-                this.subItemStack != null
+        if (this.subSelectedSlot != InventoryOverlayRenderHandler.UN_SELECTED
+                && this.adjustSubSelectedSlot()
+                && this.subItemStack != null
         ) {
             renderContext.pushMatrix();
             //#if MC < 12106
@@ -278,7 +310,7 @@ public class InventoryOverlayRenderHandler {
         //#if MC > 11904
         //$$         renderContext.getGuiComponent(),
         //#else
-        //$$         renderContext.getMatrixStack().getPoseStack(),
+        //$$         renderContext.getPoseStack(),
         //#endif
         //$$         x,
         //$$         y,
@@ -325,12 +357,16 @@ public class InventoryOverlayRenderHandler {
         //$$         x,
         //$$         y
         //$$ );
-        //#if MC >= 12106
+        //#if MC < 26.1
+        //#if MC >= 1.21.10
+        //$$ renderContext.getGuiComponent().renderDeferredElements();
+        //#elseif MC >= 12106
         //$$ renderContext.getGuiComponent().renderDeferredTooltip();
         //#endif
+        //#endif
         //#else
-        List<Component> tooltipLines = itemStack.getTooltipLines(mc.player, mc.options.advancedItemTooltips ?
-                TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL);
+        List<Component> tooltipLines = itemStack.getTooltipLines(mc.player, mc.options.advancedItemTooltips
+                ? TooltipFlag.Default.ADVANCED : TooltipFlag.Default.NORMAL);
 
         if (tooltipLines.isEmpty()) {
             return;

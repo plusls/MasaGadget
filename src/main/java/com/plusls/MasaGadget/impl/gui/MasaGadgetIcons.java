@@ -3,11 +3,20 @@ package com.plusls.MasaGadget.impl.gui;
 import com.plusls.MasaGadget.SharedConstants;
 import fi.dy.masa.malilib.gui.interfaces.IGuiIcon;
 import fi.dy.masa.malilib.render.RenderUtils;
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 1.21.11
+//$$ import fi.dy.masa.malilib.render.GuiContext;
+//#endif
+// CHECKSTYLE.OFF: ImportOrder
+
 import net.minecraft.resources.ResourceLocation;
 
-//#if MC > 12101
+// CHECKSTYLE.OFF: ImportOrder
+//#if 1.21.11 > MC && MC > 12101
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#endif
+// CHECKSTYLE.OFF: ImportOrder
 
 public enum MasaGadgetIcons implements IGuiIcon {
     FAVORITE(0, 0, 16, 16, 16, 16);
@@ -52,7 +61,11 @@ public enum MasaGadgetIcons implements IGuiIcon {
 
     @Override
     public void renderAt(
-            //#if MC >= 12106
+            // CHECKSTYLE.OFF: NoWhitespaceBefore
+            // CHECKSTYLE.OFF: SeparatorWrap
+            //#if MC >= 1.21.11
+            //$$ GuiContext guiContext,
+            //#elseif MC >= 12106
             //$$ GuiGraphics guiGraphics,
             //#endif
             int x,
@@ -63,6 +76,8 @@ public enum MasaGadgetIcons implements IGuiIcon {
             //#if 12106 > MC && MC > 12101
             //$$ , GuiGraphics guiGraphics
             //#endif
+            // CHECKSTYLE.ON: SeparatorWrap
+            // CHECKSTYLE.ON: NoWhitespaceBefore
     ) {
         int u = this.u;
         int v = this.v;
@@ -76,7 +91,11 @@ public enum MasaGadgetIcons implements IGuiIcon {
         }
 
         RenderUtils.drawTexturedRect(
-                //#if MC >= 12106
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
+                //#if MC >= 1.21.11
+                //$$ guiContext,
+                //#elseif MC >= 12106
                 //$$ guiGraphics,
                 //#endif
                 //#if MC > 12104
@@ -92,6 +111,8 @@ public enum MasaGadgetIcons implements IGuiIcon {
                 //#if 12106 > MC && MC > 12104
                 //$$ , guiGraphics
                 //#endif
+                // CHECKSTYLE.ON: SeparatorWrap
+                // CHECKSTYLE.ON: NoWhitespaceBefore
         );
     }
 

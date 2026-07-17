@@ -59,7 +59,12 @@ masa_gadget_mod:
         comment: Backport i18n support from MC 1.18.x
       fastSwitchMasaConfigGui:
         name: fastSwitchMasaConfigGui
-        comment: You can quickly switch between config screens using drop-down menu.
+        comment: |-
+          You can quickly switch between config screens using drop-down menu.
+          See also: config @config#fastSwitchMasaConfigGuiVisibleEntries@.
+      fastSwitchMasaConfigGuiVisibleEntries:
+        name: fastSwitchMasaConfigGuiVisibleEntries
+        comment: Max visible entries in the @config#fastSwitchMasaConfigGui@ drop-down menu.
       favoritesSupport:
         name: favoritesSupport
         comment: You can bookmark your favorite configs.

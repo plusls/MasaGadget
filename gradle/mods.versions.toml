@@ -1,0 +1,206 @@
+[versions]
+pinyin = "1.6.0"
+magiclib = "0.8.855-beta"
+
+itemscroller-mc11404 = "0.15.0-dev.20190909.151706"
+itemscroller-mc11502 = "0.15.0-dev.20200514.012232"
+itemscroller-mc11605 = "0.15.0-dev.20210917.191808"
+itemscroller-mc11701 = "0.15.0-dev.20211201.010054"
+itemscroller-mc11802 = "0.16.1"
+itemscroller-mc11902 = "3839VGk9" # 0.17.1
+itemscroller-mc11903 = "0.18.0"
+itemscroller-mc11904 = "0.19.2"
+itemscroller-mc12001 = "0.20.0"
+itemscroller-mc12002 = "0.21.0"
+itemscroller-mc12004 = "0.22.0"
+itemscroller-mc12006 = "0.23.0"
+itemscroller-mc12101 = "0.24.60"
+itemscroller-mc12103 = "0.25.7"
+itemscroller-mc12104 = "0.26.5"
+itemscroller-mc12105 = "0.27.3"
+itemscroller-mc12108 = "0.28.5"
+itemscroller-mc12110 = "0.29.5"
+itemscroller-mc12111 = "0.30.6"
+itemscroller-mc260102 = "0.31.5"
+itemscroller-mc260200 = "0.32.1"
+
+litematica-mc11404 = "0.0.0-dev.20191222.014040"
+litematica-mc11502 = "0.0.0-dev.20201006.194726"
+litematica-mc11605 = "0.0.0-dev.20210917.192300"
+litematica-mc11701 = "0.9.0"
+litematica-mc11802 = "0.11.7"
+litematica-mc11902 = "0.12.7"
+litematica-mc11903 = "0.13.2"
+litematica-mc11904 = "0.14.7"
+litematica-mc12001 = "0.15.4"
+litematica-mc12002 = "0.16.1"
+litematica-mc12004 = "0.17.4"
+litematica-mc12006 = "0.18.3"
+litematica-mc12101 = "0.19.61"
+litematica-mc12103 = "0.20.9"
+litematica-mc12104 = "0.21.7"
+litematica-mc12105 = "0.22.5"
+litematica-mc12108 = "0.23.7"
+litematica-mc12110 = "0.24.9"
+litematica-mc12111 = "0.26.12"
+litematica-mc260102 = "0.27.10"
+litematica-mc260200 = "0.28.4"
+
+minihud-mc11404 = "0.19.0-dev.20200424.001737"
+minihud-mc11502 = "0.19.0-dev.20200508.032934"
+minihud-mc11605 = "0.19.0-dev.20210917.191825"
+minihud-mc11701 = "0.20.0"
+minihud-mc11802 = "0.22.1"
+minihud-mc11902 = "0.23.3-test.1"
+minihud-mc11903 = "0.25.0"
+minihud-mc11904 = "0.26.2"
+minihud-mc12001 = "0.27.1"
+minihud-mc12002 = "0.29.1"
+minihud-mc12004 = "0.30.2"
+minihud-mc12006 = "0.31.0"
+minihud-mc12101 = "0.32.60"
+minihud-mc12103 = "0.33.10"
+minihud-mc12104 = "0.34.8"
+minihud-mc12105 = "0.35.4"
+minihud-mc12108 = "0.36.7"
+minihud-mc12110 = "0.37.6"
+minihud-mc12111 = "0.38.13"
+minihud-mc260102 = "0.39.8"
+minihud-mc260200 = "0.40.4"
+
+tweakeroo-mc11404 = "0.10.0-dev.20191218.170529"
+tweakeroo-mc11502 = "0.10.0-dev.20210124.111151"
+tweakeroo-mc11605 = "0.10.0-dev.20210917.191839"
+tweakeroo-mc11701 = "0.11.0"
+tweakeroo-mc11802 = "0.13.3"
+tweakeroo-mc11902 = "0.14.4-pre.5"
+tweakeroo-mc11903 = "0.15.0"
+tweakeroo-mc11904 = "0.16.0"
+tweakeroo-mc12001 = "0.17.1"
+tweakeroo-mc12002 = "0.18.0"
+tweakeroo-mc12004 = "0.19.4"
+tweakeroo-mc12006 = "0.20.0"
+tweakeroo-mc12101 = "0.21.61"
+tweakeroo-mc12103 = "0.22.8"
+tweakeroo-mc12104 = "0.23.6"
+tweakeroo-mc12105 = "0.24.3"
+tweakeroo-mc12108 = "0.25.6"
+tweakeroo-mc12110 = "0.26.5"
+tweakeroo-mc12111 = "0.27.11"
+tweakeroo-mc260102 = "0.28.6"
+tweakeroo-mc260200 = "0.29.2"
+
+bocchud-mc12001 = "nQSvjdu7" # 0.1.7-mc1.20.1
+bocchud-mc12101 = "tOP74nwE" # 0.4.1+mc1.21.1
+
+forgematica-mc12001 = "YncE2C0Y" # 0.1.13-mc1.20.1
+forgematica-mc12101 = "71jxaAwz" # 0.4.2+mc1.21.1
+
+rocknroller-mc12001 = "rJ5AZYNA" # 0.1.4-mc1.20.1
+rocknroller-mc12101 = "vsVKkDaQ" # 0.4.0+mc1.21.1
+
+tweakerge-mc12001 = "CYN4k7x6" # 0.1.5-mc1.20.1
+tweakerge-mc12101 = "701i2Xre" # 0.4.3+mc1.21.1
+
+[libraries]
+pinyin = { module = "com.github.Towdium:PinIn", version.ref = "pinyin" }
+
+itemscroller-mc11404 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc11404" }
+itemscroller-mc11502 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc11502" }
+itemscroller-mc11605 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc11605" }
+itemscroller-mc11701 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc11701" }
+itemscroller-mc11802 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc11802" }
+itemscroller-mc11902 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc11902" }
+itemscroller-mc11903 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc11903" }
+itemscroller-mc11904 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc11904" }
+itemscroller-mc12001 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc12001" }
+itemscroller-mc12002 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc12002" }
+itemscroller-mc12004 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc12004" }
+itemscroller-mc12006 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc12006" }
+itemscroller-mc12101 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc12101" }
+itemscroller-mc12103 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc12103" }
+itemscroller-mc12104 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc12104" }
+itemscroller-mc12105 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc12105" }
+itemscroller-mc12108 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc12108" }
+itemscroller-mc12110 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc12110" }
+itemscroller-mc12111 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc12111" }
+itemscroller-mc260102 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc260102" }
+itemscroller-mc260200 = { module = "maven.modrinth:item-scroller", version.ref = "itemscroller-mc260200" }
+
+minihud-mc11404 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc11404" }
+minihud-mc11502 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc11502" }
+minihud-mc11605 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc11605" }
+minihud-mc11701 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc11701" }
+minihud-mc11802 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc11802" }
+minihud-mc11902 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc11902" }
+minihud-mc11903 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc11903" }
+minihud-mc11904 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc11904" }
+minihud-mc12001 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc12001" }
+minihud-mc12002 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc12002" }
+minihud-mc12004 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc12004" }
+minihud-mc12006 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc12006" }
+minihud-mc12101 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc12101" }
+minihud-mc12103 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc12103" }
+minihud-mc12104 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc12104" }
+minihud-mc12105 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc12105" }
+minihud-mc12108 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc12108" }
+minihud-mc12110 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc12110" }
+minihud-mc12111 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc12111" }
+minihud-mc260102 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc260102" }
+minihud-mc260200 = { module = "maven.modrinth:minihud", version.ref = "minihud-mc260200" }
+
+litematica-mc11404 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc11404" }
+litematica-mc11502 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc11502" }
+litematica-mc11605 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc11605" }
+litematica-mc11701 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc11701" }
+litematica-mc11802 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc11802" }
+litematica-mc11902 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc11902" }
+litematica-mc11903 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc11903" }
+litematica-mc11904 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc11904" }
+litematica-mc12001 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc12001" }
+litematica-mc12002 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc12002" }
+litematica-mc12004 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc12004" }
+litematica-mc12006 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc12006" }
+litematica-mc12101 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc12101" }
+litematica-mc12103 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc12103" }
+litematica-mc12104 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc12104" }
+litematica-mc12105 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc12105" }
+litematica-mc12108 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc12108" }
+litematica-mc12110 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc12110" }
+litematica-mc12111 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc12111" }
+litematica-mc260102 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc260102" }
+litematica-mc260200 = { module = "maven.modrinth:litematica", version.ref = "litematica-mc260200" }
+
+tweakeroo-mc11404 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc11404" }
+tweakeroo-mc11502 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc11502" }
+tweakeroo-mc11605 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc11605" }
+tweakeroo-mc11701 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc11701" }
+tweakeroo-mc11802 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc11802" }
+tweakeroo-mc11902 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc11902" }
+tweakeroo-mc11903 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc11903" }
+tweakeroo-mc11904 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc11904" }
+tweakeroo-mc12001 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc12001" }
+tweakeroo-mc12002 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc12002" }
+tweakeroo-mc12004 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc12004" }
+tweakeroo-mc12006 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc12006" }
+tweakeroo-mc12101 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc12101" }
+tweakeroo-mc12103 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc12103" }
+tweakeroo-mc12104 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc12104" }
+tweakeroo-mc12105 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc12105" }
+tweakeroo-mc12108 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc12108" }
+tweakeroo-mc12110 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc12110" }
+tweakeroo-mc12111 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc12111" }
+tweakeroo-mc260102 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc260102" }
+tweakeroo-mc260200 = { module = "maven.modrinth:tweakeroo", version.ref = "tweakeroo-mc260200" }
+
+bocchud-mc12001 = { module = "maven.modrinth:bocchud", version.ref = "bocchud-mc12001" }
+bocchud-mc12101 = { module = "maven.modrinth:bocchud", version.ref = "bocchud-mc12101" }
+
+forgematica-mc12001 = { module = "maven.modrinth:forgematica", version.ref = "forgematica-mc12001" }
+forgematica-mc12101 = { module = "maven.modrinth:forgematica", version.ref = "forgematica-mc12101" }
+
+rocknroller-mc12001 = { module = "maven.modrinth:rocknroller", version.ref = "rocknroller-mc12001" }
+rocknroller-mc12101 = { module = "maven.modrinth:rocknroller", version.ref = "rocknroller-mc12101" }
+
+tweakerge-mc12001 = { module = "maven.modrinth:tweakerge", version.ref = "tweakerge-mc12001" }
+tweakerge-mc12101 = { module = "maven.modrinth:tweakerge", version.ref = "tweakerge-mc12101" }

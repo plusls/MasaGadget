@@ -1,0 +1,48 @@
+plugins {
+    id("checkstyle")
+    id("java-gradle-plugin")
+}
+
+repositories {
+    gradlePluginPortal()
+
+    maven {
+        name = "NyanMaven Mirror"
+        url = "https://maven.hendrixshen.moe/mirror"
+    }
+
+    maven {
+        name = "Jitpack"
+        url = "https://jitpack.io"
+    }
+}
+
+dependencies {
+    implementation(gradleApi())
+    implementation(localGroovy())
+    compileOnly(libs.essential.loom)
+    compileOnly(libs.preprocessor)
+    implementation(libs.gson)
+    implementation(libs.guava)
+    annotationProcessor(libs.lombok)
+    compileOnly(libs.lombok)
+}
+
+checkstyle {
+    configFile = rootProject.file("checkstyle.xml")
+    toolVersion = libs.versions.checkstyle
+}
+
+gradlePlugin {
+    plugins {
+        register("magic-loom") {
+            id = "top.hendrixshen.magiclib.build-logic.magic-loom"
+            implementationClass = "top.hendrixshen.magiclib.buildLogic.MagicLoomPlugin"
+        }
+
+        register("magic-loom-root") {
+            id = "top.hendrixshen.magiclib.build-logic.magic-loom-root"
+            implementationClass = "top.hendrixshen.magiclib.buildLogic.RootMagicLoomPlugin"
+        }
+    }
+}

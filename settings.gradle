@@ -1,35 +1,28 @@
 import groovy.json.JsonSlurper
 
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
 pluginManagement {
     repositories {
         mavenLocal()
-        mavenCentral()
-        gradlePluginPortal()
 
         maven {
-            name = "Fabric"
-            url = "https://maven.fabricmc.net"
-        }
-
-        maven {
-            name = "Architectury"
-            url = "https://maven.architectury.dev"
-        }
-
-        maven {
-            name = "MinecraftForge"
-            url = "https://files.minecraftforge.net/maven"
-        }
-
-        maven {
-            name = "NeoForge"
-            url = "https://maven.neoforged.net/releases"
+            name = "NyanMaven Mirror"
+            url = "https://maven.hendrixshen.moe/mirror"
         }
 
         maven {
             name = "Jitpack"
             url = "https://jitpack.io"
+
+            content {
+                includeGroupAndSubgroups("com.github")
+            }
         }
+
+        mavenCentral()
+        gradlePluginPortal()
     }
 
     resolutionStrategy {
@@ -43,6 +36,20 @@ pluginManagement {
         }
     }
 }
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        register("forges") {
+            from(files("./gradle/forges.versions.toml"))
+        }
+
+        register("mods") {
+            from(files("./gradle/mods.versions.toml"))
+        }
+    }
+}
+
+includeBuild("build-logic")
 
 Map<String, List<String>> settings = file("settings.json").withReader {
     new JsonSlurper().parse(it) as Map<String, List<String>>
@@ -62,8 +69,24 @@ if (!versions.contains(mainProject)) {
 }
 
 for (String version : versions) {
+    Matcher matcher = Pattern.compile("^((?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*)(?:\\.(?:0|[1-9]\\d*))?(?:_\\w+)*)-(fabric|forge|neoforge|quilt)?\$").matcher(version)
+
+    if (!matcher.matches()) {
+        throw new IllegalArgumentException("Invalid submodule name: ${version}")
+    }
+
+    File project_dir = file("./versions/${version}")
+
+    if (!project_dir.exists()) {
+        if (!project_dir.mkdirs()) {
+            throw new IllegalArgumentException("Failed to create missing submodule directory: ${project_dir.absolutePath}")
+        }
+
+        logger.warn("Creating missing submodule directory: ${project_dir.absolutePath}")
+    }
+
     include(":$version")
-    ProjectDescriptor proj = project(":$version")
-    proj.setProjectDir(file("versions/$version"))
+    ProjectDescriptor proj = project(":${version}")
+    proj.setProjectDir(project_dir)
     proj.setBuildFileName("../${mainProject}/build.gradle")
 }

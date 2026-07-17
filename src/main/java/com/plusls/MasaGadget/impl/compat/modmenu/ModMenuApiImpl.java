@@ -1,4 +1,5 @@
 //#if FABRIC_LIKE
+
 package com.plusls.MasaGadget.impl.compat.modmenu;
 
 import com.plusls.MasaGadget.SharedConstants;

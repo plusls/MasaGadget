@@ -1,12 +1,14 @@
 package com.plusls.MasaGadget.mixin.event;
 
 import com.plusls.MasaGadget.impl.event.MinecraftEvent;
+import top.hendrixshen.magiclib.impl.event.EventManager;
+
 import net.minecraft.client.Minecraft;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import top.hendrixshen.magiclib.impl.event.EventManager;
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft {

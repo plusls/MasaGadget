@@ -2,6 +2,8 @@ package com.plusls.MasaGadget.mixin.feature.cacheContainerMenu;
 
 import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.impl.feature.cacheContainerMenu.CacheContainerMenuHandler;
+import top.hendrixshen.magiclib.api.compat.minecraft.client.MinecraftCompat;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.multiplayer.ClientPacketListener;
@@ -11,6 +13,7 @@ import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.network.protocol.game.ClientboundOpenScreenPacket;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -20,7 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Mixin(ClientPacketListener.class)
-public class MixinClientPacketListener {
+public abstract class MixinClientPacketListener {
     @Inject(method = "handleOpenScreen", at = @At("RETURN"))
     private void postHandleOpenScreen(ClientboundOpenScreenPacket clientboundOpenScreenPacket, CallbackInfo ci) {
         Minecraft minecraft = Minecraft.getInstance();
@@ -40,6 +43,7 @@ public class MixinClientPacketListener {
     private void postHandleContainerSetSlot(ClientboundContainerSetSlotPacket clientboundContainerSetSlotPacket,
                                             CallbackInfo ci) {
         Minecraft minecraft = Minecraft.getInstance();
+        MinecraftCompat minecraftCompat = MinecraftCompat.getInstance();
 
         if (!Configs.cacheContainerMenu.getBooleanValue() || minecraft.hasSingleplayerServer()) {
             return;
@@ -48,9 +52,9 @@ public class MixinClientPacketListener {
         LocalPlayer localPlayer = Objects.requireNonNull(minecraft.player);
         int containerId = clientboundContainerSetSlotPacket.getContainerId();
 
-        if (containerId != 0 && containerId != -1 && containerId != -2 &&
-                (clientboundContainerSetSlotPacket.getContainerId() == localPlayer.containerMenu.containerId ||
-                        !(minecraft.screen instanceof CreativeModeInventoryScreen))) {
+        if (containerId != 0 && containerId != -1 && containerId != -2
+                && (clientboundContainerSetSlotPacket.getContainerId() == localPlayer.containerMenu.containerId
+                || !(minecraftCompat.getScreen() instanceof CreativeModeInventoryScreen))) {
             if (CacheContainerMenuHandler.getInstance().isAvailableMenu()) {
                 Container container = CacheContainerMenuHandler.getInstance().getLastClickContainer();
 

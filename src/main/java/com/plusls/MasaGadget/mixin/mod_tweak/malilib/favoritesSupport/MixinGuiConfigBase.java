@@ -9,9 +9,9 @@ import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.GuiListBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
-import org.spongepowered.asm.mixin.Mixin;
-import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.util.collect.ValueContainer;
+
+import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(value = GuiConfigsBase.class, remap = false, priority = 1100)
 public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.ConfigOptionWrapper, WidgetConfigOption, WidgetListConfigOptions> implements GuiBaseInjector {
@@ -36,8 +36,8 @@ public abstract class MixinGuiConfigBase extends GuiListBase<GuiConfigsBase.Conf
                     });
                     SharedConstants.getConfigHandler().save();
                 },
-                status -> status ? SharedConstants.tr("gui.button.favorite.show_all") :
-                        SharedConstants.tr("gui.button.favorite.show_favorite_only"));
+                status -> status ? SharedConstants.tr("gui.button.favorite.show_all")
+                        : SharedConstants.tr("gui.button.favorite.show_favorite_only"));
         this.addWidget(favoritesButton);
     }
 }

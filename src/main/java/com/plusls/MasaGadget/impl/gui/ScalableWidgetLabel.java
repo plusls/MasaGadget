@@ -1,17 +1,30 @@
 package com.plusls.MasaGadget.impl.gui;
 
 import fi.dy.masa.malilib.gui.widgets.WidgetLabel;
-import fi.dy.masa.malilib.render.RenderUtils;
 import lombok.Getter;
 import lombok.Setter;
 import top.hendrixshen.magiclib.api.render.context.GuiRenderContext;
 import top.hendrixshen.magiclib.api.render.context.RenderContext;
 
-//#if MC > 11904
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 1.21.11
+//$$ import fi.dy.masa.malilib.render.GuiContext;
+//#endif
+
+//#if MC < 12105
+import fi.dy.masa.malilib.render.RenderUtils;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
+
+// CHECKSTYLE.OFF: ImportOrder
+//#if 1.21.11 > MC && MC > 1.19.4
 //$$ import net.minecraft.client.gui.GuiGraphics;
-//#elseif MC > 11404
+//#endif
+
+//#if 1.20.1 > MC && MC > 1.15.2
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
 @Getter
 @Setter
@@ -25,8 +38,12 @@ public class ScalableWidgetLabel extends WidgetLabel {
 
     @Override
     public void render(
-            //#if MC >= 12106
-            //$$ GuiGraphics guiGraphicsOrPoseStack,
+            // CHECKSTYLE.OFF: NoWhitespaceBefore
+            // CHECKSTYLE.OFF: SeparatorWrap
+            //#if MC >= 1.21.11
+            //$$ GuiContext guiContextOrGuiGraphics,
+            //#elseif MC >= 1.21.6
+            //$$ GuiGraphics guiContextOrGuiGraphics,
             //#endif
             int mouseX,
             int mouseY,
@@ -38,18 +55,24 @@ public class ScalableWidgetLabel extends WidgetLabel {
             , PoseStack guiGraphicsOrPoseStack
             //#endif
             //#endif
+            // CHECKSTYLE.ON: SeparatorWrap
+            // CHECKSTYLE.ON: NoWhitespaceBefore
     ) {
         if (this.visible) {
             //#if MC < 12105
             RenderUtils.setupBlend();
             //#endif
             this.drawLabelBackground(
-                    //#if MC >= 12106
-                    //$$ guiGraphicsOrPoseStack
+                    // CHECKSTYLE.ON: Indentation
+                    //#if MC >= 1.21.6
+                    //$$ guiContextOrGuiGraphics
                     //#endif
+                    // CHECKSTYLE.OFF: Indentation
             );
             GuiRenderContext renderContext = RenderContext.gui(
-                    //#if MC > 11502
+                    //#if MC >= 1.21.6
+                    //$$ guiContextOrGuiGraphics
+                    //#elseif MC >= 1.16
                     guiGraphicsOrPoseStack
                     //#endif
             );
@@ -69,8 +92,10 @@ public class ScalableWidgetLabel extends WidgetLabel {
 
                 if (this.centered) {
                     this.drawCenteredStringWithShadow(
+                            // CHECKSTYLE.OFF: NoWhitespaceBefore
+                            // CHECKSTYLE.OFF: SeparatorWrap
                             //#if MC >= 12106
-                            //$$ guiGraphicsOrPoseStack,
+                            //$$ guiContextOrGuiGraphics,
                             //#endif
                             (int) x,
                             (int) y,
@@ -79,11 +104,15 @@ public class ScalableWidgetLabel extends WidgetLabel {
                             //#if 12106 > MC && MC >= 11600
                             , guiGraphicsOrPoseStack
                             //#endif
+                            // CHECKSTYLE.ON: SeparatorWrap
+                            // CHECKSTYLE.ON: NoWhitespaceBefore
                     );
                 } else {
                     this.drawStringWithShadow(
+                            // CHECKSTYLE.OFF: NoWhitespaceBefore
+                            // CHECKSTYLE.OFF: SeparatorWrap
                             //#if MC >= 12106
-                            //$$ guiGraphicsOrPoseStack,
+                            //$$ guiContextOrGuiGraphics,
                             //#endif
                             (int) x,
                             (int) y,
@@ -92,6 +121,8 @@ public class ScalableWidgetLabel extends WidgetLabel {
                             //#if 12106 > MC && MC >= 11600
                             , guiGraphicsOrPoseStack
                             //#endif
+                            // CHECKSTYLE.ON: SeparatorWrap
+                            // CHECKSTYLE.ON: NoWhitespaceBefore
                     );
                 }
 

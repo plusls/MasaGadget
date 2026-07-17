@@ -1,10 +1,12 @@
 package com.plusls.MasaGadget.mixin;
 
 import com.plusls.MasaGadget.SharedConstants;
+
 import net.minecraft.network.Connection;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.RunningOnDifferentThreadException;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(Connection.class)
 public abstract class MixinConnection {
     @Shadow
-    private native static <T extends PacketListener> void genericsFtw(Packet<T> packet, PacketListener packetListener);
+    private static native <T extends PacketListener> void genericsFtw(Packet<T> packet, PacketListener packetListener);
 
     @Redirect(
             method = "channelRead0*",

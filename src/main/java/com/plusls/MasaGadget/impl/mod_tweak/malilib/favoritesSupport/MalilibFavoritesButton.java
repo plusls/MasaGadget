@@ -6,13 +6,23 @@ import fi.dy.masa.malilib.gui.widgets.WidgetHoverInfo;
 import fi.dy.masa.malilib.render.RenderUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Consumer;
+// CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 1.21.11
+//$$ import fi.dy.masa.malilib.render.GuiContext;
+//#endif
+// CHECKSTYLE.ON: ImportOrder
 
-//#if MC > 11904
+// CHECKSTYLE.OFF: ImportOrder
+//#if 1.21.11 > MC && MC > 1.19.4
 //$$ import net.minecraft.client.gui.GuiGraphics;
-//#elseif MC > 11502
+//#endif
+
+//#if 1.20.1 > MC && MC > 1.15.2
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
+
+import java.util.function.Consumer;
 
 public class MalilibFavoritesButton extends WidgetHoverInfo {
     private final TooltipSupplier tooltipSupplier;
@@ -35,16 +45,28 @@ public class MalilibFavoritesButton extends WidgetHoverInfo {
     }
 
     //#if MC >= 12106
-    //$$ public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, boolean selected) {
-    //$$     icon.renderAt(guiGraphics, this.x, this.y, (float) this.zLevel, this.status, this.isMouseOver(mouseX, mouseY));
+    //$$ @Override
+    //$$ public void render(
+    //$$         //#if MC >= 1.21.11
+    //$$         //$$ GuiContext guiContextOrGuiGraphics,
+    //$$         //#else
+    //$$         GuiGraphics guiContextOrGuiGraphics,
+    //$$         //#endif
+    //$$         int mouseX,
+    //$$         int mouseY,
+    //$$         boolean selected
+    //$$ ) {
+    //$$     icon.renderAt(guiContextOrGuiGraphics, this.x, this.y, (float) this.zLevel, this.status, this.isMouseOver(mouseX, mouseY));
     //$$
     //$$     if (this.isMouseOver(mouseX, mouseY)) {
-    //$$         RenderUtils.drawOutlinedBox(guiGraphics, this.x, this.y, this.width, this.height, 0x20C0C0C0, -520093697);
+    //$$         RenderUtils.drawOutlinedBox(guiContextOrGuiGraphics, this.x, this.y, this.width, this.height, 0x20C0C0C0, -520093697);
     //$$     }
     //$$ }
     //#else
     @Override
     public void render(
+            // CHECKSTYLE.OFF: NoWhitespaceBefore
+            // CHECKSTYLE.OFF: SeparatorWrap
             int mouseX,
             int mouseY,
             boolean selected
@@ -53,15 +75,23 @@ public class MalilibFavoritesButton extends WidgetHoverInfo {
             //#elseif MC > 11502
             , PoseStack guiGraphicsOrPoseStack
             //#endif
+            // CHECKSTYLE.ON: SeparatorWrap
+            // CHECKSTYLE.ON: NoWhitespaceBefore
     ) {
         RenderUtils.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.bindTexture(
-            icon.getTexture()
-            //#if MC > 12104
-            //$$ , guiGraphicsOrPoseStack
-            //#endif
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
+                icon.getTexture()
+                //#if MC > 12104
+                //$$ , guiGraphicsOrPoseStack
+                //#endif
+                // CHECKSTYLE.ON: SeparatorWrap
+                // CHECKSTYLE.ON: NoWhitespaceBefore
         );
         icon.renderAt(
+                // CHECKSTYLE.OFF: NoWhitespaceBefore
+                // CHECKSTYLE.OFF: SeparatorWrap
                 this.x,
                 this.y,
                 (float) this.zLevel,
@@ -70,6 +100,8 @@ public class MalilibFavoritesButton extends WidgetHoverInfo {
                 //#if MC > 12101
                 //$$ , guiGraphicsOrPoseStack
                 //#endif
+                // CHECKSTYLE.ON: SeparatorWrap
+                // CHECKSTYLE.ON: NoWhitespaceBefore
         );
 
         if (this.isMouseOver(mouseX, mouseY)) {

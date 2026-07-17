@@ -10,13 +10,15 @@ import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOptionBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptionsBase;
-import net.minecraft.client.Minecraft;
+import top.hendrixshen.magiclib.api.compat.minecraft.client.MinecraftCompat;
+import top.hendrixshen.magiclib.api.i18n.I18n;
+
 import net.minecraft.client.gui.screens.Screen;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import top.hendrixshen.magiclib.api.i18n.I18n;
 
 import java.util.Set;
 
@@ -27,12 +29,22 @@ public abstract class MixinWidgetConfigOption extends WidgetConfigOptionBase<Gui
     }
 
     @Inject(method = "addConfigOption", at = @At("HEAD"))
-    private void addFavoritesButton(int x, int y, float zLevel, int labelWidth, int configWidth, IConfigBase config, CallbackInfo ci) {
+    private void addFavoritesButton(
+            int x,
+            int y,
+            //#if MC < 1.21.10
+            float zLevel,
+            //#endif
+            int labelWidth,
+            int configWidth,
+            IConfigBase config,
+            CallbackInfo ci
+    ) {
         if (!Configs.favoritesSupport.getBooleanValue()) {
             return;
         }
 
-        Screen screen = Minecraft.getInstance().screen;
+        Screen screen = MinecraftCompat.getInstance().getScreen();
 
         if (!(screen instanceof GuiConfigsBase)) {
             return;
@@ -40,8 +52,8 @@ public abstract class MixinWidgetConfigOption extends WidgetConfigOptionBase<Gui
 
         String modId = ((GuiConfigsBase) screen).getModId();
 
-        this.addWidget(MalilibFavoritesButton.create(x + labelWidth + configWidth + 25 +
-                        this.getStringWidth(I18n.tr("malilib.gui.button.reset.caps")), y + 3,
+        this.addWidget(MalilibFavoritesButton.create(x + labelWidth + configWidth + 25
+                        + this.getStringWidth(I18n.tr("malilib.gui.button.reset.caps")), y + 3,
                 MalilibFavoritesData.getInstance().getFavorites()
                         .computeIfAbsent(modId, k -> Sets.newHashSet()).contains(config.getName()),
                 status -> {
@@ -56,7 +68,7 @@ public abstract class MixinWidgetConfigOption extends WidgetConfigOptionBase<Gui
 
                     SharedConstants.getConfigHandler().save();
                 },
-                status -> status ? SharedConstants.tr("gui.button.favorite.cancel") :
-                        SharedConstants.tr("gui.button.favorite.set")));
+                status -> status ? SharedConstants.tr("gui.button.favorite.cancel")
+                        : SharedConstants.tr("gui.button.favorite.set")));
     }
 }

@@ -1,0 +1,33 @@
+[plugins]
+essential-loom-remap = { id = "gg.essential.loom-remap", version.ref = "essential-loom" }
+essential-loom-no-remap = { id = "gg.essential.loom-no-remap", version.ref = "essential-loom" }
+grgit = { id = "org.ajoberstar.grgit", version.ref = "grgit" }
+preprocessor = { id = "com.replaymod.preprocess", version.ref = "preprocessor" }
+replace-token = { id = "top.hendrixshen.replace-token", version.ref = "replace-token" }
+yamlang = { id = "me.fallenbreath.yamlang", version.ref = "yamlang" }
+
+[versions]
+checkstyle = "13.8.0"
+essential-loom = "1.15.50"
+fabric-loader = "0.19.3"
+grgit = "5.3.3"
+gson = "2.14.0"
+guava = "33.6.0-jre"
+lombok = "1.18.46"
+preprocessor = "4c38783"
+replace-token = "1.2.0"
+yamlang = "1.5.0"
+
+[libraries]
+# Fabric Loader
+fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric-loader" }
+
+# Plugin
+essential-loom = { module = "gg.essential.loom:gg.essential.loom.gradle.plugin", version.ref = "essential-loom" }
+preprocessor = { module = "com.github.Fallen-Breath:preprocessor", version.ref = "preprocessor" }
+
+# Other
+checkstyle = { module = "com.puppycrawl.tools:checkstyle", version.ref = "checkstyle" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
