@@ -54,17 +54,16 @@
     "mod_tweak.tweakeroo.inventoryPreviewSupportSelect.MixinInGameHud",
     "mod_tweak.tweakeroo.inventoryPreviewSupportSelect.MixinInventoryOverlay",
     "mod_tweak.tweakeroo.inventoryPreviewSupportShulkerBoxItemEntity.MixinRenderUtils",
-    "mod_tweak.tweakeroo.inventoryPreviewSupportTradeOfferList.MixinAbstractVillager",
     "mod_tweak.tweakeroo.inventoryPreviewSupportTradeOfferList.MixinRenderUtils",
     "mod_tweak.tweakeroo.inventoryPreviewSyncDataClientOnly.MixinClientPacketListener",
     "mod_tweak.tweakeroo.inventoryPreviewUseCache.MixinRenderUtils"
   ],
-  "injectors": {
-    "defaultRequire": 1
-  },
   "mixins": [
     "network.MixinMagicPacketRegisterCenter"
   ],
+  "injectors": {
+    "defaultRequire": 1
+  },
   "mixinextras": {
     "minVersion": "0.5.4"
   }

@@ -1,6 +1,7 @@
 package com.plusls.MasaGadget.impl.feature.entityInfo;
 
 import com.google.common.collect.Lists;
+import com.plusls.MasaGadget.mixin.accessor.AccessorAbstractVillager;
 import com.plusls.MasaGadget.util.PcaSyncProtocol;
 import com.plusls.MasaGadget.util.VillagerDataUtil;
 import org.jetbrains.annotations.NotNull;
@@ -23,6 +24,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.item.trading.MerchantOffers;
 
 // CHECKSTYLE.OFF: ImportOrder
 //#if MC > 12006
@@ -59,8 +61,13 @@ public class VillagerTradeEnchantedBookInfo {
         }
 
         List<Component> ret = Lists.newArrayList();
+        MerchantOffers offers = ((AccessorAbstractVillager) villager).masa_gadget_mod$getOffers();
 
-        for (MerchantOffer tradeOffer : villager.getOffers()) {
+        if (offers == null) {
+            return ret;
+        }
+
+        for (MerchantOffer tradeOffer : offers) {
             ItemStack sellItem = tradeOffer.getResult();
             ItemStackCompat sellItemCompat = ItemStackCompat.of(sellItem);
 
