@@ -36,8 +36,8 @@ public class EntityTraceRenderer implements RenderEntityListener, RenderLevelLis
     @Override
     public void postRenderEntity(Entity entity) {
         if (entity instanceof Villager
-                && Configs.renderVillageHomeTracer.getBooleanValue()
-                || Configs.renderVillageJobSiteTracer.getBooleanValue()) {
+                && (Configs.renderVillageHomeTracer.getBooleanValue()
+                || Configs.renderVillageJobSiteTracer.getBooleanValue())) {
             this.queue.add(entity);
         }
     }

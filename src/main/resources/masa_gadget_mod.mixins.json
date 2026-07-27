@@ -5,6 +5,9 @@
   "compatibilityLevel": "JAVA_8",
   "plugin": "top.hendrixshen.magiclib.impl.mixin.MagicMixinPlugin",
   "client": [
+    //#if MC >= 26.2
+    //$$ "compat.magiclib.MixinImmediateTextDrawer",
+    //#endif
     "MixinConnection",
     "accessor.AccessorAbstractMinecartContainer",
     "accessor.AccessorAbstractVillager",

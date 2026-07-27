@@ -8,8 +8,7 @@ import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.gui.widgets.WidgetConfigOption;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptions;
 import fi.dy.masa.malilib.gui.widgets.WidgetListConfigOptionsBase;
-import top.hendrixshen.magiclib.api.compat.minecraft.client.MinecraftCompat;
-
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,7 +30,12 @@ public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptio
     private void filterFavorites(GuiConfigsBase.ConfigOptionWrapper entry, CallbackInfoReturnable<List<String>> cir) {
         if (Configs.favoritesSupport.getBooleanValue() && MalilibFavoritesData.getInstance().isFilterSwitch()) {
             IConfigBase config = entry.getConfig();
-            Screen screen = MinecraftCompat.getInstance().getScreen();
+            Screen screen =
+                    //#if MC >= 26.2
+                    //$$ Minecraft.getInstance().gui.screen();
+                    //#else
+                    Minecraft.getInstance().screen;
+                    //#endif
 
             if (!(screen instanceof GuiConfigsBase)) {
                 return;
@@ -50,7 +54,12 @@ public abstract class MixinWidgetListConfigOptions extends WidgetListConfigOptio
     @Override
     protected void addNonFilteredContents(Collection<GuiConfigsBase.ConfigOptionWrapper> placements) {
         if (Configs.favoritesSupport.getBooleanValue() && MalilibFavoritesData.getInstance().isFilterSwitch()) {
-            Screen screen = MinecraftCompat.getInstance().getScreen();
+            Screen screen =
+                    //#if MC >= 26.2
+                    //$$ Minecraft.getInstance().gui.screen();
+                    //#else
+                    Minecraft.getInstance().screen;
+                    //#endif
 
             if (!(screen instanceof GuiConfigsBase)) {
                 return;

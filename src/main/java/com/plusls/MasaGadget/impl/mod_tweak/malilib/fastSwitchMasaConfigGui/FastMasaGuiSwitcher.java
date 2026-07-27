@@ -7,7 +7,6 @@ import fi.dy.masa.malilib.gui.GuiConfigsBase;
 import fi.dy.masa.malilib.interfaces.IStringValue;
 import lombok.Getter;
 import org.jetbrains.annotations.ApiStatus;
-import top.hendrixshen.magiclib.api.compat.minecraft.client.MinecraftCompat;
 
 // CHECKSTYLE.OFF: ImportOrder
 //#if FABRIC_LIKE
@@ -28,6 +27,7 @@ import top.hendrixshen.magiclib.util.collect.ValueContainer;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 
 // CHECKSTYLE.OFF: ImportOrder
@@ -103,6 +103,7 @@ public class FastMasaGuiSwitcher {
             return;
         }
 
+        Minecraft minecraft = Minecraft.getInstance();
         FabricLoader.getInstance().getEntrypointContainers("modmenu", Object.class).forEach(entrypoint -> {
             ModMetadata metadata = entrypoint.getProvider().getMetadata();
             try {
@@ -143,7 +144,13 @@ public class FastMasaGuiSwitcher {
                     return;
                 }
 
-                Screen screen = configScreenFactoryCompat.create(MinecraftCompat.getInstance().getScreen());
+                Screen screen = configScreenFactoryCompat.create(
+                        //#if MC >= 26.2
+                        //$$ minecraft.gui.screen()
+                        //#else
+                        minecraft.screen
+                        //#endif
+                );
 
                 if (!(screen instanceof GuiConfigsBase)) {
                     return;

@@ -5,18 +5,24 @@ import com.plusls.MasaGadget.impl.mod_tweak.tweakeroo.inventoryPreviewSupportSel
 import com.plusls.MasaGadget.util.ModId;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
+
+//#if MC < 26.1
 import top.hendrixshen.magiclib.api.render.context.RenderContext;
+//#endif
 
 import net.minecraft.client.gui.Gui;
 
 // CHECKSTYLE.OFF: ImportOrder
-//#if 26.2 > MC && MC > 1.20.6
+//#if MC >= 26.1
+//$$ import fi.dy.masa.malilib.render.GuiContext;
+//$$ import net.minecraft.client.gui.GuiGraphicsExtractor;
+//#endif
+
+//#if MC > 1.20.6
 //$$ import net.minecraft.client.DeltaTracker;
 //#endif
 
-//#if MC >= 26.1
-//$$ import net.minecraft.client.gui.GuiGraphicsExtractor;
-//#elseif MC >= 1.20
+//#if MC >= 1.20 && MC < 26.1
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#elseif MC >= 1.16
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -43,7 +49,15 @@ public abstract class MixinInGameHud {
             //#else
             method = "render",
             //#endif
+            //#if MC >= 26.2
+            //$$ at = @At("TAIL"),
+            //$$ require = 0
+            //#else
             at = @At("RETURN")
+            //#if MC >= 26.1
+            //$$ , require = 0
+            //#endif
+            //#endif
     )
     private void onGameOverlayPost(
             // CHECKSTYLE.OFF: NoWhitespaceBefore
@@ -70,11 +84,15 @@ public abstract class MixinInGameHud {
             // CHECKSTYLE.ON: NoWhitespaceBefore
     ) {
         if (Configs.inventoryPreviewSupportSelect.getBooleanValue()) {
+            //#if MC >= 26.1
+            //$$ InventoryOverlayRenderHandler.getInstance().render(GuiContext.fromGuiGraphics(poseStackOrGuiGraphics));
+            //#else
             InventoryOverlayRenderHandler.getInstance().render(RenderContext.gui(
                     //#if MC > 11502
                     poseStackOrGuiGraphics
                     //#endif
             ));
+            //#endif
         }
     }
 }

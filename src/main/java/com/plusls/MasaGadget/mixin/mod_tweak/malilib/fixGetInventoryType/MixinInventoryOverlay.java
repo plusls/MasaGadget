@@ -3,6 +3,9 @@ package com.plusls.MasaGadget.mixin.mod_tweak.malilib.fixGetInventoryType;
 import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.util.ModId;
 import fi.dy.masa.malilib.render.InventoryOverlay;
+//#if MC >= 26.1
+//$$ import fi.dy.masa.malilib.render.InventoryOverlayType;
+//#endif
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.api.dependency.DependencyType;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
@@ -42,32 +45,68 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = InventoryOverlay.class, remap = false)
 public abstract class MixinInventoryOverlay {
     @Inject(
+            //#if MC >= 26.1
+            //$$ method = "getInventoryType(Lnet/minecraft/world/Container;)Lfi/dy/masa/malilib/render/InventoryOverlayType;",
+            //#else
             method = "getInventoryType(Lnet/minecraft/world/Container;)Lfi/dy/masa/malilib/render/InventoryOverlay$InventoryRenderType;",
+            //#endif
             at = @At("RETURN"),
             cancellable = true,
             remap = true
     )
-    private static void checkAbstractFurnaceBlockEntity(Container inv, CallbackInfoReturnable<InventoryOverlay.InventoryRenderType> cir) {
+    private static void checkAbstractFurnaceBlockEntity(Container inv, CallbackInfoReturnable<
+            //#if MC >= 26.1
+            //$$ InventoryOverlayType
+            //#else
+            InventoryOverlay.InventoryRenderType
+            //#endif
+            > cir) {
         if (Configs.fixGetInventoryType.getBooleanValue()
+                //#if MC >= 26.1
+                //$$ && cir.getReturnValue() == InventoryOverlayType.GENERIC
+                //#else
                 && cir.getReturnValue() == InventoryOverlay.InventoryRenderType.GENERIC
+                //#endif
                 && inv instanceof AbstractFurnaceBlockEntity) {
+            //#if MC >= 26.1
+            //$$ cir.setReturnValue(InventoryOverlayType.FURNACE);
+            //#else
             cir.setReturnValue(InventoryOverlay.InventoryRenderType.FURNACE);
+            //#endif
         }
     }
 
     @Inject(
+            //#if MC >= 26.1
+            //$$ method = "getInventoryType(Lnet/minecraft/world/item/ItemStack;)Lfi/dy/masa/malilib/render/InventoryOverlayType;",
+            //#else
             method = "getInventoryType(Lnet/minecraft/world/item/ItemStack;)Lfi/dy/masa/malilib/render/InventoryOverlay$InventoryRenderType;",
+            //#endif
             at = @At("RETURN"),
             cancellable = true,
             remap = true
     )
-    private static void checkAbstractFurnaceBlockEntity(@NotNull ItemStack stack, CallbackInfoReturnable<InventoryOverlay.InventoryRenderType> cir) {
+    private static void checkAbstractFurnaceBlockEntity(@NotNull ItemStack stack, CallbackInfoReturnable<
+            //#if MC >= 26.1
+            //$$ InventoryOverlayType
+            //#else
+            InventoryOverlay.InventoryRenderType
+            //#endif
+            > cir) {
         Item item = stack.getItem();
 
         if (Configs.fixGetInventoryType.getBooleanValue()
+                //#if MC >= 26.1
+                //$$ && cir.getReturnValue() == InventoryOverlayType.GENERIC
+                //#else
                 && cir.getReturnValue() == InventoryOverlay.InventoryRenderType.GENERIC
+                //#endif
                 && item instanceof BlockItem && ((BlockItem) item).getBlock() instanceof AbstractFurnaceBlock) {
+            //#if MC >= 26.1
+            //$$ cir.setReturnValue(InventoryOverlayType.FURNACE);
+            //#else
             cir.setReturnValue(InventoryOverlay.InventoryRenderType.FURNACE);
+            //#endif
         }
     }
 }
