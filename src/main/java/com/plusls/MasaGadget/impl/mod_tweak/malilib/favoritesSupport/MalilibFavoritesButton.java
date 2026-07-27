@@ -7,6 +7,10 @@ import fi.dy.masa.malilib.render.RenderUtils;
 import org.jetbrains.annotations.NotNull;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 12110
+//$$ import net.minecraft.client.input.MouseButtonEvent;
+//#endif
+
 //#if MC >= 1.21.11
 //$$ import fi.dy.masa.malilib.render.GuiContext;
 //#endif
@@ -110,7 +114,18 @@ public class MalilibFavoritesButton extends WidgetHoverInfo {
     }
     //#endif
 
+    //#if MC >= 1.21.10
+    //$$ @Override
+    //$$ protected boolean onMouseClickedImpl(MouseButtonEvent click, boolean doubleClick) {
+    //$$     return this.toggleStatus();
+    //$$ }
+    //#endif
+
     protected boolean onMouseClickedImpl(int mouseX, int mouseY, int mouseButton) {
+        return this.toggleStatus();
+    }
+
+    private boolean toggleStatus() {
         this.status = !this.status;
         this.getLines().clear();
         this.setInfoLines(this.tooltipSupplier.onTooltip(this.status));

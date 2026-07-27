@@ -37,6 +37,7 @@ import java.util.Objects;
 public class Configs {
     private static final MagicConfigManager cm = SharedConstants.getConfigManager();
     private static final MagicConfigFactory cf = Configs.cm.getConfigFactory();
+    private static boolean redrawConfigGuiActive = false;
 
     // GENERIC
     @Config(category = ConfigCategory.GENERIC)
@@ -420,7 +421,19 @@ public class Configs {
     }
 
     private static void redrawConfigGui(Object object) {
-        ConfigGui.getCurrentInstance().ifPresent(ConfigGui::reDraw);
+        if (Configs.redrawConfigGuiActive) {
+            return;
+        }
+
+        ConfigGui.getCurrentInstance().ifPresent(configGui -> {
+            Configs.redrawConfigGuiActive = true;
+
+            try {
+                configGui.reDraw();
+            } finally {
+                Configs.redrawConfigGuiActive = false;
+            }
+        });
     }
 
     public static class ConfigCategory {
