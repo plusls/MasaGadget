@@ -26,7 +26,11 @@ public abstract class MixinInventoryUtils {
     @Inject(
             method = "restockNewStackToHand",
             at = @At("RETURN"),
+            //#if MC >= 260100
+            //$$ locals = LocalCapture.CAPTURE_FAILSOFT
+            //#else
             locals = LocalCapture.CAPTURE_FAILHARD
+            //#endif
     )
     private static void restockOnFailed(Player player, InteractionHand hand, ItemStack itemStack,
                                         boolean allowHotbar, CallbackInfo ci, int slotWithItem) {
@@ -42,11 +46,19 @@ public abstract class MixinInventoryUtils {
                     target = "Lnet/minecraft/client/Minecraft;getInstance()Lnet/minecraft/client/Minecraft;",
                     remap = true
             ),
+            //#if MC >= 260100
+            //$$ locals = LocalCapture.CAPTURE_FAILSOFT
+            //#else
             locals = LocalCapture.CAPTURE_FAILHARD
+            //#endif
     )
     private static void PreRestockOnFailed(Player player, InteractionHand hand,
                                            boolean stackSlot, CallbackInfo ci, ItemStack stackHand) {
-        if (Configs.restockWithCrafting.getBooleanValue()) {
+        if (Configs.restockWithCrafting.getBooleanValue()
+                //#if MC >= 260100
+                //$$ && stackHand != null
+                //#endif
+        ) {
             RestockUtil.tryCraftingRestocking(player, hand, stackHand);
         }
     }

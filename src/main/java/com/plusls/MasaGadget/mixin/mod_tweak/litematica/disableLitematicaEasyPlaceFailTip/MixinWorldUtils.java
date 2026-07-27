@@ -23,6 +23,9 @@ public abstract class MixinWorldUtils {
                     target = "Lfi/dy/masa/malilib/util/InfoUtils;showGuiOrInGameMessage(Lfi/dy/masa/malilib/gui/Message$MessageType;Ljava/lang/String;[Ljava/lang/Object;)V"
             ),
             cancellable = true
+            //#if MC >= 260100
+            //$$ , require = 0
+            //#endif
     )
     private static void cancelEasyPlaceFailTip(Minecraft mc, CallbackInfoReturnable<Boolean> cir) {
         if (Configs.disableLitematicaEasyPlaceFailTip.getBooleanValue()) {

@@ -31,6 +31,9 @@ public abstract class MixinWorldUtils {
                     target = "Lfi/dy/masa/litematica/util/WorldUtils;doEasyPlaceAction(Lnet/minecraft/client/Minecraft;)Lnet/minecraft/world/InteractionResult;",
                     remap = true
             )
+            //#if MC >= 260100
+            //$$ , require = 0
+            //#endif
     )
     private static InteractionResult checkInventory(InteractionResult interactionResult) {
         Minecraft mc = Minecraft.getInstance();

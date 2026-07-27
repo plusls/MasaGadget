@@ -5,7 +5,11 @@ import com.google.common.collect.Sets;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+//#if MC >= 260100
+//$$ import fi.dy.masa.malilib.util.data.json.JsonUtils;
+//#else
 import fi.dy.masa.malilib.util.JsonUtils;
+//#endif
 import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
