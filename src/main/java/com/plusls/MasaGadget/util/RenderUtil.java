@@ -3,7 +3,6 @@ package com.plusls.MasaGadget.util;
 import fi.dy.masa.malilib.render.RenderUtils;
 import fi.dy.masa.malilib.util.Color4f;
 import org.jetbrains.annotations.NotNull;
-import top.hendrixshen.magiclib.api.compat.minecraft.client.MinecraftCompat;
 
 // CHECKSTYLE.OFF: ImportOrder
 //#if MC > 12104
@@ -15,6 +14,7 @@ import top.hendrixshen.magiclib.api.compat.mojang.blaze3d.vertex.VertexFormatCom
 // CHECKSTYLE.ON: ImportOrder
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.phys.Vec3;
 
 // CHECKSTYLE.OFF: ImportOrder
@@ -49,7 +49,16 @@ public class RenderUtil {
     }
 
     public static void drawLine(Vec3 pos1, Vec3 pos2, Color4f color) {
-        Vec3 camPos = MinecraftCompat.getInstance().getMainCameraCompat().getPosition();
+        //#if MC >= 260200
+        //$$ Vec3 camPos = Minecraft.getInstance().gameRenderer.mainCamera().position();
+        //#else
+        Vec3 camPos = Minecraft.getInstance().gameRenderer.getMainCamera()
+        //#if MC >= 12111
+        //$$         .position();
+        //#else
+                .getPosition();
+        //#endif
+        //#endif
         pos1 = pos1.subtract(camPos);
         pos2 = pos2.subtract(camPos);
         //#if MC > 12104
@@ -79,12 +88,14 @@ public class RenderUtil {
         RenderUtil.beginLines(builder);
         //#endif
         //#endif
-        //#if MC >= 1.21.11
+        //#if MC > 12006
+        //#if MC >= 12111
         //$$ builder.addVertex((float) pos1.x(), (float) pos1.y(), (float) pos1.z()).setColor(color.r, color.g, color.b, color.a).setLineWidth(1.0F);
         //$$ builder.addVertex((float) pos2.x(), (float) pos2.y(), (float) pos2.z()).setColor(color.r, color.g, color.b, color.a).setLineWidth(1.0F);
-        //#elseif MC > 12006
+        //#else
         //$$ builder.addVertex((float) pos1.x(), (float) pos1.y(), (float) pos1.z()).setColor(color.r, color.g, color.b, color.a);
         //$$ builder.addVertex((float) pos2.x(), (float) pos2.y(), (float) pos2.z()).setColor(color.r, color.g, color.b, color.a);
+        //#endif
         //#if MC > 12104
         //$$
         //$$ try {
@@ -110,7 +121,16 @@ public class RenderUtil {
     }
 
     public static void drawOutlineBox(Vec3 pos, double expend, Color4f color) {
-        Vec3 camPos = MinecraftCompat.getInstance().getMainCameraCompat().getPosition();
+        //#if MC >= 260200
+        //$$ Vec3 camPos = Minecraft.getInstance().gameRenderer.mainCamera().position();
+        //#else
+        Vec3 camPos = Minecraft.getInstance().gameRenderer.getMainCamera()
+        //#if MC >= 12111
+        //$$         .position();
+        //#else
+                .getPosition();
+        //#endif
+        //#endif
         pos = pos.subtract(camPos);
 
         //#if MC > 12104

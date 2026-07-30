@@ -8,16 +8,16 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC < 26.1
 import top.hendrixshen.magiclib.api.render.context.GuiRenderContext;
 //#endif
 
-// CHECKSTYLE.OFF: ImportOrder
 //#if MC >= 1.21.11
 //$$ import fi.dy.masa.malilib.render.GuiContext;
 //#endif
 
-//#if MC > 12006
+//#if MC > 12006 && MC < 260100
 //$$ import fi.dy.masa.malilib.util.WorldUtils;
 //#endif
 
@@ -55,7 +55,7 @@ import net.minecraft.world.phys.HitResult;
 //$$ import net.minecraft.client.gui.screens.Screen;
 //#endif
 
-//#if MC > 12006
+//#if MC > 12006 && MC < 260100
 //$$ import net.minecraft.world.item.Item;
 //$$ import net.minecraft.world.item.TooltipFlag;
 //#endif

@@ -30,9 +30,11 @@ public abstract class MixinWorldUtils {
                     value = "INVOKE_ASSIGN",
                     target = "Lfi/dy/masa/litematica/util/WorldUtils;doEasyPlaceAction(Lnet/minecraft/client/Minecraft;)Lnet/minecraft/world/InteractionResult;",
                     remap = true
-            )
             //#if MC >= 260100
-            //$$ , require = 0
+            //$$ ),
+            //$$ require = 0
+            //#else
+            )
             //#endif
     )
     private static InteractionResult checkInventory(InteractionResult interactionResult) {

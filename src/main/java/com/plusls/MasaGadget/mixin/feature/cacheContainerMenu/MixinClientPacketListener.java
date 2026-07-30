@@ -2,6 +2,7 @@ package com.plusls.MasaGadget.mixin.feature.cacheContainerMenu;
 
 import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.impl.feature.cacheContainerMenu.CacheContainerMenuHandler;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.multiplayer.ClientPacketListener;

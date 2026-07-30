@@ -23,6 +23,8 @@ public abstract class MixinLevelRenderer {
     @Inject(
             //#if MC >= 1.21.10
             //$$ method = "extractVisibleEntities",
+            //#elseif MC >= 1.21.6
+            //$$ method = "renderEntities",
             //#elseif MC >= 1.15
             method = "renderLevel",
             //#else

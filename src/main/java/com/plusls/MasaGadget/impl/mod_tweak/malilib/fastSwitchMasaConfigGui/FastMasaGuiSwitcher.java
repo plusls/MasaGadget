@@ -24,11 +24,14 @@ import top.hendrixshen.magiclib.util.collect.ValueContainer;
 //#if NEO_FORGE
 //$$ import lombok.AllArgsConstructor;
 //$$ import org.thinkingstudio.mafglib.loader.entrypoints.ConfigScreenEntrypoint;
+//$$ import top.hendrixshen.magiclib.api.compat.minecraft.client.MinecraftCompat;
 //#endif
-// CHECKSTYLE.ON: ImportOrder
 
+//#if FABRIC_LIKE
 import net.minecraft.client.Minecraft;
+//#endif
 import net.minecraft.client.gui.screens.Screen;
+// CHECKSTYLE.ON: ImportOrder
 
 // CHECKSTYLE.OFF: ImportOrder
 //#if NEO_FORGE

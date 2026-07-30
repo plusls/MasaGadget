@@ -9,7 +9,6 @@ import lombok.Getter;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import top.hendrixshen.magiclib.MagicLib;
-import top.hendrixshen.magiclib.api.compat.minecraft.client.MinecraftCompat;
 import top.hendrixshen.magiclib.api.event.minecraft.render.RenderLevelListener;
 import top.hendrixshen.magiclib.api.render.context.LevelRenderContext;
 import top.hendrixshen.magiclib.impl.render.TextRenderer;
@@ -32,7 +31,16 @@ public class EntityInfoRenderer implements RenderEntityListener, RenderLevelList
     private final Queue<Entity> queue = Queues.newConcurrentLinkedQueue();
 
     private static TextRenderer rotationAround(@NotNull TextRenderer renderer, @NotNull Position centerPos, double range) {
-        Position camPos = MinecraftCompat.getInstance().getMainCameraCompat().getPosition();
+        //#if MC >= 260200
+        //$$ Position camPos = Minecraft.getInstance().gameRenderer.mainCamera().position();
+        //#else
+        Position camPos = Minecraft.getInstance().gameRenderer.getMainCamera()
+        //#if MC >= 12111
+        //$$         .position();
+        //#else
+                .getPosition();
+        //#endif
+        //#endif
         float xAngle = (float) Mth.atan2(camPos.z() - centerPos.z(), camPos.x() - centerPos.x());
         float zAngle = (float) Mth.atan2(camPos.x() - centerPos.x(), camPos.z() - centerPos.z());
         return renderer.at(range * Mth.cos(xAngle) + centerPos.x(), centerPos.y(), range * Mth.cos(zAngle) + centerPos.z());

@@ -16,17 +16,18 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC >= 260100
 //$$ import net.minecraft.world.inventory.ContainerInput;
 //#else
 import net.minecraft.world.inventory.ClickType;
 //#endif
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+// CHECKSTYLE.ON: ImportOrder
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class RestockUtil {
     private static final List<RecipePattern> recipes = Lists.newArrayList();
@@ -86,11 +87,14 @@ public class RestockUtil {
                     //#else
                     mc.gameMode.handleInventoryMouseClick(player.inventoryMenu.containerId,
                     //#endif
-                            hand == InteractionHand.MAIN_HAND ?
+                            hand == InteractionHand.MAIN_HAND
+                            ?
                             //#if MC > 12104
-                            //$$ PlayerCompat.of(player).getInventory().getSelectedSlot() + 36 :
+                            //$$ PlayerCompat.of(player).getInventory().getSelectedSlot() + 36
+                            //$$ :
                             //#else
-                            PlayerCompat.of(player).getInventory().selected + 36 :
+                            PlayerCompat.of(player).getInventory().selected + 36
+                            :
                             //#endif
                              45,
                             0,

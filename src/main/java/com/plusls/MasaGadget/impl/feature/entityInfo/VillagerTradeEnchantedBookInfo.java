@@ -25,7 +25,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.trading.MerchantOffer;
 
 // CHECKSTYLE.OFF: ImportOrder
-//#if MC >= 1.21.10 12110
+//#if MC >= 12106
 //$$ import com.plusls.MasaGadget.mixin.accessor.AccessorAbstractVillager;
 //$$ import net.minecraft.world.item.trading.MerchantOffers;
 //#endif
@@ -64,7 +64,7 @@ public class VillagerTradeEnchantedBookInfo {
         }
 
         List<Component> ret = Lists.newArrayList();
-        //#if MC >= 1.21.10
+        //#if MC >= 12106
         //$$ MerchantOffers offers = ((AccessorAbstractVillager) villager).masa_gadget_mod$getOffers();
         //$$
         //$$ if (offers == null) {

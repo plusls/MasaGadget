@@ -31,9 +31,11 @@ public abstract class MixinInventoryOverlay {
             method = "renderStackAt",
             remap = true,
             //#endif
-            at = @At("RETURN")
             //#if MC >= 260100
-            //$$ , require = 0
+            //$$ at = @At("RETURN"),
+            //$$ require = 0
+            //#else
+            at = @At("RETURN")
             //#endif
     )
     private static void addStackToolTip(CallbackInfo ci, @Local(argsOnly = true) ItemStack stack, @Local(ordinal = 0, argsOnly = true) float x, @Local(ordinal = 1, argsOnly = true) float y) {

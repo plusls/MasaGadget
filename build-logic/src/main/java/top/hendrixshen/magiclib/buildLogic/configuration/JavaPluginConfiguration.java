@@ -5,6 +5,7 @@ import org.gradle.api.Project;
 import org.gradle.api.plugins.JavaLibraryPlugin;
 import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.plugins.JavaPluginExtension;
+import org.gradle.jvm.toolchain.JavaLanguageVersion;
 import org.gradle.api.tasks.compile.JavaCompile;
 
 import top.hendrixshen.magiclib.buildLogic.MagicLoomExtension;
@@ -38,6 +39,7 @@ public abstract class JavaPluginConfiguration implements Runnable {
         if (mcVersion >= 26_01_00) {
             java.setSourceCompatibility(JavaVersion.VERSION_25);
             java.setTargetCompatibility(JavaVersion.VERSION_25);
+            java.getToolchain().getLanguageVersion().set(JavaLanguageVersion.of(25));
         } else if (mcVersion >= 1_20_05) {
             java.setSourceCompatibility(JavaVersion.VERSION_21);
             java.setTargetCompatibility(JavaVersion.VERSION_21);

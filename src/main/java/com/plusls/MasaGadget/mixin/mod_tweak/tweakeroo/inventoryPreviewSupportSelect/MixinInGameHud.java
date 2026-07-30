@@ -6,25 +6,25 @@ import com.plusls.MasaGadget.util.ModId;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
 
+// CHECKSTYLE.OFF: ImportOrder
 //#if MC < 26.1
 import top.hendrixshen.magiclib.api.render.context.RenderContext;
 //#endif
 
 import net.minecraft.client.gui.Gui;
 
-// CHECKSTYLE.OFF: ImportOrder
 //#if MC >= 26.1
 //$$ import fi.dy.masa.malilib.render.GuiContext;
 //$$ import net.minecraft.client.gui.GuiGraphicsExtractor;
 //#endif
 
-//#if MC > 1.20.6
+//#if MC > 1.20.6 && MC < 26.2
 //$$ import net.minecraft.client.DeltaTracker;
 //#endif
 
 //#if MC >= 1.20 && MC < 26.1
 //$$ import net.minecraft.client.gui.GuiGraphics;
-//#elseif MC >= 1.16
+//#elseif MC >= 1.16 && MC < 26.1
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
@@ -52,11 +52,11 @@ public abstract class MixinInGameHud {
             //#if MC >= 26.2
             //$$ at = @At("TAIL"),
             //$$ require = 0
+            //#elseif MC >= 26.1
+            //$$ at = @At("RETURN"),
+            //$$ require = 0
             //#else
             at = @At("RETURN")
-            //#if MC >= 26.1
-            //$$ , require = 0
-            //#endif
             //#endif
     )
     private void onGameOverlayPost(

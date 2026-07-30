@@ -97,10 +97,13 @@ public class SearchMobSpawnPointUtil {
         //#endif
         LevelLightEngine lightingProvider = level.getChunkSource().getLightEngine();
         //#if MC >= 26.2
-        //$$ EntityType<?> entityType = levelCompat.getDimensionLocation().equals(ResourceLocationCompat.withDefaultNamespace("the_nether")) ?
-        //$$         BuiltInRegistries.ENTITY_TYPE.getValue(ResourceLocationCompat.withDefaultNamespace("zombified_piglin")) :
+        //$$ EntityType<?> entityType = levelCompat.getDimensionLocation().equals(ResourceLocationCompat.withDefaultNamespace("the_nether"))
+        //$$         ? BuiltInRegistries.ENTITY_TYPE.getValue(ResourceLocationCompat.withDefaultNamespace("zombified_piglin"))
+        //$$         :
         //$$         BuiltInRegistries.ENTITY_TYPE.getValue(ResourceLocationCompat.withDefaultNamespace("creeper"));
-        //$$ EntityType<?> entityType2 = levelCompat.getDimensionLocation().equals(ResourceLocationCompat.withDefaultNamespace("the_nether")) ? null :
+        //$$ EntityType<?> entityType2 = levelCompat.getDimensionLocation().equals(ResourceLocationCompat.withDefaultNamespace("the_nether"))
+        //$$         ? null
+        //$$         :
         //$$         BuiltInRegistries.ENTITY_TYPE.getValue(ResourceLocationCompat.withDefaultNamespace("spider"));
         //#else
         EntityType<?> entityType = levelCompat.getDimensionLocation().equals(ResourceLocationCompat.withDefaultNamespace("the_nether")) ? EntityType.ZOMBIFIED_PIGLIN : EntityType.CREEPER;

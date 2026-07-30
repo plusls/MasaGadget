@@ -11,7 +11,7 @@ public interface AccessorAbstractVillager {
     @Accessor("offers")
     void masa_gadget_mod$setOffers(MerchantOffers offers);
 
-    //#if MC >= 12110
+    //#if MC >= 12106
     //$$ @Accessor("offers")
     //$$ MerchantOffers masa_gadget_mod$getOffers();
     //#endif
