@@ -1,5 +1,6 @@
 package com.plusls.MasaGadget.impl.feature.entityInfo;
 
+import com.plusls.MasaGadget.mixin.accessor.AccessorAbstractVillager;
 import com.plusls.MasaGadget.mixin.accessor.AccessorVillager;
 import com.plusls.MasaGadget.util.PcaSyncProtocol;
 import com.plusls.MasaGadget.util.VillagerDataUtil;
@@ -12,13 +13,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.item.trading.MerchantOffers;
 
 // CHECKSTYLE.OFF: ImportOrder
-//#if MC >= 12106
-//$$ import com.plusls.MasaGadget.mixin.accessor.AccessorAbstractVillager;
-//$$ import net.minecraft.world.item.trading.MerchantOffers;
-//#endif
-
 //#if MC > 12104
 //$$ import net.minecraft.resources.ResourceKey;
 //#endif
@@ -29,7 +26,7 @@ public class VillagerNextRestockTimeInfo {
         long nextRestockTime;
         long nextWorkTime;
         //#if MC >= 26.1
-        //$$ long timeOfDay = villager.level().getGameTime() % 24000;
+        //$$ long timeOfDay = villager.level().getOverworldClockTime() % 24000;
         //#else
         long timeOfDay = villager.getLevel().getDayTime() % 24000;
         //#endif
@@ -88,17 +85,13 @@ public class VillagerNextRestockTimeInfo {
     // 因为刁民的需要补货的函数，会检查当前货物是否被消耗，从使用的角度只需要关心当前货物是否用完
     private static boolean needsRestock(@NotNull Villager villager) {
         if (VillagerDataUtil.getVillagerProfession(villager) != VillagerProfession.NONE) {
-            //#if MC >= 1.21.6
-            //$$ MerchantOffers offers = ((AccessorAbstractVillager) villager).masa_gadget_mod$getOffers();
-            //$$
-            //$$ if (offers == null) {
-            //$$     return false;
-            //$$ }
-            //$$
-            //$$ for (MerchantOffer offer : offers) {
-            //#else
-            for (MerchantOffer offer : villager.getOffers()) {
-            //#endif
+            MerchantOffers offers = ((AccessorAbstractVillager) villager).masa_gadget_mod$getOffers();
+
+            if (offers == null) {
+                return false;
+            }
+
+            for (MerchantOffer offer : offers) {
                 if (offer.isOutOfStock()) {
                     return true;
                 }

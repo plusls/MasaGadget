@@ -18,13 +18,13 @@ import net.minecraft.client.gui.Gui;
 //$$ import net.minecraft.client.gui.GuiGraphicsExtractor;
 //#endif
 
-//#if MC > 1.20.6 && MC < 26.2
+//#if 26.2 > MC && MC > 1.20.6
 //$$ import net.minecraft.client.DeltaTracker;
 //#endif
 
-//#if MC >= 1.20 && MC < 26.1
+//#if 26.1 > MC && MC > 1.19.4
 //$$ import net.minecraft.client.gui.GuiGraphics;
-//#elseif MC >= 1.16 && MC < 26.1
+//#elseif 26.1 > MC && MC > 1.15.2
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
@@ -49,15 +49,7 @@ public abstract class MixinInGameHud {
             //#else
             method = "render",
             //#endif
-            //#if MC >= 26.2
-            //$$ at = @At("TAIL"),
-            //$$ require = 0
-            //#elseif MC >= 26.1
-            //$$ at = @At("RETURN"),
-            //$$ require = 0
-            //#else
             at = @At("RETURN")
-            //#endif
     )
     private void onGameOverlayPost(
             // CHECKSTYLE.OFF: NoWhitespaceBefore

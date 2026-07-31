@@ -42,40 +42,32 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = InventoryOverlay.class, remap = false)
 public abstract class MixinInventoryOverlay {
     @Inject(
-            //#if MC >= 26.1
-            //$$ method = "getInventoryType(Lnet/minecraft/world/Container;)Lfi/dy/masa/malilib/render/InventoryOverlayType;",
-            //#else
             method = "getInventoryType(Lnet/minecraft/world/Container;)Lfi/dy/masa/malilib/render/InventoryOverlay$InventoryRenderType;",
-            //#endif
             at = @At("RETURN"),
             cancellable = true,
             remap = true
     )
-    private static void checkAbstractFurnaceBlockEntity(Container inv, CallbackInfoReturnable<Object> cir) {
+    private static void checkAbstractFurnaceBlockEntity(Container inv, CallbackInfoReturnable<InventoryOverlay.InventoryRenderType> cir) {
         if (Configs.fixGetInventoryType.getBooleanValue()
-                && cir.getReturnValue() == InventoryOverlayTypeCompat.generic()
+                && cir.getReturnValue() == InventoryOverlay.InventoryRenderType.GENERIC
                 && inv instanceof AbstractFurnaceBlockEntity) {
-            cir.setReturnValue(InventoryOverlayTypeCompat.furnace());
+            cir.setReturnValue(InventoryOverlay.InventoryRenderType.FURNACE);
         }
     }
 
     @Inject(
-            //#if MC >= 26.1
-            //$$ method = "getInventoryType(Lnet/minecraft/world/item/ItemStack;)Lfi/dy/masa/malilib/render/InventoryOverlayType;",
-            //#else
             method = "getInventoryType(Lnet/minecraft/world/item/ItemStack;)Lfi/dy/masa/malilib/render/InventoryOverlay$InventoryRenderType;",
-            //#endif
             at = @At("RETURN"),
             cancellable = true,
             remap = true
     )
-    private static void checkAbstractFurnaceBlockEntity(@NotNull ItemStack stack, CallbackInfoReturnable<Object> cir) {
+    private static void checkAbstractFurnaceBlockEntity(@NotNull ItemStack stack, CallbackInfoReturnable<InventoryOverlay.InventoryRenderType> cir) {
         Item item = stack.getItem();
 
         if (Configs.fixGetInventoryType.getBooleanValue()
-                && cir.getReturnValue() == InventoryOverlayTypeCompat.generic()
+                && cir.getReturnValue() == InventoryOverlay.InventoryRenderType.GENERIC
                 && item instanceof BlockItem && ((BlockItem) item).getBlock() instanceof AbstractFurnaceBlock) {
-            cir.setReturnValue(InventoryOverlayTypeCompat.furnace());
+            cir.setReturnValue(InventoryOverlay.InventoryRenderType.FURNACE);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.plusls.MasaGadget.mixin.feature.cacheContainerMenu;
 
 import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.impl.feature.cacheContainerMenu.CacheContainerMenuHandler;
+import top.hendrixshen.magiclib.api.compat.minecraft.client.MinecraftCompat;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
@@ -42,6 +43,8 @@ public abstract class MixinClientPacketListener {
     private void postHandleContainerSetSlot(ClientboundContainerSetSlotPacket clientboundContainerSetSlotPacket,
                                             CallbackInfo ci) {
         Minecraft minecraft = Minecraft.getInstance();
+        MinecraftCompat minecraftCompat = MinecraftCompat.getInstance();
+
         if (!Configs.cacheContainerMenu.getBooleanValue() || minecraft.hasSingleplayerServer()) {
             return;
         }
@@ -51,13 +54,7 @@ public abstract class MixinClientPacketListener {
 
         if (containerId != 0 && containerId != -1 && containerId != -2
                 && (clientboundContainerSetSlotPacket.getContainerId() == localPlayer.containerMenu.containerId
-                || !(
-                        //#if MC >= 26.2
-                        //$$ minecraft.gui.screen()
-                        //#else
-                        minecraft.screen
-                        //#endif
-                        instanceof CreativeModeInventoryScreen))) {
+                || !(minecraftCompat.getScreen() instanceof CreativeModeInventoryScreen))) {
             if (CacheContainerMenuHandler.getInstance().isAvailableMenu()) {
                 Container container = CacheContainerMenuHandler.getInstance().getLastClickContainer();
 

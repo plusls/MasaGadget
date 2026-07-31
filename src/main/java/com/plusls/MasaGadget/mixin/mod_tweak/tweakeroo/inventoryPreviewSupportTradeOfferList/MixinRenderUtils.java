@@ -2,15 +2,19 @@ package com.plusls.MasaGadget.mixin.mod_tweak.tweakeroo.inventoryPreviewSupportT
 
 import com.plusls.MasaGadget.game.Configs;
 import com.plusls.MasaGadget.impl.generic.HitResultHandler;
+import com.plusls.MasaGadget.mixin.accessor.AccessorAbstractVillager;
 import com.plusls.MasaGadget.util.ModId;
 import com.plusls.MasaGadget.util.VillagerDataUtil;
+// CHECKSTYLE.OFF: ImportOrder
 import fi.dy.masa.malilib.render.InventoryOverlay;
 import fi.dy.masa.malilib.render.InventoryOverlay.InventoryRenderType;
 import fi.dy.masa.malilib.util.GuiUtils;
 import fi.dy.masa.tweakeroo.renderer.RenderUtils;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
+// CHECKSTYLE.ON: ImportOrder
 
+// CHECKSTYLE.OFF: ImportOrder
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -20,6 +24,8 @@ import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.item.trading.MerchantOffers;
+// CHECKSTYLE.ON: ImportOrder
 
 // CHECKSTYLE.OFF: ImportOrder
 //#if MC > 11904
@@ -81,14 +87,18 @@ public abstract class MixinRenderUtils {
 
         Villager villager = (Villager) entity;
 
-        if (villager instanceof Villager
-                && VillagerDataUtil.getVillagerProfession(villager) == VillagerProfession.NONE) {
+        if (VillagerDataUtil.getVillagerProfession(villager) == VillagerProfession.NONE) {
             return inv;
         }
 
         SimpleContainer simpleInventory = new SimpleContainer(MixinRenderUtils.masa_gadget$maxTradeOfferSize);
+        MerchantOffers offers = ((AccessorAbstractVillager) villager).masa_gadget_mod$getOffers();
 
-        for (MerchantOffer tradeOffer : villager.getOffers()) {
+        if (offers == null) {
+            return inv;
+        }
+
+        for (MerchantOffer tradeOffer : offers) {
             for (int i = 0; i < simpleInventory.getContainerSize(); ++i) {
                 ItemStack itemStack = simpleInventory.getItem(i);
 

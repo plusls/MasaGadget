@@ -7,12 +7,12 @@ import fi.dy.masa.malilib.render.RenderUtils;
 import org.jetbrains.annotations.NotNull;
 
 // CHECKSTYLE.OFF: ImportOrder
-//#if MC >= 12110
-//$$ import net.minecraft.client.input.MouseButtonEvent;
-//#endif
-
 //#if MC >= 1.21.11
 //$$ import fi.dy.masa.malilib.render.GuiContext;
+//#endif
+
+//#if MC >= 1.21.10
+//$$ import net.minecraft.client.input.MouseButtonEvent;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
 

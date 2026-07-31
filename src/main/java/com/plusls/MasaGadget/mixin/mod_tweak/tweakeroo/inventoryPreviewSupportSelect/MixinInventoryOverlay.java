@@ -19,24 +19,17 @@ import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.sugar.Local;
 @Mixin(value = InventoryOverlay.class, remap = false)
 public abstract class MixinInventoryOverlay {
     @Inject(
-            //#if MC >= 260100
+            //#if MC >= 26.1
             //$$ method = "renderStackAt(Lfi/dy/masa/malilib/render/GuiContext;Lnet/minecraft/world/item/ItemStack;FFFDD)V",
             //$$ remap = false,
-            //#elseif MC >= 12106
+            //#elseif MC >= 1.21.6
             //$$ method = "renderStackAt(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/item/ItemStack;FFFLnet/minecraft/client/Minecraft;DD)V",
-            //$$ remap = true,
-            //#elseif MC > 12006
+            //#elseif MC > 1.20.6
             //$$ method = "renderStackAt(Lnet/minecraft/world/item/ItemStack;FFFLnet/minecraft/client/Minecraft;Lnet/minecraft/client/gui/GuiGraphics;DD)V",
             //#else
             method = "renderStackAt",
-            remap = true,
             //#endif
-            //#if MC >= 260100
-            //$$ at = @At("RETURN"),
-            //$$ require = 0
-            //#else
             at = @At("RETURN")
-            //#endif
     )
     private static void addStackToolTip(CallbackInfo ci, @Local(argsOnly = true) ItemStack stack, @Local(ordinal = 0, argsOnly = true) float x, @Local(ordinal = 1, argsOnly = true) float y) {
         if (Configs.inventoryPreviewSupportSelect.getBooleanValue()) {

@@ -21,14 +21,8 @@ public abstract class MixinWorldUtils {
             at = @At(
                     value = "INVOKE",
                     target = "Lfi/dy/masa/malilib/util/InfoUtils;showGuiOrInGameMessage(Lfi/dy/masa/malilib/gui/Message$MessageType;Ljava/lang/String;[Ljava/lang/Object;)V"
-            //#if MC >= 260100
-            //$$ ),
-            //$$ cancellable = true,
-            //$$ require = 0
-            //#else
             ),
             cancellable = true
-            //#endif
     )
     private static void cancelEasyPlaceFailTip(Minecraft mc, CallbackInfoReturnable<Boolean> cir) {
         if (Configs.disableLitematicaEasyPlaceFailTip.getBooleanValue()) {
