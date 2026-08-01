@@ -7,12 +7,9 @@ import fi.dy.masa.tweakeroo.config.FeatureToggle;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import top.hendrixshen.magiclib.api.render.context.GuiRenderContext;
 
 // CHECKSTYLE.OFF: ImportOrder
-//#if MC < 26.1
-import top.hendrixshen.magiclib.api.render.context.GuiRenderContext;
-//#endif
-
 //#if 26.1 > MC && MC > 1.20.6
 //$$ import fi.dy.masa.malilib.util.WorldUtils;
 //#endif
@@ -39,7 +36,9 @@ import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.phys.HitResult;
 
 // CHECKSTYLE.OFF: ImportOrder
-//#if 26.1 > MC && MC > 1.19.4
+//#if MC >= 26.1
+//$$ import net.minecraft.client.gui.GuiGraphicsExtractor;
+//#elseif MC >= 1.20
 //$$ import net.minecraft.client.gui.GuiGraphics;
 //#endif
 
@@ -113,14 +112,7 @@ public class InventoryOverlayRenderHandler {
         }
     }
 
-    public void render(
-            @NotNull
-            //#if MC >= 26.1
-            //$$ GuiContext renderContext
-            //#else
-            GuiRenderContext renderContext
-            //#endif
-    ) {
+    public void render(@NotNull GuiRenderContext renderContext) {
         //#if 12000 > MC && MC > 11605
         //$$ RenderSystem.applyModelViewMatrix();
         //#endif
@@ -140,26 +132,14 @@ public class InventoryOverlayRenderHandler {
         this.dropState();
     }
 
-    private void attachToMainInventoryView(
-            //#if MC >= 26.1
-            //$$ GuiContext renderContext
-            //#else
-            GuiRenderContext renderContext
-            //#endif
-    ) {
+    private void attachToMainInventoryView(GuiRenderContext renderContext) {
         if (!this.selectInventory) {
             this.renderSlotHighlight(renderContext, this.renderX, this.renderY);
             this.renderTooltip(renderContext, this.itemStack, this.renderX, this.renderY);
         }
     }
 
-    private void attachToSubShulkerBoxView(
-            //#if MC >= 26.1
-            //$$ GuiContext renderContext
-            //#else
-            GuiRenderContext renderContext
-            //#endif
-    ) {
+    private void attachToSubShulkerBoxView(GuiRenderContext renderContext) {
         if (!this.selectInventory) {
             return;
         }
@@ -171,8 +151,14 @@ public class InventoryOverlayRenderHandler {
             return;
         }
 
-        //#if 26.1 > MC && MC > 1.19.4
+        //#if MC >= 26.1
+        //$$ GuiGraphicsExtractor guiGraphics = renderContext.getGuiComponent();
+        //#elseif MC >= 1.20
         //$$ GuiGraphics guiGraphics = renderContext.getGuiComponent();
+        //#endif
+
+        //#if MC >= 1.21.11
+        //$$ GuiContext guiContext = GuiContext.fromGuiGraphics(renderContext.getGuiComponent());
         //#endif
 
         this.renderSlotHighlight(renderContext, this.renderX, this.renderY);
@@ -180,10 +166,8 @@ public class InventoryOverlayRenderHandler {
         RenderUtils.renderShulkerBoxPreview(
                 // CHECKSTYLE.OFF: NoWhitespaceBefore
                 // CHECKSTYLE.OFF: SeparatorWrap
-                //#if MC >= 26.1
-                //$$ renderContext,
-                //#elseif MC >= 1.21.11
-                //$$ GuiContext.fromGuiGraphics(renderContext.getGuiComponent()),
+                //#if MC >= 1.21.11
+                //$$ guiContext,
                 //#elseif MC >= 1.21.7
                 //$$ guiGraphics,
                 //#endif
@@ -203,21 +187,13 @@ public class InventoryOverlayRenderHandler {
                 && this.adjustSubSelectedSlot()
                 && this.subItemStack != null
         ) {
-            //#if MC >= 26.1
-            //$$ renderContext.pose().pushMatrix();
-            //#else
             renderContext.pushMatrix();
-            //#endif
             //#if MC < 12106
             renderContext.translateDirect(0, 0, 400);
             //#endif
             this.renderSlotHighlight(renderContext, this.subRenderX, this.subRenderY);
             this.renderTooltip(renderContext, this.subItemStack, this.subRenderX, this.subRenderY);
-            //#if MC >= 26.1
-            //$$ renderContext.pose().popMatrix();
-            //#else
             renderContext.popMatrix();
-            //#endif
         }
     }
 
@@ -313,19 +289,9 @@ public class InventoryOverlayRenderHandler {
         }
     }
 
-    private void renderSlotHighlight(
-            @NotNull
-            //#if MC >= 26.1
-            //$$ GuiContext renderContext
-            //#else
-            GuiRenderContext renderContext
-            //#endif
-            ,
-            int x,
-            int y
-    ) {
+    private void renderSlotHighlight(@NotNull GuiRenderContext renderContext, int x, int y) {
         //#if MC >= 26.1
-        //$$ renderContext.fillGradient(x, y, x + 16, y + 16, 0x80FFFFFF, 0x80FFFFFF);
+        //$$ GuiContext.fromGuiGraphics(renderContext.getGuiComponent()).fillGradient(x, y, x + 16, y + 16, 0x80FFFFFF, 0x80FFFFFF);
         //#elseif MC > 1.21.1
         //$$ renderContext.getGuiComponent().fillGradient(
         //$$         //#if MC < 12106
@@ -374,21 +340,11 @@ public class InventoryOverlayRenderHandler {
         //#endif
     }
 
-    private void renderTooltip(
-            @NotNull
-            //#if MC >= 26.1
-            //$$ GuiContext renderContext
-            //#else
-            GuiRenderContext renderContext
-            //#endif
-            ,
-            @NotNull ItemStack itemStack,
-            int x,
-            int y
-    ) {
+    private void renderTooltip(GuiRenderContext renderContext, @NotNull ItemStack itemStack, int x, int y) {
         Minecraft mc = Minecraft.getInstance();
         //#if MC >= 26.1
-        //$$ renderContext.renderTooltip(mc.font, renderContext.itemTooltips(itemStack), x, y);
+        //$$ GuiContext guiContext = GuiContext.fromGuiGraphics(renderContext.getGuiComponent());
+        //$$ guiContext.renderTooltip(mc.font, guiContext.itemTooltips(itemStack), x, y);
         //#elseif MC > 1.19.4
         //$$ renderContext.getGuiComponent().renderTooltip(
         //$$         mc.font,

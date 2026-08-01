@@ -79,14 +79,12 @@ public class RenderUtil {
         RenderUtil.beginLines(builder);
         //#endif
         //#endif
-        //#if MC > 1.20.6
         //#if MC >= 1.21.11
         //$$ builder.addVertex((float) pos1.x(), (float) pos1.y(), (float) pos1.z()).setColor(color.r, color.g, color.b, color.a).setLineWidth(1.0F);
         //$$ builder.addVertex((float) pos2.x(), (float) pos2.y(), (float) pos2.z()).setColor(color.r, color.g, color.b, color.a).setLineWidth(1.0F);
-        //#else
+        //#elseif MC > 12006
         //$$ builder.addVertex((float) pos1.x(), (float) pos1.y(), (float) pos1.z()).setColor(color.r, color.g, color.b, color.a);
         //$$ builder.addVertex((float) pos2.x(), (float) pos2.y(), (float) pos2.z()).setColor(color.r, color.g, color.b, color.a);
-        //#endif
         //#if MC > 12104
         //$$
         //$$ try {

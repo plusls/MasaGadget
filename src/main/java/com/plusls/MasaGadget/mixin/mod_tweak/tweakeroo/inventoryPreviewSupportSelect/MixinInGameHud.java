@@ -5,26 +5,20 @@ import com.plusls.MasaGadget.impl.mod_tweak.tweakeroo.inventoryPreviewSupportSel
 import com.plusls.MasaGadget.util.ModId;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependencies;
 import top.hendrixshen.magiclib.api.dependency.annotation.Dependency;
-
-// CHECKSTYLE.OFF: ImportOrder
-//#if MC < 26.1
 import top.hendrixshen.magiclib.api.render.context.RenderContext;
-//#endif
 
 import net.minecraft.client.gui.Gui;
 
-//#if MC >= 26.1
-//$$ import fi.dy.masa.malilib.render.GuiContext;
-//$$ import net.minecraft.client.gui.GuiGraphicsExtractor;
-//#endif
-
+// CHECKSTYLE.OFF: ImportOrder
 //#if 26.2 > MC && MC > 1.20.6
 //$$ import net.minecraft.client.DeltaTracker;
 //#endif
 
-//#if 26.1 > MC && MC > 1.19.4
+//#if MC >= 26.1
+//$$ import net.minecraft.client.gui.GuiGraphicsExtractor;
+//#elseif MC >= 1.20
 //$$ import net.minecraft.client.gui.GuiGraphics;
-//#elseif 26.1 > MC && MC > 1.15.2
+//#elseif MC >= 1.16
 import com.mojang.blaze3d.vertex.PoseStack;
 //#endif
 // CHECKSTYLE.ON: ImportOrder
@@ -76,15 +70,11 @@ public abstract class MixinInGameHud {
             // CHECKSTYLE.ON: NoWhitespaceBefore
     ) {
         if (Configs.inventoryPreviewSupportSelect.getBooleanValue()) {
-            //#if MC >= 26.1
-            //$$ InventoryOverlayRenderHandler.getInstance().render(GuiContext.fromGuiGraphics(poseStackOrGuiGraphics));
-            //#else
             InventoryOverlayRenderHandler.getInstance().render(RenderContext.gui(
                     //#if MC > 11502
                     poseStackOrGuiGraphics
                     //#endif
             ));
-            //#endif
         }
     }
 }

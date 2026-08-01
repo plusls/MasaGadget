@@ -26,9 +26,9 @@ import top.hendrixshen.magiclib.util.collect.ValueContainer;
 //$$ import lombok.AllArgsConstructor;
 //$$ import org.thinkingstudio.mafglib.loader.entrypoints.ConfigScreenEntrypoint;
 //#endif
+// CHECKSTYLE.ON: ImportOrder
 
 import net.minecraft.client.gui.screens.Screen;
-// CHECKSTYLE.ON: ImportOrder
 
 // CHECKSTYLE.OFF: ImportOrder
 //#if NEO_FORGE

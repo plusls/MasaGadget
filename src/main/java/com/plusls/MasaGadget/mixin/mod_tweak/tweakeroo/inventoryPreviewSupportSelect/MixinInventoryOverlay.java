@@ -21,7 +21,6 @@ public abstract class MixinInventoryOverlay {
     @Inject(
             //#if MC >= 26.1
             //$$ method = "renderStackAt(Lfi/dy/masa/malilib/render/GuiContext;Lnet/minecraft/world/item/ItemStack;FFFDD)V",
-            //$$ remap = false,
             //#elseif MC >= 1.21.6
             //$$ method = "renderStackAt(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/world/item/ItemStack;FFFLnet/minecraft/client/Minecraft;DD)V",
             //#elseif MC > 1.20.6

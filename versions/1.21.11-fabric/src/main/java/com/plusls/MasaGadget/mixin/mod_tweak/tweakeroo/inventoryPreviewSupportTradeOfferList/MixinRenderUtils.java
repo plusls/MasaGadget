@@ -29,6 +29,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import top.hendrixshen.magiclib.libs.com.llamalad7.mixinextras.sugar.Local;
 
+// CHECKSTYLE.OFF: JavadocStyle
+/**
+ * <li>mc1.14 ~ mc1.20: subproject 1.16.5 (main project)</li>
+ * <li>mc1.21 ~ mc1.21.10: subproject 1.21.1 [dummy]</li>
+ * <li>mc1.21.11: subproject 1.21.11        &lt;--------</li>
+ * <li>mc26.1.2: subproject 26.1.2</li>
+ * <li>mc26.2+: subproject 26.2</li>
+ */
+// CHECKSTYLE.ON: JavadocStyle
 @Dependencies(require = @Dependency(ModId.tweakeroo))
 @Mixin(value = RenderUtils.class, remap = false)
 public abstract class MixinRenderUtils {
