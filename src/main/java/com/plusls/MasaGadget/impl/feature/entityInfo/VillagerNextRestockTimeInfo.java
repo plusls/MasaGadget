@@ -26,7 +26,7 @@ public class VillagerNextRestockTimeInfo {
         long nextRestockTime;
         long nextWorkTime;
         //#if MC >= 26.1
-        //$$ long timeOfDay = villager.level().getOverworldClockTime() % 24000;
+        //$$ long timeOfDay = villager.level().getGameTime() % 24000;
         //#else
         long timeOfDay = villager.getLevel().getDayTime() % 24000;
         //#endif
