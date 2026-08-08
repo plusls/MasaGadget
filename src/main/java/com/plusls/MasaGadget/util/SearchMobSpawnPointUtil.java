@@ -10,6 +10,7 @@ import top.hendrixshen.magiclib.MagicLib;
 import top.hendrixshen.magiclib.api.compat.minecraft.network.chat.MutableComponentCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.resources.ResourceLocationCompat;
 import top.hendrixshen.magiclib.api.compat.minecraft.world.level.LevelCompat;
+import top.hendrixshen.magiclib.api.i18n.I18n;
 import top.hendrixshen.magiclib.util.minecraft.ComponentUtil;
 import top.hendrixshen.magiclib.util.minecraft.InfoUtil;
 
@@ -178,7 +179,7 @@ public class SearchMobSpawnPointUtil {
                     .withStyle(ChatFormatting.GREEN);
         } else {
             // for ommc parser
-            text = ComponentUtil.trCompat("masa_gadget_mod.message.spawn_pos", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
+            text = ComponentUtil.simpleCompat(I18n.tr("masa_gadget_mod.message.spawn_pos", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()));
 
             if (MagicLib.getInstance().getCurrentPlatform().isModLoaded(ModId.oh_my_minecraft_client)) {
                 InfoUtil.sendCommand(String.format("highlightWaypoint %d %d %d", spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()));
