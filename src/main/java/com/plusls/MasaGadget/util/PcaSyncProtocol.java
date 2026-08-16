@@ -279,7 +279,7 @@ public class PcaSyncProtocol {
                             // CHECKSTYLE.OFF: NoWhitespaceBefore
                             // CHECKSTYLE.OFF: SeparatorWrap
                             //#if MC > 12104
-                            //$$ tag.getLongOr("RestocksToday", 0L)
+                            //$$ tag.getLongOr("LastRestock", 0L)
                             //#else
                             tag.getLong("LastRestock")
                             //#endif

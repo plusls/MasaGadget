@@ -10,4 +10,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface AccessorAbstractVillager {
     @Accessor("offers")
     void masa_gadget_mod$setOffers(MerchantOffers offers);
+
+    @Accessor("offers")
+    MerchantOffers masa_gadget_mod$getOffers();
 }

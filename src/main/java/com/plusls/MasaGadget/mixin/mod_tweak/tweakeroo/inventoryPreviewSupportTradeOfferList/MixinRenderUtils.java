@@ -81,8 +81,7 @@ public abstract class MixinRenderUtils {
 
         Villager villager = (Villager) entity;
 
-        if (villager instanceof Villager
-                && VillagerDataUtil.getVillagerProfession(villager) == VillagerProfession.NONE) {
+        if (VillagerDataUtil.getVillagerProfession(villager) == VillagerProfession.NONE) {
             return inv;
         }
 

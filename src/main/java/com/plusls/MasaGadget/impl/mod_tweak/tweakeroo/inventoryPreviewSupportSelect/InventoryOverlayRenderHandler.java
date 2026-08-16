@@ -10,12 +10,12 @@ import org.jetbrains.annotations.Nullable;
 import top.hendrixshen.magiclib.api.render.context.GuiRenderContext;
 
 // CHECKSTYLE.OFF: ImportOrder
-//#if MC >= 1.21.11
-//$$ import fi.dy.masa.malilib.render.GuiContext;
+//#if 26.1 > MC && MC > 1.20.6
+//$$ import fi.dy.masa.malilib.util.WorldUtils;
 //#endif
 
-//#if MC > 12006
-//$$ import fi.dy.masa.malilib.util.WorldUtils;
+//#if MC >= 1.21.11
+//$$ import fi.dy.masa.malilib.render.GuiContext;
 //#endif
 
 //#if MC < 12000
@@ -54,7 +54,7 @@ import net.minecraft.world.phys.HitResult;
 //$$ import net.minecraft.client.gui.screens.Screen;
 //#endif
 
-//#if MC > 12006
+//#if 26.1 > MC && MC > 1.20.6
 //$$ import net.minecraft.world.item.Item;
 //$$ import net.minecraft.world.item.TooltipFlag;
 //#endif
@@ -290,7 +290,9 @@ public class InventoryOverlayRenderHandler {
     }
 
     private void renderSlotHighlight(@NotNull GuiRenderContext renderContext, int x, int y) {
-        //#if MC > 12101
+        //#if MC >= 26.1
+        //$$ GuiContext.fromGuiGraphics(renderContext.getGuiComponent()).fillGradient(x, y, x + 16, y + 16, 0x80FFFFFF, 0x80FFFFFF);
+        //#elseif MC > 1.21.1
         //$$ renderContext.getGuiComponent().fillGradient(
         //$$         //#if MC < 12106
         //$$         RenderType.guiOverlay(),
@@ -340,7 +342,10 @@ public class InventoryOverlayRenderHandler {
 
     private void renderTooltip(GuiRenderContext renderContext, @NotNull ItemStack itemStack, int x, int y) {
         Minecraft mc = Minecraft.getInstance();
-        //#if MC > 11904
+        //#if MC >= 26.1
+        //$$ GuiContext guiContext = GuiContext.fromGuiGraphics(renderContext.getGuiComponent());
+        //$$ guiContext.renderTooltip(mc.font, guiContext.itemTooltips(itemStack), x, y);
+        //#elseif MC > 1.19.4
         //$$ renderContext.getGuiComponent().renderTooltip(
         //$$         mc.font,
         //$$         //#if MC > 12006
