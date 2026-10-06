@@ -457,6 +457,7 @@ And use `preprocess` to be compatible with all versions.
 - Minecraft 1.21.11
 - Minecraft 26.1.2
 - Minecraft 26.2
+- Minecraft 26.3
 
 ### Mappings
 

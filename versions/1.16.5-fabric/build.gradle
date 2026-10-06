@@ -67,6 +67,7 @@ repositories {
 def deps = [
         ["autoApi"          , "itemscroller", fabricLike                         , true , { transitive = false }],
         ["autoApi"          , "litematica"  , fabricLike                         , true , { transitive = false }],
+        ["autoApi"          , "malilib"    , fabricLike && mcVersion >= 260300  , true , { transitive = false }],
         ["autoApi"          , "minihud"     , fabricLike                         , true , { transitive = false }],
         ["autoApi"          , "tweakeroo"   , fabricLike                         , true , { transitive = false }],
         ["autoApi"          , "forgematica" , forgeLike                          , true , { transitive = false }],
@@ -85,7 +86,7 @@ dependencies {
     annotationProcessor(libs.lombok)
 
     // Dependency
-    autoApi(annotationProcessor("top.hendrixshen.magiclib:magiclib-all-${magic.getProjectDetail().get().getProjectName()}:${catalogsExtension.named("mods").findVersion("magiclib").orElseThrow { throw new GradleException("No magiclib version found") } }"))
+    autoApi(annotationProcessor("top.hendrixshen.magiclib:magiclib-all-${magic.getProjectDetail().get().getProjectName()}:${project.findProperty("dependencies.magiclib_version") ?: catalogsExtension.named("mods").findVersion("magiclib").orElseThrow { throw new GradleException("No magiclib version found") } }"))
 
     deps.forEach { item ->
         String configurationName = item[0]
@@ -166,6 +167,7 @@ replaceToken {
 }
 
 processResources {
+    inputs.property("malilib_dependency"  , project.findProperty("dependencies.malilib_dependency") ?: "*")
     inputs.property("magiclib_dependency" , project.property("dependencies.magiclib_dependency"))
     inputs.property("minecraft_dependency", project.property("dependencies.minecraft_dependency"))
     inputs.property("mod_alias"           , project.parent.property("mod.id"))
@@ -186,6 +188,7 @@ processResources {
         if (platforms.contains(modPlatform.id())) {
             filesMatching(file) {
                 expand([
+                        "malilib_dependency"  : inputs.properties.get("malilib_dependency"),
                         "magiclib_dependency" : inputs.properties.get("magiclib_dependency"),
                         "minecraft_dependency": inputs.properties.get("minecraft_dependency"),
                         "mod_alias"           : inputs.properties.get("mod_alias"),

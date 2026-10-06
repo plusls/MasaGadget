@@ -7,6 +7,11 @@ import fi.dy.masa.malilib.event.InputEventHandler;
 import fi.dy.masa.malilib.hotkeys.IKeybindProvider;
 
 // CHECKSTYLE.OFF: ImportOrder
+//#if MC >= 26.3
+//$$ import fi.dy.masa.malilib.registry.Registry;
+//$$ import fi.dy.masa.malilib.util.data.ModInfo;
+//#endif
+
 //#if FORGE_LIKE
 //$$ import top.hendrixshen.magiclib.util.minecraft.ForgePlatformUtil;
 //#endif
@@ -14,9 +19,14 @@ import fi.dy.masa.malilib.hotkeys.IKeybindProvider;
 
 public class MalilibStuffsInitializer {
     public static void init() {
-        InitializationHandler.getInstance().registerInitializationHandler(() ->
-                ConfigManager.getInstance().registerConfigHandler(SharedConstants.getModIdentifier(),
-                        SharedConstants.getConfigHandler()));
+        InitializationHandler.getInstance().registerInitializationHandler(() -> {
+            ConfigManager.getInstance().registerConfigHandler(SharedConstants.getModIdentifier(),
+                    SharedConstants.getConfigHandler());
+            //#if MC >= 26.3
+            //$$ Registry.CONFIG_SCREEN.registerConfigScreenFactory(new ModInfo(
+            //$$         SharedConstants.getModIdentifier(), SharedConstants.getModName(), ConfigGui::new));
+            //#endif
+        });
         Configs.init();
         InputEventHandler.getKeybindManager().registerKeybindProvider(
                 (IKeybindProvider) SharedConstants.getConfigManager());
